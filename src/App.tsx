@@ -1,5 +1,7 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
+import MainPage from './presentation/pages/MainPage'
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -9,8 +11,12 @@ const GlobalStyle = createGlobalStyle`
 function App() {
     return (
         <div className="App">
-            <GlobalStyle />
-            <p>Hello World</p>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<MainPage />} />
+                    {/* <GlobalStyle /> */}
+                </Routes>
+            </BrowserRouter>
         </div>
     )
 }
