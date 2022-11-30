@@ -14,7 +14,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<MainPage />} />
-                    {/* <GlobalStyle /> */}
+                    <GlobalStyle />
                 </Routes>
             </BrowserRouter>
         </div>
