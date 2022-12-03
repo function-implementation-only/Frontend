@@ -16,7 +16,7 @@ function LoginPage() {
             <Input
                 type="text"
                 label="id"
-                placeholder="아이디를 입력해 주세요."
+                placeholder="이메일을 입력해 주세요."
                 size="large"
                 onChangeInput={onChangeIdInput}
                 value={idValue}
