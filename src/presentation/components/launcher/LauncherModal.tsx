@@ -2,6 +2,11 @@ import styled from 'styled-components'
 import { useCallback, useEffect, useRef } from 'react'
 
 const ChatModal = styled.div`
+    .chat-modal-grid {
+        background-color: red;
+        width: 480px;
+    }
+
     .chat-modal-btn {
         border: none;
         border-radius: 5px;
@@ -36,7 +41,7 @@ function LauncherModal({
 
     const closeChatModalEvent = useCallback(
         (e: { key: string }) => {
-            if (e.key === 'Escape' && !showChatModal) {
+            if (e.key === 'Escape' && showChatModal) {
                 setShowChatModal(true)
             }
         },
@@ -51,14 +56,16 @@ function LauncherModal({
 
     return (
         <ChatModal id="chat-modal" ref={modalRef} onClick={closeChatModal}>
-            <div className="chat-modal-contents">
-                <button
-                    type="button"
-                    className="chat-modal-btn"
-                    onClick={() => setShowChatModal(true)}
-                >
-                    &#10005;
-                </button>
+            <div className="chat-modal-grid">
+                <div className="chat-modal-contents">
+                    <button
+                        type="button"
+                        className="chat-modal-btn"
+                        onClick={() => setShowChatModal(true)}
+                    >
+                        &#10005;
+                    </button>
+                </div>
             </div>
         </ChatModal>
     )
