@@ -1,6 +1,5 @@
-import { TransformStreamDefaultController } from "node:stream/web";
-import { useCallback, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled from 'styled-components'
+import { useCallback, useEffect, useRef } from 'react'
 
 const ChatModal = styled.div`
     .chat-modal-btn {
@@ -19,12 +18,15 @@ const ChatModal = styled.div`
     }
 `
 interface Props {
-    showChatModal: boolean, 
-    setShowChatModal: (bool: boolean) => void;
+    showChatModal: boolean
+    setShowChatModal: (bool: boolean) => void
 }
 
-const LauncherModal = ({showChatModal, setShowChatModal}: Props): JSX.Element => {
-    const modalRef = useRef(null);
+function LauncherModal({
+    showChatModal,
+    setShowChatModal,
+}: Props): JSX.Element {
+    const modalRef = useRef(null)
 
     const closeChatModal = (e: any) => {
         if (modalRef.current === e.target) {
@@ -32,21 +34,29 @@ const LauncherModal = ({showChatModal, setShowChatModal}: Props): JSX.Element =>
         }
     }
 
-    const closeChatModalEvent = useCallback((e: { key: string; }) => {
-        if (e.key === 'Escape' && !showChatModal) {
-            setShowChatModal(true);
-        }
-    }, [showChatModal, setShowChatModal])
+    const closeChatModalEvent = useCallback(
+        (e: { key: string }) => {
+            if (e.key === 'Escape' && !showChatModal) {
+                setShowChatModal(true)
+            }
+        },
+        [showChatModal, setShowChatModal]
+    )
 
     useEffect(() => {
-        document.addEventListener("keydown", closeChatModalEvent);
-        return () => document.removeEventListener("keydown", closeChatModalEvent);
+        document.addEventListener('keydown', closeChatModalEvent)
+        return () =>
+            document.removeEventListener('keydown', closeChatModalEvent)
     }, [closeChatModalEvent])
 
     return (
         <ChatModal id="chat-modal" ref={modalRef} onClick={closeChatModal}>
             <div className="chat-modal-contents">
-                <button className="chat-modal-btn" onClick={() => setShowChatModal(true)}>
+                <button
+                    type="button"
+                    className="chat-modal-btn"
+                    onClick={() => setShowChatModal(true)}
+                >
                     &#10005;
                 </button>
             </div>
@@ -54,4 +64,4 @@ const LauncherModal = ({showChatModal, setShowChatModal}: Props): JSX.Element =>
     )
 }
 
-export default LauncherModal;
+export default LauncherModal

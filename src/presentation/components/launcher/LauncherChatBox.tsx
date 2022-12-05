@@ -1,38 +1,42 @@
-import { useState } from 'react';
-import MugSaucerSvg from '../../../assets/mug-saucer.svg';
-import { LauncherChatBoxLayout } from './LauncherChatBox.Styled';
-import LauncherModal from './LauncherModal';
+import { useState } from 'react'
+import MugSaucerSvg from '../../../assets/mug-saucer.svg'
+import LauncherChatBoxLayout from './LauncherChatBox.Styled'
+import LauncherModal from './LauncherModal'
 
 export default function LauncherChatBox() {
-    const [showChatModal, setShowChatModal] = useState(false);
-    
+    const [showChatModal, setShowChatModal] = useState(false)
+
     const activeChatModal = () => {
-        setShowChatModal((open) => !open);
+        setShowChatModal((open) => !open)
     }
-    return (
-      <>
-        {showChatModal ? 
+    if (showChatModal) {
+        return (
             <LauncherChatBoxLayout>
                 <div className="launcher-button-wrapper">
                     <div className="launcher-button-wrapper-child">
                         <div className="launcher-button-logo">
                             <MugSaucerSvg />
                         </div>
-                        <div className="launcher-wrapper" onClick={activeChatModal}>
-                            <div className="launcher-title">채팅 내용이 있을 때</div>
+                        <div
+                            onClick={activeChatModal}
+                            aria-hidden="true"
+                            className="launcher-wrapper"
+                        >
+                            <span className="launcher-title">
+                                채팅 내용이 있을 때
+                            </span>
                             <div className="launcher-content-grid">
-                                <div className="launcher-error"></div>
-                                <div className="launcher-text">현재 대기중인 채팅?</div>
+                                <div className="launcher-error" />
+                                <div className="launcher-text">
+                                    현재 대기중인 채팅?
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </LauncherChatBoxLayout>
-        : 
-            <div>
-                <LauncherModal showChatModal={showChatModal} setShowChatModal={setShowChatModal} />
-            </div>
-        }
-      </>
-    );
+        )
+    }
+
+    return <LauncherModal showChatModal setShowChatModal={setShowChatModal} />
 }

@@ -1,8 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-export const LauncherChatBoxLayout = styled.div`
+const LauncherChatBoxLayout = styled.div`
     :hover {
-        box-shadow: rgb(255 255 255 / 5%) 0px 0px 2px 0px inset, rgb(0 0 0 / 5%) 0px 0px 2px 1px, rgb(0 0 0 / 5%) 0px 4px 20px;
+        box-shadow: rgb(255 255 255 / 5%) 0px 0px 2px 0px inset,
+            rgb(0 0 0 / 5%) 0px 0px 2px 1px, rgb(0 0 0 / 5%) 0px 4px 20px;
         border-radius: 22px;
     }
     position: fixed;
@@ -25,11 +26,13 @@ export const LauncherChatBoxLayout = styled.div`
         transition-timing-function: cubic-bezier(0.24, 0.06, 0, 0.97);
         transition-duration: 500ms;
         transition-property: transform, opacity;
-        animation: 500ms cubic-bezier(0.24, 0.06, 0, 0.97) 0.55s 1 normal backwards running fkfYNj;
+        animation: 500ms cubic-bezier(0.24, 0.06, 0, 0.97) 0.55s 1 normal
+            backwards running fkfYNj;
     }
 
     .launcher-button-wrapper-child {
-        box-shadow: rgb(255 255 255 / 12%) 0px 0px 2px 0px inset, rgb(0 0 0 / 5%) 0px 0px 2px 1px, rgb(0 0 0 / 22%) 0px 4px 20px;
+        box-shadow: rgb(255 255 255 / 12%) 0px 0px 2px 0px inset,
+            rgb(0 0 0 / 5%) 0px 0px 2px 1px, rgb(0 0 0 / 22%) 0px 4px 20px;
         position: relative;
         box-sizing: border-box;
         display: flex;
@@ -38,7 +41,11 @@ export const LauncherChatBoxLayout = styled.div`
         width: 320px;
         padding: 10px;
         cursor: pointer;
-        background: linear-gradient(to left, rgba(255, 255, 255, 0.9), rgb(255, 255, 255));
+        background: linear-gradient(
+            to left,
+            rgba(255, 255, 255, 0.9),
+            rgb(255, 255, 255)
+        );
         backdrop-filter: blur(30px);
         border-radius: 22px;
     }
@@ -85,17 +92,17 @@ export const LauncherChatBoxLayout = styled.div`
             .launcher-error {
                 width: 16px;
                 height: 16px;
-                content: "";
+                content: '';
                 background-image: url(https://cf.channel.io/asset/plugin/images/chat-error-filled.svg);
                 background-size: cover;
             }
-            
+
             .launcher-text {
                 letter-spacing: -0.1px;
                 margin-left: 2px;
                 overflow: hidden;
             }
         }
-
     }
 `
+export default LauncherChatBoxLayout
