@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'https://veloce.o-r.kr:8080/api'
+const BASE_URL = import.meta.env.VITE_API_END_POINT
 
 const instance = axios.create({
     baseURL: BASE_URL,
