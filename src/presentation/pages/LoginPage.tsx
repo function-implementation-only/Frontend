@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Input from '../../stories/Input'
+import { Input } from '../../stories/Input'
 
 function LoginPage() {
     const [idValue, setIdValue] = useState<string>('')
