@@ -6,6 +6,7 @@ const LauncherChatBoxLayout = styled.div`
             rgb(0 0 0 / 5%) 0px 0px 2px 1px, rgb(0 0 0 / 5%) 0px 4px 20px;
         border-radius: 22px;
     }
+
     position: fixed;
     z-index: 10;
     display: block;

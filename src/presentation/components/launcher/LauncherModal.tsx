@@ -2,9 +2,21 @@ import styled from 'styled-components'
 import { useCallback, useEffect, useRef } from 'react'
 
 const ChatModal = styled.div`
+    position: fixed;
+    z-index: 10;
+    display: block;
+    flex-wrap: nowrap;
+    bottom: 20px;
+    right: 20px;
+    height: 500px;
+    background-color: red;
+
     .chat-modal-grid {
-        background-color: red;
         width: 480px;
+    }
+
+    .chat-modal-contents {
+        text-align: right;
     }
 
     .chat-modal-btn {
@@ -19,7 +31,7 @@ const ChatModal = styled.div`
     }
 
     .chat-modal-btn:hover {
-        background-color: red;
+        background-color: #808080;
     }
 `
 interface Props {

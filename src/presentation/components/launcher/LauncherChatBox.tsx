@@ -4,24 +4,25 @@ import LauncherChatBoxLayout from './LauncherChatBox.Styled'
 import LauncherModal from './LauncherModal'
 
 export default function LauncherChatBox() {
-    const [showChatModal, setShowChatModal] = useState(false)
+    const [showChatModal, setShowChatModal] = useState(true)
 
     const activeChatModal = () => {
         setShowChatModal((open) => !open)
     }
+
     if (showChatModal) {
         return (
             <LauncherChatBoxLayout>
-                <div className="launcher-button-wrapper">
+                <div
+                    className="launcher-button-wrapper"
+                    onClick={activeChatModal}
+                    aria-hidden="true"
+                >
                     <div className="launcher-button-wrapper-child">
                         <div className="launcher-button-logo">
                             <MugSaucerSvg />
                         </div>
-                        <div
-                            onClick={activeChatModal}
-                            aria-hidden="true"
-                            className="launcher-wrapper"
-                        >
+                        <div className="launcher-wrapper">
                             <span className="launcher-title">
                                 채팅 내용이 있을 때
                             </span>
