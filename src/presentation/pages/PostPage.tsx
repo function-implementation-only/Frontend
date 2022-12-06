@@ -1,6 +1,6 @@
-import axios from 'axios'
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import postAnnouncement from '../../data/postAPI'
 import { TECHSTACK, TechObj } from '../../lib/constants'
 
 const PostPageLayout = styled.div`
@@ -12,15 +12,6 @@ const PostPageLayout = styled.div`
 `
 
 function PostPage() {
-    const instance = axios.create({
-        baseURL: 'https://veloce.o-r.kr:8080/api',
-        headers: {
-            Access_Token:
-                'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkdWR3bnMwOTIxQGdtYWlsLmNvbSIsImV4cCI6MTY3MDM3NjA2MCwiaWF0IjoxNjcwMjg5NjYwfQ.RZ4TdySOKTGki233aL6BlBxsErS61gLARadtQU9Y8ws',
-            'Content-Type': 'multipart/form-data',
-        },
-    })
-
     const [categoryValue, setCategoryValue] = useState('')
     const [durationValue, setDurationValue] = useState('')
     const [peopleNumValue, setPeopleNumValue] = useState('')
@@ -37,7 +28,7 @@ function PostPage() {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         const formData = new FormData()
-        const bodyObj = {
+        const data = {
             title: titleValue,
             contents: contentsValue,
             category: categoryValue,
@@ -50,7 +41,7 @@ function PostPage() {
         }
         formData.append(
             'data',
-            new Blob([JSON.stringify(bodyObj)], { type: 'application/json' })
+            new Blob([JSON.stringify(data)], { type: 'application/json' })
             // Spring 서버를 위한 처리
         )
         if (imgFileValue) {
@@ -58,7 +49,7 @@ function PostPage() {
         }
         try {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const response = await instance.post('/posts', formData)
+            const response = await postAnnouncement(formData)
         } catch (error) {
             // eslint-disable-next-line no-console
             console.log(error)
