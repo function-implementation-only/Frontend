@@ -1,11 +1,15 @@
-import PostAPI from './data/postAPI'
+import { PostAPI, PostAPIInterface } from './data/postAPI'
 
-class Context {
+export interface ContextInterface {
+    postAPI: PostAPIInterface
+}
+
+export class Context implements ContextInterface {
+    postAPI
+
     constructor() {
         this.postAPI = new PostAPI()
     }
-
-    private postAPI
 }
 
 export default Context
