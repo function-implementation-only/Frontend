@@ -1,6 +1,20 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { TECHSTACK, TechObj } from '../../lib/constants'
+
+type Inputs = {
+    title: string
+    contents: string
+    category: string
+    duration: string
+    peopleNum: number
+    place: string
+    techStack: string
+    // 아직 Spring 서버에서 배열로 받을 수 없어 하나의 값으로 처리
+    startDate: Date
+}
 
 const PostPageLayout = styled.div`
     width: 400px;
@@ -11,41 +25,21 @@ const PostPageLayout = styled.div`
 `
 
 function PostPage() {
-    const [categoryValue, setCategoryValue] = useState('')
-    const [durationValue, setDurationValue] = useState('')
-    const [peopleNumValue, setPeopleNumValue] = useState('')
-    const [placeValue, setPlaceValue] = useState('')
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [techStackValue, setTechStackValue] = useState<string[]>([])
-    const [startDateValue, setstartDateValue] = useState({})
+    const { register, handleSubmit } = useForm<Inputs>()
+    const [imgFiles, setImgFiles] = useState<FileList | null>(null)
 
-    const [imgFileValue, setImgFileValue] = useState<FileList | null>(null)
-
-    const [titleValue, setTitleValue] = useState('')
-    const [contentsValue, setContentsValue] = useState('')
-
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault()
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const formData = new FormData()
-        const data = {
-            title: titleValue,
-            contents: contentsValue,
-            category: categoryValue,
-            duration: durationValue,
-            peopleNum: peopleNumValue,
-            place: placeValue,
-            tech: 'JAVASCRIPT',
-            // 아직 Spring 서버에서 배열로 받을 수 없어 하나의 값으로 처리
-            startDate: startDateValue,
-        }
+
         formData.append(
             'data',
             new Blob([JSON.stringify(data)], { type: 'application/json' })
             // Spring 서버를 위한 처리
         )
-        if (imgFileValue) {
-            formData.append('image', imgFileValue[0])
+        if (imgFiles) {
+            formData.append('image', imgFiles[0])
         }
+
         try {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const response = await window.context.postAPI.postAnnouncement(
@@ -59,18 +53,11 @@ function PostPage() {
 
     return (
         <PostPageLayout>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="categorySelect">
                     모집 구분
                     <br />
-                    <select
-                        name="category"
-                        id="categorySelect"
-                        value={categoryValue}
-                        onChange={(e) => {
-                            setCategoryValue(e.target.value)
-                        }}
-                    >
+                    <select id="categorySelect" {...register('category')}>
                         <option value="">--Please choose an option--</option>
                         <option value="PROJECT">프로젝트</option>
                         <option value="STUDY">스터디</option>
@@ -79,14 +66,7 @@ function PostPage() {
                 <label htmlFor="durationSelect">
                     진행 기간
                     <br />
-                    <select
-                        name="duration"
-                        id="durationSelect"
-                        value={durationValue}
-                        onChange={(e) => {
-                            setDurationValue(e.target.value)
-                        }}
-                    >
+                    <select id="durationSelect" {...register('duration')}>
                         <option value="">--Please choose an option--</option>
                         <option value="ONE">1개월</option>
                         <option value="TWO">2개월</option>
@@ -99,14 +79,7 @@ function PostPage() {
                 <label htmlFor="peopleNumSelect">
                     모집 인원
                     <br />
-                    <select
-                        name="peopleNum"
-                        id="peopleNumSelect"
-                        value={peopleNumValue}
-                        onChange={(e) => {
-                            setPeopleNumValue(e.target.value)
-                        }}
-                    >
+                    <select id="peopleNumSelect" {...register('peopleNum')}>
                         <option value="">--Please choose an option--</option>
                         <option value={1}>1명</option>
                         <option value={2}>2명</option>
@@ -123,14 +96,7 @@ function PostPage() {
                 <label htmlFor="placeSelect">
                     진행 방식
                     <br />
-                    <select
-                        name="place"
-                        id="placeSelect"
-                        value={placeValue}
-                        onChange={(e) => {
-                            setPlaceValue(e.target.value)
-                        }}
-                    >
+                    <select id="placeSelect" {...register('place')}>
                         <option value="">--Please choose an option--</option>
                         <option value="ONLINE">온라인</option>
                         <option value="OFFLINE">오프라인</option>
@@ -139,19 +105,7 @@ function PostPage() {
                 <label htmlFor="techStackSelect">
                     기술 스택
                     <br />
-                    <select
-                        multiple
-                        name="techStack"
-                        id="techSelect"
-                        onChange={(e) => {
-                            const options = Array.from(e.target.options)
-                            const selected = options
-                                .filter((o) => o.selected)
-                                .map((o) => o.value)
-
-                            setTechStackValue(selected)
-                        }}
-                    >
+                    <select multiple id="techSelect" {...register('techStack')}>
                         {TECHSTACK.map((item: TechObj) => {
                             return (
                                 <option key={item.value} value={item.value}>
@@ -165,33 +119,26 @@ function PostPage() {
                     시작 예정일
                     <br />
                     <input
+                        id="startDateSelect"
                         type="date"
-                        onChange={(e) => {
-                            setstartDateValue(e.target.value)
-                        }}
+                        {...register('startDate')}
                     />
                 </label>
                 <input
                     type="text"
                     placeholder="제목을 입력해주세요."
-                    onChange={(e) => {
-                        setTitleValue(e.target.value)
-                    }}
-                    value={titleValue}
+                    {...register('title')}
                 />
                 <input
                     type="text"
                     placeholder="내용을 입력해주세요."
-                    onChange={(e) => {
-                        setContentsValue(e.target.value)
-                    }}
-                    value={contentsValue}
+                    {...register('contents')}
                 />
                 <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => {
-                        setImgFileValue(e.target.files)
+                        setImgFiles(e.target.files)
                     }}
                 />
                 <button type="submit">작성하기</button>
