@@ -42,7 +42,7 @@ function PostPage() {
 
         try {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const response = await window.context.postAPI.writePost(formData)
+            const response = await window.context.postAPI.createPost(formData)
         } catch (error) {
             // eslint-disable-next-line no-console
             console.log(error)
