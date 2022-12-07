@@ -1,13 +1,18 @@
-import axios from 'axios'
+import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import { SignUpInfo } from '../types/inedx'
 import setInterceptors from './interceptor'
 
-export default class SignUpAPI {
+export interface SignUpAPIInterface {
+    instance: AxiosInstance
+    postSignUp: (data: SignUpInfo) => Promise<AxiosResponse>
+}
+
+export default class SignUpAPI implements SignUpAPIInterface {
+    instance
+
     constructor() {
         this.instance = setInterceptors(axios.create())
     }
-
-    private instance
 
     public postSignUp(data: SignUpInfo) {
         return this.instance.post('/account/signup', data)

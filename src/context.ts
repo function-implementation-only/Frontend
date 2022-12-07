@@ -1,8 +1,9 @@
 import { PostAPI, PostAPIInterface } from './data/postAPI'
-import SignUpAPI from './data/signUpApi'
+import SignUpAPI, { SignUpAPIInterface } from './data/signUpApi'
 
 export interface ContextInterface {
     postAPI: PostAPIInterface
+    signUpAPI: SignUpAPIInterface
 }
 
 export class Context implements ContextInterface {

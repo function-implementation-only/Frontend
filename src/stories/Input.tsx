@@ -6,34 +6,15 @@ import { SignUpInfo } from '../types/inedx'
 import './input.css'
 
 interface InputProps {
-    /**
-     * What background color to use
-     */
     backgroundColor?: string
-    /**
-     * How large should the button be?
-     */
     type: string
-    /**
-     * Value attribute of Input
-     */
     value?: string
     size?: 'small' | 'medium' | 'large'
-    /**
-     * Button contents
-     */
     label: string
-    /**
-     * Optional onChange handler
-     */
-
     placeholder: string
     onChangeInput?: any
 }
 
-/**
- * Primary UI component for user interaction
- */
 export default function Input({
     type,
     size = 'medium',

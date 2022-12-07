@@ -13,9 +13,6 @@ interface ModalProps {
     onClose: () => void
 }
 
-/**
- * Primary UI component for user interaction
- */
 const Modal: React.FC<ModalProps> = ({
     children,
     isOpen,
