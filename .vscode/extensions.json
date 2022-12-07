@@ -1,0 +1,18 @@
+{
+    "recommendations": [
+        "dsznajder.es7-react-js-snippets",
+        "donjayamanne.githistory",
+        "codezombiech.gitignore",
+        "xabikos.JavaScriptSnippets",
+        "rvest.vs-code-prettier-eslint",
+        "esbenp.prettier-vscode",
+        "christian-kohler.npm-intellisense",
+        "formulahendry.auto-close-tag",
+        "formulahendry.auto-rename-tag",
+        "pranaygp.vscode-css-peek",
+        "streetsidesoftware.code-spell-checker",
+        "wayou.vscode-todo-highlight",
+        "ChakrounAnas.turbo-console-log",
+        "chrmarti.regex"
+    ]
+}
