@@ -2,12 +2,12 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import { SignUpInfo } from '../types/inedx'
 import setInterceptors from './interceptor'
 
-export interface SignUpAPIInterface {
+export interface AccountAPIInterface {
     instance: AxiosInstance
     postSignUp: (data: SignUpInfo) => Promise<AxiosResponse>
 }
 
-export default class SignUpAPI implements SignUpAPIInterface {
+export default class AccountAPI implements AccountAPIInterface {
     instance
 
     constructor() {

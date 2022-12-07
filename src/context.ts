@@ -1,9 +1,9 @@
 import { PostAPI, PostAPIInterface } from './data/postAPI'
-import SignUpAPI, { SignUpAPIInterface } from './data/signUpApi'
+import AccountAPI, { AccountAPIInterface } from './data/accountAPI'
 
 export interface ContextInterface {
     postAPI: PostAPIInterface
-    signUpAPI: SignUpAPIInterface
+    signUpAPI: AccountAPIInterface
 }
 
 export class Context implements ContextInterface {
@@ -13,6 +13,6 @@ export class Context implements ContextInterface {
 
     constructor() {
         this.postAPI = new PostAPI()
-        this.signUpAPI = new SignUpAPI()
+        this.signUpAPI = new AccountAPI()
     }
 }
