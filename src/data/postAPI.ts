@@ -1,10 +1,20 @@
 import axios from 'axios'
 import setInterceptors from './interceptor'
 
-const instance = setInterceptors(axios.create())
+class PostAPI {
+    constructor() {
+        this.instance = setInterceptors(axios.create())
+    }
 
-function postAnnouncement(payload: FormData) {
-    return instance.post('/posts', payload)
+    private instance
+
+    /**
+     * postAnnouncement
+     * 공고 작성 API
+     */
+    public postAnnouncement(payload: FormData) {
+        return this.instance.post('/posts', payload)
+    }
 }
 
-export default postAnnouncement
+export default PostAPI

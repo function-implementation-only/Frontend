@@ -1,7 +1,11 @@
+import PostAPI from './data/postAPI'
+
 class Context {
-    // constructor() {
-    //     여기서 모두 초기화
-    // }
+    constructor() {
+        this.postAPI = new PostAPI()
+    }
+
+    private postAPI
 }
 
 export default Context

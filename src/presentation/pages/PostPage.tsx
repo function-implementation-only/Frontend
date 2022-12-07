@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import postAnnouncement from '../../data/postAPI'
 import { TECHSTACK, TechObj } from '../../lib/constants'
 
 const PostPageLayout = styled.div`
@@ -49,7 +48,9 @@ function PostPage() {
         }
         try {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const response = await postAnnouncement(formData)
+            const response = await window.context.postAPI.postAnnouncement(
+                formData
+            )
         } catch (error) {
             // eslint-disable-next-line no-console
             console.log(error)

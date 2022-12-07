@@ -9,7 +9,7 @@ function setInterceptors(axiosInstance: AxiosInstance) {
             returnConfig.baseURL = import.meta.env.VITE_API_END_POINT
             returnConfig.headers = {
                 Access_Token:
-                    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkdWR3bnMwOTIxQGdtYWlsLmNvbSIsImV4cCI6MTY3MDM3NjA2MCwiaWF0IjoxNjcwMjg5NjYwfQ.RZ4TdySOKTGki233aL6BlBxsErS61gLARadtQU9Y8ws',
+                    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkdWR3bnMwOTIxQGdtYWlsLmNvbSIsImV4cCI6MTY3MDQ1OTQxMCwiaWF0IjoxNjcwMzczMDEwfQ.ljJTyFT7UtYGQvkYYePZR1ufSoe8_IjKCduwVL2JWOQ',
                 'Content-Type': 'multipart/form-data',
             }
 
