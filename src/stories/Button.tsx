@@ -1,8 +1,7 @@
 /* eslint-disable react/require-default-props */
-import React from 'react'
 import './button.css'
 
-interface ButtonProps {
+export interface ButtonProps {
     type?: string
     /**
      * Is this the principal call to action on the page?
@@ -24,6 +23,8 @@ interface ButtonProps {
      * Optional click handler
      */
     onClickButton?: any
+
+    onClick: () => void | undefined
 }
 
 /**

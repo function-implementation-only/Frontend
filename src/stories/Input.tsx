@@ -1,8 +1,5 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { SignUpInfo } from '../types/inedx'
 import './input.css'
 
 interface InputProps {
@@ -15,7 +12,10 @@ interface InputProps {
     onChangeInput?: any
 }
 
-export default function Input({
+/**
+ * Primary UI component for user interaction
+ */
+function Input({
     type,
     size = 'medium',
     backgroundColor,
@@ -44,3 +44,5 @@ export default function Input({
         </label>
     )
 }
+
+export default Input

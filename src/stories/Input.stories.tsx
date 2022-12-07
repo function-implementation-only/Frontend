@@ -13,7 +13,10 @@ export default {
     },
 } as ComponentMeta<typeof Input>
 
-const Template: ComponentStory<typeof Input> = (args) => <Input {...args} />
+// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
+const Template: ComponentStory<typeof Input> = function t(args) {
+    return <Input {...args} />
+}
 
 export const Large = Template.bind({})
 Large.args = {

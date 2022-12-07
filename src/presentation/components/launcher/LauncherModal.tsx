@@ -45,7 +45,7 @@ function LauncherModal({
 }: Props): JSX.Element {
     const modalRef = useRef(null)
 
-    const closeChatModal = (e: any) => {
+    const closeChatModal = (e: { target: null }) => {
         if (modalRef.current === e.target) {
             setShowChatModal(false)
         }
@@ -67,7 +67,11 @@ function LauncherModal({
     }, [closeChatModalEvent])
 
     return (
-        <ChatModal id="chat-modal" ref={modalRef} onClick={closeChatModal}>
+        <ChatModal
+            id="chat-modal"
+            ref={modalRef}
+            onClick={() => closeChatModal}
+        >
             <div className="chat-modal-grid">
                 <div className="chat-modal-contents">
                     <button
