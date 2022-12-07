@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import Context from './context'
+import { Context } from './context'
 import GlobalStyle from './styles/global'
 
 window.context = new Context()
