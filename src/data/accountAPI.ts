@@ -1,10 +1,11 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios'
-import { SignUpInfo } from '../types/inedx'
+import { AccountInfo } from '../types/inedx'
 import setInterceptors from './interceptor'
 
 export interface AccountAPIInterface {
     instance: AxiosInstance
-    postSignUp: (data: SignUpInfo) => Promise<AxiosResponse>
+    postSignUp: (data: AccountInfo) => Promise<AxiosResponse>
+    postLogin: (data: AccountInfo) => Promise<AxiosResponse>
 }
 
 export default class AccountAPI implements AccountAPIInterface {
@@ -14,7 +15,11 @@ export default class AccountAPI implements AccountAPIInterface {
         this.instance = setInterceptors(axios.create())
     }
 
-    public postSignUp(data: SignUpInfo) {
+    public postSignUp(data: AccountInfo) {
         return this.instance.post('/account/signup', data)
+    }
+
+    public postLogin(data: AccountInfo) {
+        return this.instance.post('/account/login', data)
     }
 }

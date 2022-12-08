@@ -7,7 +7,7 @@ import { useMutation } from 'react-query'
 
 // import { Input } from '../../../stories/Input'
 import Modal from '../../../stories/Modal'
-import { SignUpInfo } from '../../../types/inedx'
+import { AccountInfo } from '../../../types/inedx'
 
 function SignupModal() {
     const {
@@ -15,7 +15,7 @@ function SignupModal() {
         handleSubmit,
 
         formState: { isSubmitting },
-    } = useForm<SignUpInfo>()
+    } = useForm<AccountInfo>()
     // const [idValue, setIdValue] = useState<string>('')
     // const [nickNameValue, setNickNameValue] = useState<string>('')
     // const [pwValue, setPwValue] = useState<string>('')
@@ -37,7 +37,7 @@ function SignupModal() {
 
     const mutation = useMutation(
         'signUpInfo',
-        (data: SignUpInfo) => window.context.signUpAPI.postSignUp(data),
+        (data: AccountInfo) => window.context.signUpAPI.postSignUp(data),
         {
             onSuccess: () => {
                 alert('done')
@@ -48,7 +48,7 @@ function SignupModal() {
         }
     )
 
-    const onSubmit: SubmitHandler<SignUpInfo> = (data) => {
+    const onSubmit: SubmitHandler<AccountInfo> = (data) => {
         mutation.mutate(data)
     }
 
