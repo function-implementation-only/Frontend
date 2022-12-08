@@ -1,6 +1,5 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { PostObj } from '../../../types/post'
 
@@ -8,6 +7,7 @@ const PostDetailLayout = styled.div``
 
 function PostDetailPage() {
     const { id } = useParams()
+    const navigate = useNavigate()
     const [post, setPost] = useState<PostObj | null>(null)
     const [loading, setLoading] = useState(true)
 
@@ -19,6 +19,20 @@ function PostDetailPage() {
     useEffect(() => {
         initialize()
     }, [])
+
+    function handleUpdate() {}
+
+    async function handleDelete() {
+        try {
+            const { data } = await window.context.postAPI.deletePost(id)
+            if (data.response.success) {
+                navigate('/')
+                // FIX ME : 응답 type 구현 및 조건 수정 & flow 수정
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
     return (
         <PostDetailLayout>
             {loading ? (
@@ -31,6 +45,14 @@ function PostDetailPage() {
                     <p>duration : {post?.duration}</p>
                     <p>peopleNum : {post?.peopleNum}</p>
                     <p>place : {post?.place}</p>
+                    <br />
+                    {/* FIX ME : 아래 버튼은 작성자일 경우에만 노출하도록 수정 필요 */}
+                    <button type="button" onClick={handleUpdate}>
+                        수정하기
+                    </button>
+                    <button type="button" onClick={handleDelete}>
+                        삭제하기
+                    </button>
                 </>
             )}
         </PostDetailLayout>

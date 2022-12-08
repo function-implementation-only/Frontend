@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import { PostObj } from '../types/post'
 
@@ -9,7 +10,7 @@ export interface PostAPIMockInterface {
         id: string | undefined
     ) => Promise<AxiosResponse<{ posts: PostObj[] }>>
     updatePost: (id: string, payload: FormData) => Promise<AxiosResponse>
-    deletePost: (id: string) => Promise<AxiosResponse>
+    deletePost: (id: string) => Object
 }
 class PostAPIMock implements PostAPIMockInterface {
     instance
@@ -56,8 +57,14 @@ class PostAPIMock implements PostAPIMockInterface {
      * deletePost
      * 공고 지우기
      */
-    public deletePost(id: string) {
-        return this.instance.delete(`/posts/${id}`)
+    deletePost(id: string) {
+        console.log(`${id} 공고 삭제`)
+
+        return {
+            data: {
+                response: { success: true },
+            },
+        }
     }
 }
 
