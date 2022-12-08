@@ -1,7 +1,17 @@
-import axios from 'axios'
-import { PostAPIInterface } from './postAPI'
+import axios, { AxiosInstance, AxiosResponse } from 'axios'
+import { PostObj } from '../types/post'
 
-class PostAPIMock implements PostAPIInterface {
+export interface PostAPIMockInterface {
+    instance: AxiosInstance
+    createPost: (payload: FormData) => Promise<AxiosResponse>
+    getAllPosts: () => Promise<AxiosResponse>
+    getOnePost: (
+        id: string | undefined
+    ) => Promise<AxiosResponse<{ posts: PostObj[] }>>
+    updatePost: (id: string, payload: FormData) => Promise<AxiosResponse>
+    deletePost: (id: string) => Promise<AxiosResponse>
+}
+class PostAPIMock implements PostAPIMockInterface {
     instance
 
     constructor() {
@@ -28,8 +38,10 @@ class PostAPIMock implements PostAPIInterface {
      * getOnePost
      * 공고 하나 가져오기
      */
-    public getOnePost(id: string) {
-        return this.instance.get(`/posts/${id}`)
+    public async getOnePost(id: string | undefined) {
+        const idx = Number(id) - 1
+        const { data } = await this.instance.get('/mock/posts.json')
+        return data.posts[idx]
     }
 
     /**

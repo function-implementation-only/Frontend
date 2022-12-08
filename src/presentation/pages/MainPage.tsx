@@ -1,36 +1,27 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { PostObj } from '../../types/post'
+import PostComponent from '../components/PostComponent'
 
 const MainPageLayout = styled.div``
-
-type PostObj = {
-    category: string
-    contents: string
-    duration: string
-    peopleNum: number
-    place: string
-    startDate: Date
-    title: string
-    id: number
-}
 
 function MainPage() {
     const [allPosts, setAllposts] = useState([])
     const [loading, setLoading] = useState(true)
-    async function initPosts() {
+    async function initialize() {
         const { data } = await window.context.postAPI.getAllPosts()
         setAllposts(data.posts)
         setLoading(false)
     }
     useEffect(() => {
-        initPosts()
+        initialize()
     }, [])
     return (
         <MainPageLayout>
             {loading
                 ? 'Loading...'
                 : allPosts.map((post: PostObj) => {
-                      return <div key={post.id}>{post.title}</div>
+                      return <PostComponent key={post.id} post={post} />
                   })}
         </MainPageLayout>
     )
