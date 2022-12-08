@@ -7,11 +7,11 @@ function setInterceptors(axiosInstance: AxiosInstance) {
             const returnConfig = config
 
             returnConfig.baseURL = import.meta.env.VITE_API_END_POINT
-            returnConfig.headers = {
-                Access_Token: '',
-                // 현재 하드코딩이지만, 쿠키나 웹 스토리지에서 가져와 세팅 필요
-                'Content-Type': 'multipart/form-data',
-            }
+            // returnConfig.headers = {
+            //     Access_Token:
+            //         'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkdWR3bnMwOTIxQGdtYWlsLmNvbSIsImV4cCI6MTY3MDQ1OTQxMCwiaWF0IjoxNjcwMzczMDEwfQ.ljJTyFT7UtYGQvkYYePZR1ufSoe8_IjKCduwVL2JWOQ',
+            //     'Content-Type': 'multipart/form-data',
+            // }
 
             return returnConfig
         },

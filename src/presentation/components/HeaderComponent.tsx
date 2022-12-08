@@ -6,7 +6,6 @@ const HeaderComponentLayout = styled.div``
 function HeaderComponent() {
     return (
         <HeaderComponentLayout>
-            <Link to="/login">Login</Link>
             <Link to="/post">Post</Link>
         </HeaderComponentLayout>
     )

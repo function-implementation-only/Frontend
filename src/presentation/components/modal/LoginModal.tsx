@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { Input } from '../../stories/Input'
+import Input from '../../../stories/Input'
+import Button from '../../../stories/Button'
+import Modal from '../../../stories/Modal'
 
-function LoginPage() {
+function LoginModal() {
     const [idValue, setIdValue] = useState<string>('')
     const [pwValue, setPwValue] = useState<string>('')
     const onChangeIdInput = (inputValue: string): void => {
@@ -10,9 +12,17 @@ function LoginPage() {
     const onChangePwInput = (inputValue: string): void => {
         setPwValue(inputValue)
     }
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+    const handleClose = (): void => {
+        setIsLoginModalOpen(false)
+    }
+
+    const handleLogin = (): void => {
+        setIsLoginModalOpen(true)
+    }
     return (
-        <div>
-            <p>LoginPage</p>
+        <Modal isOpen={isLoginModalOpen} onClose={handleClose}>
+            <Button size="small" label="Login" onClickButton={handleLogin} />
             <Input
                 type="text"
                 label="id"
@@ -29,8 +39,8 @@ function LoginPage() {
                 onChangeInput={onChangePwInput}
                 value={pwValue}
             />
-        </div>
+        </Modal>
     )
 }
 
-export default LoginPage
+export default LoginModal
