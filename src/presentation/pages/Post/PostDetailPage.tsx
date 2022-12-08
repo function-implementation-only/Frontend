@@ -20,12 +20,16 @@ function PostDetailPage() {
         initialize()
     }, [])
 
-    function handleUpdate() {}
+    function handleUpdate() {
+        navigate(`/post/update/${id}`)
+    }
 
     async function handleDelete() {
         try {
-            const { data } = await window.context.postAPI.deletePost(id)
-            if (data.response.success) {
+            const {
+                data: { response },
+            } = await window.context.postAPI.deletePost(id)
+            if (response.success) {
                 navigate('/')
                 // FIX ME : 응답 type 구현 및 조건 수정 & flow 수정
             }

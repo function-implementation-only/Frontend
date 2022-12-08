@@ -1,7 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import dayjs from 'dayjs'
 import { TECHSTACK, TechObj } from '../../../lib/constants'
 
 type Inputs = {
@@ -13,7 +15,7 @@ type Inputs = {
     place: string
     techStack: string
     // 아직 Spring 서버에서 배열로 받을 수 없어 하나의 값으로 처리
-    startDate: Date
+    startDate: Date | string
 }
 
 const PostPageLayout = styled.div`
@@ -25,7 +27,14 @@ const PostPageLayout = styled.div`
 `
 
 function PostPage() {
-    const { register, handleSubmit } = useForm<Inputs>()
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    const { id } = useParams()
+
+    const isUpdate = /update/.test(location.pathname)
+
+    const { register, handleSubmit, setValue } = useForm<Inputs>()
     const [imgFiles, setImgFiles] = useState<FileList | null>(null)
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -42,11 +51,40 @@ function PostPage() {
 
         try {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const response = await window.context.postAPI.createPost(formData)
+            const {
+                data: { response },
+            } = isUpdate
+                ? await window.context.postAPI.updatePost(id, formData)
+                : await window.context.postAPI.createPost(formData)
+
+            if (response.success) {
+                navigate('/')
+            }
+            // FIX ME : 응답 type 구현 및 조건 수정 & flow 수정
         } catch (error) {
             // eslint-disable-next-line no-console
             console.log(error)
         }
+    }
+
+    async function intializeForUpdate() {
+        const data = await window.context.postAPI.getOnePost(id)
+
+        setValue('category', data.category)
+        setValue('contents', data.contents)
+        setValue('duration', data.duration)
+        setValue('peopleNum', Number(data.peopleNum))
+        setValue('place', data.place)
+        setValue('startDate', dayjs(data.startDate).format('YYYY-MM-DD'))
+        setValue('title', data.title)
+
+        // techList와 img 초기화 추가 필요
+    }
+
+    if (isUpdate) {
+        useEffect(() => {
+            intializeForUpdate()
+        }, [])
     }
 
     return (
@@ -139,7 +177,9 @@ function PostPage() {
                         setImgFiles(e.target.files)
                     }}
                 />
-                <button type="submit">작성하기</button>
+                <button type="submit">
+                    {isUpdate ? '수정하기' : '작성하기'}
+                </button>
             </form>
         </PostPageLayout>
     )
