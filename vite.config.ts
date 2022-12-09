@@ -8,9 +8,6 @@ import svgr from 'vite-plugin-svgr'
 //     plugins: [react()],
 // })
 export default ({ mode }: { mode: string }) => {
-    console.log(mode)
-    console.log('----------------------------------------')
-
     const env = loadEnv(mode, process.cwd())
     // process에서 타입에러가 뜨게된다.
     // @type/node를 설치해주자

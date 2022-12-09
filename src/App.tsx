@@ -6,6 +6,7 @@ import SignupModal from './presentation/components/modal/SignupModal'
 import MainPage from './presentation/pages/MainPage'
 import PostPage from './presentation/pages/PostPage'
 import HeaderComponent from './presentation/components/HeaderComponent'
+import LauncherChatBox from './presentation/components/launcher/LauncherChatBox'
 
 const queryClient = new QueryClient()
 
@@ -21,6 +22,7 @@ function App() {
                     </Routes>
                     <LoginModal />
                     <SignupModal />
+                    <LauncherChatBox />
                 </BrowserRouter>
                 <ReactQueryDevtools
                     initialIsOpen={false}
