@@ -17,7 +17,7 @@ type PostProps = {
 function PostComponent({ post }: PostProps) {
     const navigate = useNavigate()
     function handleClick() {
-        navigate(`/post/detail/${post.id}`)
+        navigate(`/post/detail/${post.postId}`)
     }
     return (
         <PostComponentLayout

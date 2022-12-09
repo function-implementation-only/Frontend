@@ -62,13 +62,14 @@ function PostPage() {
             }
             // FIX ME : 응답 type 구현 및 조건 수정 & flow 수정
         } catch (error) {
-            // eslint-disable-next-line no-console
             console.log(error)
         }
     }
 
     async function intializeForUpdate() {
-        const data = await window.context.postAPI.getOnePost(id)
+        const {
+            data: { data },
+        } = await window.context.postAPI.getOnePost(id)
 
         setValue('category', data.category)
         setValue('contents', data.contents)
@@ -81,11 +82,11 @@ function PostPage() {
         // techList와 img 초기화 추가 필요
     }
 
-    if (isUpdate) {
-        useEffect(() => {
+    useEffect(() => {
+        if (isUpdate) {
             intializeForUpdate()
-        }, [])
-    }
+        }
+    }, [])
 
     return (
         <PostPageLayout>

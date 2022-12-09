@@ -12,8 +12,8 @@ function PostDetailPage() {
     const [loading, setLoading] = useState(true)
 
     async function initialize() {
-        const postData = await window.context.postAPI.getOnePost(id)
-        setPost(postData)
+        const { data } = await window.context.postAPI.getOnePost(id)
+        setPost(data.data)
         setLoading(false)
     }
     useEffect(() => {
@@ -26,13 +26,7 @@ function PostDetailPage() {
 
     async function handleDelete() {
         try {
-            const {
-                data: { response },
-            } = await window.context.postAPI.deletePost(id)
-            if (response.success) {
-                navigate('/')
-                // FIX ME : 응답 type 구현 및 조건 수정 & flow 수정
-            }
+            console.log('삭제 api 확인 필요')
         } catch (e) {
             console.log(e)
         }

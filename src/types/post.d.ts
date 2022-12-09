@@ -6,5 +6,5 @@ export type PostObj = {
     place: string
     startDate: Date
     title: string
-    id: number
+    postId: number
 }

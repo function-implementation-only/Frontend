@@ -10,7 +10,7 @@ function MainPage() {
     const [loading, setLoading] = useState(true)
     async function initialize() {
         const { data } = await window.context.postAPI.getAllPosts()
-        setAllposts(data.posts)
+        setAllposts(data.data)
         setLoading(false)
     }
     useEffect(() => {
@@ -21,7 +21,7 @@ function MainPage() {
             {loading
                 ? 'Loading...'
                 : allPosts.map((post: PostObj) => {
-                      return <PostComponent key={post.id} post={post} />
+                      return <PostComponent key={post.postId} post={post} />
                   })}
         </MainPageLayout>
     )

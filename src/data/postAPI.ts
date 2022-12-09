@@ -31,7 +31,7 @@ export class PostAPI implements PostAPIInterface {
      * 모든 공고 가져오기
      */
     public getAllPosts() {
-        return this.instance.get('/all/posts')
+        return this.instance.get('/posts/all')
     }
 
     /**
