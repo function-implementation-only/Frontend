@@ -1,6 +1,7 @@
+/* eslint-disable react/function-component-definition */
+/* eslint-disable func-names */
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-
-import { Header } from './Header'
+import Header, { HeaderProps } from './Header'
 
 export default {
     title: 'Example/Header',
@@ -11,7 +12,7 @@ export default {
     },
 } as ComponentMeta<typeof Header>
 
-const Template: ComponentStory<typeof Header> = function t(args) {
+const Template: ComponentStory<typeof Header> = function (args: HeaderProps) {
     return <Header {...args} />
 }
 

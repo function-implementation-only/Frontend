@@ -1,9 +1,8 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable import/no-extraneous-dependencies */
-import React from 'react'
+/* eslint-disable react/function-component-definition */
+/* eslint-disable func-names */
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import Input from './Input'
+import Input, { InputProps } from './Input'
 
 export default {
     title: 'Example/Input',
@@ -14,7 +13,7 @@ export default {
 } as ComponentMeta<typeof Input>
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Input> = function t(args) {
+const Template: ComponentStory<typeof Input> = function (args: InputProps) {
     return <Input {...args} />
 }
 

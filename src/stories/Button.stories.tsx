@@ -1,6 +1,8 @@
+/* eslint-disable react/function-component-definition */
+/* eslint-disable func-names */
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { Button, ButtonProps } from './Button'
+import Button, { ButtonProps } from './Button'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -13,7 +15,7 @@ export default {
 } as ComponentMeta<typeof Button>
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = function t(args: ButtonProps) {
+const Template: ComponentStory<typeof Button> = function (args: ButtonProps) {
     return <Button {...args} />
 }
 

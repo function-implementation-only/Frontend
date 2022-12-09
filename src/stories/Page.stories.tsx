@@ -1,8 +1,9 @@
+/* eslint-disable func-names */
+/* eslint-disable react/function-component-definition */
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { within, userEvent } from '@storybook/testing-library'
-import { ButtonProps } from './Button'
 import Page from './Page'
-import Input from './Input'
+import Input, { InputProps } from './Input'
 
 export default {
     title: 'Example/Page',
@@ -13,7 +14,7 @@ export default {
     },
 } as ComponentMeta<typeof Page>
 
-const Template: ComponentStory<typeof Input> = function t(args) {
+const Template: ComponentStory<typeof Input> = function (args: InputProps) {
     return <Input {...args} />
 }
 

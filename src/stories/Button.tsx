@@ -22,8 +22,6 @@ export interface ButtonProps {
     /**
      * Optional click handler
      */
-    onClickButton?: any
-
     onClick: () => void | undefined
 }
 
@@ -36,7 +34,7 @@ const Button = ({
     size = 'medium',
     backgroundColor,
     label,
-    onClickButton,
+    onClick,
     ...props
 }: ButtonProps) => {
     const mode = primary
@@ -53,7 +51,7 @@ const Button = ({
             style={{ backgroundColor }}
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...props}
-            onClick={onClickButton}
+            onClick={onClick}
         >
             {label}
         </button>

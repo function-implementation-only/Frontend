@@ -1,24 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable import/prefer-default-export */
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import './modal.css'
 import Portal from './Portal'
 
-interface ModalProps {
+export interface ModalProps {
     isOpen: boolean
     selector?: string
     children?: ReactNode | undefined
     onClose: () => void
 }
 
-const Modal: React.FC<ModalProps> = ({
+function Modal({
     children,
     isOpen,
     onClose,
     selector = '#modal-root',
-}) => {
+}: ModalProps) {
     return (
         <CSSTransition
             in={isOpen}
@@ -28,7 +25,15 @@ const Modal: React.FC<ModalProps> = ({
         >
             <Portal selector={selector}>
                 <div className="overlay">
-                    {/* <div className="dim" onClick={onClose} /> */}
+                    {isOpen && (
+                        <div
+                            onClick={onClose}
+                            aria-hidden="true"
+                            className="dim"
+                        >
+                            Close
+                        </div>
+                    )}
                     <div className="container"> {children}</div>
                 </div>
             </Portal>

@@ -22,7 +22,7 @@ function LoginModal() {
     }
     return (
         <Modal isOpen={isLoginModalOpen} onClose={handleClose}>
-            <Button size="small" label="Login" onClickButton={handleLogin} />
+            <Button size="small" label="Login" onClick={handleLogin} />
             <Input
                 type="text"
                 label="id"

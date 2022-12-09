@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import './input.css'
 
-interface InputProps {
+export interface InputProps {
     backgroundColor?: string
     type: string
     value?: string

@@ -1,8 +1,7 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable import/no-extraneous-dependencies */
-import React from 'react'
+/* eslint-disable react/function-component-definition */
+/* eslint-disable func-names */
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Modal from './Modal'
+import Modal, { ModalProps } from './Modal'
 import Input from './Input'
 
 export default {
@@ -13,7 +12,9 @@ export default {
     },
 } as ComponentMeta<typeof Modal>
 
-const Template: ComponentStory<typeof Modal> = (args) => <Modal {...args} />
+const Template: ComponentStory<typeof Modal> = function (args: ModalProps) {
+    return <Modal {...args} />
+}
 
 export const LogIn = Template.bind({})
 LogIn.args = {
