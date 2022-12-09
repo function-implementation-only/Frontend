@@ -1,9 +1,6 @@
-/* eslint-disable react/require-default-props */
-import React from 'react'
 import './button.css'
 
 interface ButtonProps {
-    type?: string
     /**
      * Is this the principal call to action on the page?
      */
@@ -23,14 +20,12 @@ interface ButtonProps {
     /**
      * Optional click handler
      */
-    onClickButton?: any
+    onClickButton: any
 }
-
 /**
  * Primary UI component for user interaction
  */
 const Button = ({
-    type,
     primary = false,
     size = 'medium',
     backgroundColor,
@@ -50,7 +45,6 @@ const Button = ({
                 mode,
             ].join(' ')}
             style={{ backgroundColor }}
-            // eslint-disable-next-line react/jsx-props-no-spreading
             {...props}
             onClick={onClickButton}
         >
@@ -58,4 +52,11 @@ const Button = ({
         </button>
     )
 }
+
+Button.defaultProps = {
+    primary: false,
+    size: 'medium',
+    backgroundColor: 'transparent',
+}
+
 export default Button

@@ -12,6 +12,9 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@mdx-js/react": "^2.1.5",
+    "@storybook/react": "^6.5.14",
+    "@storybook/testing-library": "^0.0.13",
     "@types/react-transition-group": "^4.4.5",
     "axios": "^1.2.1",
     "dayjs": "^1.11.7",
@@ -32,8 +35,6 @@
     "@storybook/addon-interactions": "^6.5.13",
     "@storybook/addon-links": "^6.5.13",
     "@storybook/builder-vite": "^0.2.5",
-    "@storybook/react": "^6.5.14",
-    "@storybook/testing-library": "^0.0.13",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "@types/styled-components": "^5.1.26",
