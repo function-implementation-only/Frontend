@@ -17,8 +17,25 @@ function LoginModal() {
         setIsLoginModalOpen(false)
     }
 
-    const handleLogin = (): void => {
-        setIsLoginModalOpen(true)
+    const mutation = useMutation(
+        'loginInfo',
+        (data: AccountInfo) => window.context.accountAPI.postLogIn(data),
+        {
+            onSuccess: (res: AxiosResponse) => {
+                const token = res?.headers?.access_token
+                if (token) {
+                    saveTokenToCookie(token)
+                }
+            },
+            onError: (err) => {
+                alert(err)
+            },
+        }
+    )
+
+    const onSubmit: SubmitHandler<AccountInfo> = (data) => {
+        mutation.mutate(data)
+        handleClose()
     }
     return (
         <Modal isOpen={isLoginModalOpen} onClose={handleClose}>
