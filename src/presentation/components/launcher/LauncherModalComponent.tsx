@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { useCallback, useEffect, useRef } from 'react'
-import ChatMessage from './Message'
-import Write from './write'
-import useChatConnect from '../../useChatConnect'
+import ChatMessage from './LauncherMessageComponent'
+import LauncherWriteComponent from './LauncherWriteComponent'
+import useChatConnect from '../../../hooks/useChatConnect.mooks'
 
 const ChatModal = styled.div`
     position: fixed;
@@ -45,27 +45,13 @@ const ChatRoom = styled.div`
     height: 340px;
 `
 
-export const ChatsBox = styled.div`
+const ChatsBox = styled.div`
     width: 300px;
 `
 
-export const ChatRoomInfo = styled.div`
+const ChatRoomInfo = styled.div`
     border-bottom: 1px solid var(--gray-100);
     width: 180px;
-`
-
-export const BackButton = styled.div`
-    cursor: pointer;
-    display: none;
-    height: 25px;
-    margin-right: 1em;
-    transition: color 200ms ease-out;
-    &:hover {
-        color: var(--primary);
-    }
-    @media (max-width: 735px) {
-        display: flex;
-    }
 `
 
 export const ChatContentsWrapper = styled.section`
@@ -90,7 +76,7 @@ interface Props {
     setShowChatModal: (bool: boolean) => void
 }
 
-function LauncherModal({
+function LauncherModalComponent({
     showChatModal,
     setShowChatModal,
 }: Props): JSX.Element {
@@ -180,10 +166,10 @@ function LauncherModal({
                         })}
                     </ChatsBox>
                 </ChatRoom>
-                <Write onSendMessage={onSendMessage} />
+                <LauncherWriteComponent onSendMessage={onSendMessage} />
             </ChatContentsWrapper>
         </ChatModal>
     )
 }
 
-export default LauncherModal
+export default LauncherModalComponent
