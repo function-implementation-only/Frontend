@@ -17,10 +17,11 @@ export default function Write({ onSendMessage }: WriteProps) {
     const { register, handleSubmit, reset } = useForm<WriteFormData>()
 
     const onSubmit = async (data: WriteFormData) => {
-        const email = 'session?.user?.email'
-        const chatRoomId = 'router.query.chatRoomId?.toString()'
+        // TODO: Status 에서 유저 정보를 가져와야 함
+        const email = 'troublesome.dev@gmail.com'
+        const chatRoomId = '100'
         if (!data.message.trim() || !email || !chatRoomId) return
-        // await mutation({ email, chatRoomId, ...data });
+        // TODO: Validation 필요
         onSendMessage({ ...data, email })
         reset()
     }
@@ -31,9 +32,7 @@ export default function Write({ onSendMessage }: WriteProps) {
                 {...register('message', { required: true })}
                 placeholder="내용을 작성해 주세요."
             />
-            <ActionBox>
-                <button type="submit">보내기</button>
-            </ActionBox>
+            <ActionBox type="submit">보내기</ActionBox>
         </WriteForm>
     )
 }

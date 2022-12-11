@@ -14,12 +14,10 @@ const ChatModal = styled.div`
     height: 500px;
     background-color: #ebebeb;
     border: #979797;
-
-    .chat-modal-grid {
-        width: 480px;
-    }
+    width: 480px;
 
     .chat-modal-contents {
+        height: 40px;
         text-align: right;
     }
 
@@ -44,6 +42,7 @@ const ChatModal = styled.div`
 `
 const ChatRoom = styled.div`
     display: flex;
+    height: 340px;
 `
 
 export const ChatsBox = styled.div`
@@ -107,14 +106,17 @@ function LauncherModal({
     // TODO: API Response 추가 필요
     const data = [
         {
+            id: 1,
             name: 'Bot 1',
             email: 'bot@got.com',
         },
         {
+            id: 2,
             name: 'Bot 2',
             email: 'bot@got.com',
         },
         {
+            id: 3,
             name: 'Bot 3',
             email: 'bot@got.com',
         },
@@ -147,39 +149,39 @@ function LauncherModal({
             ref={modalRef}
             onClick={() => handleCloseChatModal}
         >
-            <div className="chat-modal-grid">
-                <div className="chat-modal-contents">
-                    <button
-                        type="button"
-                        className="chat-modal-btn"
-                        onClick={() => setShowChatModal(true)}
-                    >
-                        &#10005;
-                    </button>
-                </div>
-                <ChatContentsWrapper>
-                    <ChatRoom>
-                        <ChatRoomInfo>
-                            {data.map((d) => (
-                                <p>
-                                    {d.name} ({d.email})
-                                </p>
-                            ))}
-                        </ChatRoomInfo>
-                        <ChatsBox>
-                            {chats.map((chat) => {
-                                if (chat.id === me.id) {
-                                    return (
-                                        <ChatMessage key={chat.id} {...chat} />
-                                    )
-                                }
-                                return <ChatMessage key={chat.id} {...chat} />
-                            })}
-                        </ChatsBox>
-                    </ChatRoom>
-                    <Write onSendMessage={onSendMessage} />
-                </ChatContentsWrapper>
+            <div className="chat-modal-contents">
+                <button
+                    type="button"
+                    className="chat-modal-btn"
+                    onClick={() => setShowChatModal(true)}
+                >
+                    &#10005;
+                </button>
             </div>
+            <ChatContentsWrapper>
+                <ChatRoom>
+                    <ChatRoomInfo>
+                        {data.map((d) => (
+                            <p key={d.id}>
+                                {d.name} ({d.email})
+                            </p>
+                        ))}
+                    </ChatRoomInfo>
+                    <ChatsBox>
+                        {chats.map((chat) => {
+                            const meFlag = chat.user.id === me.id
+                            return (
+                                <ChatMessage
+                                    key={chat.id}
+                                    me={meFlag}
+                                    {...chat}
+                                />
+                            )
+                        })}
+                    </ChatsBox>
+                </ChatRoom>
+                <Write onSendMessage={onSendMessage} />
+            </ChatContentsWrapper>
         </ChatModal>
     )
 }

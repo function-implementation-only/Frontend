@@ -1,9 +1,8 @@
 import styled from 'styled-components'
 
 export const WriteForm = styled.form`
-    width: calc(100% - 50px);
-    margin: auto;
-    border: 1px solid var(--gray-100);
+    width: 100%; // calc(100% - 50px);
+    height: 120px;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
@@ -11,20 +10,17 @@ export const WriteForm = styled.form`
 
 export const MessageArea = styled.textarea`
     resize: none;
-    width: 100%;
     height: 100px;
-    padding: 1em;
+    padding: 10px;
+    margin: 10px;
     outline: none;
     border: none;
     border-bottom: 1px solid var(--gray-100);
-    border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px;
 `
 
-export const ActionBox = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0.5em;
-    background-color: var(--gray-50);
-    border-radius: 0 0 10px 10px;
+export const ActionBox = styled.button`
+    width: 60px;
+    padding: 5px;
+    border-radius: 10px;
 `
