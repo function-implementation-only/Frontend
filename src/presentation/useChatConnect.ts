@@ -1,16 +1,8 @@
-import { useEffect, useState } from 'react'
-import SocketIOCLient, { Socket } from 'socket.io-client'
-
-import { Chat, User } from './components/launcher/Message'
-
-export interface MessageData {
-    message: string
-    email: string
-}
-
-export interface ChatWithUser extends Chat {
-    user: User
-}
+import { Key, useEffect, useState } from 'react'
+import SocketIoCLient, { Socket } from 'socket.io-client'
+import { ChatWithUser } from '../types/chat'
+import { MessageData } from './components/launcher/write'
+import useChats from './components/useChats'
 
 const useChatConnect = (id: string) => {
     const { data } = useChats(id)
@@ -18,28 +10,22 @@ const useChatConnect = (id: string) => {
     const [socket, setSocket] = useState<Socket>()
 
     useEffect(() => {
-        setChats(data ?? [])
+        if (data) {
+            setChats(data)
+        }
     }, [data])
 
     useEffect(() => {
-        if (!id) return
-
-        const mySocket = SocketIOCLient('http://localhost:3000', {
-            path: '/api/chat/socketio',
-        }).connect()
-
-        mySocket.on('connect', () => {
-            console.log('SOCKET CONNECTED!', mySocket.id)
-
-            mySocket.emit('onJoinRoom', id)
-        })
-
-        setSocket((prev: any) => prev || mySocket)
-
-        // eslint-disable-next-line consistent-return
-        return () => {
-            if (socket) socket.disconnect()
-        }
+        // if (!id) return
+        // const mySocket = SocketIoCLient(import.meta.env.VITE_API_END_POINT, {
+        //     path: '/api/socket/chat',
+        // }).connect()
+        // mySocket.on('connect', () => {
+        //     console.log('SOCKET CONNECTED!', mySocket.id)
+        //     mySocket.emit('onJoinRoom', id)
+        // })
+        // setSocket((prev) => prev || mySocket)
+        // if (socket) socket.disconnect()
     }, [id, socket])
 
     useEffect(() => {
@@ -51,8 +37,43 @@ const useChatConnect = (id: string) => {
     const onSendMessage = (messageData: MessageData) => {
         socket?.emit('onSend', { ...messageData, chatRoomId: id })
     }
+    const aaa = [
+        {
+            id: 1,
+            user: {
+                id: 100,
+                name: '박경서',
+                email: 'troublesome.dev@gmail.com',
+                emailVerified: new Date('2019-12-11T12:20:30'),
+                image: 'https://avatars.githubusercontent.com/u/45850400?v=4',
+            },
+            message: 'asds',
+        },
+        {
+            id: 2,
+            user: {
+                id: 200,
+                name: '박경서2',
+                email: '2troublesome.dev@gmail.com',
+                emailVerified: new Date('2020-12-11T12:20:30'),
+                image: 'https://avatars.githubusercontent.com/u/45850400?v=4',
+            },
+            message: 'asds',
+        },
+        {
+            id: 1,
+            user: {
+                id: 100,
+                name: '박경서',
+                email: 'troublesome.dev@gmail.com',
+                emailVerified: new Date('2021-12-11T12:20:30'),
+                image: 'https://avatars.githubusercontent.com/u/45850400?v=4',
+            },
+            message: 'asds',
+        },
+    ]
 
-    return { chats, onSendMessage }
+    return { chats: aaa, onSendMessage }
 }
 
 export default useChatConnect

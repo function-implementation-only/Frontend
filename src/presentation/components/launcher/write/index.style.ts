@@ -1,10 +1,8 @@
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 
 export const WriteForm = styled.form`
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    width: calc(100% - 2rem);
+    width: calc(100% - 50px);
+    margin: auto;
     border: 1px solid var(--gray-100);
     display: flex;
     flex-direction: column;

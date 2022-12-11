@@ -3,7 +3,7 @@ import MugSaucerSvg from '../../../assets/mug-saucer.svg'
 import LauncherChatBoxLayout from './LauncherChatBox.Styled'
 import LauncherModal from './LauncherModal'
 
-export default function LauncherChatBox() {
+export default function LauncherChatComponent() {
     const [showChatModal, setShowChatModal] = useState(true)
 
     const activeChatModal = () => {

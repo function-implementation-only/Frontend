@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { useCallback, useEffect, useRef } from 'react'
-import ChevronLeft from '../../../assets/icons/chevron-left'
 import ChatMessage from './Message'
 import Write from './write'
 import useChatConnect from '../../useChatConnect'
@@ -43,14 +42,20 @@ const ChatModal = styled.div`
         display: flex;
     }
 `
-
-export const ChatsBox = styled.div`
-    padding: 1rem;
-    max-height: 65vh;
-    overflow: auto;
+const ChatRoom = styled.div`
+    display: flex;
 `
 
-export const BackButton = styled(ChevronLeft)`
+export const ChatsBox = styled.div`
+    width: 300px;
+`
+
+export const ChatRoomInfo = styled.div`
+    border-bottom: 1px solid var(--gray-100);
+    width: 180px;
+`
+
+export const BackButton = styled.div`
     cursor: pointer;
     display: none;
     height: 25px;
@@ -64,23 +69,9 @@ export const BackButton = styled(ChevronLeft)`
     }
 `
 
-interface Props {
-    showChatModal: boolean
-    setShowChatModal: (bool: boolean) => void
-}
-export const ChatRoomInfo = styled.div`
-    padding: 1rem;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--gray-100);
-    font-weight: 600;
-    @media (max-width: 735px) {
-        height: 60px;
-    }
-`
 export const ChatContentsWrapper = styled.section`
-    position: relative;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     animation: fadein 300ms ease-out;
     @keyframes fadein {
@@ -93,21 +84,49 @@ export const ChatContentsWrapper = styled.section`
             opacity: 1;
         }
     }
+    display: flex;
 `
+interface Props {
+    showChatModal: boolean
+    setShowChatModal: (bool: boolean) => void
+}
 
 function LauncherModal({
     showChatModal,
     setShowChatModal,
 }: Props): JSX.Element {
     const modalRef = useRef(null)
+    const { chats, onSendMessage } = useChatConnect('100')
+    const me = {
+        id: 100,
+        name: '박경서',
+        email: 'troublesome.dev@gmail.com',
+        image: 'https://avatars.githubusercontent.com/u/45850400?v=4',
+    }
 
-    const closeChatModal = (e: { target: null }) => {
+    // TODO: API Response 추가 필요
+    const data = [
+        {
+            name: 'Bot 1',
+            email: 'bot@got.com',
+        },
+        {
+            name: 'Bot 2',
+            email: 'bot@got.com',
+        },
+        {
+            name: 'Bot 3',
+            email: 'bot@got.com',
+        },
+    ]
+
+    const handleCloseChatModal = (e: { target: null }) => {
         if (modalRef.current === e.target) {
             setShowChatModal(false)
         }
     }
 
-    const closeChatModalEvent = useCallback(
+    const handleCloseChatModalEvent = useCallback(
         (e: { key: string }) => {
             if (e.key === 'Escape' && showChatModal) {
                 setShowChatModal(true)
@@ -117,24 +136,16 @@ function LauncherModal({
     )
 
     useEffect(() => {
-        document.addEventListener('keydown', closeChatModalEvent)
+        document.addEventListener('keydown', handleCloseChatModalEvent)
         return () =>
-            document.removeEventListener('keydown', closeChatModalEvent)
-    }, [closeChatModalEvent])
-
-    const moveHome = () => console.log('asd')
-
-    const data = {
-        name: 'sp',
-        email: 'aa',
-    }
-    const { chats, onSendMessage } = useChatConnect('100')
+            document.removeEventListener('keydown', handleCloseChatModalEvent)
+    }, [handleCloseChatModalEvent])
 
     return (
         <ChatModal
-            id="chat-modal"
+            className="chat-modal"
             ref={modalRef}
-            onClick={() => closeChatModal}
+            onClick={() => handleCloseChatModal}
         >
             <div className="chat-modal-grid">
                 <div className="chat-modal-contents">
@@ -147,19 +158,25 @@ function LauncherModal({
                     </button>
                 </div>
                 <ChatContentsWrapper>
-                    <ChatRoomInfo>
-                        <BackButton onClick={moveHome} />
-                        {data && (
-                            <p>
-                                {data.name} ({data.email})
-                            </p>
-                        )}
-                    </ChatRoomInfo>
-                    <ChatsBox>
-                        {chats.map((chat) => (
-                            <ChatMessage key={chat?.id} {...chat} />
-                        ))}
-                    </ChatsBox>
+                    <ChatRoom>
+                        <ChatRoomInfo>
+                            {data.map((d) => (
+                                <p>
+                                    {d.name} ({d.email})
+                                </p>
+                            ))}
+                        </ChatRoomInfo>
+                        <ChatsBox>
+                            {chats.map((chat) => {
+                                if (chat.id === me.id) {
+                                    return (
+                                        <ChatMessage key={chat.id} {...chat} />
+                                    )
+                                }
+                                return <ChatMessage key={chat.id} {...chat} />
+                            })}
+                        </ChatsBox>
+                    </ChatRoom>
                     <Write onSendMessage={onSendMessage} />
                 </ChatContentsWrapper>
             </div>

@@ -1,16 +1,13 @@
 import axios from 'axios'
 import { useQuery } from 'react-query'
-import { Chat, User } from './launcher/Message'
+import { ChatWithUser } from '../../types/chat'
 
-export interface ChatWithUser extends Chat {
-    user: User
-}
-
-export interface ChatsResponse {
+interface ChatsResponse {
     chats: ChatWithUser[]
     ok: boolean
 }
-export const fetchChats = async (id: string) => {
+
+const fetchChats = async (id: string) => {
     const { data } = await axios.get<ChatsResponse>('/api/chat', {
         params: { id },
     })

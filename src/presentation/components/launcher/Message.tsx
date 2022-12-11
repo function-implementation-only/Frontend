@@ -1,20 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
-export type User = {
-    id: string
-    name: string | null
-    email: string | null
-    emailVerified: Date | null
-    image: string | null
-}
-export type Chat = {
-    message: string
-}
-
-export interface ChatWithUser extends Chat {
-    user: User
-}
+import { ChatWithUser } from '../../../types/chat'
 
 export const MessageWrapper = styled.div`
     position: relative;
@@ -44,10 +30,11 @@ export const Message = styled.p`
     color: rgba(0, 0, 0, 0.75);
     font-weight: 500;
 `
-export default function ChatMessage({ user, message }: ChatWithUser) {
+
+function ChatMessage({ id, user, message }: ChatWithUser) {
     return (
-        <MessageWrapper>
-            {/* <ChatAvatar src={user?.image ?? undefined} /> */}
+        <MessageWrapper key={id}>
+            <img src={user.image} alt="" width={30} height={30} />
             <MessageInfo>
                 <Name>{user?.name}</Name>
                 <Message
@@ -59,3 +46,5 @@ export default function ChatMessage({ user, message }: ChatWithUser) {
         </MessageWrapper>
     )
 }
+
+export default ChatMessage
