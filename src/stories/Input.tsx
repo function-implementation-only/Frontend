@@ -1,8 +1,3 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { SignUpInfo } from '../types/inedx'
 import './input.css'
 
 interface InputProps {
@@ -15,7 +10,7 @@ interface InputProps {
     onChangeInput?: any
 }
 
-export default function Input({
+function Input({
     type,
     size = 'medium',
     backgroundColor,
@@ -38,9 +33,19 @@ export default function Input({
                 }}
                 value={value}
                 style={{ backgroundColor }}
-                // eslint-disable-next-line react/jsx-props-no-spreading
                 {...props}
             />
         </label>
     )
 }
+
+Input.defaultProps = {
+    backgroundColor: 'transparent',
+    value: '',
+    size: 'medium',
+    onChangeInput: (value: string): void => {
+        console.log(value)
+    },
+}
+
+export default Input

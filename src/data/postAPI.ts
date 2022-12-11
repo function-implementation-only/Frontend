@@ -4,8 +4,11 @@ import setInterceptors from './interceptor'
 
 export interface PostAPIInterface {
     instance: AxiosInstance
-    writePost: (payload: FormData) => Promise<AxiosResponse>
+    createPost: (payload: FormData) => Promise<AxiosResponse>
     getAllPosts: () => Promise<AxiosResponse>
+    getOnePost: (id: string) => Promise<AxiosResponse>
+    updatePost: (id: string, payload: FormData) => Promise<AxiosResponse>
+    deletePost: (id: string) => Promise<AxiosResponse>
 }
 
 export class PostAPI implements PostAPIInterface {
@@ -16,10 +19,10 @@ export class PostAPI implements PostAPIInterface {
     }
 
     /**
-     * writePost
+     * createPost
      * 공고 작성하기
      */
-    public writePost(payload: FormData) {
+    public createPost(payload: FormData) {
         return this.instance.post('/posts', payload)
     }
 
@@ -28,6 +31,30 @@ export class PostAPI implements PostAPIInterface {
      * 모든 공고 가져오기
      */
     public getAllPosts() {
-        return this.instance.get('/all/posts')
+        return this.instance.get('/posts/all')
+    }
+
+    /**
+     * getOnePost
+     * 공고 하나 가져오기
+     */
+    public getOnePost(id: string) {
+        return this.instance.get(`/posts/${id}`)
+    }
+
+    /**
+     * updatePost
+     * 공고 업데이트하기
+     */
+    public updatePost(id: string, payload: FormData) {
+        return this.instance.put(`/posts/${id}`, payload)
+    }
+
+    /**
+     * deletePost
+     * 공고 지우기
+     */
+    public deletePost(id: string) {
+        return this.instance.delete(`/posts/${id}`)
     }
 }

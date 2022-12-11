@@ -6,7 +6,9 @@ const HeaderComponentLayout = styled.div``
 function HeaderComponent() {
     return (
         <HeaderComponentLayout>
-            <Link to="/post">Post</Link>
+            <Link to="/">Home</Link>
+            <Link to="/login">Login</Link>
+            <Link to="/post/create">Post</Link>
         </HeaderComponentLayout>
     )
 }
