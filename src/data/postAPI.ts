@@ -1,17 +1,25 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios'
+import { APIResponse, PostResponse } from '../types/response'
 
 import setInterceptors from './interceptor'
 
 export interface PostAPIInterface {
     instance: AxiosInstance
-    createPost: (payload: FormData) => Promise<AxiosResponse>
-    getAllPosts: () => Promise<AxiosResponse>
-    getOnePost: (id: string | undefined) => Promise<AxiosResponse>
+    createPost: (
+        payload: FormData
+    ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
+    getAllPosts: () => Promise<AxiosResponse<APIResponse<PostResponse[]>>>
+    getOnePost: (
+        id: string | undefined
+    ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
     updatePost: (
         id: string | undefined,
         payload: FormData
-    ) => Promise<AxiosResponse>
-    deletePost: (id: string | undefined) => Promise<AxiosResponse>
+    ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
+    // FIX ME : 수정 API 백엔드 쪽에서 확인되면 수정해야함.
+    deletePost: (
+        id: string | undefined
+    ) => Promise<AxiosResponse<APIResponse<string>>>
 }
 
 export class PostAPI implements PostAPIInterface {
