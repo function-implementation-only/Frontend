@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react'
+import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 // import Button from '../../../stories/Button'
@@ -9,7 +9,12 @@ import { useMutation } from 'react-query'
 import Modal from '../../../stories/Modal'
 import { AccountInfo } from '../../../types/inedx'
 
-function SignupModal() {
+interface Props {
+    isShowing: boolean
+    handleShowing: () => void
+}
+
+const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
     const {
         register,
         handleSubmit,
@@ -31,10 +36,6 @@ function SignupModal() {
     //     setNickNameValue(inputValue)
     // }
 
-    const handleClose = (): void => {
-        setIsSignupModalOpen(false)
-    }
-
     const mutation = useMutation(
         'signUpInfo',
         (data: AccountInfo) => window.context.signUpAPI.postSignUp(data),
@@ -53,9 +54,8 @@ function SignupModal() {
     }
 
     return (
-        <Modal isOpen={isSignupModalOpen} onClose={handleClose}>
+        <Modal isOpen={isShowing} onClose={handleShowing}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <p>SignUpPage</p>
                 {/* <Input
                     type="text"
                     label="id"

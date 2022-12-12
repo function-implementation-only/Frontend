@@ -1,7 +1,27 @@
-import React, { useState } from 'react'
-import Input from '../../../stories/Input'
-import Button from '../../../stories/Button'
-import Modal from '../../../stories/Modal'
+/* eslint-disable react/jsx-props-no-spreading */
+import { AxiosResponse } from 'axios'
+import React from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useMutation } from 'react-query'
+// import Input from '../../../stories/Input'
+// import Button from '../../../stories/Button'
+import Modal from '../Modal'
+import { AccountInfo } from '../../../types/inedx'
+import { saveTokenToCookie } from '../../../utils/cookie'
+import { ErrorEmail, ErrorPassword } from '../Error'
+
+interface Props {
+    isShowing: boolean
+    handleShowing: () => void
+}
+
+const LoginModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
+    const {
+        register,
+        handleSubmit,
+
+        formState: { errors, isSubmitting },
+    } = useForm<AccountInfo>()
 
 function LoginModal() {
     const [idValue, setIdValue] = useState<string>('')
@@ -14,7 +34,7 @@ function LoginModal() {
     }
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
     const handleClose = (): void => {
-        setIsLoginModalOpen(false)
+        handleShowing()
     }
 
     const mutation = useMutation(
@@ -38,24 +58,48 @@ function LoginModal() {
         handleClose()
     }
     return (
-        <Modal isOpen={isLoginModalOpen} onClose={handleClose}>
-            <Button size="small" label="Login" onClickButton={handleLogin} />
-            <Input
-                type="text"
-                label="id"
-                placeholder="이메일을 입력해 주세요."
-                size="large"
-                onChangeInput={onChangeIdInput}
-                value={idValue}
-            />
-            <Input
-                type="password"
-                label="password"
-                placeholder="비밀번호를 입력해 주세요."
-                size="large"
-                onChangeInput={onChangePwInput}
-                value={pwValue}
-            />
+        <Modal isOpen={isShowing} onClose={handleShowing}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                {/* <Button size="small" label="Login" />
+                <Input
+                    type="text"
+                    label="id"
+                    placeholder="이메일을 입력해 주세요."
+                    size="large"
+                    onChangeInput={onChangeIdInput}
+                    value={idValue}
+                />
+                <Input
+                    type="password"
+                    label="password"
+                    placeholder="비밀번호를 입력해 주세요."
+                    size="large"
+                    onChangeInput={onChangePwInput}
+                    value={pwValue}
+                /> */}
+                <input
+                    type="text"
+                    placeholder="이메일을 입력해 주세요."
+                    {...register('email', {
+                        required: true,
+                        pattern: /\S+@\S+\.\S+/,
+                    })}
+                />
+                <ErrorEmail errors={errors.email?.type} />
+                <input
+                    type="password"
+                    placeholder="비밀번호를 입력해 주세요."
+                    {...register('password', {
+                        required: true,
+                        maxLength: 12,
+                        minLength: 6,
+                    })}
+                />
+                <ErrorPassword errors={errors.password?.type} />
+                <button type="submit" disabled={isSubmitting}>
+                    Login
+                </button>
+            </form>
         </Modal>
     )
 }
