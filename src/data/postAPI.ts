@@ -10,16 +10,14 @@ export interface PostAPIInterface {
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
     getAllPosts: () => Promise<AxiosResponse<APIResponse<PostResponse[]>>>
     getOnePost: (
-        id: string | undefined
+        id?: string
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
     updatePost: (
-        id: string | undefined,
-        payload: FormData
+        payload: FormData,
+        id?: string
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
     // FIX ME : 수정 API 백엔드 쪽에서 확인되면 수정해야함.
-    deletePost: (
-        id: string | undefined
-    ) => Promise<AxiosResponse<APIResponse<string>>>
+    deletePost: (id?: string) => Promise<AxiosResponse<APIResponse<string>>>
 }
 
 export class PostAPI implements PostAPIInterface {
@@ -55,7 +53,7 @@ export class PostAPI implements PostAPIInterface {
      * getOnePost
      * 공고 하나 가져오기
      */
-    public getOnePost(id: string | undefined) {
+    public getOnePost(id?: string) {
         return this.instance.get(`/posts/${id}`)
     }
 
@@ -63,7 +61,7 @@ export class PostAPI implements PostAPIInterface {
      * updatePost
      * 공고 업데이트하기
      */
-    public updatePost(id: string | undefined, payload: FormData) {
+    public updatePost(payload: FormData, id?: string) {
         return this.instance.put(`/posts/${id}`, payload)
     }
 
@@ -71,7 +69,7 @@ export class PostAPI implements PostAPIInterface {
      * deletePost
      * 공고 지우기
      */
-    public deletePost(id: string | undefined) {
+    public deletePost(id?: string) {
         return this.instance.delete(`/posts/${id}`)
     }
 }
