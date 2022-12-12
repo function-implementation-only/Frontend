@@ -2,7 +2,7 @@ export type TechObj = {
     value: string
 }
 
-export const TECHSTACK: TechObj[] = [
+export const TECHLIST: TechObj[] = [
     { value: 'JAVASCRIPT' },
     { value: 'TYPESCRIPT' },
     { value: 'REACT' },

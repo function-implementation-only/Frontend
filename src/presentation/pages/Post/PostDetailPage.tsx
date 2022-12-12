@@ -26,7 +26,12 @@ function PostDetailPage() {
 
     async function handleDelete() {
         try {
-            console.log('삭제 api 확인 필요')
+            const { data } = await window.context.postAPI.deletePost(id)
+            if (data.success) {
+                alert('공고가 삭제되었습니다.')
+                // FIX ME : i18n 라이브러리로 다국어 지원 해보기?
+                navigate('/')
+            }
         } catch (e) {
             console.log(e)
         }
@@ -43,6 +48,14 @@ function PostDetailPage() {
                     <p>duration : {post?.duration}</p>
                     <p>peopleNum : {post?.peopleNum}</p>
                     <p>place : {post?.place}</p>
+                    <ul>
+                        techList :
+                        {post?.techs.map((item) => {
+                            return <li key={item.id}>{item.tech}</li>
+                        })}
+                    </ul>
+                    <br />
+                    <img src={post?.imageList[0].imgUrl} alt="postImg" />
                     <br />
                     {/* FIX ME : 아래 버튼은 작성자일 경우에만 노출하도록 수정 필요 */}
                     <button type="button" onClick={handleUpdate}>

@@ -15,7 +15,13 @@ export class PostAPI implements PostAPIInterface {
     instance
 
     constructor() {
-        this.instance = setInterceptors(axios.create())
+        this.instance = setInterceptors(
+            axios.create({
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+        )
     }
 
     /**

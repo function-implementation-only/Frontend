@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
-import { TECHSTACK, TechObj } from '../../../lib/constants'
+import { TechObj, TECHLIST } from '../../../lib/constants'
 
 type Inputs = {
     title: string
@@ -13,7 +13,7 @@ type Inputs = {
     duration: string
     peopleNum: number
     place: string
-    techStack: string
+    techList?: string[]
     // 아직 Spring 서버에서 배열로 받을 수 없어 하나의 값으로 처리
     startDate: Date | string
 }
@@ -37,12 +37,20 @@ function PostPage() {
     const { register, handleSubmit, setValue } = useForm<Inputs>()
     const [imgFiles, setImgFiles] = useState<FileList | null>(null)
 
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const onSubmit: SubmitHandler<Inputs> = async (inputData) => {
         const formData = new FormData()
+        const dataCopied = inputData
+        const { techList } = inputData
+        delete dataCopied.techList
 
         formData.append(
             'data',
-            new Blob([JSON.stringify(data)], { type: 'application/json' })
+            new Blob([JSON.stringify(inputData)], { type: 'application/json' })
+            // Spring 서버를 위한 처리
+        )
+        formData.append(
+            'techList',
+            new Blob([JSON.stringify(techList)], { type: 'application/json' })
             // Spring 서버를 위한 처리
         )
         if (imgFiles) {
@@ -50,17 +58,15 @@ function PostPage() {
         }
 
         try {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const {
-                data: { response },
-            } = isUpdate
+            const { data } = isUpdate
                 ? await window.context.postAPI.updatePost(id, formData)
                 : await window.context.postAPI.createPost(formData)
 
-            if (response.success) {
+            if (data.success) {
+                alert('공고가 정상적으로 작성되었습니다.')
+                // FIX ME : i18n 라이브러리로 다국어 지원 해보기?
                 navigate('/')
             }
-            // FIX ME : 응답 type 구현 및 조건 수정 & flow 수정
         } catch (error) {
             console.log(error)
         }
@@ -78,6 +84,12 @@ function PostPage() {
         setValue('place', data.place)
         setValue('startDate', dayjs(data.startDate).format('YYYY-MM-DD'))
         setValue('title', data.title)
+        setValue(
+            'techList',
+            data.techs.map((item: { id: number; tech: string }) => {
+                return item.tech
+            })
+        )
 
         // techList와 img 초기화 추가 필요
     }
@@ -139,11 +151,11 @@ function PostPage() {
                         <option value="OFFLINE">오프라인</option>
                     </select>
                 </label>
-                <label htmlFor="techStackSelect">
+                <label htmlFor="techListSelect">
                     기술 스택
                     <br />
-                    <select multiple id="techSelect" {...register('techStack')}>
-                        {TECHSTACK.map((item: TechObj) => {
+                    <select multiple id="techSelect" {...register('techList')}>
+                        {TECHLIST.map((item: TechObj) => {
                             return (
                                 <option key={item.value} value={item.value}>
                                     {item.value}
