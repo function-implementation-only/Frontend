@@ -10,6 +10,7 @@ function setInterceptors(axiosInstance: AxiosInstance) {
             returnConfig.headers = {
                 Access_Token:
                     'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE2NzA5MDgwODgsImlhdCI6MTY3MDgyMTY4OH0.uI0oliGUKv6508PnpaBC5nuIzOghIotLKtc23jkSyWA',
+                // 테스트시 새로운 토큰으로 교체 필요
             }
 
             return returnConfig

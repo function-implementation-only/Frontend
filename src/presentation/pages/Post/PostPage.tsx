@@ -61,7 +61,6 @@ function PostPage() {
             const { data } = isUpdate
                 ? await window.context.postAPI.updatePost(id, formData)
                 : await window.context.postAPI.createPost(formData)
-
             if (data.success) {
                 alert('공고가 정상적으로 작성되었습니다.')
                 // FIX ME : i18n 라이브러리로 다국어 지원 해보기?

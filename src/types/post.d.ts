@@ -1,15 +1,15 @@
-type ImageObj = {
+export type ImageObj = {
     id: number
     imgUrl: string
     imgKey: string
 }
 
-type TechObj = {
+export type TechObj = {
     id: number
     tech: string
 }
 
-export type PostObj = {
+export interface PostObj {
     category: string
     contents: string
     duration: string

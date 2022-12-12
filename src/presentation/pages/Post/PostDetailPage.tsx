@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { PostObj } from '../../../types/post'
+import { PostResponse } from '../../../types/response'
 
 const PostDetailLayout = styled.div``
 
 function PostDetailPage() {
     const { id } = useParams()
     const navigate = useNavigate()
-    const [post, setPost] = useState<PostObj | null>(null)
+    const [post, setPost] = useState<PostResponse | null>(null)
     const [loading, setLoading] = useState(true)
 
     async function initialize() {
