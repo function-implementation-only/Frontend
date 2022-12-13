@@ -1,21 +1,26 @@
 /* eslint-disable no-alert */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react'
+import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 // import Button from '../../../stories/Button'
 
 // import { Input } from '../../../stories/Input'
 import Modal from '../../../stories/Modal'
-import { SignUpInfo } from '../../../types/inedx'
+import { AccountInfo } from '../../../types/inedx'
 
-function SignupModal() {
+interface Props {
+    isShowing: boolean
+    handleShowing: () => void
+}
+
+const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
     const {
         register,
         handleSubmit,
 
         formState: { isSubmitting },
-    } = useForm<SignUpInfo>()
+    } = useForm<AccountInfo>()
     // const [idValue, setIdValue] = useState<string>('')
     // const [nickNameValue, setNickNameValue] = useState<string>('')
     // const [pwValue, setPwValue] = useState<string>('')
@@ -31,13 +36,9 @@ function SignupModal() {
     //     setNickNameValue(inputValue)
     // }
 
-    const handleClose = (): void => {
-        setIsSignupModalOpen(false)
-    }
-
     const mutation = useMutation(
         'signUpInfo',
-        (data: SignUpInfo) => window.context.signUpAPI.postSignUp(data),
+        (data: AccountInfo) => window.context.signUpAPI.postSignUp(data),
         {
             onSuccess: () => {
                 alert('done')
@@ -48,14 +49,13 @@ function SignupModal() {
         }
     )
 
-    const onSubmit: SubmitHandler<SignUpInfo> = (data) => {
+    const onSubmit: SubmitHandler<AccountInfo> = (data) => {
         mutation.mutate(data)
     }
 
     return (
-        <Modal isOpen={isSignupModalOpen} onClose={handleClose}>
+        <Modal isOpen={isShowing} onClose={handleShowing}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <p>SignUpPage</p>
                 {/* <Input
                     type="text"
                     label="id"
