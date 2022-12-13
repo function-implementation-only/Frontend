@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios'
-import { AccountInfo } from '../types/inedx'
+import { AccountInfo } from '../../types/account'
 import setInterceptors from './interceptor'
 
 export interface AccountAPIInterface {

@@ -6,11 +6,9 @@ function setInterceptors(axiosInstance: AxiosInstance) {
             // 요청을 보내기 전에 어떤 처리를 할 수 있다.
             const returnConfig = config
 
-            returnConfig.baseURL = import.meta.env.VITE_API_END_POINT
             returnConfig.headers = {
-                Access_Token:
-                    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE2NzA5MDgwODgsImlhdCI6MTY3MDgyMTY4OH0.uI0oliGUKv6508PnpaBC5nuIzOghIotLKtc23jkSyWA',
-                // 테스트시 새로운 토큰으로 교체 필요
+                'Content-Type': 'application/json',
+                // 토큰 관련 로직 필요
             }
 
             return returnConfig

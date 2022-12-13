@@ -1,10 +1,9 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios'
-import { APIResponse, PostResponse } from '../types/response'
+import { AxiosInstance, AxiosResponse } from 'axios'
+import { APIResponse, PostResponse } from '../../types/response'
 
 import setInterceptors from './interceptor'
 
 export interface PostAPIInterface {
-    instance: AxiosInstance
     createPost: (
         payload: FormData
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
@@ -21,16 +20,20 @@ export interface PostAPIInterface {
 }
 
 export class PostAPI implements PostAPIInterface {
-    instance
+    private axiosInstance: AxiosInstance
 
-    constructor() {
-        this.instance = setInterceptors(
-            axios.create({
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-        )
+    private static instance: PostAPI
+
+    private constructor(axiosInstance: AxiosInstance) {
+        this.axiosInstance = axiosInstance
+    }
+
+    public static getInstance(axiosInstance: AxiosInstance) {
+        if (this.instance) {
+            return this.instance
+        }
+        this.instance = new PostAPI(axiosInstance)
+        return this.instance
     }
 
     /**
@@ -38,7 +41,7 @@ export class PostAPI implements PostAPIInterface {
      * 공고 작성하기
      */
     public createPost(payload: FormData) {
-        return this.instance.post('/posts', payload)
+        return setInterceptors(this.axiosInstance).post('/posts', payload)
     }
 
     /**
@@ -46,7 +49,7 @@ export class PostAPI implements PostAPIInterface {
      * 모든 공고 가져오기
      */
     public getAllPosts() {
-        return this.instance.get('/posts/all')
+        return this.axiosInstance.get('/posts/all')
     }
 
     /**
@@ -54,7 +57,7 @@ export class PostAPI implements PostAPIInterface {
      * 공고 하나 가져오기
      */
     public getOnePost(id?: string) {
-        return this.instance.get(`/posts/${id}`)
+        return this.axiosInstance.get(`/posts/${id}`)
     }
 
     /**
@@ -62,7 +65,7 @@ export class PostAPI implements PostAPIInterface {
      * 공고 업데이트하기
      */
     public updatePost(payload: FormData, id?: string) {
-        return this.instance.put(`/posts/${id}`, payload)
+        return setInterceptors(this.axiosInstance).put(`/posts/${id}`, payload)
     }
 
     /**
@@ -70,6 +73,6 @@ export class PostAPI implements PostAPIInterface {
      * 공고 지우기
      */
     public deletePost(id?: string) {
-        return this.instance.delete(`/posts/${id}`)
+        return setInterceptors(this.axiosInstance).delete(`/posts/${id}`)
     }
 }
