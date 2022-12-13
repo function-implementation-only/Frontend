@@ -1,18 +1,23 @@
-import { PostAPI, PostAPIInterface } from './data/postAPI'
-import AccountAPI, { AccountAPIInterface } from './data/accountAPI'
+import axios from 'axios'
+import { PostAPI, PostAPIInterface } from './data/postAPI/postAPI'
+import AccountAPI, { AccountAPIInterface } from './data/accountAPI/accountAPI'
 
 export interface ContextInterface {
     postAPI: PostAPIInterface
-    signUpAPI: AccountAPIInterface
+    accountAPI: AccountAPIInterface
 }
 
 export class Context implements ContextInterface {
     postAPI
 
-    signUpAPI
+    accountAPI
 
     constructor() {
-        this.postAPI = new PostAPI()
-        this.signUpAPI = new AccountAPI()
+        const axiosInstance = axios.create({
+            baseURL: import.meta.env.VITE_API_END_POINT,
+        })
+
+        this.postAPI = PostAPI.getInstance(axiosInstance)
+        this.accountAPI = new AccountAPI()
     }
 }
