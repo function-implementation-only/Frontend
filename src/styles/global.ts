@@ -4,16 +4,17 @@ import reset from 'styled-reset'
 const GlobalStyle = createGlobalStyle`
   ${reset}
   /* other styles */
+  *{
+    box-sizing: border-box;
+  }
   :root {
     --primary-color: #00C73C;
-    --header-height: 80px;
+    --swiper-theme-color: #00C73C;
   }
   .App {
-    position: relative;
     width: 100%;
-    max-width: 1440px;
+    max-width: 1920px;
     margin: 0 auto;
-    padding-top: var(--header-height);
   }
 `
 

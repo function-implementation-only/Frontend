@@ -6,26 +6,31 @@ import SignupModal from './modal/SignupModal'
 import Logo from '../../assets/images/Logo.svg'
 
 const HeaderComponentLayout = styled.div`
-    width: 1440px;
+    z-index: 999;
     background-color: white;
-    position: fixed;
-    display: flex;
-    height: var(--header-height);
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 24px;
+    position: sticky;
     top: 0;
 `
 
-const HeaderComponentLogoBox = styled.div``
+const HeaderComponentRow = styled.div`
+    width: 1440px;
+    height: 80px;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+`
 
-const HeaderComponentBtnBox = styled.div`
+const LogoBox = styled.div``
+
+const ButtonBox = styled.div`
     display: grid;
     grid-auto-flow: column;
     grid-column-gap: 10px;
 `
 
-const HeaderComponentBtn = styled.button<{ default?: boolean }>`
+const Button = styled.button<{ default?: boolean }>`
     width: 100px;
     height: 45px;
     border-radius: 100px;
@@ -45,28 +50,24 @@ function HeaderComponent() {
         useModal()
     return (
         <HeaderComponentLayout>
-            <HeaderComponentLogoBox>
-                <Link to="/">
-                    <img src={Logo} alt="logoImg" />
-                </Link>
-            </HeaderComponentLogoBox>
-            <HeaderComponentBtnBox>
-                <HeaderComponentBtn default type="button" onClick={handleLogin}>
-                    로그인
-                </HeaderComponentBtn>
-                <Link to="/post/create">
-                    <HeaderComponentBtn type="button">
-                        글쓰기
-                    </HeaderComponentBtn>
-                </Link>
-                <HeaderComponentBtn
-                    default
-                    type="button"
-                    onClick={handleSignUp}
-                >
-                    회원가입
-                </HeaderComponentBtn>
-            </HeaderComponentBtnBox>
+            <HeaderComponentRow>
+                <LogoBox>
+                    <Link to="/">
+                        <img src={Logo} alt="logoImg" />
+                    </Link>
+                </LogoBox>
+                <ButtonBox>
+                    <Button default type="button" onClick={handleLogin}>
+                        로그인
+                    </Button>
+                    <Link to="/post/create">
+                        <Button type="button">글쓰기</Button>
+                    </Link>
+                    <Button default type="button" onClick={handleSignUp}>
+                        회원가입
+                    </Button>
+                </ButtonBox>
+            </HeaderComponentRow>
             <LoginModal
                 isShowing={isLoginModalOpen}
                 handleShowing={handleLogin}
