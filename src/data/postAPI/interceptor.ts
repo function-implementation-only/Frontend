@@ -9,7 +9,7 @@ function setInterceptors(axiosInstance: AxiosInstance) {
             returnConfig.headers = {
                 'Content-Type': 'multipart/form-data',
                 Access_Token:
-                    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE2NzA5MDgwODgsImlhdCI6MTY3MDgyMTY4OH0.uI0oliGUKv6508PnpaBC5nuIzOghIotLKtc23jkSyWA',
+                    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE2NzA5OTQ5MTQsImlhdCI6MTY3MDkwODUxNH0.IVhZ4FQfwaP_dhIiU2rAdiDa6XMy-qt3QAcN9QFncB4',
                 // 테스트시 새로운 토큰으로 교체 필요
             }
 
