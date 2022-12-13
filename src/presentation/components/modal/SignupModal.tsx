@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-alert */
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react'
+import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 // import Button from '../../../stories/Button'
 
 // import { Input } from '../../../stories/Input'
 import Modal from '../../../stories/Modal'
-import { AccountInfo } from '../../../types/inedx'
+import { AccountInfo } from '../../../types/account'
 
 interface Props {
     isShowing: boolean
@@ -38,7 +39,7 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
 
     const mutation = useMutation(
         'signUpInfo',
-        (data: AccountInfo) => window.context.signUpAPI.postSignUp(data),
+        (data: AccountInfo) => window.context.accountAPI.postSignUp(data),
         {
             onSuccess: () => {
                 alert('done')

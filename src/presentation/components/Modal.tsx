@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable import/prefer-default-export */
 import React, { ReactNode } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import styled from 'styled-components'
-import Portal from './Portal'
+import Portal from '../../stories/Portal'
 
 interface ModalProps {
     isOpen: boolean

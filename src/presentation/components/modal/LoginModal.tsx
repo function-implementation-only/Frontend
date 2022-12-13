@@ -1,14 +1,14 @@
-/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { AxiosResponse } from 'axios'
-import React from 'react'
+import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 // import Input from '../../../stories/Input'
 // import Button from '../../../stories/Button'
 import Modal from '../Modal'
-import { AccountInfo } from '../../../types/inedx'
 import { saveTokenToCookie } from '../../../utils/cookie'
 import { ErrorEmail, ErrorPassword } from '../Error'
+import { AccountInfo } from '../../../types/account'
 
 interface Props {
     isShowing: boolean
@@ -23,7 +23,6 @@ const LoginModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
         formState: { errors, isSubmitting },
     } = useForm<AccountInfo>()
 
-function LoginModal() {
     const [idValue, setIdValue] = useState<string>('')
     const [pwValue, setPwValue] = useState<string>('')
     const onChangeIdInput = (inputValue: string): void => {
@@ -39,7 +38,7 @@ function LoginModal() {
 
     const mutation = useMutation(
         'loginInfo',
-        (data: AccountInfo) => window.context.accountAPI.postLogIn(data),
+        (data: AccountInfo) => window.context.accountAPI.postLogin(data),
         {
             onSuccess: (res: AxiosResponse) => {
                 const token = res?.headers?.access_token
