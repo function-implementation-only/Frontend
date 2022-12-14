@@ -60,10 +60,7 @@ function HeaderComponent() {
                     <Button default type="button" onClick={handleLogin}>
                         로그인
                     </Button>
-                    <Link to="/post/create">
-                        <Button type="button">글쓰기</Button>
-                    </Link>
-                    <Button default type="button" onClick={handleSignUp}>
+                    <Button type="button" onClick={handleSignUp}>
                         회원가입
                     </Button>
                 </ButtonBox>
