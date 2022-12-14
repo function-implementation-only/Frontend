@@ -2,25 +2,15 @@
 // jsx 내에서는 if문을 쓸 수 없어 일단 삼항 연산자 중첩 처리함, 이후 디자인 적용할 때 바꿀 예정
 import React, { useQuery } from 'react-query'
 import styled from 'styled-components'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination, A11y } from 'swiper'
 import { PostResponse } from '../../types/response'
 import PostComponent from '../components/PostComponent'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import 'swiper/css/scrollbar'
 import AccordianComponent from '../components/AccordianComponent'
 import { CATEGORY, TECHLIST } from '../../lib/constants'
+import BannerComponent from '../components/BannerComponent'
 
 const MainPageLayout = styled.div``
 
 const MainPageRow = styled.div``
-
-const BannerBox = styled.div`
-    background-color: gray;
-    height: 320px;
-`
 
 const ContentsBox = styled.div`
     width: 1440px;
@@ -49,27 +39,7 @@ function MainPage() {
     return (
         <MainPageLayout>
             <MainPageRow>
-                <Swiper
-                    modules={[Navigation, Pagination, A11y]}
-                    slidesPerView={1}
-                    navigation
-                    pagination={{ clickable: true }}
-                    onSwiper={(swiper) => console.log(swiper)}
-                    onSlideChange={() => console.log('slide change')}
-                >
-                    <SwiperSlide>
-                        <BannerBox>배너1</BannerBox>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <BannerBox>배너2</BannerBox>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <BannerBox>배너3</BannerBox>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <BannerBox>배너4</BannerBox>
-                    </SwiperSlide>
-                </Swiper>
+                <BannerComponent />
             </MainPageRow>
             <MainPageRow>
                 <ContentsBox>
