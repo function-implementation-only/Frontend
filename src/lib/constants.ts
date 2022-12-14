@@ -1,8 +1,13 @@
-export type TechObj = {
+export type ConstantObj = {
     value: string
 }
 
-export const TECHLIST: TechObj[] = [
+export const CATEGORY: ConstantObj[] = [
+    { value: '프로젝트' },
+    { value: '스터디' },
+]
+
+export const TECHLIST: ConstantObj[] = [
     { value: 'JAVASCRIPT' },
     { value: 'TYPESCRIPT' },
     { value: 'REACT' },

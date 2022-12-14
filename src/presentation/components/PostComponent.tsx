@@ -5,9 +5,9 @@ import { PostObj } from '../../types/post'
 
 const PostComponentLayout = styled.div`
     cursor: pointer;
-    width: 100px;
-    height: 100px;
     border: 1px solid black;
+    min-height: 214px;
+    background-color: #f8f9fa; ;
 `
 
 type PostProps = {
