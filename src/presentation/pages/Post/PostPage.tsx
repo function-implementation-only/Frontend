@@ -1,9 +1,9 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
+import { useMutation, useQuery } from 'react-query'
 import { TechObj, TECHLIST } from '../../../lib/constants'
 
 type Inputs = {
@@ -30,12 +30,73 @@ function PostPage() {
     const location = useLocation()
     const navigate = useNavigate()
 
-    const { id } = useParams()
+    const { id: paramId } = useParams()
 
     const isUpdate = /update/.test(location.pathname)
 
     const { register, handleSubmit, setValue } = useForm<Inputs>()
     const [imgFiles, setImgFiles] = useState<FileList | null>(null)
+
+    const { data: apiResponse } = useQuery('getOnePost', async () => {
+        const { data } = await window.context.postAPI.getOnePost(paramId)
+        return data
+    })
+    // FIX ME : 에러 핸들링 추가
+
+    if (isUpdate && apiResponse) {
+        setValue('category', apiResponse.data.category)
+        setValue('contents', apiResponse.data.contents)
+        setValue('duration', apiResponse.data.duration)
+        setValue('peopleNum', Number(apiResponse.data.peopleNum))
+        setValue('place', apiResponse.data.place)
+        setValue(
+            'startDate',
+            dayjs(apiResponse?.data.startDate).format('YYYY-MM-DD')
+        )
+        setValue('title', apiResponse.data.title)
+        setValue(
+            'techList',
+            apiResponse.data.techs.map((item: { id: number; tech: string }) => {
+                return item.tech
+            })
+        )
+    }
+
+    const updateMutation = useMutation(
+        async (parameter: { formData: FormData; id?: string }) => {
+            const { data } = await window.context.postAPI.updatePost(
+                parameter.formData,
+                parameter.id
+            )
+            return data
+        },
+        {
+            onError: (e) => {
+                console.log(e)
+            },
+            onSuccess: () => {
+                // FIX ME : 수정 API 완료되면 flow 구현 필요
+            },
+        }
+    )
+    const createMutation = useMutation(
+        async (formdata: FormData) => {
+            const { data } = await window.context.postAPI.createPost(formdata)
+            return data
+        },
+        {
+            onError: (e) => {
+                console.log(e)
+            },
+            onSuccess: (data) => {
+                if (data.success) {
+                    alert('공고가 정상적으로 작성되었습니다.')
+                    // FIX ME : i18n 라이브러리로 다국어 지원 해보기?
+                    navigate('/')
+                }
+            },
+        }
+    )
 
     const onSubmit: SubmitHandler<Inputs> = async (inputData) => {
         const formData = new FormData()
@@ -57,47 +118,12 @@ function PostPage() {
             formData.append('image', imgFiles[0])
         }
 
-        try {
-            const { data } = isUpdate
-                ? await window.context.postAPI.updatePost(id, formData)
-                : await window.context.postAPI.createPost(formData)
-            if (data.success) {
-                alert('공고가 정상적으로 작성되었습니다.')
-                // FIX ME : i18n 라이브러리로 다국어 지원 해보기?
-                navigate('/')
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async function intializeForUpdate() {
-        const {
-            data: { data },
-        } = await window.context.postAPI.getOnePost(id)
-
-        setValue('category', data.category)
-        setValue('contents', data.contents)
-        setValue('duration', data.duration)
-        setValue('peopleNum', Number(data.peopleNum))
-        setValue('place', data.place)
-        setValue('startDate', dayjs(data.startDate).format('YYYY-MM-DD'))
-        setValue('title', data.title)
-        setValue(
-            'techList',
-            data.techs.map((item: { id: number; tech: string }) => {
-                return item.tech
-            })
-        )
-
-        // techList와 img 초기화 추가 필요
-    }
-
-    useEffect(() => {
         if (isUpdate) {
-            intializeForUpdate()
+            updateMutation.mutate({ formData, id: paramId })
+        } else {
+            createMutation.mutate(formData)
         }
-    }, [])
+    }
 
     return (
         <PostPageLayout>
