@@ -8,7 +8,7 @@
 import React, { ReactNode } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import './modal.css'
-import Portal from './Portal'
+import Portal from '../presentation/components/Portal'
 
 interface ModalProps {
     isOpen: boolean

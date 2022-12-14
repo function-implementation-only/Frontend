@@ -4,11 +4,15 @@
 import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
-// import Button from '../../../stories/Button'
-
-// import { Input } from '../../../stories/Input'
-import Modal from '../../../stories/Modal'
-import { AccountInfo } from '../../../types/account'
+import { AxiosResponse } from 'axios'
+import Modal from '../Modal'
+import { SignUpInfo } from '../../../types/account'
+import {
+    ErrorEmail,
+    ErrorEmailAuth,
+    ErrorPassword,
+    ErrorPasswordCheck,
+} from '../Error'
 
 interface Props {
     isShowing: boolean
@@ -19,30 +23,25 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
     const {
         register,
         handleSubmit,
+        watch,
+        reset,
+        trigger,
+        formState: { errors, isSubmitting },
+    } = useForm<SignUpInfo>()
 
-        formState: { isSubmitting },
-    } = useForm<AccountInfo>()
-    // const [idValue, setIdValue] = useState<string>('')
-    // const [nickNameValue, setNickNameValue] = useState<string>('')
-    // const [pwValue, setPwValue] = useState<string>('')
-    const [isSignupModalOpen, setIsSignupModalOpen] = useState(true)
+    const { email, password } = watch()
 
-    // const onChangeIdInput = (inputValue: string): void => {
-    //     setIdValue(inputValue)
-    // }
-    // const onChangePwInput = (inputValue: string): void => {
-    //     setPwValue(inputValue)
-    // }
-    // const onChangeNickNameInput = (inputValue: string): void => {
-    //     setNickNameValue(inputValue)
-    // }
+    const [emailAuth, setEmailAuth] = useState()
+    const [auth, setAuth] = useState(false)
 
-    const mutation = useMutation(
+    // 회원가입 API
+
+    const singnUpMutation = useMutation(
         'signUpInfo',
-        (data: AccountInfo) => window.context.accountAPI.postSignUp(data),
+        (data: SignUpInfo) => window.context.accountAPI.postSignUp(data),
         {
             onSuccess: () => {
-                alert('done')
+                alert('회원가입이 완료되었습니다!')
             },
             onError: (err) => {
                 alert(err)
@@ -50,58 +49,97 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
         }
     )
 
-    const onSubmit: SubmitHandler<AccountInfo> = (data) => {
-        mutation.mutate(data)
+    // 이메일 인증 API
+
+    const emailAuthMutation = useMutation(
+        'emailInfo',
+        () => window.context.accountAPI.postEmailAuth(email as string),
+        {
+            onSuccess: (res: AxiosResponse) => {
+                setEmailAuth(res.data)
+            },
+            onError: (err) => {
+                alert(err)
+            },
+        }
+    )
+
+    const onSubmitEmailAuth = () => {
+        emailAuthMutation.mutate()
     }
 
+    const onSubmitSignUp: SubmitHandler<SignUpInfo> = (data) => {
+        singnUpMutation.mutate(data)
+        reset()
+        // window.location.reload()
+    }
     return (
         <Modal isOpen={isShowing} onClose={handleShowing}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                {/* <Input
-                    type="text"
-                    label="id"
-                    placeholder="이메일을 입력해 주세요."
-                    size="large"
-                    {...register('email')}
-                />
-                <Input
-                    type="text"
-                    label="nickname"
-                    placeholder="닉네임을 입력해 주세요."
-                    size="large"
-                    {...register('nickname')}
-                />
-                <Input
-                    type="password"
-                    label="password"
-                    placeholder="비밀번호를 입력해 주세요."
-                    size="large"
-                    {...register('password')}
-                /> */}
+            <form onSubmit={handleSubmit(onSubmitSignUp)}>
+                {/* input 관련 컴포넌트는 디자인 나오면 진행 예정 */}
                 <input
                     type="text"
                     placeholder="이메일을 입력해 주세요."
-                    {...register('email')}
+                    {...register('email', {
+                        required: true,
+                        pattern: /\S+@\S+\.\S+/,
+                    })}
                 />
+                <ErrorEmail errors={errors.email?.type} />
+                <button type="button" onClick={onSubmitEmailAuth}>
+                    이메일 인증하기
+                </button>
+                {auth && errors.emailAuth?.type === undefined ? (
+                    <p style={{ fontSize: '14px' }}>인증이 완료되었습니다.</p>
+                ) : (
+                    <>
+                        <input
+                            type="text"
+                            placeholder="인증번호를 입력해 주세요."
+                            {...register('emailAuth', {
+                                required: true,
+                                validate: (value) => value === emailAuth,
+                            })}
+                        />
+                        <ErrorEmailAuth errors={errors.emailAuth?.type} />
+                        <button
+                            type="button"
+                            onClick={() => {
+                                trigger('emailAuth')
+                                setAuth(true)
+                            }}
+                        >
+                            확인
+                        </button>
+                    </>
+                )}
                 <input
                     type="text"
                     placeholder="닉네임을 입력해 주세요."
-                    {...register('nickname')}
+                    {...register('nickname', { required: true })}
                 />
                 <input
                     type="password"
                     placeholder="비밀번호를 입력해 주세요."
-                    {...register('password')}
+                    {...register('password', {
+                        required: true,
+                        maxLength: 12,
+                        minLength: 6,
+                    })}
                 />
+                <ErrorPassword errors={errors.password?.type} />
+                <input
+                    type="password"
+                    placeholder="비밀번호를 한번 더 입력해 주세요."
+                    {...register('passwordCheck', {
+                        required: true,
+                        validate: (value) => value === password,
+                    })}
+                />
+                <ErrorPasswordCheck errors={errors.passwordCheck?.type} />
                 <button type="submit" disabled={isSubmitting}>
                     SignUp
                 </button>
-                {/* <Button
-                    size="small"
-                    label="SignUp"
-                    type="submit"
-                    disabled={isSubmitting}
-                /> */}
             </form>
         </Modal>
     )

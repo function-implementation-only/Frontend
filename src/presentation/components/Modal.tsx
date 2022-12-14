@@ -37,9 +37,23 @@ const Container = styled.div`
     position: relative;
     width: 100%;
     z-index: 100;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
     form {
+        width: 375px;
+        min-height: 540px;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        input {
+            margin-bottom: 20px;
+        }
+        button {
+            margin-bottom: 20px;
+        }
     }
 `
 
