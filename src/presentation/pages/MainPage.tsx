@@ -11,6 +11,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import AccordianComponent from '../components/AccordianComponent'
+import { CATEGORY, TECHLIST } from '../../lib/constants'
 
 const MainPageLayout = styled.div``
 
@@ -28,9 +29,7 @@ const ContentsBox = styled.div`
     margin: 0 auto;
 `
 
-const SideBarBox = styled.div`
-    border: 1px solid black;
-`
+const SideBarBox = styled.div``
 const PostBox = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -75,9 +74,14 @@ function MainPage() {
             <MainPageRow>
                 <ContentsBox>
                     <SideBarBox>
-                        {[0, 1, 2, 3, 4, 5].map((item) => {
-                            return <AccordianComponent key={item} />
-                        })}
+                        <AccordianComponent
+                            title="모집 구분"
+                            constantsArray={CATEGORY}
+                        />
+                        <AccordianComponent
+                            title="사용 기술 / 툴"
+                            constantsArray={TECHLIST}
+                        />
                     </SideBarBox>
                     <PostBox>
                         {status === 'loading'

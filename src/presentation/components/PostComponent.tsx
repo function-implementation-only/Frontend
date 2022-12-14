@@ -6,7 +6,7 @@ import { PostObj } from '../../types/post'
 const PostComponentLayout = styled.div`
     cursor: pointer;
     border: 1px solid black;
-    height: 214px;
+    min-height: 214px;
     background-color: #f8f9fa; ;
 `
 
