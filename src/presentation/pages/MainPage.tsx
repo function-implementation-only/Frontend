@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 // jsx 내에서는 if문을 쓸 수 없어 일단 삼항 연산자 중첩 처리함, 이후 디자인 적용할 때 바꿀 예정
-import { useQuery } from 'react-query'
+import React, { useQuery } from 'react-query'
 import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, A11y } from 'swiper'
@@ -10,6 +10,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
+import AccordianComponent from '../components/AccordianComponent'
 
 const MainPageLayout = styled.div``
 
@@ -30,7 +31,6 @@ const ContentsBox = styled.div`
 const SideBarBox = styled.div`
     border: 1px solid black;
 `
-
 const PostBox = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -74,7 +74,11 @@ function MainPage() {
             </MainPageRow>
             <MainPageRow>
                 <ContentsBox>
-                    <SideBarBox>사이드바</SideBarBox>
+                    <SideBarBox>
+                        {[0, 1, 2, 3, 4, 5].map((item) => {
+                            return <AccordianComponent key={item} />
+                        })}
+                    </SideBarBox>
                     <PostBox>
                         {status === 'loading'
                             ? 'Loading...'
