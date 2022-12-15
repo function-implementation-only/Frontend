@@ -18,6 +18,6 @@ export class Context implements ContextInterface {
         })
 
         this.postAPI = PostAPI.getInstance(axiosInstance)
-        this.accountAPI = new AccountAPI()
+        this.accountAPI = AccountAPI.getInstance(axiosInstance)
     }
 }

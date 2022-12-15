@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { useEffect, useState } from 'react'
+// import { useMutation } from 'react-query'
 import useModal from '../../hooks/useModal'
 import LoginModal from './modal/LoginModal'
 import SignupModal from './modal/SignupModal'
 import Logo from '../../assets/images/Logo.svg'
+import { deleteCookie, getTokenFromCookie } from '../../utils/cookie'
 
 const HeaderComponentLayout = styled.div`
     z-index: 999;
@@ -48,6 +51,38 @@ function HeaderComponent() {
         useModal()
     const { isShowing: isSignupModalOpen, handleShowing: handleSignUp } =
         useModal()
+    const [isLogin, setIsLogin] = useState(false)
+
+    // 로그아웃 api 문제로인한 주석처리
+
+    // const logoutMutation = useMutation(
+    //     'logout',
+    //     () => window.context.accountAPI.postLogOut(),
+    //     {
+    //         onSuccess: () => {
+    //             deleteCookie(token)
+    //             setIsLogin(false)
+    //             window.location.reload()
+    //         },
+    //         onError: (err) => {
+    //             alert(err)
+    //         },
+    //     }
+    // )
+
+    const handleLogout = () => {
+        // logoutMutation.mutate()
+        deleteCookie('token')
+        setIsLogin(false)
+        window.location.reload()
+    }
+
+    useEffect(() => {
+        const token = getTokenFromCookie()
+        if (token) {
+            setIsLogin(true)
+        }
+    }, [])
     return (
         <HeaderComponentLayout>
             <HeaderComponentRow>
