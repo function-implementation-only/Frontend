@@ -7,15 +7,28 @@ interface SelectComponentProp {
     children: JSX.Element
 }
 
-const SelectComponentLayout = styled.div``
+const SelectComponentLayout = styled.div`
+    padding-bottom: 47px;
+`
+
+const SelectComponentRow = styled.div``
+
+const SelectComponentTitle = styled.label`
+    font-size: 18px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 32px;
+`
 
 function SelectComponent({ title, id, children }: SelectComponentProp) {
     return (
         <SelectComponentLayout>
-            <label htmlFor={id}>
-                {title}
-                {children}
-            </label>
+            <SelectComponentRow>
+                <SelectComponentTitle htmlFor={id}>
+                    {title}
+                </SelectComponentTitle>
+            </SelectComponentRow>
+            <SelectComponentRow>{children}</SelectComponentRow>
         </SelectComponentLayout>
     )
 }

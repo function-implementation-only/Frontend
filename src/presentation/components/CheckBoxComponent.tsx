@@ -29,49 +29,36 @@ const CheckBoxRounded = styled.label<{
 `
 
 interface CheckBoxComponentProps {
-    item: string
-    type: string
-    setSelectedNum?: React.Dispatch<React.SetStateAction<number>>
+    title: string
+    // FIX ME : 상수로 만들기
+    parentHandler: Function
 }
 
-function CheckBoxComponent({
-    item,
-    type,
-    setSelectedNum,
-}: CheckBoxComponentProps) {
+function CheckBoxComponent({ title, parentHandler }: CheckBoxComponentProps) {
     const [isChecked, setIsChecked] = useState(false)
     function handleCheck(checked: boolean): void {
         if (checked) {
             setIsChecked(true)
-            if (type === 'filter' && setSelectedNum !== undefined) {
-                setSelectedNum((prev) => prev + 1)
-            }
+            parentHandler('checked')
         } else {
             setIsChecked(false)
-            if (type === 'filter' && setSelectedNum !== undefined) {
-                setSelectedNum((prev) => prev - 1)
-            }
+            parentHandler('canceled')
         }
     }
     return (
         <CheckBoxComponentLayout>
-            <CheckBoxRounded htmlFor={item} isChecked={isChecked}>
+            <CheckBoxRounded htmlFor={title} isChecked={isChecked}>
                 <input
-                    id={item}
+                    id={title}
                     type="checkbox"
                     onChange={(e) => {
                         handleCheck(e.target.checked)
                     }}
                 />
             </CheckBoxRounded>
-            {item}
+            {title}
         </CheckBoxComponentLayout>
     )
-}
-
-CheckBoxComponent.defaultProps = {
-    setSelectedNum: null,
-    // FIX ME : 함수의 기본값을 빈 값으로 처리해도 되는지?
 }
 
 export default CheckBoxComponent

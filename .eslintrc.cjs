@@ -24,5 +24,16 @@ module.exports = {
                 unnamedComponents: 'arrow-function',
             },
         ],
+        'react/jsx-no-bind': [
+            'error',
+            {
+                ignoreDOMComponents: false,
+                ignoreRefs: false,
+                allowArrowFunctions: true,
+                allowFunctions: true,
+                allowBind: false,
+                // 부모->자식 handler 전달을 위한 rule 수정
+            },
+        ],
     },
 }

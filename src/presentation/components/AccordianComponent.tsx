@@ -43,8 +43,21 @@ function AccordianComponent({
     constantsArray,
 }: AccordianComponentProps) {
     const [isOpen, setIsOpen] = useState(false)
-    const [selected, setSelected] = useState(0)
+    const [selectedNum, setSelectedNum] = useState(0)
     const accordian = useRef<HTMLDivElement>()
+
+    function ownHandler(cmd: string) {
+        // 체크박스에서 체크가 일어나면 실행됨.
+        switch (cmd) {
+            case 'checked':
+                setSelectedNum((prev) => prev + 1)
+                break
+            case 'canceled':
+                setSelectedNum((prev) => prev - 1)
+                break
+            default:
+        }
+    }
     return (
         <AccordianBox>
             <AccordianItem>
@@ -61,7 +74,7 @@ function AccordianComponent({
                         }
                     }}
                 >
-                    <div>{`${title}(${selected})`}</div>
+                    <div>{`${title}(${selectedNum})`}</div>
                     <div>
                         <img src={arrow} alt="arrowImg" />
                     </div>
@@ -71,8 +84,8 @@ function AccordianComponent({
                         return (
                             <CheckBoxComponent
                                 key={item.value}
-                                item={item.value}
-                                setSelected={setSelected}
+                                title={item.title}
+                                parentHandler={ownHandler}
                             />
                         )
                     })}
