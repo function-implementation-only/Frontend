@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import { useMutation, useQuery } from 'react-query'
 import { ConstantObj, TECHLIST } from '../../../lib/constants'
 import { PostResponse } from '../../../types/response'
+import SelectComponent from '../../components/SelectComponent'
 
 type Inputs = {
     title: string
@@ -19,12 +20,22 @@ type Inputs = {
     startDate: Date | string
 }
 
-const PostPageLayout = styled.div`
-    width: 400px;
-    form {
-        display: flex;
-        flex-direction: column;
-    }
+const PostPageLayout = styled.div``
+
+const PostPageRow = styled.div``
+
+const PostPageTitle = styled.h1`
+    font-size: 22px;
+    font-weight: 700;
+`
+
+const FormLayout = styled.form``
+
+const FormRow = styled.div``
+
+const FormCol = styled.div`
+    display: flex;
+    flex-direction: column;
 `
 
 function PostPage() {
@@ -137,98 +148,126 @@ function PostPage() {
 
     return (
         <PostPageLayout>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label htmlFor="categorySelect">
-                    모집 구분
-                    <br />
-                    <select id="categorySelect" {...register('category')}>
-                        <option value="">--Please choose an option--</option>
-                        <option value="PROJECT">프로젝트</option>
-                        <option value="STUDY">스터디</option>
-                    </select>
-                </label>
-                <label htmlFor="durationSelect">
-                    진행 기간
-                    <br />
-                    <select id="durationSelect" {...register('duration')}>
-                        <option value="">--Please choose an option--</option>
-                        <option value="ONE">1개월</option>
-                        <option value="TWO">2개월</option>
-                        <option value="THREE">3개월</option>
-                        <option value="FOUR">4개월</option>
-                        <option value="FIVE">5개월</option>
-                        <option value="SIX">6개월 이상</option>
-                    </select>
-                </label>
-                <label htmlFor="peopleNumSelect">
-                    모집 인원
-                    <br />
-                    <select id="peopleNumSelect" {...register('peopleNum')}>
-                        <option value="">--Please choose an option--</option>
-                        <option value={1}>1명</option>
-                        <option value={2}>2명</option>
-                        <option value={3}>3명</option>
-                        <option value={4}>4명</option>
-                        <option value={5}>5명</option>
-                        <option value={6}>6명</option>
-                        <option value={7}>7명</option>
-                        <option value={8}>8명</option>
-                        <option value={9}>9명</option>
-                        <option value={10}>10명 이상</option>
-                    </select>
-                </label>
-                <label htmlFor="placeSelect">
-                    진행 방식
-                    <br />
-                    <select id="placeSelect" {...register('place')}>
-                        <option value="">--Please choose an option--</option>
-                        <option value="ONLINE">온라인</option>
-                        <option value="OFFLINE">오프라인</option>
-                    </select>
-                </label>
-                <label htmlFor="techListSelect">
-                    기술 스택
-                    <br />
-                    <select multiple id="techSelect" {...register('techList')}>
-                        {TECHLIST.map((item: ConstantObj) => {
-                            return (
-                                <option key={item.value} value={item.value}>
-                                    {item.value}
+            <PostPageRow>
+                <PostPageTitle>
+                    {isUpdate ? '수정하기' : '글쓰기'}
+                </PostPageTitle>
+            </PostPageRow>
+            <PostPageRow>
+                <FormLayout onSubmit={handleSubmit(onSubmit)}>
+                    <FormRow>
+                        <SelectComponent title="모집 구분" id="categorySelect">
+                            <select
+                                id="categorySelect"
+                                {...register('category')}
+                            >
+                                <option value="">
+                                    --Please choose an option--
                                 </option>
-                            )
-                        })}
-                    </select>
-                </label>
-                <label htmlFor="startDateSelect">
-                    시작 예정일
-                    <br />
-                    <input
-                        id="startDateSelect"
-                        type="date"
-                        {...register('startDate')}
-                    />
-                </label>
-                <input
-                    type="text"
-                    placeholder="제목을 입력해주세요."
-                    {...register('title')}
-                />
-                <input
-                    type="text"
-                    placeholder="내용을 입력해주세요."
-                    {...register('contents')}
-                />
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                        setImgFiles(e.target.files)
-                    }}
-                />
-                <button type="submit">
-                    {isUpdate ? '수정하기' : '작성하기'}
-                </button>
-            </form>
+                                <option value="PROJECT">프로젝트</option>
+                                <option value="STUDY">스터디</option>
+                            </select>
+                        </SelectComponent>
+                        <SelectComponent title="진행 기간" id="durationSelect">
+                            <select
+                                id="durationSelect"
+                                {...register('duration')}
+                            >
+                                <option value="">
+                                    --Please choose an option--
+                                </option>
+                                <option value="ONE">1개월</option>
+                                <option value="TWO">2개월</option>
+                                <option value="THREE">3개월</option>
+                                <option value="FOUR">4개월</option>
+                                <option value="FIVE">5개월</option>
+                                <option value="SIX">6개월 이상</option>
+                            </select>
+                        </SelectComponent>
+                        <SelectComponent title="모집 인원" id="peopleNumSelect">
+                            <select
+                                id="peopleNumSelect"
+                                {...register('peopleNum')}
+                            >
+                                <option value="">
+                                    --Please choose an option--
+                                </option>
+                                <option value={1}>1명</option>
+                                <option value={2}>2명</option>
+                                <option value={3}>3명</option>
+                                <option value={4}>4명</option>
+                                <option value={5}>5명</option>
+                                <option value={6}>6명</option>
+                                <option value={7}>7명</option>
+                                <option value={8}>8명</option>
+                                <option value={9}>9명</option>
+                                <option value={10}>10명 이상</option>
+                            </select>
+                        </SelectComponent>
+                        <SelectComponent title="진행 방식" id="placeSelect">
+                            <select id="placeSelect" {...register('place')}>
+                                <option value="">
+                                    --Please choose an option--
+                                </option>
+                                <option value="ONLINE">온라인</option>
+                                <option value="OFFLINE">오프라인</option>
+                            </select>
+                        </SelectComponent>
+                        <SelectComponent title="기술 스택" id="techSelect">
+                            <select
+                                multiple
+                                id="techSelect"
+                                {...register('techList')}
+                            >
+                                {TECHLIST.map((item: ConstantObj) => {
+                                    return (
+                                        <option
+                                            key={item.value}
+                                            value={item.value}
+                                        >
+                                            {item.value}
+                                        </option>
+                                    )
+                                })}
+                            </select>
+                        </SelectComponent>
+                        <SelectComponent
+                            title="시작 예정일"
+                            id="startDateSelect"
+                        >
+                            <input
+                                id="startDateSelect"
+                                type="date"
+                                {...register('startDate')}
+                            />
+                        </SelectComponent>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                                setImgFiles(e.target.files)
+                            }}
+                        />
+                    </FormRow>
+                    <FormCol>
+                        <input
+                            type="text"
+                            placeholder="제목을 입력해주세요."
+                            {...register('title')}
+                        />
+                        <input
+                            type="text"
+                            placeholder="내용을 입력해주세요."
+                            {...register('contents')}
+                        />
+                    </FormCol>
+                    <FormRow>
+                        <button type="submit">
+                            {isUpdate ? '수정하기' : '작성하기'}
+                        </button>
+                    </FormRow>
+                </FormLayout>
+            </PostPageRow>
         </PostPageLayout>
     )
 }
