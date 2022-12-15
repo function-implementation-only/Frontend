@@ -3,8 +3,6 @@ import { AxiosResponse } from 'axios'
 import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
-// import Input from '../../../stories/Input'
-// import Button from '../../../stories/Button'
 import Modal from '../Modal'
 import { saveTokenToCookie } from '../../../utils/cookie'
 import { ErrorEmail, ErrorPassword } from '../Error'
@@ -22,19 +20,6 @@ const LoginModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
 
         formState: { errors, isSubmitting },
     } = useForm<AccountInfo>()
-
-    const [idValue, setIdValue] = useState<string>('')
-    const [pwValue, setPwValue] = useState<string>('')
-    const onChangeIdInput = (inputValue: string): void => {
-        setIdValue(inputValue)
-    }
-    const onChangePwInput = (inputValue: string): void => {
-        setPwValue(inputValue)
-    }
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
-    const handleClose = (): void => {
-        handleShowing()
-    }
 
     const mutation = useMutation(
         'loginInfo',
@@ -54,28 +39,11 @@ const LoginModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
 
     const onSubmit: SubmitHandler<AccountInfo> = (data) => {
         mutation.mutate(data)
-        handleClose()
+        handleShowing()
     }
     return (
         <Modal isOpen={isShowing} onClose={handleShowing}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                {/* <Button size="small" label="Login" />
-                <Input
-                    type="text"
-                    label="id"
-                    placeholder="이메일을 입력해 주세요."
-                    size="large"
-                    onChangeInput={onChangeIdInput}
-                    value={idValue}
-                />
-                <Input
-                    type="password"
-                    label="password"
-                    placeholder="비밀번호를 입력해 주세요."
-                    size="large"
-                    onChangeInput={onChangePwInput}
-                    value={pwValue}
-                /> */}
                 <input
                     type="text"
                     placeholder="이메일을 입력해 주세요."
