@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { AccountInfo, SignUpInfo } from '../../types/account'
 import setInterceptors from './interceptor'
 
@@ -13,23 +13,27 @@ export default class AccountAPI implements AccountAPIInterface {
     instance
 
     constructor() {
-        this.instance = setInterceptors(axios.create())
+        this.instance = setInterceptors(
+            axios.create({
+                baseURL: import.meta.env.VITE_API_END_POINT,
+            })
+        )
     }
 
     public postSignUp(data: SignUpInfo) {
-        return setInterceptors(this.axiosInstance).post('/account/signup', data)
+        return setInterceptors(this.instance).post('/account/signup', data)
     }
 
-    public postLogin(data: AccountInfo) {
+    public postLogIn(data: AccountInfo) {
         return this.instance.post('/account/login', data)
     }
 
     public postLogOut() {
-        return setInterceptors(this.axiosInstance).post('/logout')
+        return setInterceptors(this.instance).post('/logout')
     }
 
     public postEmailAuth(email: string) {
-        return setInterceptors(this.axiosInstance).post(
+        return setInterceptors(this.instance).post(
             '/account/signup/email-check',
             { email }
         )
