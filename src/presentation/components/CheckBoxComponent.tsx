@@ -15,7 +15,6 @@ const CheckBoxRounded = styled.label<{
         display: none;
     }
     cursor: pointer;
-    display: block;
     width: 20px;
     height: 20px;
     margin-right: 10px;

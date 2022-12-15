@@ -4,9 +4,7 @@ import { ConstantObj } from '../../lib/constants'
 import CheckBoxComponent from './CheckBoxComponent'
 import arrow from '../../assets/images/arrow.svg'
 
-const AccordianBox = styled.div`
-    cursor: pointer;
-`
+const AccordianBox = styled.div``
 
 const AccordianItem = styled.div``
 
@@ -15,6 +13,7 @@ const AccordianTitle = styled.div<{
 }>`
     height: 52px;
     display: flex;
+    cursor: pointer;
     justify-content: space-between;
     align-items: center;
     padding: 0 22px 0 26px;
