@@ -1,39 +1,45 @@
-import axios, { AxiosResponse } from 'axios'
+import { AxiosInstance, AxiosResponse } from 'axios'
 import { AccountInfo, SignUpInfo } from '../../types/account'
 import setInterceptors from './interceptor'
 
 export interface AccountAPIInterface {
     postSignUp: (data: SignUpInfo) => Promise<AxiosResponse>
     postLogIn: (data: AccountInfo) => Promise<AxiosResponse>
-    postEmailAuth: (email: string) => Promise<AxiosResponse>
     postLogOut: () => Promise<AxiosResponse>
+    postEmailAuth: (email: string) => Promise<AxiosResponse>
 }
 
 export default class AccountAPI implements AccountAPIInterface {
-    instance
+    private axiosInstance: AxiosInstance
 
-    constructor() {
-        this.instance = setInterceptors(
-            axios.create({
-                baseURL: import.meta.env.VITE_API_END_POINT,
-            })
-        )
+    private static instance: AccountAPI
+
+    private constructor(axiosInstance: AxiosInstance) {
+        this.axiosInstance = axiosInstance
+    }
+
+    public static getInstance(axiosInstance: AxiosInstance) {
+        if (this.instance) {
+            return this.instance
+        }
+        this.instance = new AccountAPI(axiosInstance)
+        return this.instance
     }
 
     public postSignUp(data: SignUpInfo) {
-        return setInterceptors(this.instance).post('/account/signup', data)
+        return setInterceptors(this.axiosInstance).post('/account/signup', data)
     }
 
     public postLogIn(data: AccountInfo) {
-        return this.instance.post('/account/login', data)
+        return setInterceptors(this.axiosInstance).post('/account/login', data)
     }
 
     public postLogOut() {
-        return setInterceptors(this.instance).post('/logout')
+        return setInterceptors(this.axiosInstance).post('/logout')
     }
 
     public postEmailAuth(email: string) {
-        return setInterceptors(this.instance).post(
+        return setInterceptors(this.axiosInstance).post(
             '/account/signup/email-check',
             { email }
         )
