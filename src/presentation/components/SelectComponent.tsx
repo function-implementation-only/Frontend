@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 interface SelectComponentProp {
     title: string
-    id: string
+    htmlFor: string
     children: JSX.Element
 }
 
@@ -20,11 +20,11 @@ const SelectComponentTitle = styled.label`
     margin-bottom: 32px;
 `
 
-function SelectComponent({ title, id, children }: SelectComponentProp) {
+function SelectComponent({ title, htmlFor, children }: SelectComponentProp) {
     return (
         <SelectComponentLayout>
             <SelectComponentRow>
-                <SelectComponentTitle htmlFor={id}>
+                <SelectComponentTitle htmlFor={htmlFor}>
                     {title}
                 </SelectComponentTitle>
             </SelectComponentRow>

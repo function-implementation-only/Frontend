@@ -24,7 +24,7 @@ const CheckBoxRounded = styled.label<{
 
     background: ${(props) =>
         props.isChecked
-            ? `url('/src/assets/images/checkbox.svg') no-repeat 0 0px / cover`
+            ? `url('/src/assets/images/checkbox.svg') no-repeat center`
             : 'white'};
 `
 

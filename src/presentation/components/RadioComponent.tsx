@@ -6,10 +6,18 @@ const RadioComponentLayout = styled.div`
     display: flex;
     align-items: center;
 
-    input {
+    input[type='radio'] {
+        appearance: none;
         width: 20px;
         height: 20px;
         margin-right: 10px;
+        border-radius: 50%;
+        border: 1px solid #868e96;
+        cursor: pointer;
+    }
+    input[type='radio']:checked {
+        border: none;
+        background: url('/src/assets/images/radio.svg') no-repeat center/ auto;
     }
 `
 

@@ -8,6 +8,11 @@ export const CATEGORY: ConstantObj[] = [
     { title: '스터디', value: 'STUDY' },
 ]
 
+export const PLACE: ConstantObj[] = [
+    { title: '온라인', value: 'ONLINE' },
+    { title: '오프라인', value: 'OFFLINE' },
+]
+
 export const TECHLIST: ConstantObj[] = [
     { title: 'JAVASCRIPT', value: 'JAVASCRIPT' },
     { title: 'TYPESCRIPT', value: 'TYPESCRIPT' },

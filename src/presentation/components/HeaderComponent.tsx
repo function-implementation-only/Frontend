@@ -34,7 +34,7 @@ const ModalButtonBox = styled.div`
     grid-column-gap: 10px;
 `
 
-const ModalButton = styled.button<{ default?: boolean }>`
+export const DefaultButton = styled.button<{ default?: boolean }>`
     width: 100px;
     height: 45px;
     border-radius: 100px;
@@ -46,6 +46,8 @@ const ModalButton = styled.button<{ default?: boolean }>`
     border: ${(props) =>
         props.default ? 'solid 1px var(--primary-color)' : 'none'};
 `
+
+const ModalButton = styled(DefaultButton)``
 
 function HeaderComponent() {
     const { isShowing: isLoginModalOpen, handleShowing: handleLogin } =

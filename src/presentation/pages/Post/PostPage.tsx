@@ -1,18 +1,21 @@
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import dayjs from 'dayjs'
 import { useMutation, useQuery } from 'react-query'
-import { CATEGORY, ConstantObj, TECHLIST } from '../../../lib/constants'
+import { CATEGORY, ConstantObj, PLACE, TECHLIST } from '../../../lib/constants'
 import { PostResponse } from '../../../types/response'
 import SelectComponent from '../../components/SelectComponent'
 import RadioComponent from '../../components/RadioComponent'
 import { Inputs } from '../../../types/post'
+import { DefaultButton } from '../../components/HeaderComponent'
 
 const PostPageLayout = styled.div`
     width: 1440px;
     margin: 0 auto;
+    padding-top: 24px;
+    padding-bottom: 88px;
 `
 
 const PostPageRow = styled.div``
@@ -39,10 +42,33 @@ const RadioComponentBox = styled.div`
     grid-column-gap: 26px;
 `
 
+const TextCss = css`
+    border: 1px solid #e9ecef;
+    padding: 13px 12px;
+    margin-bottom: 12px;
+`
+
+const Title = styled.input`
+    ${TextCss}
+`
+
+const Contents = styled.textarea`
+    ${TextCss}
+    resize: none;
+    height: 412px;
+`
+
 const FormCol = styled.div`
     display: flex;
     flex-direction: column;
 `
+
+const ButtonBox = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`
+
+const WriteButton = styled(DefaultButton)``
 
 function PostPage() {
     const location = useLocation()
@@ -131,9 +157,6 @@ function PostPage() {
         const { techList } = inputData
         delete dataCopied.techList
 
-        console.log(inputData)
-        return
-
         formData.append(
             'data',
             new Blob([JSON.stringify(inputData)], { type: 'application/json' })
@@ -156,6 +179,7 @@ function PostPage() {
     }
 
     const category = register('category')
+    const place = register('place')
 
     return (
         <PostPageLayout>
@@ -170,7 +194,7 @@ function PostPage() {
                         <SelectComponentBox>
                             <SelectComponent
                                 title="모집 구분"
-                                id="categorySelect"
+                                htmlFor="categorySelect"
                             >
                                 <RadioComponentBox>
                                     {CATEGORY.map((item) => {
@@ -190,7 +214,7 @@ function PostPage() {
                             </SelectComponent>
                             <SelectComponent
                                 title="진행 기간"
-                                id="durationSelect"
+                                htmlFor="durationSelect"
                             >
                                 <select
                                     id="durationSelect"
@@ -209,7 +233,7 @@ function PostPage() {
                             </SelectComponent>
                             <SelectComponent
                                 title="모집 인원"
-                                id="peopleNumSelect"
+                                htmlFor="peopleNumSelect"
                             >
                                 <select
                                     id="peopleNumSelect"
@@ -230,16 +254,30 @@ function PostPage() {
                                     <option value={10}>10명 이상</option>
                                 </select>
                             </SelectComponent>
-                            <SelectComponent title="진행 방식" id="placeSelect">
-                                <select id="placeSelect" {...register('place')}>
-                                    <option value="">
-                                        --Please choose an option--
-                                    </option>
-                                    <option value="ONLINE">온라인</option>
-                                    <option value="OFFLINE">오프라인</option>
-                                </select>
+                            <SelectComponent
+                                title="진행 방식"
+                                htmlFor="placeSelect"
+                            >
+                                <RadioComponentBox>
+                                    {PLACE.map((item) => {
+                                        return (
+                                            <RadioComponent
+                                                key={item.title}
+                                                title={item.title}
+                                                value={item.value}
+                                                name={place.name}
+                                                onChange={place.onChange}
+                                                onBlur={place.onBlur}
+                                                inputRef={place.ref}
+                                            />
+                                        )
+                                    })}
+                                </RadioComponentBox>
                             </SelectComponent>
-                            <SelectComponent title="기술 스택" id="techSelect">
+                            <SelectComponent
+                                title="기술 스택"
+                                htmlFor="techSelect"
+                            >
                                 <select
                                     multiple
                                     id="techSelect"
@@ -259,7 +297,7 @@ function PostPage() {
                             </SelectComponent>
                             <SelectComponent
                                 title="시작 예정일"
-                                id="startDateSelect"
+                                htmlFor="startDateSelect"
                             >
                                 <input
                                     id="startDateSelect"
@@ -267,31 +305,38 @@ function PostPage() {
                                     {...register('startDate')}
                                 />
                             </SelectComponent>
+                            <SelectComponent
+                                title="이미지 파일"
+                                htmlFor="imgFile"
+                            >
+                                <input
+                                    id="imgFile"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                        setImgFiles(e.target.files)
+                                    }}
+                                />
+                            </SelectComponent>
                         </SelectComponentBox>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                                setImgFiles(e.target.files)
-                            }}
-                        />
                     </FormRow>
                     <FormCol>
-                        <input
+                        <Title
                             type="text"
                             placeholder="제목을 입력해주세요."
                             {...register('title')}
                         />
-                        <input
-                            type="text"
+                        <Contents
                             placeholder="내용을 입력해주세요."
                             {...register('contents')}
                         />
                     </FormCol>
                     <FormRow>
-                        <button type="submit">
-                            {isUpdate ? '수정하기' : '작성하기'}
-                        </button>
+                        <ButtonBox>
+                            <WriteButton>
+                                {isUpdate ? '수정하기' : '작성하기'}
+                            </WriteButton>
+                        </ButtonBox>
                     </FormRow>
                 </FormLayout>
             </PostPageRow>
