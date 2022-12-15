@@ -67,7 +67,7 @@ function PostDetailPage() {
                     </ul>
                     <br />
                     <img
-                        src={apiResponse?.data?.imageList[0].imgUrl}
+                        src={apiResponse?.data?.imageList[0]?.imgUrl}
                         alt="postImg"
                     />
                     <br />
