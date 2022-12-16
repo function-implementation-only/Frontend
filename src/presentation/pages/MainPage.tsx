@@ -3,7 +3,7 @@
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
 import { PostResponse } from '../../types/response'
-import PostComponent from '../components/PostComponent'
+import PostCardComponent from '../components/PostCardComponent'
 import AccordianComponent from '../components/AccordianComponent'
 import { CATEGORY, TECHLIST } from '../../lib/constants'
 import BannerComponent from '../components/BannerComponent'
@@ -20,9 +20,10 @@ const ContentsBox = styled.div`
 `
 
 const SideBarBox = styled.div``
-const PostBox = styled.div`
+const PostCardBox = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: max-content;
     grid-gap: 24px;
     padding: 24px;
 `
@@ -53,20 +54,20 @@ function MainPage() {
                             constantsArray={TECHLIST}
                         />
                     </SideBarBox>
-                    <PostBox>
+                    <PostCardBox>
                         {status === 'loading'
                             ? 'Loading...'
                             : error instanceof Error
                             ? error.message
                             : apiResponse?.data.map((post: PostResponse) => {
                                   return (
-                                      <PostComponent
+                                      <PostCardComponent
                                           key={post.postId}
                                           post={post}
                                       />
                                   )
                               })}
-                    </PostBox>
+                    </PostCardBox>
                 </ContentsBox>
             </MainPageRow>
         </MainPageLayout>

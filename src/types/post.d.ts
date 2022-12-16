@@ -27,7 +27,7 @@ export interface PostObj {
     duration: string
     peopleNum: number
     place: string
-    startDate: Date
+    startDate: string
     title: string
     postId: number
     imageList: imageObj[]

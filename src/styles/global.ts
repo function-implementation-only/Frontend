@@ -10,6 +10,8 @@ const GlobalStyle = createGlobalStyle`
   :root {
     --primary-color: #00C73C;
     --swiper-theme-color: #00C73C;
+    --gray-900: #212529;
+    --gray-600: #868E96;
   }
   .App {
     width: 100%;
