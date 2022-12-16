@@ -3,6 +3,7 @@
 import { useMutation, useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import NoImageComponent from '../../components/NoImageComponent'
 
 const PostDetailLayout = styled.div``
 
@@ -66,10 +67,14 @@ function PostDetailPage() {
                         })}
                     </ul>
                     <br />
-                    <img
-                        src={apiResponse?.data?.imageList[0]?.imgUrl}
-                        alt="postImg"
-                    />
+                    {apiResponse?.data?.imageList[0] ? (
+                        <img
+                            src={apiResponse.data.imageList[0].imgUrl}
+                            alt="postImg"
+                        />
+                    ) : (
+                        <NoImageComponent />
+                    )}
                     <br />
                     {/* FIX ME : 아래 버튼은 작성자일 경우에만 노출하도록 수정 필요 */}
                     <button type="button" onClick={handleUpdate}>
