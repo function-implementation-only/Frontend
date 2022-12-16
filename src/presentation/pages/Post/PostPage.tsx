@@ -4,7 +4,8 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 import { useMutation, useQuery } from 'react-query'
-import { TechObj, TECHLIST } from '../../../lib/constants'
+import { ConstantObj, TECHLIST } from '../../../lib/constants'
+import { PostResponse } from '../../../types/response'
 
 type Inputs = {
     title: string
@@ -37,30 +38,35 @@ function PostPage() {
     const { register, handleSubmit, setValue } = useForm<Inputs>()
     const [imgFiles, setImgFiles] = useState<FileList | null>(null)
 
-    const { data: apiResponse } = useQuery('getOnePost', async () => {
-        const { data } = await window.context.postAPI.getOnePost(paramId)
-        return data
-    })
-    // FIX ME : 에러 핸들링 추가
+    const [isInitialized, setIsInitialized] = useState(false)
+    // 수정시 초기값 세팅 여부
 
-    if (isUpdate && apiResponse) {
-        setValue('category', apiResponse.data.category)
-        setValue('contents', apiResponse.data.contents)
-        setValue('duration', apiResponse.data.duration)
-        setValue('peopleNum', Number(apiResponse.data.peopleNum))
-        setValue('place', apiResponse.data.place)
-        setValue(
-            'startDate',
-            dayjs(apiResponse?.data.startDate).format('YYYY-MM-DD')
-        )
-        setValue('title', apiResponse.data.title)
+    function setServerData(serverData: PostResponse) {
+        setValue('category', serverData.category)
+        setValue('contents', serverData.contents)
+        setValue('duration', serverData.duration)
+        setValue('peopleNum', Number(serverData?.peopleNum))
+        setValue('place', serverData.place)
+        setValue('startDate', dayjs(serverData.startDate).format('YYYY-MM-DD'))
+        setValue('title', serverData.title)
         setValue(
             'techList',
-            apiResponse.data.techs.map((item: { id: number; tech: string }) => {
+            serverData.techs.map((item: { id: number; tech: string }) => {
                 return item.tech
             })
         )
+        // FIX ME : 이미지 초기화 로직에 대해서 고민해보기
+        setIsInitialized(true)
     }
+
+    useQuery('setServerData', async () => {
+        if (isUpdate && !isInitialized) {
+            const { data } = await window.context.postAPI.getOnePost(paramId)
+            setServerData(data.data)
+        }
+    })
+    // FIX ME : 에러 핸들링 추가
+    // 수정시 초기화 로직
 
     const updateMutation = useMutation(
         async (parameter: { formData: FormData; id?: string }) => {
@@ -74,8 +80,12 @@ function PostPage() {
             onError: (e) => {
                 console.log(e)
             },
-            onSuccess: () => {
-                // FIX ME : 수정 API 완료되면 flow 구현 필요
+            onSuccess: (data) => {
+                if (data.success) {
+                    alert('공고가 정상적으로 수정되었습니다.')
+                    // FIX ME : i18n 라이브러리로 다국어 지원 해보기?
+                    navigate('/')
+                }
             },
         }
     )
@@ -180,7 +190,7 @@ function PostPage() {
                     기술 스택
                     <br />
                     <select multiple id="techSelect" {...register('techList')}>
-                        {TECHLIST.map((item: TechObj) => {
+                        {TECHLIST.map((item: ConstantObj) => {
                             return (
                                 <option key={item.value} value={item.value}>
                                     {item.value}

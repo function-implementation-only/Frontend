@@ -65,7 +65,10 @@ export class PostAPI implements PostAPIInterface {
      * 공고 업데이트하기
      */
     public updatePost(payload: FormData, id?: string) {
-        return setInterceptors(this.axiosInstance).put(`/posts/${id}`, payload)
+        return setInterceptors(this.axiosInstance).patch(
+            `/posts/${id}`,
+            payload
+        )
     }
 
     /**
