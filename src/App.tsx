@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import MainPage from 'pages/MainPage'
 import PostDetailPage from 'pages/Post/PostDetailPage'
 import PostPage from 'pages/Post/PostPage'
+import AuthMessengerPage from 'pages/Auth/MessengerPage'
 import HeaderComponent from 'components/HeaderComponent'
 import MyPage from 'pages/MyPage'
 import ProfilePage from 'pages/ProfilePage'
@@ -35,6 +36,10 @@ function App() {
                             element={<Kakao />}
                         />
                         <Route path="/api/google/test" element={<Google />} />
+                        <Route
+                            path="/auth/messenger"
+                            element={<AuthMessengerPage />}
+                        />
                     </Routes>
                 </BrowserRouter>
                 <ReactQueryDevtools
