@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import MainPage from './presentation/pages/MainPage'
 import PostDetailPage from './presentation/pages/Post/PostDetailPage'
 import PostPage from './presentation/pages/Post/PostPage'
+import AuthMessengerPage from './presentation/pages/auth/MessengerPage'
 import HeaderComponent from './presentation/components/HeaderComponent'
 // import SignupModal from './presentation/components/modal/SignupModal'
 // import LoginModal from './presentation/components/modal/LoginModal'
@@ -23,6 +24,10 @@ function App() {
                         <Route
                             path="/post/detail/:id"
                             element={<PostDetailPage />}
+                        />
+                        <Route
+                            path="/auth/messenger"
+                            element={<AuthMessengerPage />}
                         />
                     </Routes>
                     {/* <LoginModal />
