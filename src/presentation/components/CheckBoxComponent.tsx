@@ -15,7 +15,6 @@ const CheckBoxRounded = styled.label<{
         display: none;
     }
     cursor: pointer;
-    display: block;
     width: 20px;
     height: 20px;
     margin-right: 10px;
@@ -25,38 +24,39 @@ const CheckBoxRounded = styled.label<{
 
     background: ${(props) =>
         props.isChecked
-            ? `url('/src/assets/images/checkbox.svg') no-repeat 0 0px / cover`
+            ? `url('/src/assets/images/checkbox.svg') no-repeat center`
             : 'white'};
 `
 
 interface CheckBoxComponentProps {
-    item: string
-    setSelected: React.Dispatch<React.SetStateAction<number>>
+    title: string
+    // FIX ME : 상수로 만들기
+    parentHandler: Function
 }
 
-function CheckBoxComponent({ item, setSelected }: CheckBoxComponentProps) {
+function CheckBoxComponent({ title, parentHandler }: CheckBoxComponentProps) {
     const [isChecked, setIsChecked] = useState(false)
     function handleCheck(checked: boolean): void {
         if (checked) {
             setIsChecked(true)
-            setSelected((prev) => prev + 1)
+            parentHandler('checked')
         } else {
             setIsChecked(false)
-            setSelected((prev) => prev - 1)
+            parentHandler('canceled')
         }
     }
     return (
         <CheckBoxComponentLayout>
-            <CheckBoxRounded htmlFor={item} isChecked={isChecked}>
+            <CheckBoxRounded htmlFor={title} isChecked={isChecked}>
                 <input
-                    id={item}
+                    id={title}
                     type="checkbox"
                     onChange={(e) => {
                         handleCheck(e.target.checked)
                     }}
                 />
             </CheckBoxRounded>
-            {item}
+            {title}
         </CheckBoxComponentLayout>
     )
 }

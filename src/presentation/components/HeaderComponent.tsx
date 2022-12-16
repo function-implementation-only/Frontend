@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 // import { useMutation } from 'react-query'
@@ -25,15 +24,17 @@ const HeaderComponentRow = styled.div`
     margin: 0 auto;
 `
 
-const LogoBox = styled.div``
+const LogoBox = styled.div`
+    cursor: pointer;
+`
 
-const ButtonBox = styled.div`
+const ModalButtonBox = styled.div`
     display: grid;
     grid-auto-flow: column;
     grid-column-gap: 10px;
 `
 
-const Button = styled.button<{ default?: boolean }>`
+export const DefaultButton = styled.button<{ default?: boolean }>`
     width: 100px;
     height: 45px;
     border-radius: 100px;
@@ -45,6 +46,8 @@ const Button = styled.button<{ default?: boolean }>`
     border: ${(props) =>
         props.default ? 'solid 1px var(--primary-color)' : 'none'};
 `
+
+const ModalButton = styled(DefaultButton)``
 
 function HeaderComponent() {
     const { isShowing: isLoginModalOpen, handleShowing: handleLogin } =
@@ -87,18 +90,18 @@ function HeaderComponent() {
         <HeaderComponentLayout>
             <HeaderComponentRow>
                 <LogoBox>
-                    <Link to="/">
+                    <a href="/">
                         <img src={Logo} alt="logoImg" />
-                    </Link>
+                    </a>
                 </LogoBox>
-                <ButtonBox>
-                    <Button default type="button" onClick={handleLogin}>
+                <ModalButtonBox>
+                    <ModalButton default type="button" onClick={handleLogin}>
                         로그인
-                    </Button>
-                    <Button type="button" onClick={handleSignUp}>
+                    </ModalButton>
+                    <ModalButton type="button" onClick={handleSignUp}>
                         회원가입
-                    </Button>
-                </ButtonBox>
+                    </ModalButton>
+                </ModalButtonBox>
             </HeaderComponentRow>
             <LoginModal
                 isShowing={isLoginModalOpen}
