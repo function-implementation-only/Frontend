@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import ChatListComponent from './ChatListComponent'
 import {
     ChatCount,
     ChatSectionHeader,
@@ -21,11 +22,13 @@ export default function ChatSection() {
             <ChatSectionWrapper home={location.pathname === '/'}>
                 <ChatSectionHeader>
                     <ChatCount>안 읽은 대화 </ChatCount>
-                    <CreateChatButton onClick={() => setOpen(true)}>
-                        새로운 메세지
-                    </CreateChatButton>
+                    <CreateChatButton
+                        onClick={() => setOpen(true)}
+                        default
+                        name="새로운 메세지"
+                    />
                 </ChatSectionHeader>
-                {/* <ChatList /> */}
+                <ChatListComponent />
             </ChatSectionWrapper>
             {open && <CreateChatModal open={open} onClose={onClose} />}
         </>
