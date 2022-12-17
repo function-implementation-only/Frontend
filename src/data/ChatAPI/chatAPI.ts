@@ -29,7 +29,10 @@ export default class ChatAPI implements ChatAPIInterface {
         })
     }
 
-    public getChatRooms() {
-        return setInterceptors(this.axiosInstance).post('/api/chat/room/list')
+    public async getChatRooms() {
+        const result = await setInterceptors(this.axiosInstance).post(
+            '/api/chat/room/list'
+        )
+        return result.data
     }
 }
