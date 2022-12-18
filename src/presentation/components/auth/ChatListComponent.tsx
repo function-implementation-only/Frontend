@@ -3,14 +3,12 @@ import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import DefaultButton from '../common/button'
 import ChatItemSkeleton from './skeleton'
-import InputBase from '../common/input'
+import { BaseInputBox } from '../common/input'
 import ChatItemComponent from './ChatItemComponent'
 import useChatRooms from '../../../hooks/useChatRooms'
 
 export const PaperBox = styled.div`
-    padding: '2px 4px';
-    display: 'flex';
-    align-items: 'center';
+    display: flex;
     width: '100%';
 `
 
@@ -35,11 +33,7 @@ export const MoreChattingButton = styled(DefaultButton)<{ beforeIcon: any }>`
 `
 
 export const SearchBox = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 1rem;
-    height: fit-content;
     border-bottom: 1px solid var(--gray-100);
 `
 
@@ -66,20 +60,23 @@ export default function ChatListComponent() {
         <>
             <SearchBox>
                 <PaperBox>
-                    <InputBase
+                    <BaseInputBox
+                        style={{ width: '100%' }}
                         key="search"
-                        style={{ margin: '1px', flex: 1 }}
                         placeholder="대화 검색하기"
                         aria-label="대화 검색하기"
                         value={keyword}
                         onChange={(e) => setKeyword(e.target.value)}
-                        label="대화 검색하기"
                         name="search"
                     />
-                    <DefaultButton name="Search" default />
-                    <Divider />
+                    <DefaultButton
+                        style={{ height: '25px', margin: '0px 10px' }}
+                        name="Search"
+                        default
+                    />
                 </PaperBox>
             </SearchBox>
+            <Divider />
             <ChatListWrapper>
                 {isLoading
                     ? Array.from({ length: 3 }).map((_, i) => (
