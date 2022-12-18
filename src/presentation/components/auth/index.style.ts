@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components'
-import DefaultButton from '../common/button'
 
 export const ChatSectionWrapper = styled.section<{ home?: boolean }>`
     border-right: 1px solid var(--gray-100);
@@ -19,10 +18,6 @@ export const ChatSectionWrapper = styled.section<{ home?: boolean }>`
 `
 
 export const ChatSectionHeader = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 80px;
     width: 100%;
     padding: 1em;
     border-bottom: 1px solid var(--gray-100);
@@ -41,5 +36,3 @@ export const SearchBox = styled.div`
     height: fit-content;
     border-bottom: 1px solid var(--gray-100);
 `
-
-export const CreateChatButton = styled(DefaultButton)``

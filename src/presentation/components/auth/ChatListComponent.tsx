@@ -8,7 +8,10 @@ import ChatItemComponent from './ChatItemComponent'
 import useChatRooms from '../../../hooks/useChatRooms'
 
 export const PaperBox = styled.div`
-    background-color: aqua;
+    padding: '2px 4px';
+    display: 'flex';
+    align-items: 'center';
+    width: '100%';
 `
 
 export const ChatListWrapper = styled.ul`
@@ -61,16 +64,8 @@ export default function ChatListComponent() {
 
     return (
         <>
-            <input type="text" />
             <SearchBox>
-                <PaperBox
-                    style={{
-                        padding: '2px 4px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        width: '100%',
-                    }}
-                >
+                <PaperBox>
                     <InputBase
                         key="search"
                         style={{ margin: '1px', flex: 1 }}
@@ -82,7 +77,6 @@ export default function ChatListComponent() {
                         name="search"
                     />
                     <DefaultButton name="Search" default />
-
                     <Divider />
                 </PaperBox>
             </SearchBox>

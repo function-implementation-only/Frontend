@@ -19,7 +19,7 @@ const AuthMessengerBox = styled.div`
         text-align: center;
         font-weight: 600;
         font-size: 1.2rem;
-        color: var(--primary);
+        color: var(--primary-color);
     }
     @media (max-width: 735px) {
         display: none;
