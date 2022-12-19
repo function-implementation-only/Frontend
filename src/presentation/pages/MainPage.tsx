@@ -36,6 +36,7 @@ function MainPage() {
         const { data } = await window.context.postAPI.getAllPosts()
         return data
     })
+
     return (
         <MainPageLayout>
             <MainPageRow>

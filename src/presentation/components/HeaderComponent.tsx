@@ -92,9 +92,15 @@ function HeaderComponent() {
                     </Link>
                 </LogoBox>
                 <ButtonBox>
-                    <Button default type="button" onClick={handleLogin}>
-                        로그인
-                    </Button>
+                    {isLogin ? (
+                        <Button default type="button" onClick={handleLogout}>
+                            로그아웃
+                        </Button>
+                    ) : (
+                        <Button default type="button" onClick={handleLogin}>
+                            로그인
+                        </Button>
+                    )}
                     <Button type="button" onClick={handleSignUp}>
                         회원가입
                     </Button>

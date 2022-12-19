@@ -5,6 +5,8 @@ import MainPage from './presentation/pages/MainPage'
 import PostDetailPage from './presentation/pages/Post/PostDetailPage'
 import PostPage from './presentation/pages/Post/PostPage'
 import HeaderComponent from './presentation/components/HeaderComponent'
+import Kakao from './presentation/components/Kakao'
+import Google from './presentation/components/Google'
 // import SignupModal from './presentation/components/modal/SignupModal'
 // import LoginModal from './presentation/components/modal/LoginModal'
 
@@ -24,9 +26,12 @@ function App() {
                             path="/post/detail/:id"
                             element={<PostDetailPage />}
                         />
+                        <Route
+                            path="/socials/signup/kakao"
+                            element={<Kakao />}
+                        />
+                        <Route path="/google/test" element={<Google />} />
                     </Routes>
-                    {/* <LoginModal />
-                    <SignupModal /> */}
                 </BrowserRouter>
                 <ReactQueryDevtools
                     initialIsOpen={false}
