@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import MainPage from 'pages/MainPage'
-import PostDetailPage from 'pages/Post/PostDetailPage'
-import PostPage from 'pages/Post/PostPage'
-import HeaderComponent from 'components/HeaderComponent'
+import MainPage from './presentation/pages/MainPage'
+import PostDetailPage from './presentation/pages/Post/PostDetailPage'
+import PostPage from './presentation/pages/Post/PostPage'
+import HeaderComponent from './presentation/components/HeaderComponent'
+import Kakao from './presentation/components/Kakao'
+import Google from './presentation/components/Google'
 // import SignupModal from './presentation/components/modal/SignupModal'
 // import LoginModal from './presentation/components/modal/LoginModal'
 
@@ -24,9 +26,12 @@ function App() {
                             path="/post/detail/:id"
                             element={<PostDetailPage />}
                         />
+                        <Route
+                            path="/socials/signup/kakao"
+                            element={<Kakao />}
+                        />
+                        <Route path="/google/test" element={<Google />} />
                     </Routes>
-                    {/* <LoginModal />
-                    <SignupModal /> */}
                 </BrowserRouter>
                 <ReactQueryDevtools
                     initialIsOpen={false}

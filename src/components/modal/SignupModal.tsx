@@ -63,6 +63,7 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
         {
             onSuccess: (res: AxiosResponse) => {
                 setEmailAuth(res.data)
+                console.log(res.data)
             },
             onError: (err) => {
                 alert(err)
