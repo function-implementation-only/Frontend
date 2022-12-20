@@ -2,7 +2,13 @@ import React, { ForwardRefRenderFunction, InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
 
 export const BaseInputBox = styled.input`
-    background-color: '#f03f3f';
+    width: 100%;
+    transition: box-shadow 0.1s ease, border-color 0.1s ease;
+    border-radius: 3px;
+    padding: 10px;
+    background: #fff;
+    color: var(--gray-500);
+    border: 1px solid var(--gray-600);
 `
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
