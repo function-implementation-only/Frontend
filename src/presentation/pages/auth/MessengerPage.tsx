@@ -3,10 +3,8 @@ import ChatSection from '../../components/auth/ChatSession'
 
 const AuthMessengerLayout = styled.div`
     display: flex;
-    height: calc(100vh - 64px);
-    @media (max-width: 599px) {
-        height: calc(100vh - 56px);
-    }
+    height: calc(100vh - 100px);
+    max-height: 100%;
 `
 
 const AuthMessengerBox = styled.div`
@@ -20,9 +18,6 @@ const AuthMessengerBox = styled.div`
         font-weight: 600;
         font-size: 1.2rem;
         color: var(--primary-color);
-    }
-    @media (max-width: 735px) {
-        display: none;
     }
 `
 

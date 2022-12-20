@@ -1,42 +1,64 @@
 import styled from 'styled-components'
 
-export const MessageInfo = styled.p`
-    margin-left: 0.5em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: fit-content;
-    font-size: 0.9rem;
-    color: rgba(0, 0, 0, 0.6);
-`
-
 export const SkeletonWrapper = styled.li`
     display: flex;
+    flex-direction: row;
     align-items: center;
-    border-bottom: 1px solid var(--gray-100);
-    padding: 0.5em 1em;
+    animation: loading 2.5s infinite;
+
+    .skeleton {
+        background: #ddd;
+        margin: 10px 0;
+        border-radius: 4px;
+    }
+
+    .skeleton.avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    .skeleton.text {
+        margin: 10px;
+        width: 240px;
+        height: 16px;
+    }
+
+    .skeleton.date {
+        margin-left: 130px;
+        width: 120px;
+        height: 15px;
+    }
+
+    @keyframes loading {
+        0% {
+            transform: translateX(-1%);
+        }
+        50% {
+            transform: translateX(1%);
+        }
+        100% {
+            transform: translate(-1%);
+        }
+    }
 `
 
-type SkeletonBoxProps = {
-    fontSize?: string
-    height?: number
-    width: number
+type SkeletonElementType = 'avatar' | 'text' | 'date'
+
+const SkeletonElement = ({ type }: { type: SkeletonElementType }) => {
+    return <div className={`skeleton ${type}`} />
 }
-
-export const Skeleton = styled.div<SkeletonBoxProps>`
-    ${(props) => (props.fontSize ? `font-size: ${props.fontSize}` : '')}
-    height: ${(props) => (props.height ? props.height : '100%')};
-    width: ${(props) => props.width};
-`
 
 export default function ChatItemSkeleton() {
     return (
         <SkeletonWrapper>
-            <Skeleton width={36} height={36} />
-            <MessageInfo>
-                <Skeleton fontSize="1rem" width={120} />
-                <Skeleton fontSize="1rem" width={250} />
-            </MessageInfo>
+            <div>
+                <SkeletonElement type="avatar" />
+            </div>
+            <div>
+                <SkeletonElement type="text" />
+                <SkeletonElement type="date" />
+            </div>
         </SkeletonWrapper>
     )
 }

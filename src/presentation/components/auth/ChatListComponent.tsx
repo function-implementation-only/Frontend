@@ -15,6 +15,7 @@ export const PaperBox = styled.div`
 export const ChatListWrapper = styled.ul`
     max-height: calc(100vh - 80px - 90px - 60px - 64px);
     overflow-y: auto;
+    padding: 1rem;
 `
 
 export const MoreChattingButton = styled(DefaultButton)<{ beforeIcon: any }>`
@@ -35,11 +36,6 @@ export const MoreChattingButton = styled(DefaultButton)<{ beforeIcon: any }>`
 export const SearchBox = styled.div`
     padding: 1rem;
     border-bottom: 1px solid var(--gray-100);
-`
-
-export const Divider = styled.div`
-    width: 100%;
-    padding: 10px 0px;
 `
 
 export default function ChatListComponent() {
@@ -76,9 +72,8 @@ export default function ChatListComponent() {
                     />
                 </PaperBox>
             </SearchBox>
-            <Divider />
             <ChatListWrapper>
-                {isLoading
+                {isLoading || true
                     ? Array.from({ length: 3 }).map((_, i) => (
                           <ChatItemSkeleton key={(i + 1).toString()} />
                       ))
