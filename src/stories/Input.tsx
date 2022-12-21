@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { AccountInfo } from '../types/inedx'
 import './input.css'
 
 interface InputProps {

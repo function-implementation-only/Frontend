@@ -44,7 +44,7 @@ function AccordianComponent({
 }: AccordianComponentProps) {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedNum, setSelectedNum] = useState(0)
-    const accordian = useRef<HTMLDivElement>()
+    const accordian = useRef<HTMLDivElement>(null)
 
     function ownHandler(cmd: string) {
         // 체크박스에서 체크가 일어나면 실행됨.
