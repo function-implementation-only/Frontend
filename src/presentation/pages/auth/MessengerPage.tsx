@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import ChatViewComponent from '../../components/auth/chat/ChatViewComponent'
 import ChatSection from '../../components/auth/ChatSession'
 
 const AuthMessengerLayout = styled.div`
@@ -22,20 +23,25 @@ const AuthMessengerBox = styled.div`
 `
 
 function AuthMessenger() {
+    const chatFlag = false
     return (
         <AuthMessengerLayout>
             <ChatSection />
-            <AuthMessengerBox>
-                <p>
-                    선택된 채팅이 없습니다.
-                    <br />
-                    <br />
-                    좌측 메뉴에 있는 채팅방을 선택하거나,
-                    <br />
-                    좌측 상단에 새로운 메시지 추가하기 버튼을 클릭하여 채팅을
-                    시작해주세요.
-                </p>
-            </AuthMessengerBox>
+            {chatFlag ? (
+                <AuthMessengerBox>
+                    <p>
+                        선택된 채팅이 없습니다.
+                        <br />
+                        <br />
+                        좌측 메뉴에 있는 채팅방을 선택하거나,
+                        <br />
+                        좌측 상단에 새로운 메시지 추가하기 버튼을 클릭하여
+                        채팅을 시작해주세요.
+                    </p>
+                </AuthMessengerBox>
+            ) : (
+                <ChatViewComponent />
+            )}
         </AuthMessengerLayout>
     )
 }
