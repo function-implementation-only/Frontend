@@ -1,4 +1,5 @@
-import { RESPONSE_TYPE } from '../../../lib/constants'
+import { PARSE_CONSTANTS, RESPONSE_TYPE } from '../../../lib/constants'
+import { PostResponse } from '../../../types/response'
 
 export interface ParserInterface {
     getResponseType: () => string
@@ -11,8 +12,12 @@ export class GetAllPostResponseParser implements ParserInterface {
     }
 
     getParser() {
-        return () => {
-            console.log('getAllPostResponse parsing')
+        return (responses: PostResponse[]) => {
+            return responses.map((response: PostResponse) => {
+                response.category = PARSE_CONSTANTS[response.category]
+                response.place = PARSE_CONSTANTS[response.place]
+                return response
+            })
         }
     }
 }

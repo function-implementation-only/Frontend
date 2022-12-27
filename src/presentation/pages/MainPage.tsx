@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { PostResponse } from '../../types/response'
 import PostCardComponent from '../components/PostCardComponent'
 import AccordianComponent from '../components/AccordianComponent'
-import { CATEGORY, TECHLIST } from '../../lib/constants'
+import { CATEGORY, RESPONSE_TYPE, TECHLIST } from '../../lib/constants'
 import BannerComponent from '../components/BannerComponent'
 
 const MainPageLayout = styled.div``
@@ -35,6 +35,11 @@ function MainPage() {
         data: apiResponse,
     } = useQuery('getAllPosts', async () => {
         const { data } = await window.context.postAPI.getAllPosts()
+        const dataParsed = window.context.parserAPI.parse(
+            RESPONSE_TYPE.POST.GET_ALL,
+            data.data
+        )
+        data.data = dataParsed
         return data
     })
     return (

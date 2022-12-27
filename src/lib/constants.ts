@@ -3,10 +3,21 @@ export type ConstantObj = {
     value: string | number
 }
 
+type ParseConstantsObj = {
+    [key: string]: string
+}
+
 export const CATEGORY: ConstantObj[] = [
     { title: '프로젝트', value: 'PROJECT' },
     { title: '스터디', value: 'STUDY' },
 ]
+
+export const PARSE_CONSTANTS: ParseConstantsObj = {
+    PROJECT: '프로젝트',
+    STUDY: '스터디',
+    ONLINE: '온라인',
+    OFFLINE: '오프라인',
+}
 
 export const PLACE: ConstantObj[] = [
     { title: '온라인', value: 'ONLINE' },

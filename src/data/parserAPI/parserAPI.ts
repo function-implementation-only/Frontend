@@ -19,9 +19,7 @@ export class ParserAPI implements ParserAPIInterface {
     }
 
     parse(response_type: string, apiResponse: Object) {
-        const response = apiResponse
-        // parsing...
-        return response
+        return this.parserMap.get(response_type)(apiResponse)
     }
 
     public static getInstance() {
