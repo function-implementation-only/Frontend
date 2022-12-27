@@ -46,4 +46,10 @@ export const TECHLIST: ConstantObj[] = [
     { title: 'ZEPLIN', value: 'ZEPLIN' },
 ]
 
+export const RESPONSE_TYPE = {
+    POST: {
+        GET: 'getPost',
+        GET_ALL: 'getAllPost',
+    },
+}
 // 상수 정의

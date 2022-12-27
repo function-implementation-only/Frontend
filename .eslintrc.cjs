@@ -14,6 +14,8 @@ module.exports = {
         project: './tsconfig.json',
     },
     rules: {
+        'class-methods-use-this': 'off',
+        // 클래스 메서드에서 this를 사용하도록 강제하는 rule, 원활한 개발을 위해 잠시 off 처리'
         'react/jsx-props-no-spreading': 'off',
         // 가독성을 높이는 rule로 storybook의 원활한 사용을 위해 제거
         'react/react-in-jsx-scope': 'off',
