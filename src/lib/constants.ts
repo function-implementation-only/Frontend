@@ -17,6 +17,13 @@ export const PARSE_CONSTANT: ParseConstantObj = {
     STUDY: '스터디',
     ONLINE: '온라인',
     OFFLINE: '오프라인',
+    UNDEFINED: '기간 미정',
+    ONE: '1개월',
+    TWO: '2개월',
+    THREE: '3개월',
+    FOUR: '4개월',
+    FIVE: '5개월',
+    SIX: '6개월 이상',
 }
 
 export const PLACE: ConstantObj[] = [

@@ -12,6 +12,7 @@ class GetAllPostResponseParser implements ParserInterface {
             return responses.map((response: PostResponse) => {
                 response.category = PARSE_CONSTANT[response.category]
                 response.place = PARSE_CONSTANT[response.place]
+                response.duration = PARSE_CONSTANT[response.duration]
                 return response
             })
         }
