@@ -4,7 +4,14 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import dayjs from 'dayjs'
 import { useMutation, useQuery } from 'react-query'
-import { CATEGORY, ConstantObj, PLACE, TECHLIST } from '../../../lib/constants'
+import {
+    CATEGORY,
+    ConstantObj,
+    DURATION,
+    PEOPLENUM,
+    PLACE,
+    TECHLIST,
+} from '../../../lib/constants'
 import { PostResponse } from '../../../types/response'
 import SelectComponent from '../../components/SelectComponent'
 import RadioComponent from '../../components/RadioComponent'
@@ -153,9 +160,9 @@ function PostPage() {
 
     const onSubmit: SubmitHandler<Inputs> = async (inputData) => {
         const formData = new FormData()
-        const dataCopied = inputData
+        const inputDataCopied = JSON.parse(JSON.stringify(inputData))
         const { techList } = inputData
-        delete dataCopied.techList
+        delete inputDataCopied.techList
 
         formData.append(
             'data',
@@ -223,12 +230,16 @@ function PostPage() {
                                     <option value="">
                                         --Please choose an option--
                                     </option>
-                                    <option value="ONE">1개월</option>
-                                    <option value="TWO">2개월</option>
-                                    <option value="THREE">3개월</option>
-                                    <option value="FOUR">4개월</option>
-                                    <option value="FIVE">5개월</option>
-                                    <option value="SIX">6개월 이상</option>
+                                    {DURATION.map((item) => {
+                                        return (
+                                            <option
+                                                value={item.value}
+                                                key={item.title}
+                                            >
+                                                {item.title}
+                                            </option>
+                                        )
+                                    })}
                                 </select>
                             </SelectComponent>
                             <SelectComponent
@@ -242,16 +253,16 @@ function PostPage() {
                                     <option value="">
                                         --Please choose an option--
                                     </option>
-                                    <option value={1}>1명</option>
-                                    <option value={2}>2명</option>
-                                    <option value={3}>3명</option>
-                                    <option value={4}>4명</option>
-                                    <option value={5}>5명</option>
-                                    <option value={6}>6명</option>
-                                    <option value={7}>7명</option>
-                                    <option value={8}>8명</option>
-                                    <option value={9}>9명</option>
-                                    <option value={10}>10명 이상</option>
+                                    {PEOPLENUM.map((item) => {
+                                        return (
+                                            <option
+                                                value={item.value}
+                                                key={item.title}
+                                            >
+                                                {item.title}
+                                            </option>
+                                        )
+                                    })}
                                 </select>
                             </SelectComponent>
                             <SelectComponent

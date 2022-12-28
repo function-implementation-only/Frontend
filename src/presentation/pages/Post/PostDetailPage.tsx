@@ -54,7 +54,7 @@ function PostDetailPage() {
                 error.message
             ) : (
                 <div>
-                    <p>title : {apiResponse?.data.title}</p>
+                    <p>title : {apiResponse?.data?.title}</p>
                     <p>contents : {apiResponse?.data?.contents}</p>
                     <p>category : {apiResponse?.data?.category}</p>
                     <p>duration : {apiResponse?.data?.duration}</p>
