@@ -1,11 +1,7 @@
 import { RESPONSE_TYPE } from '../../../lib/constants'
+import { ParserInterface } from '../../../types/parser'
 
-export interface ParserInterface {
-    getResponseType: () => string
-    getParser: () => Function
-}
-
-export class GetPostResponseParser {
+class GetPostResponseParser implements ParserInterface {
     getResponseType() {
         return RESPONSE_TYPE.POST.GET
     }
@@ -16,3 +12,5 @@ export class GetPostResponseParser {
         }
     }
 }
+
+export default GetPostResponseParser
