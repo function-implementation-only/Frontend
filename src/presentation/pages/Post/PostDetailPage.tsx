@@ -1,7 +1,8 @@
 /* eslint-disable no-nested-ternary */
 // jsx 내에서는 if문을 쓸 수 없어 일단 삼항 연산자 중첩 처리함, 이후 디자인 적용할 때 바꿀 예정
-import { useMutation, useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
+import useDeletePost from 'src/hooks/useDeletePost'
+import useOnePost from 'src/hooks/useOnePost'
 import styled from 'styled-components'
 import NoImageComponent from '../../components/NoImageComponent'
 
@@ -11,41 +12,16 @@ function PostDetailPage() {
     const { id: paramId } = useParams()
     const navigate = useNavigate()
 
-    const {
-        status,
-        error,
-        data: apiResponse,
-    } = useQuery('getOnePost', async () => {
-        const { data } = await window.context.postAPI.getOnePost(paramId)
-        return data
-    })
+    const { status, error, data: apiResponse } = useOnePost(paramId)
 
-    function handleUpdate() {
+    function handleUpdatePost() {
         navigate(`/post/update/${paramId}`)
     }
 
-    const mutation = useMutation(
-        async (id?: string) => {
-            const { data } = await window.context.postAPI.deletePost(id)
-            return data
-        },
-        {
-            onError: (e) => {
-                console.log(e)
-            },
-            onSuccess: (data) => {
-                if (data.success) {
-                    alert('공고가 삭제되었습니다.')
-                    // FIX ME : i18n 라이브러리로 다국어 지원 해보기?
-                    navigate('/')
-                }
-            },
-        }
-    )
-
-    async function handleDelete() {
-        mutation.mutate(paramId)
+    function handleDeletePost() {
+        useDeletePost().mutate(paramId)
     }
+
     return (
         <PostDetailLayout>
             {status === 'loading' ? (
@@ -77,10 +53,10 @@ function PostDetailPage() {
                     )}
                     <br />
                     {/* FIX ME : 아래 버튼은 작성자일 경우에만 노출하도록 수정 필요 */}
-                    <button type="button" onClick={handleUpdate}>
+                    <button type="button" onClick={handleUpdatePost}>
                         수정하기
                     </button>
-                    <button type="button" onClick={handleDelete}>
+                    <button type="button" onClick={handleDeletePost}>
                         삭제하기
                     </button>
                 </div>

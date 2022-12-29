@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import dayjs from 'dayjs'
-import { useMutation, useQuery } from 'react-query'
+import useUpdatePost from 'src/hooks/useUpdatePost'
+import useCreatePost from 'src/hooks/useCreatePost'
+import useOnePost from 'src/hooks/useOnePost'
 import {
     CATEGORY,
     ConstantObj,
@@ -79,11 +81,11 @@ const WriteButton = styled(DefaultButton)``
 
 function PostPage() {
     const location = useLocation()
-    const navigate = useNavigate()
 
     const { id: paramId } = useParams()
 
     const isUpdate = /update/.test(location.pathname)
+    // 페이지 url로 수정 페이지인지 판단
 
     const { register, handleSubmit, setValue } = useForm<Inputs>()
     const [imgFiles, setImgFiles] = useState<FileList | null>(null)
@@ -91,11 +93,14 @@ function PostPage() {
     const [isInitialized, setIsInitialized] = useState(false)
     // 수정시 초기값 세팅 여부
 
+    const category = register('category')
+    const place = register('place')
+
     function setServerData(serverData: PostResponse) {
         setValue('category', serverData.category)
         setValue('contents', serverData.contents)
         setValue('duration', serverData.duration)
-        setValue('peopleNum', Number(serverData?.peopleNum))
+        setValue('peopleNum', Number(serverData.peopleNum))
         setValue('place', serverData.place)
         setValue('startDate', dayjs(serverData.startDate).format('YYYY-MM-DD'))
         setValue('title', serverData.title)
@@ -109,56 +114,14 @@ function PostPage() {
         setIsInitialized(true)
     }
 
-    useQuery('setServerData', async () => {
-        if (isUpdate && !isInitialized) {
-            const { data } = await window.context.postAPI.getOnePost(paramId)
-            setServerData(data.data)
-        }
-    })
-    // FIX ME : 에러 핸들링 추가
-    // 수정시 초기화 로직
-
-    const updateMutation = useMutation(
-        async (parameter: { formData: FormData; id?: string }) => {
-            const { data } = await window.context.postAPI.updatePost(
-                parameter.formData,
-                parameter.id
-            )
-            return data
-        },
-        {
-            onError: (e) => {
-                console.log(e)
-            },
-            onSuccess: (data) => {
-                if (data.success) {
-                    alert('공고가 정상적으로 수정되었습니다.')
-                    // FIX ME : i18n 라이브러리로 다국어 지원 해보기?
-                    navigate('/')
-                }
-            },
-        }
-    )
-    const createMutation = useMutation(
-        async (formdata: FormData) => {
-            const { data } = await window.context.postAPI.createPost(formdata)
-            return data
-        },
-        {
-            onError: (e) => {
-                console.log(e)
-            },
-            onSuccess: (data) => {
-                if (data.success) {
-                    alert('공고가 정상적으로 작성되었습니다.')
-                    // FIX ME : i18n 라이브러리로 다국어 지원 해보기?
-                    navigate('/')
-                }
-            },
-        }
-    )
+    if (isUpdate && !isInitialized) {
+        const { data: apiResponse } = useOnePost(paramId)
+        setServerData(apiResponse.data)
+    }
+    // 수정 페이지로 진입시 초기값 세팅
 
     const onSubmit: SubmitHandler<Inputs> = async (inputData) => {
+        // FIX ME : 메서드명 고민 필요
         const formData = new FormData()
         const inputDataCopied = JSON.parse(JSON.stringify(inputData))
         const { techList } = inputData
@@ -179,14 +142,11 @@ function PostPage() {
         }
 
         if (isUpdate) {
-            updateMutation.mutate({ formData, id: paramId })
+            useUpdatePost().mutate({ formData, id: paramId })
         } else {
-            createMutation.mutate(formData)
+            useCreatePost().mutate(formData)
         }
     }
-
-    const category = register('category')
-    const place = register('place')
 
     return (
         <PostPageLayout>
