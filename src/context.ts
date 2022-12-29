@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { PostAPI, PostAPIInterface } from './data/postAPI/postAPI'
-import AccountAPI, { AccountAPIInterface } from './data/accountAPI/accountAPI'
-import { ParserAPI } from './data/parserAPI/parserAPI'
+import { ParserAPI } from 'data/parserAPI/parserAPI'
+import { PostAPI, PostAPIInterface } from 'data/postAPI/postAPI'
+import AccountAPI, { AccountAPIInterface } from 'data/accountAPI/accountAPI'
 
 export interface ContextInterface {
     postAPI: PostAPIInterface
