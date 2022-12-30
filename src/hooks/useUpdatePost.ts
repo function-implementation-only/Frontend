@@ -1,9 +1,9 @@
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 
-const navigate = useNavigate()
-
 function useUpdatePost() {
+    const navigate = useNavigate()
+
     return useMutation(
         async (parameter: { formData: FormData; id: string }) => {
             const { data } = await window.context.postAPI.updatePost(

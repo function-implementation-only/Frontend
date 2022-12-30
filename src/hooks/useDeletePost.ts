@@ -1,9 +1,9 @@
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 
-const navigate = useNavigate()
-
 function useDeletePost() {
+    const navigate = useNavigate()
+
     return useMutation(
         async (id: string) => {
             const { data } = await window.context.postAPI.deletePost(id)
