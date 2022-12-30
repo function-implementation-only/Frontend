@@ -114,7 +114,7 @@ function PostPage() {
         setIsInitialized(true)
     }
 
-    if (isUpdate && !isInitialized) {
+    if (isUpdate && isInitialized === false) {
         const { data: apiResponse } = usePostById(paramId)
         setServerData(apiResponse.data)
     }

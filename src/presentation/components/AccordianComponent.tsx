@@ -61,6 +61,7 @@ function AccordianComponent({
 
     function handleClickAccordian() {
         setIsOpen((prev) => !prev)
+
         if (accordian.current) {
             if (accordian.current.clientHeight > 0) {
                 accordian.current.style.height = '0px'
