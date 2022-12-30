@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 import ChatListComponent from './ChatListComponent'
 
-const ChatSectionWrapper = styled.section`
+const ChatUserSectionWrapper = styled.section`
     border-right: 1px solid var(--gray-100);
     min-width: 350px;
     position: relative;
 `
 
-const ChatSectionHeader = styled.div`
+const ChatUserSectionHeader = styled.div`
     width: 100%;
     padding: 1em;
     border-bottom: 1px solid var(--gray-100);
@@ -15,11 +15,11 @@ const ChatSectionHeader = styled.div`
     color: var(--gray-500);
 `
 
-export default function ChatSection() {
+export default function ChatUserSection() {
     return (
-        <ChatSectionWrapper>
-            <ChatSectionHeader>안 읽은 대화</ChatSectionHeader>
+        <ChatUserSectionWrapper>
+            <ChatUserSectionHeader>안 읽은 대화</ChatUserSectionHeader>
             <ChatListComponent />
-        </ChatSectionWrapper>
+        </ChatUserSectionWrapper>
     )
 }

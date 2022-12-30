@@ -21,6 +21,7 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.4",
     "@reduxjs/toolkit": "^1.9.1",
+    "@stomp/stompjs": "^6.1.2",
     "@storybook/react": "^6.5.14",
     "@storybook/testing-library": "^0.0.13",
     "@toast-ui/editor": "^3.2.1",

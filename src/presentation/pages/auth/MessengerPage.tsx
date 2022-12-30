@@ -1,14 +1,16 @@
 import styled from 'styled-components'
-import ChatViewComponent from '../../components/auth/chat/ChatViewComponent'
-import ChatSection from '../../components/auth/ChatSession'
+import StompJs from '@stomp/stompjs'
+import { getTokenFromCookie } from 'src/utils/cookie'
+import ChatFoundSection from '../../components/auth/chat/ChatFoundSection'
+import ChatUserSection from '../../components/auth/ChatUserSection'
 
-const AuthMessengerLayout = styled.div`
+const ChatViewLayout = styled.div`
     display: flex;
     height: calc(100vh - 100px);
     max-height: 100%;
 `
 
-const AuthMessengerBox = styled.div`
+const ChatNotFoundSection = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,11 +26,45 @@ const AuthMessengerBox = styled.div`
 
 function AuthMessenger() {
     const chatFlag = false
+
+    const client = new StompJs.Client({
+        brokerURL: 'ws://joinus.p-e.kr/api/chat/room',
+        connectHeaders: {
+            token: getTokenFromCookie(),
+        },
+        debug(str: any) {
+            console.log(str)
+        },
+        reconnectDelay: 5000,
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+    })
+
+    client.onConnect = function t(frame: any) {
+        console.log(`frame ${frame}`)
+        // Do something, all subscribes must be done is this callback
+        // This is needed because this will be executed after a (re)connect
+    }
+
+    client.onStompError = function t(frame: {
+        headers: { message: any }
+        body: any
+    }) {
+        // Will be invoked in case of error encountered at Broker
+        // Bad login/passcode typically will cause an error
+        // Complaint brokers will set `message` header with a brief message. Body may contain details.
+        // Compliant brokers will terminate the connection after any error
+        console.log(`Broker reported error: ${frame.headers.message}`)
+        console.log(`Additional details: ${frame.body}`)
+    }
+
+    client.activate()
+
     return (
-        <AuthMessengerLayout>
-            <ChatSection />
+        <ChatViewLayout>
+            <ChatUserSection />
             {chatFlag ? (
-                <AuthMessengerBox>
+                <ChatNotFoundSection>
                     <p>
                         선택된 채팅이 없습니다.
                         <br />
@@ -38,11 +74,11 @@ function AuthMessenger() {
                         좌측 상단에 새로운 메시지 추가하기 버튼을 클릭하여
                         채팅을 시작해주세요.
                     </p>
-                </AuthMessengerBox>
+                </ChatNotFoundSection>
             ) : (
-                <ChatViewComponent />
+                <ChatFoundSection />
             )}
-        </AuthMessengerLayout>
+        </ChatViewLayout>
     )
 }
 
