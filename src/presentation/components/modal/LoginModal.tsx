@@ -3,6 +3,7 @@ import { AxiosResponse } from 'axios'
 import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
+import { ServiceManager } from 'src/manager/serviceManager'
 import Modal from '../Modal'
 import { saveTokenToCookie } from '../../../utils/cookie'
 import { ErrorEmail, ErrorPassword } from '../Error'
@@ -24,7 +25,7 @@ const LoginModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
     const mutation = useMutation(
         'loginInfo',
         (data: AccountInfo) =>
-            window.context.dataService.accountAPI.postLogIn(data),
+            ServiceManager.getInstance().dataService.accountAPI.postLogIn(data),
         {
             onSuccess: (res: AxiosResponse) => {
                 const token = res?.headers?.access_token

@@ -1,5 +1,6 @@
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import { ServiceManager } from 'src/manager/serviceManager'
 
 function useDeletePost() {
     const navigate = useNavigate()
@@ -7,7 +8,9 @@ function useDeletePost() {
     return useMutation(
         async (id: string) => {
             const { data } =
-                await window.context.dataService.postAPI.deletePost(id)
+                await ServiceManager.getInstance().dataService.postAPI.deletePost(
+                    id
+                )
             return data
         },
         {

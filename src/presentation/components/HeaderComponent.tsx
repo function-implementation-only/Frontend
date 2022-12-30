@@ -62,7 +62,7 @@ function HeaderComponent() {
 
     // const logoutMutation = useMutation(
     //     'logout',
-    //     () => window.context.dataService.accountAPI.postLogOut(),
+    //     () => ServiceManager.getInstance().dataService.accountAPI.postLogOut(),
     //     {
     //         onSuccess: () => {
     //             deleteCookie(token)

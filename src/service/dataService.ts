@@ -10,8 +10,6 @@ export interface DataServiceInterface {
 }
 
 export class DataService implements DataServiceInterface {
-    private static instance: DataService
-
     postAPI
 
     accountAPI
@@ -26,13 +24,5 @@ export class DataService implements DataServiceInterface {
         this.postAPI = new PostAPI(axiosInstance)
         this.accountAPI = new AccountAPI(axiosInstance)
         this.parserAPI = new ParserAPI()
-    }
-
-    public static getInstance() {
-        if (this.instance) {
-            return this.instance
-        }
-        this.instance = new DataService()
-        return this.instance
     }
 }
