@@ -8,7 +8,7 @@ export interface PostAPIInterface {
         payload: FormData
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
     getAllPosts: () => Promise<AxiosResponse<APIResponse<PostResponse[]>>>
-    getOnePost: (
+    getPostById: (
         id: string
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
     updatePost: (
@@ -53,10 +53,10 @@ export class PostAPI implements PostAPIInterface {
     }
 
     /**
-     * getOnePost
+     * getPostById
      * 공고 하나 가져오기
      */
-    public getOnePost(id: string) {
+    public getPostById(id: string) {
         return this.axiosInstance.get(`/posts/${id}`)
     }
 

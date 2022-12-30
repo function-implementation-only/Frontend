@@ -2,7 +2,7 @@
 // jsx 내에서는 if문을 쓸 수 없어 일단 삼항 연산자 중첩 처리함, 이후 디자인 적용할 때 바꿀 예정
 import { useNavigate, useParams } from 'react-router-dom'
 import useDeletePost from 'src/hooks/useDeletePost'
-import useOnePost from 'src/hooks/useOnePost'
+import usePostById from 'src/hooks/usePostById'
 import styled from 'styled-components'
 import NoImageComponent from '../../components/NoImageComponent'
 
@@ -12,7 +12,7 @@ function PostDetailPage() {
     const { id: paramId } = useParams()
     const navigate = useNavigate()
 
-    const { status, error, data: apiResponse } = useOnePost(paramId)
+    const { status, error, data: apiResponse } = usePostById(paramId)
 
     function handleUpdatePost() {
         navigate(`/post/update/${paramId}`)

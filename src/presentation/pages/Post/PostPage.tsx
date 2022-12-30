@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 import dayjs from 'dayjs'
 import useUpdatePost from 'src/hooks/useUpdatePost'
 import useCreatePost from 'src/hooks/useCreatePost'
-import useOnePost from 'src/hooks/useOnePost'
+import usePostById from 'src/hooks/usePostById'
 import {
     CATEGORY,
     ConstantObj,
@@ -115,7 +115,7 @@ function PostPage() {
     }
 
     if (isUpdate && !isInitialized) {
-        const { data: apiResponse } = useOnePost(paramId)
+        const { data: apiResponse } = usePostById(paramId)
         setServerData(apiResponse.data)
     }
     // 수정 페이지로 진입시 초기값 세팅
