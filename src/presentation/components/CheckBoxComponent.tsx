@@ -30,7 +30,7 @@ const CheckBoxRounded = styled.label<{
 
 interface CheckBoxComponentProps {
     title: string
-    // FIX ME : 상수로 만들기
+    // FIXME : 상수로 만들기
     parentHandler: Function
 }
 

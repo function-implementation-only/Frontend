@@ -15,7 +15,7 @@ export interface PostAPIInterface {
         payload: FormData,
         id: string
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
-    // FIX ME : 수정 API 백엔드 쪽에서 확인되면 수정해야함.
+    // FIXME : 수정 API 백엔드 쪽에서 확인되면 수정해야함.
     deletePost: (id?: string) => Promise<AxiosResponse<APIResponse<string>>>
 }
 

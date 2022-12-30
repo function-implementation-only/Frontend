@@ -52,7 +52,7 @@ function PostDetailPage() {
                         <NoImageComponent />
                     )}
                     <br />
-                    {/* FIX ME : 아래 버튼은 작성자일 경우에만 노출하도록 수정 필요 */}
+                    {/* FIXME : 아래 버튼은 작성자일 경우에만 노출하도록 수정 필요 */}
                     <button type="button" onClick={handleUpdatePost}>
                         수정하기
                     </button>

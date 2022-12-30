@@ -110,7 +110,7 @@ function PostPage() {
                 return item.tech
             })
         )
-        // FIX ME : 이미지 초기화 로직에 대해서 고민해보기
+        // FIXME : 이미지 초기화 로직에 대해서 고민해보기
         setIsInitialized(true)
     }
 
@@ -121,7 +121,7 @@ function PostPage() {
     // 수정 페이지로 진입시 초기값 세팅
 
     const onSubmit: SubmitHandler<Inputs> = async (inputData) => {
-        // FIX ME : 메서드명 고민 필요
+        // FIXME : 메서드명 고민 필요
         const formData = new FormData()
         const inputDataCopied = JSON.parse(JSON.stringify(inputData))
         const { techList } = inputData
