@@ -10,35 +10,25 @@ export interface AccountAPIInterface {
 }
 
 export default class AccountAPI implements AccountAPIInterface {
-    private axiosInstance: AxiosInstance
+    axiosInstance: AxiosInstance
 
-    private static instance: AccountAPI
-
-    private constructor(axiosInstance: AxiosInstance) {
+    constructor(axiosInstance: AxiosInstance) {
         this.axiosInstance = axiosInstance
     }
 
-    public static getInstance(axiosInstance: AxiosInstance) {
-        if (this.instance) {
-            return this.instance
-        }
-        this.instance = new AccountAPI(axiosInstance)
-        return this.instance
-    }
-
-    public postSignUp(data: SignUpInfo) {
+    postSignUp(data: SignUpInfo) {
         return setInterceptors(this.axiosInstance).post('/account/signup', data)
     }
 
-    public postLogIn(data: AccountInfo) {
+    postLogIn(data: AccountInfo) {
         return setInterceptors(this.axiosInstance).post('/account/login', data)
     }
 
-    public postLogOut() {
+    postLogOut() {
         return setInterceptors(this.axiosInstance).post('/logout')
     }
 
-    public postEmailAuth(email: string) {
+    postEmailAuth(email: string) {
         return setInterceptors(this.axiosInstance).post(
             '/account/signup/email-check',
             { email }

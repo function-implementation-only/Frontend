@@ -20,27 +20,17 @@ export interface PostAPIInterface {
 }
 
 export class PostAPI implements PostAPIInterface {
-    private axiosInstance: AxiosInstance
+    axiosInstance: AxiosInstance
 
-    private static instance: PostAPI
-
-    private constructor(axiosInstance: AxiosInstance) {
+    constructor(axiosInstance: AxiosInstance) {
         this.axiosInstance = axiosInstance
-    }
-
-    public static getInstance(axiosInstance: AxiosInstance) {
-        if (this.instance) {
-            return this.instance
-        }
-        this.instance = new PostAPI(axiosInstance)
-        return this.instance
     }
 
     /**
      * createPost
      * 공고 작성하기
      */
-    public createPost(payload: FormData) {
+    createPost(payload: FormData) {
         return setInterceptors(this.axiosInstance).post('/posts', payload)
     }
 
@@ -48,7 +38,7 @@ export class PostAPI implements PostAPIInterface {
      * getAllPost
      * 모든 공고 가져오기
      */
-    public getAllPost() {
+    getAllPost() {
         return this.axiosInstance.get('/posts/all')
     }
 
@@ -56,7 +46,7 @@ export class PostAPI implements PostAPIInterface {
      * getPostById
      * 공고 하나 가져오기
      */
-    public getPostById(id: string) {
+    getPostById(id: string) {
         return this.axiosInstance.get(`/posts/${id}`)
     }
 
@@ -64,7 +54,7 @@ export class PostAPI implements PostAPIInterface {
      * updatePost
      * 공고 업데이트하기
      */
-    public updatePost(payload: FormData, id: string) {
+    updatePost(payload: FormData, id: string) {
         return setInterceptors(this.axiosInstance).patch(
             `/posts/${id}`,
             payload
@@ -75,7 +65,7 @@ export class PostAPI implements PostAPIInterface {
      * deletePost
      * 공고 지우기
      */
-    public deletePost(id: string) {
+    deletePost(id: string) {
         return setInterceptors(this.axiosInstance).delete(`/posts/${id}`)
     }
 }

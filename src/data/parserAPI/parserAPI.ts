@@ -6,8 +6,6 @@ export interface ParserAPIInterface {
 }
 
 export class ParserAPI implements ParserAPIInterface {
-    private static instance: ParserAPI
-
     parserMap: Map<string, Function>
 
     constructor() {
@@ -20,13 +18,5 @@ export class ParserAPI implements ParserAPIInterface {
 
     parse(response_type: string, apiResponse: Object) {
         return this.parserMap.get(response_type)(apiResponse)
-    }
-
-    public static getInstance() {
-        if (this.instance) {
-            return this.instance
-        }
-        this.instance = new ParserAPI()
-        return this.instance
     }
 }

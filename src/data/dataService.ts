@@ -23,9 +23,9 @@ export class DataService implements DataServiceInterface {
             baseURL: import.meta.env.VITE_API_END_POINT,
         })
 
-        this.postAPI = PostAPI.getInstance(axiosInstance)
-        this.accountAPI = AccountAPI.getInstance(axiosInstance)
-        this.parserAPI = ParserAPI.getInstance()
+        this.postAPI = new PostAPI(axiosInstance)
+        this.accountAPI = new AccountAPI(axiosInstance)
+        this.parserAPI = new ParserAPI()
     }
 
     public static getInstance() {
