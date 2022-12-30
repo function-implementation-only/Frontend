@@ -60,9 +60,11 @@ function HeaderComponent() {
 
     // 로그아웃 api 문제로인한 주석처리
 
+    // const serviceManager = useServiceManager()
+
     // const logoutMutation = useMutation(
     //     'logout',
-    //     () => ServiceManager.getInstance().dataService.accountAPI.postLogOut(),
+    //     () => serviceManager.dataService.accountAPI.postLogOut(),
     //     {
     //         onSuccess: () => {
     //             deleteCookie(token)

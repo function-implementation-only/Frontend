@@ -1,12 +1,13 @@
 import { useQuery } from 'react-query'
-import { ServiceManager } from 'src/manager/serviceManager'
+import useServiceManager from './useServiceManager'
 
 function usePostById(id: string) {
+    const serviceManager = useServiceManager()
+
     return useQuery('getPost', async () => {
-        const { data } =
-            await ServiceManager.getInstance().dataService.postAPI.getPostById(
-                id
-            )
+        const { data } = await serviceManager.dataService.postAPI.getPostById(
+            id
+        )
         return data
     })
 }

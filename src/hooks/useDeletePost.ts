@@ -1,16 +1,15 @@
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
-import { ServiceManager } from 'src/manager/serviceManager'
+import useServiceManager from './useServiceManager'
 
 function useDeletePost() {
     const navigate = useNavigate()
+    const serviceManager = useServiceManager()
 
     return useMutation(
         async (id: string) => {
             const { data } =
-                await ServiceManager.getInstance().dataService.postAPI.deletePost(
-                    id
-                )
+                await serviceManager.dataService.postAPI.deletePost(id)
             return data
         },
         {

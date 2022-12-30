@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { AxiosResponse } from 'axios'
-import { ServiceManager } from 'src/manager/serviceManager'
+import useServiceManager from 'src/hooks/useServiceManager'
 import Modal from '../Modal'
 import { SignUpInfo } from '../../../types/account'
 import {
@@ -21,6 +21,7 @@ interface Props {
 }
 
 const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
+    const serviceManager = useServiceManager()
     const {
         register,
         handleSubmit,
@@ -40,9 +41,7 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
     const singnUpMutation = useMutation(
         'signUpInfo',
         (data: SignUpInfo) =>
-            ServiceManager.getInstance().dataService.accountAPI.postSignUp(
-                data
-            ),
+            serviceManager.dataService.accountAPI.postSignUp(data),
         {
             onSuccess: () => {
                 alert('회원가입이 완료되었습니다!')
@@ -58,7 +57,7 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
     const emailAuthMutation = useMutation(
         'emailInfo',
         () =>
-            ServiceManager.getInstance().dataService.accountAPI.postEmailAuth(
+            serviceManager.dataService.accountAPI.postEmailAuth(
                 email as string
             ),
         {
