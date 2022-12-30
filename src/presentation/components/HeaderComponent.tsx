@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// FIXME : ts 린트 잠시 피하는 용도. 나중에 수정 필요
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 // import { useMutation } from 'react-query'
@@ -58,9 +60,11 @@ function HeaderComponent() {
 
     // 로그아웃 api 문제로인한 주석처리
 
+    // const serviceManager = useServiceManager()
+
     // const logoutMutation = useMutation(
     //     'logout',
-    //     () => window.context.accountAPI.postLogOut(),
+    //     () => serviceManager.dataService.accountAPI.postLogOut(),
     //     {
     //         onSuccess: () => {
     //             deleteCookie(token)

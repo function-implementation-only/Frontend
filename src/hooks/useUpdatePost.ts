@@ -1,15 +1,18 @@
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import useServiceManager from './useServiceManager'
 
 function useUpdatePost() {
     const navigate = useNavigate()
+    const serviceManager = useServiceManager()
 
     return useMutation(
         async (parameter: { formData: FormData; id: string }) => {
-            const { data } = await window.context.postAPI.updatePost(
-                parameter.formData,
-                parameter.id
-            )
+            const { data } =
+                await serviceManager.dataService.postAPI.updatePost(
+                    parameter.formData,
+                    parameter.id
+                )
             return data
         },
         {

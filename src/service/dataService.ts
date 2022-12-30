@@ -3,13 +3,13 @@ import { ParserAPI } from 'data/parserAPI/parserAPI'
 import { PostAPI, PostAPIInterface } from 'data/postAPI/postAPI'
 import AccountAPI, { AccountAPIInterface } from 'data/accountAPI/accountAPI'
 
-export interface ContextInterface {
+export interface DataServiceInterface {
     postAPI: PostAPIInterface
     accountAPI: AccountAPIInterface
     parserAPI: ParserAPI
 }
 
-export class Context implements ContextInterface {
+export class DataService implements DataServiceInterface {
     postAPI
 
     accountAPI
@@ -21,8 +21,8 @@ export class Context implements ContextInterface {
             baseURL: import.meta.env.VITE_API_END_POINT,
         })
 
-        this.postAPI = PostAPI.getInstance(axiosInstance)
-        this.accountAPI = AccountAPI.getInstance(axiosInstance)
-        this.parserAPI = ParserAPI.getInstance()
+        this.postAPI = new PostAPI(axiosInstance)
+        this.accountAPI = new AccountAPI(axiosInstance)
+        this.parserAPI = new ParserAPI()
     }
 }
