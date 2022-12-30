@@ -58,22 +58,22 @@ function AccordianComponent({
             default:
         }
     }
+
+    function handleClickAccordian() {
+        setIsOpen((prev) => !prev)
+
+        if (accordian.current) {
+            if (accordian.current.clientHeight > 0) {
+                accordian.current.style.height = '0px'
+            } else {
+                accordian.current.style.height = `${accordian.current.scrollHeight}px`
+            }
+        }
+    }
     return (
         <AccordianBox>
             <AccordianItem>
-                <AccordianTitle
-                    isOpen={isOpen}
-                    onClick={() => {
-                        setIsOpen((prev) => !prev)
-                        if (accordian.current) {
-                            if (accordian.current.clientHeight > 0) {
-                                accordian.current.style.height = '0px'
-                            } else {
-                                accordian.current.style.height = `${accordian.current.scrollHeight}px`
-                            }
-                        }
-                    }}
-                >
+                <AccordianTitle isOpen={isOpen} onClick={handleClickAccordian}>
                     <div>{`${title}(${selectedNum})`}</div>
                     <div>
                         <img src={arrow} alt="arrowImg" />

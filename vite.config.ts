@@ -14,6 +14,7 @@ export default ({ mode }) => {
     return {
         resolve: {
             alias: {
+                src: path.resolve(__dirname, './src'),
                 data: path.resolve(__dirname, './src/data/'),
                 pages: path.resolve(__dirname, './src/presentation/pages'),
                 components: path.resolve(

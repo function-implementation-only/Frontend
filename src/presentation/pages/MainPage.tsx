@@ -1,11 +1,11 @@
 /* eslint-disable no-nested-ternary */
 // jsx 내에서는 if문을 쓸 수 없어 일단 삼항 연산자 중첩 처리함, 이후 디자인 적용할 때 바꿀 예정
-import { useQuery } from 'react-query'
 import styled from 'styled-components'
+import useAllPost from 'src/hooks/useAllPost'
 import { PostResponse } from '../../types/response'
 import PostCardComponent from '../components/PostCardComponent'
 import AccordianComponent from '../components/AccordianComponent'
-import { CATEGORY, RESPONSE_TYPE, TECHLIST } from '../../lib/constants'
+import { CATEGORY, TECHLIST } from '../../lib/constants'
 import BannerComponent from '../components/BannerComponent'
 
 const MainPageLayout = styled.div``
@@ -29,19 +29,7 @@ const PostCardBox = styled.div`
 `
 
 function MainPage() {
-    const {
-        status,
-        error,
-        data: apiResponse,
-    } = useQuery('getAllPosts', async () => {
-        const { data } = await window.context.postAPI.getAllPosts()
-        const dataParsed = window.context.parserAPI.parse(
-            RESPONSE_TYPE.POST.GET_ALL,
-            data.data
-        )
-        data.data = dataParsed
-        return data
-    })
+    const { status, error, data: apiResponse } = useAllPost()
     return (
         <MainPageLayout>
             <MainPageRow>

@@ -7,15 +7,15 @@ export interface PostAPIInterface {
     createPost: (
         payload: FormData
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
-    getAllPosts: () => Promise<AxiosResponse<APIResponse<PostResponse[]>>>
-    getOnePost: (
-        id?: string
+    getAllPost: () => Promise<AxiosResponse<APIResponse<PostResponse[]>>>
+    getPostById: (
+        id: string
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
     updatePost: (
         payload: FormData,
-        id?: string
+        id: string
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
-    // FIX ME : 수정 API 백엔드 쪽에서 확인되면 수정해야함.
+    // FIXME : 수정 API 백엔드 쪽에서 확인되면 수정해야함.
     deletePost: (id?: string) => Promise<AxiosResponse<APIResponse<string>>>
 }
 
@@ -45,18 +45,18 @@ export class PostAPI implements PostAPIInterface {
     }
 
     /**
-     * getAllPosts
+     * getAllPost
      * 모든 공고 가져오기
      */
-    public getAllPosts() {
+    public getAllPost() {
         return this.axiosInstance.get('/posts/all')
     }
 
     /**
-     * getOnePost
+     * getPostById
      * 공고 하나 가져오기
      */
-    public getOnePost(id?: string) {
+    public getPostById(id: string) {
         return this.axiosInstance.get(`/posts/${id}`)
     }
 
@@ -64,7 +64,7 @@ export class PostAPI implements PostAPIInterface {
      * updatePost
      * 공고 업데이트하기
      */
-    public updatePost(payload: FormData, id?: string) {
+    public updatePost(payload: FormData, id: string) {
         return setInterceptors(this.axiosInstance).patch(
             `/posts/${id}`,
             payload
@@ -75,7 +75,7 @@ export class PostAPI implements PostAPIInterface {
      * deletePost
      * 공고 지우기
      */
-    public deletePost(id?: string) {
+    public deletePost(id: string) {
         return setInterceptors(this.axiosInstance).delete(`/posts/${id}`)
     }
 }

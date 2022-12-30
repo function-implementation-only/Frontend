@@ -10,6 +10,6 @@ export interface PostResponse extends PostObj {
     likeCheck: null | boolean
     likesLength: number
     profileImg: null | Object
-    // FIX ME : profile Img는 어떻게 올 지 확인 필요
+    // FIXME : profile Img는 어떻게 올 지 확인 필요
     nickname: string
 }
