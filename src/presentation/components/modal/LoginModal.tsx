@@ -23,7 +23,8 @@ const LoginModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
 
     const mutation = useMutation(
         'loginInfo',
-        (data: AccountInfo) => window.context.accountAPI.postLogIn(data),
+        (data: AccountInfo) =>
+            window.context.dataService.accountAPI.postLogIn(data),
         {
             onSuccess: (res: AxiosResponse) => {
                 const token = res?.headers?.access_token

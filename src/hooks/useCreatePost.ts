@@ -6,7 +6,8 @@ function useCreatePost() {
 
     return useMutation(
         async (formdata: FormData) => {
-            const { data } = await window.context.postAPI.createPost(formdata)
+            const { data } =
+                await window.context.dataService.postAPI.createPost(formdata)
             return data
         },
         {

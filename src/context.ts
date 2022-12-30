@@ -1,28 +1,13 @@
-import axios from 'axios'
-import { ParserAPI } from 'data/parserAPI/parserAPI'
-import { PostAPI, PostAPIInterface } from 'data/postAPI/postAPI'
-import AccountAPI, { AccountAPIInterface } from 'data/accountAPI/accountAPI'
+import { DataService, DataServiceInterface } from 'data/dataService'
 
 export interface ContextInterface {
-    postAPI: PostAPIInterface
-    accountAPI: AccountAPIInterface
-    parserAPI: ParserAPI
+    dataService: DataServiceInterface
 }
 
 export class Context implements ContextInterface {
-    postAPI
-
-    accountAPI
-
-    parserAPI
+    dataService
 
     constructor() {
-        const axiosInstance = axios.create({
-            baseURL: import.meta.env.VITE_API_END_POINT,
-        })
-
-        this.postAPI = PostAPI.getInstance(axiosInstance)
-        this.accountAPI = AccountAPI.getInstance(axiosInstance)
-        this.parserAPI = ParserAPI.getInstance()
+        this.dataService = DataService.getInstance()
     }
 }

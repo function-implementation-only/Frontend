@@ -3,8 +3,8 @@ import { RESPONSE_TYPE } from 'src/lib/constants'
 
 function useAllPost() {
     return useQuery('getAllPost', async () => {
-        const { data } = await window.context.postAPI.getAllPost()
-        const dataParsed = window.context.parserAPI.parse(
+        const { data } = await window.context.dataService.postAPI.getAllPost()
+        const dataParsed = window.context.dataService.parserAPI.parse(
             RESPONSE_TYPE.POST.GET_ALL,
             data.data
         )

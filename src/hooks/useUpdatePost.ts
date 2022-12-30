@@ -6,10 +6,11 @@ function useUpdatePost() {
 
     return useMutation(
         async (parameter: { formData: FormData; id: string }) => {
-            const { data } = await window.context.postAPI.updatePost(
-                parameter.formData,
-                parameter.id
-            )
+            const { data } =
+                await window.context.dataService.postAPI.updatePost(
+                    parameter.formData,
+                    parameter.id
+                )
             return data
         },
         {

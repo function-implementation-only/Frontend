@@ -38,7 +38,8 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
 
     const singnUpMutation = useMutation(
         'signUpInfo',
-        (data: SignUpInfo) => window.context.accountAPI.postSignUp(data),
+        (data: SignUpInfo) =>
+            window.context.dataService.accountAPI.postSignUp(data),
         {
             onSuccess: () => {
                 alert('회원가입이 완료되었습니다!')
@@ -53,7 +54,10 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
 
     const emailAuthMutation = useMutation(
         'emailInfo',
-        () => window.context.accountAPI.postEmailAuth(email as string),
+        () =>
+            window.context.dataService.accountAPI.postEmailAuth(
+                email as string
+            ),
         {
             onSuccess: (res: AxiosResponse) => {
                 setEmailAuth(res.data)

@@ -6,7 +6,8 @@ function useDeletePost() {
 
     return useMutation(
         async (id: string) => {
-            const { data } = await window.context.postAPI.deletePost(id)
+            const { data } =
+                await window.context.dataService.postAPI.deletePost(id)
             return data
         },
         {
