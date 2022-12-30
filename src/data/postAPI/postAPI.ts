@@ -7,7 +7,7 @@ export interface PostAPIInterface {
     createPost: (
         payload: FormData
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
-    getAllPosts: () => Promise<AxiosResponse<APIResponse<PostResponse[]>>>
+    getAllPost: () => Promise<AxiosResponse<APIResponse<PostResponse[]>>>
     getPostById: (
         id: string
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
@@ -45,10 +45,10 @@ export class PostAPI implements PostAPIInterface {
     }
 
     /**
-     * getAllPosts
+     * getAllPost
      * 모든 공고 가져오기
      */
-    public getAllPosts() {
+    public getAllPost() {
         return this.axiosInstance.get('/posts/all')
     }
 

@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query'
 import { RESPONSE_TYPE } from 'src/lib/constants'
 
-function useAllPosts() {
-    return useQuery('getAllPosts', async () => {
-        const { data } = await window.context.postAPI.getAllPosts()
+function useAllPost() {
+    return useQuery('getAllPost', async () => {
+        const { data } = await window.context.postAPI.getAllPost()
         const dataParsed = window.context.parserAPI.parse(
             RESPONSE_TYPE.POST.GET_ALL,
             data.data
@@ -13,4 +13,4 @@ function useAllPosts() {
     })
 }
 
-export default useAllPosts
+export default useAllPost
