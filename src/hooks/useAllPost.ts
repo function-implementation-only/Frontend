@@ -9,9 +9,9 @@ function useAllPost() {
         const { data } = await serviceManager.dataService.postAPI.getAllPost()
         const dataParsed = serviceManager.dataService.parserAPI.parse(
             RESPONSE_TYPE.POST.GET_ALL,
-            data.data
+            data.data.content
         )
-        data.data = dataParsed
+        data.data.content = dataParsed
         return data
     })
 }

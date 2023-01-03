@@ -1,6 +1,6 @@
 import { PARSE_CONSTANT, RESPONSE_TYPE } from '../../../lib/constants'
 import { ParserInterface } from '../../../types/parser'
-import { PostResponse } from '../../../types/response'
+import { ContentResponse } from '../../../types/response'
 
 class GetAllPostResponseParser implements ParserInterface {
     getResponseType() {
@@ -8,8 +8,8 @@ class GetAllPostResponseParser implements ParserInterface {
     }
 
     getParser() {
-        return (responses: PostResponse[]) => {
-            return responses.map((response: PostResponse) => {
+        return (responses: ContentResponse[]) => {
+            return responses.map((response: ContentResponse) => {
                 response.category = PARSE_CONSTANT[response.category]
                 response.place = PARSE_CONSTANT[response.place]
                 response.duration = PARSE_CONSTANT[response.duration]

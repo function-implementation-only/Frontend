@@ -14,7 +14,7 @@ import {
     PLACE,
     TECHLIST,
 } from '../../../lib/constants'
-import { PostResponse } from '../../../types/response'
+import { ContentResponse } from '../../../types/response'
 import SelectComponent from '../../components/SelectComponent'
 import RadioComponent from '../../components/RadioComponent'
 import { Inputs } from '../../../types/post'
@@ -96,7 +96,7 @@ function PostPage() {
     const category = register('category')
     const place = register('place')
 
-    function setServerData(serverData: PostResponse) {
+    function setServerData(serverData: ContentResponse) {
         setValue('category', serverData.category)
         setValue('contents', serverData.contents)
         setValue('duration', serverData.duration)

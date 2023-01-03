@@ -2,7 +2,7 @@
 // jsx 내에서는 if문을 쓸 수 없어 일단 삼항 연산자 중첩 처리함, 이후 디자인 적용할 때 바꿀 예정
 import styled from 'styled-components'
 import useAllPost from 'src/hooks/useAllPost'
-import { PostResponse } from '../../types/response'
+import { ContentResponse } from '../../types/response'
 import PostCardComponent from '../components/PostCardComponent'
 import AccordianComponent from '../components/AccordianComponent'
 import { CATEGORY, TECHLIST } from '../../lib/constants'
@@ -52,14 +52,16 @@ function MainPage() {
                             ? 'Loading...'
                             : error instanceof Error
                             ? error.message
-                            : apiResponse?.data.map((post: PostResponse) => {
-                                  return (
-                                      <PostCardComponent
-                                          key={post.postId}
-                                          post={post}
-                                      />
-                                  )
-                              })}
+                            : apiResponse?.data.content.map(
+                                  (post: ContentResponse) => {
+                                      return (
+                                          <PostCardComponent
+                                              key={post.postId}
+                                              post={post}
+                                          />
+                                      )
+                                  }
+                              )}
                     </PostCardBox>
                 </ContentsBox>
             </MainPageRow>

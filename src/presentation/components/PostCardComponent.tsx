@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { PostResponse } from '../../types/response'
+import { ContentResponse } from '../../types/response'
 import lookupImg from '../../assets/images/lookup.svg'
 import { TechObj } from '../../types/post'
 import bookmarkBtnImg from '../../assets/images/bookmark.svg'
@@ -49,7 +49,7 @@ const TechImage = styled.img`
 `
 
 type PostCardComponentProps = {
-    post: PostResponse
+    post: ContentResponse
 }
 
 function PostCardComponent({ post }: PostCardComponentProps) {
