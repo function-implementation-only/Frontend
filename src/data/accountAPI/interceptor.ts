@@ -1,14 +1,22 @@
 import { AxiosInstance } from 'axios'
+import { getTokenFromCookie } from '../../utils/cookie'
 
 function setInterceptors(axiosInstance: AxiosInstance) {
     axiosInstance.interceptors.request.use(
         (config) => {
             // 요청을 보내기 전에 어떤 처리를 할 수 있다.
             const returnConfig = config
-
-            returnConfig.headers = {
-                'Content-Type': 'application/json',
-                // 토큰 관련 로직 필요
+            const generalToken = getTokenFromCookie()
+            const socialToken = localStorage.getItem('token')
+            if (generalToken || socialToken) {
+                returnConfig.headers = {
+                    'Content-Type': 'application/json',
+                    Access_Token: generalToken || socialToken,
+                }
+            } else {
+                returnConfig.headers = {
+                    'Content-Type': 'application/json',
+                }
             }
 
             return returnConfig

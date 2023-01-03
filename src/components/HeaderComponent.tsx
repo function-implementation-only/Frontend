@@ -2,12 +2,13 @@
 // FIXME : ts 린트 잠시 피하는 용도. 나중에 수정 필요
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-// import { useMutation } from 'react-query'
-import useModal from 'hooks/useModal'
-import Logo from 'img/Logo.svg'
-import { deleteCookie, getTokenFromCookie } from 'utils/cookie'
+import { useMutation } from 'react-query'
+import useModal from '../../hooks/useModal'
 import LoginModal from './modal/LoginModal'
 import SignupModal from './modal/SignupModal'
+import Logo from '../../assets/images/Logo.svg'
+import { deleteCookie, getTokenFromCookie } from '../../utils/cookie'
+import useServiceManager from 'src/hooks/useServiceManager'
 
 const HeaderComponentLayout = styled.div`
     z-index: 999;
@@ -58,35 +59,32 @@ function HeaderComponent() {
         useModal()
     const [isLogin, setIsLogin] = useState(false)
 
-    // 로그아웃 api 문제로인한 주석처리
+    const serviceManager = useServiceManager()
 
-    // const serviceManager = useServiceManager()
-
-    // const logoutMutation = useMutation(
-    //     'logout',
-    //     () => serviceManager.dataService.accountAPI.postLogOut(),
-    //     {
-    //         onSuccess: () => {
-    //             deleteCookie(token)
-    //             setIsLogin(false)
-    //             window.location.reload()
-    //         },
-    //         onError: (err) => {
-    //             alert(err)
-    //         },
-    //     }
-    // )
+    const logoutMutation = useMutation(
+        'logout',
+        () => serviceManager.dataService.accountAPI.postLogOut(),
+        {
+            onSuccess: () => {
+                deleteCookie('token')
+                localStorage.clear()
+                setIsLogin(false)
+                window.location.reload()
+            },
+            onError: (err) => {
+                alert(err)
+            },
+        }
+    )
 
     const handleLogout = () => {
-        // logoutMutation.mutate()
-        deleteCookie('token')
-        setIsLogin(false)
-        window.location.reload()
+        logoutMutation.mutate()
     }
 
     useEffect(() => {
-        const token = getTokenFromCookie()
-        if (token) {
+        const generalToken = getTokenFromCookie()
+        const socialToken = localStorage.getItem('token')
+        if (generalToken || socialToken) {
             setIsLogin(true)
         }
     }, [])

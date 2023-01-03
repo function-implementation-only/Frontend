@@ -33,7 +33,7 @@ const Dim = styled.div`
     z-index: 99;
 `
 const Container = styled.div`
-    max-width: 456px;
+    max-width: 476px;
     position: relative;
     width: 100%;
     z-index: 100;
@@ -43,17 +43,12 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     form {
-        width: 375px;
-        min-height: 540px;
+        position: relative;
+        min-height: 684px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        input {
-            margin-bottom: 20px;
-        }
-        button {
-            margin-bottom: 20px;
-        }
+        align-items: center;
     }
 `
 

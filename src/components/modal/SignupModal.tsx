@@ -5,15 +5,73 @@ import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { AxiosResponse } from 'axios'
-import useServiceManager from 'src/hooks/useServiceManager'
-import { SignUpInfo } from 'types/account'
+import styled from 'styled-components'
 import Modal from '../Modal'
-import {
-    ErrorEmail,
-    ErrorEmailAuth,
-    ErrorPassword,
-    ErrorPasswordCheck,
-} from '../Error'
+import closeBtnImg from '../../../assets/images/CloseBtn.svg'
+import kakaoImg from '../../../assets/images/kakaoLogo.svg'
+import googleImg from '../../../assets/images/googleLogo.svg'
+import logoImg from '../../../assets/images/signupLogo.svg'
+
+const {
+    VITE_KAKAO_API_KEY,
+    VITE_KAKAO_REDIRECT_URI,
+    VITE_GOOGLE_CLIENT_ID,
+    VITE_GOOGLE_REDIRECT_URI,
+} = import.meta.env
+
+const CloseButton = styled.img`
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    top: 29px;
+    right: -25px;
+    :hover {
+        cursor: pointer;
+    }
+`
+
+const Logo = styled.img`
+    position: absolute;
+    width: 142px;
+    height: 28px;
+    top: 71px;
+    left: 0;
+    right: 0;
+    margin: auto;
+`
+
+const ButtonBox = styled.div`
+    a {
+        text-decoration: none;
+    }
+`
+
+const Button = styled.button<{
+    background?: string
+    color?: string
+    fontWeight: number
+    marginBottom?: number
+}>`
+    width: 368px;
+    height: 48px;
+    background-color: ${(props) => props.background || '#ff9c30'};
+    border: none;
+    border-radius: 10px;
+    font-family: 'Pretendard';
+    font-weight: ${(props) => props.fontWeight};
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${(props) => props.color || '#fff'};
+    margin-bottom: ${(props) => props.marginBottom}px;
+    img {
+        margin-left: 20px;
+    }
+    span {
+        width: 292px;
+    }
+`
 
 interface Props {
     isShowing: boolean
@@ -21,133 +79,48 @@ interface Props {
 }
 
 const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
-    const serviceManager = useServiceManager()
-    const {
-        register,
-        handleSubmit,
-        watch,
-        reset,
-        trigger,
-        formState: { errors, isSubmitting },
-    } = useForm<SignUpInfo>()
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${VITE_KAKAO_API_KEY}&redirect_uri=${VITE_KAKAO_REDIRECT_URI}&response_type=code`
+    const GOOGLE_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${VITE_GOOGLE_CLIENT_ID}&redirect_uri=${VITE_GOOGLE_REDIRECT_URI}&response_type=code&scope=profile%20email`
 
-    const { email, password } = watch()
-
-    const [emailAuth, setEmailAuth] = useState()
-    const [auth, setAuth] = useState(false)
-
-    // 회원가입 API
-
-    const singnUpMutation = useMutation(
-        'signUpInfo',
-        (data: SignUpInfo) =>
-            serviceManager.dataService.accountAPI.postSignUp(data),
-        {
-            onSuccess: () => {
-                alert('회원가입이 완료되었습니다!')
-            },
-            onError: (err) => {
-                alert(err)
-            },
-        }
-    )
-
-    // 이메일 인증 API
-
-    const emailAuthMutation = useMutation(
-        'emailInfo',
-        () =>
-            serviceManager.dataService.accountAPI.postEmailAuth(
-                email as string
-            ),
-        {
-            onSuccess: (res: AxiosResponse) => {
-                setEmailAuth(res.data)
-                console.log(res.data)
-            },
-            onError: (err) => {
-                alert(err)
-            },
-        }
-    )
-
-    const onSubmitEmailAuth = () => {
-        emailAuthMutation.mutate()
-    }
-
-    const onSubmitSignUp: SubmitHandler<SignUpInfo> = (data) => {
-        singnUpMutation.mutate(data)
-        reset()
-        // window.location.reload()
-    }
     return (
         <Modal isOpen={isShowing} onClose={handleShowing}>
-            <form onSubmit={handleSubmit(onSubmitSignUp)}>
-                {/* input 관련 컴포넌트는 디자인 나오면 진행 예정 */}
-                <input
-                    type="text"
-                    placeholder="이메일을 입력해 주세요."
-                    {...register('email', {
-                        required: true,
-                        pattern: /\S+@\S+\.\S+/,
-                    })}
-                />
-                <ErrorEmail errors={errors.email?.type} />
-                <button type="button" onClick={onSubmitEmailAuth}>
-                    이메일 인증하기
-                </button>
-                {auth && errors.emailAuth?.type === undefined ? (
-                    <p style={{ fontSize: '14px' }}>인증이 완료되었습니다.</p>
-                ) : (
-                    <>
-                        <input
-                            type="text"
-                            placeholder="인증번호를 입력해 주세요."
-                            {...register('emailAuth', {
-                                required: true,
-                                validate: (value) => value === emailAuth,
-                            })}
-                        />
-                        <ErrorEmailAuth errors={errors.emailAuth?.type} />
-                        <button
-                            type="button"
-                            onClick={() => {
-                                trigger('emailAuth')
-                                setAuth(true)
-                            }}
-                        >
-                            확인
-                        </button>
-                    </>
-                )}
-                <input
-                    type="text"
-                    placeholder="닉네임을 입력해 주세요."
-                    {...register('nickname', { required: true })}
-                />
-                <input
-                    type="password"
-                    placeholder="비밀번호를 입력해 주세요."
-                    {...register('password', {
-                        required: true,
-                        maxLength: 12,
-                        minLength: 6,
-                    })}
-                />
-                <ErrorPassword errors={errors.password?.type} />
-                <input
-                    type="password"
-                    placeholder="비밀번호를 한번 더 입력해 주세요."
-                    {...register('passwordCheck', {
-                        required: true,
-                        validate: (value) => value === password,
-                    })}
-                />
-                <ErrorPasswordCheck errors={errors.passwordCheck?.type} />
-                <button type="submit" disabled={isSubmitting}>
-                    SignUp
-                </button>
-            </form>
+            <CloseButton
+                src={closeBtnImg}
+                onClick={() => {
+                    handleShowing()
+                }}
+                alt="closeButton"
+            />
+            {/* <Logo src={logoImg} alt="logo" /> */}
+            <ButtonBox>
+                <a href="/signup">
+                    <Button fontWeight={500} marginBottom={12}>
+                        <img src={logoImg} alt="signupLogo" />
+                        <span>아이디로 가입하기</span>
+                    </Button>
+                </a>
+                <a href={KAKAO_AUTH_URL}>
+                    <Button
+                        background="#F7E317"
+                        color="#3E201E"
+                        fontWeight={500}
+                        marginBottom={12}
+                    >
+                        <img src={kakaoImg} alt="kakaoLogo" />
+                        <span>카카오 계정으로 시작하기</span>
+                    </Button>
+                </a>
+                <a href={GOOGLE_URL}>
+                    <Button
+                        background="#F4F4F4"
+                        color="#3E4145"
+                        fontWeight={500}
+                    >
+                        <img src={googleImg} alt="kakaoLogo" />
+                        <span>구글 계정으로 시작하기</span>
+                    </Button>
+                </a>
+            </ButtonBox>
         </Modal>
     )
 }
