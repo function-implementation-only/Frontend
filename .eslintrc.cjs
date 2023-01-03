@@ -24,5 +24,11 @@ module.exports = {
                 unnamedComponents: 'arrow-function',
             },
         ],
+        'jsx-a11y/label-has-associated-control': [
+            2,
+            {
+                labelAttributes: ['htmlFor'],
+            },
+        ],
     },
 }

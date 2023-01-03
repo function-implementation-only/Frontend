@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-// import { useMutation } from 'react-query'
+import { useMutation } from 'react-query'
 import useModal from '../../hooks/useModal'
 import LoginModal from './modal/LoginModal'
 import SignupModal from './modal/SignupModal'
@@ -53,33 +53,30 @@ function HeaderComponent() {
         useModal()
     const [isLogin, setIsLogin] = useState(false)
 
-    // 로그아웃 api 문제로인한 주석처리
-
-    // const logoutMutation = useMutation(
-    //     'logout',
-    //     () => window.context.accountAPI.postLogOut(),
-    //     {
-    //         onSuccess: () => {
-    //             deleteCookie(token)
-    //             setIsLogin(false)
-    //             window.location.reload()
-    //         },
-    //         onError: (err) => {
-    //             alert(err)
-    //         },
-    //     }
-    // )
+    const logoutMutation = useMutation(
+        'logout',
+        () => window.context.accountAPI.postLogOut(),
+        {
+            onSuccess: () => {
+                deleteCookie('token')
+                localStorage.clear()
+                setIsLogin(false)
+                window.location.reload()
+            },
+            onError: (err) => {
+                alert(err)
+            },
+        }
+    )
 
     const handleLogout = () => {
-        // logoutMutation.mutate()
-        deleteCookie('token')
-        setIsLogin(false)
-        window.location.reload()
+        logoutMutation.mutate()
     }
 
     useEffect(() => {
-        const token = getTokenFromCookie()
-        if (token) {
+        const generalToken = getTokenFromCookie()
+        const socialToken = localStorage.getItem('token')
+        if (generalToken || socialToken) {
             setIsLogin(true)
         }
     }, [])

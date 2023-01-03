@@ -1,6 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
 import { AccountInfo, SignUpInfo } from '../../types/account'
-import { getTokenFromCookie } from '../../utils/cookie'
 import setInterceptors from './interceptor'
 
 export interface AccountAPIInterface {
@@ -38,11 +37,7 @@ export default class AccountAPI implements AccountAPIInterface {
     }
 
     public postLogOut() {
-        return setInterceptors(this.axiosInstance).post('/account/logout', {
-            headers: {
-                Authorization: getTokenFromCookie(),
-            },
-        })
+        return setInterceptors(this.axiosInstance).post('/account/logout')
     }
 
     public postEmailAuth(email: string) {
@@ -59,6 +54,8 @@ export default class AccountAPI implements AccountAPIInterface {
     }
 
     public getGoogleLogin(code: string | null) {
-        return setInterceptors(this.axiosInstance).get(`/auth?code=${code}`)
+        return setInterceptors(this.axiosInstance).get(
+            `/google/test?code=${code}`
+        )
     }
 }

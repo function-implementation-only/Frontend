@@ -1,7 +1,4 @@
-// import styled from 'styled-components'
 import { useQuery } from 'react-query'
-
-// import { useEffect } from 'react'
 
 function Google() {
     const code = new URL(window.location.href).searchParams.get('code')
@@ -13,23 +10,14 @@ function Google() {
             // options
             refetchOnWindowFocus: false,
             onSuccess: (res) => {
-                if (res.data.status === 200) {
-                    // localStorage.setItem('token', res.headers.access_token)
-                    // localStorage.setItem(
-                    //     'refreshToken',
-                    //     res.headers.refresh_token
-                    // )
-                    alert(res)
-
-                    localStorage.setItem('role', res.data.data.role)
+                if (res.data.success === true) {
+                    localStorage.setItem('token', res.data.data.accessToken)
                     localStorage.setItem(
-                        'userAddressTag',
-                        res.data.data.userAddressTag
+                        'refreshToken',
+                        res.data.data.refreshToken
                     )
-                    localStorage.setItem('userId', res.data.data.userId)
-                    localStorage.setItem('userImgUrl', res.data.data.userImgUrl)
 
-                    window.location.replace('/mypage')
+                    window.location.replace('/')
                 }
             },
             onError: () => {
@@ -39,7 +27,7 @@ function Google() {
         }
     )
 
-    return <p>{code}</p>
+    return <p>Loading...</p>
 }
 
 export default Google
