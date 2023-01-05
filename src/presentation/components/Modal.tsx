@@ -42,14 +42,6 @@ const Container = styled.div`
     border-radius: 6px;
     display: flex;
     align-items: center;
-    form {
-        position: relative;
-        min-height: 684px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
 `
 
 const Modal: React.FC<ModalProps> = ({

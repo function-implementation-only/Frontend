@@ -25,6 +25,15 @@ const {
     VITE_GOOGLE_REDIRECT_URI,
 } = import.meta.env
 
+const LoginLayout = styled.div`
+    position: relative;
+    min-height: 684px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+
 const CloseButton = styled.img`
     position: absolute;
     width: 14px;
@@ -201,96 +210,100 @@ const LoginModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
     }
     return (
         <Modal isOpen={isShowing} onClose={handleShowing}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <CloseButton
-                    src={closeBtnImg}
-                    onClick={() => {
-                        handleShowing()
-                    }}
-                    alt="closeButton"
-                />
-                <Logo src={logoImg} alt="logo" />
-                <InputBox>
-                    <InputItem>
-                        <Label htmlFor="email">아이디</Label>
-                        <Input
-                            id="email"
-                            type="text"
-                            placeholder="이메일을 입력해 주세요."
-                            {...register('email', {
-                                required: true,
-                                pattern: /\S+@\S+\.\S+/,
-                            })}
-                        />
-                        <ErrorEmail errors={errors.email?.type} />
-                    </InputItem>
-                    <InputItem>
-                        <Label htmlFor="password">비밀번호</Label>
-                        <Input
-                            id="password"
-                            type={showingPW ? 'text' : 'password'}
-                            placeholder="영문, 숫자 조합 6~12자"
-                            {...register('password', {
-                                required: true,
-                                maxLength: 12,
-                                minLength: 6,
-                                pattern:
-                                    /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{6,12}$/,
-                            })}
-                        />
-                        <ShowPwButton
-                            type="button"
-                            onClick={() => {
-                                setShowingPW(!showingPW)
-                            }}
+            <LoginLayout>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <CloseButton
+                        src={closeBtnImg}
+                        onClick={() => {
+                            handleShowing()
+                        }}
+                        alt="closeButton"
+                    />
+                    <Logo src={logoImg} alt="logo" />
+                    <InputBox>
+                        <InputItem>
+                            <Label htmlFor="email">아이디</Label>
+                            <Input
+                                id="email"
+                                type="text"
+                                placeholder="이메일을 입력해 주세요."
+                                {...register('email', {
+                                    required: true,
+                                    pattern: /\S+@\S+\.\S+/,
+                                })}
+                            />
+                            <ErrorEmail errors={errors.email?.type} />
+                        </InputItem>
+                        <InputItem>
+                            <Label htmlFor="password">비밀번호</Label>
+                            <Input
+                                id="password"
+                                type={showingPW ? 'text' : 'password'}
+                                placeholder="영문, 숫자 조합 6~12자"
+                                {...register('password', {
+                                    required: true,
+                                    maxLength: 12,
+                                    minLength: 6,
+                                    pattern:
+                                        /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{6,12}$/,
+                                })}
+                            />
+                            <ShowPwButton
+                                type="button"
+                                onClick={() => {
+                                    setShowingPW(!showingPW)
+                                }}
+                            >
+                                {showingPW ? (
+                                    <img src={hidePwImg} alt="hidePW" />
+                                ) : (
+                                    <img src={showPwImg} alt="showPW" />
+                                )}
+                            </ShowPwButton>
+                            <ErrorPassword errors={errors.password?.type} />
+                        </InputItem>
+                    </InputBox>
+                    <ButtonBox>
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                            fontWeight={700}
                         >
-                            {showingPW ? (
-                                <img src={hidePwImg} alt="hidePW" />
-                            ) : (
-                                <img src={showPwImg} alt="showPW" />
-                            )}
-                        </ShowPwButton>
-                        <ErrorPassword errors={errors.password?.type} />
-                    </InputItem>
-                </InputBox>
-                <ButtonBox>
-                    <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        fontWeight={700}
-                    >
-                        <span>아이디로 로그인</span>
-                    </Button>
-                    <DividerBox>
-                        <DividerItem />
-                        <DividerText>or</DividerText>
-                        <DividerItem />
-                    </DividerBox>
-                    <Button
-                        type="button"
-                        background="#F7E317"
-                        color="#3E201E"
-                        fontWeight={500}
-                        marginBottom={12}
-                    >
-                        <img src={kakaoImg} alt="kakaoLogo" />
-                        <a href={KAKAO_AUTH_URL}>카카오 계정으로 시작하기 </a>
-                    </Button>
-                    <Button
-                        type="button"
-                        background="#F4F4F4"
-                        color="#3E4145"
-                        fontWeight={500}
-                    >
-                        <img src={googleImg} alt="kakaoLogo" />
-                        <a href={GOOGLE_URL}>구글 계정으로 시작하기</a>
-                    </Button>
-                </ButtonBox>
-                <SignUpBox>
-                    <span>조이너스가 처음이신가요?</span>
-                    <a href="/signup">간편가입하기</a>
-                </SignUpBox>
-            </form>
+                            <span>아이디로 로그인</span>
+                        </Button>
+                        <DividerBox>
+                            <DividerItem />
+                            <DividerText>or</DividerText>
+                            <DividerItem />
+                        </DividerBox>
+                        <Button
+                            type="button"
+                            background="#F7E317"
+                            color="#3E201E"
+                            fontWeight={500}
+                            marginBottom={12}
+                        >
+                            <img src={kakaoImg} alt="kakaoLogo" />
+                            <a href={KAKAO_AUTH_URL}>
+                                카카오 계정으로 시작하기
+                            </a>
+                        </Button>
+                        <Button
+                            type="button"
+                            background="#F4F4F4"
+                            color="#3E4145"
+                            fontWeight={500}
+                        >
+                            <img src={googleImg} alt="kakaoLogo" />
+                            <a href={GOOGLE_URL}>구글 계정으로 시작하기</a>
+                        </Button>
+                    </ButtonBox>
+                    <SignUpBox>
+                        <span>조이너스가 처음이신가요?</span>
+                        <a href="/signup">간편가입하기</a>
+                    </SignUpBox>
+                </form>
+            </LoginLayout>
         </Modal>
     )
 }

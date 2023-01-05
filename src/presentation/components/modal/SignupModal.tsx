@@ -10,7 +10,8 @@ import Modal from '../Modal'
 import closeBtnImg from '../../../assets/images/CloseBtn.svg'
 import kakaoImg from '../../../assets/images/kakaoLogo.svg'
 import googleImg from '../../../assets/images/googleLogo.svg'
-import logoImg from '../../../assets/images/signupLogo.svg'
+import logoImg from '../../../assets/images/Logo.svg'
+import smalllogoImg from '../../../assets/images/signupLogo.svg'
 
 const {
     VITE_KAKAO_API_KEY,
@@ -73,6 +74,22 @@ const Button = styled.button<{
     }
 `
 
+const DividerBox = styled.div`
+    display: flex;
+    margin: 28px 0;
+`
+
+const DividerItem = styled.hr`
+    width: 167.5px;
+    border: 0.6px solid #f0f0f0;
+`
+
+const DividerText = styled.span`
+    font-family: 'Pretendard';
+    font-size: 14px;
+    color: #838485;
+`
+
 interface Props {
     isShowing: boolean
     handleShowing: () => void
@@ -91,12 +108,12 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
                 }}
                 alt="closeButton"
             />
-            {/* <Logo src={logoImg} alt="logo" /> */}
+            <Logo src={logoImg} alt="logo" />
             <ButtonBox>
                 <a href="/signup">
                     <Button fontWeight={500} marginBottom={12}>
-                        <img src={logoImg} alt="signupLogo" />
-                        <span>아이디로 가입하기</span>
+                        <img src={smalllogoImg} alt="signupLogo" />
+                        <span>계정 만들기</span>
                     </Button>
                 </a>
                 <a href={KAKAO_AUTH_URL}>
