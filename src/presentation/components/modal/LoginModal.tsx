@@ -128,9 +128,6 @@ const Button = styled.button<{
     justify-content: center;
     color: #fff;
     margin-bottom: ${(props) => props.marginBottom}px;
-    img {
-        margin-left: 20px;
-    }
     a {
         width: 292px;
         color: ${(props) => props.color};
@@ -194,12 +191,12 @@ const LoginModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
             onSuccess: (res: AxiosResponse) => {
                 const token = res?.headers?.access_token
                 if (token) {
-                    saveTokenToCookie(token)
+                    localStorage.setItem('token', token)
                     window.location.reload()
                 }
             },
             onError: (err) => {
-                // alert(err)
+                alert(err)
             },
         }
     )
