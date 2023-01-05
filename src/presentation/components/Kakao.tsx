@@ -10,41 +10,23 @@ function Kakao() {
             // options
             refetchOnWindowFocus: false,
             onSuccess: (res) => {
-                if (res.data.success === true) {
-                    // localStorage.setItem('token', res.headers.access_token)
-                    // localStorage.setItem(
-                    //     'refreshToken',
-                    //     res.headers.refresh_token
-                    // )
-
-                    localStorage.setItem('role', res.data.data.role)
+                if (res.status === 200) {
+                    localStorage.setItem('token', res.data.data.accessToken)
                     localStorage.setItem(
-                        'userAddressTag',
-                        res.data.data.userAddressTag
+                        'refreshToken',
+                        res.data.data.refreshToken
                     )
-                    localStorage.setItem('userId', res.data.data.userId)
-                    localStorage.setItem('userImgUrl', res.data.data.userImgUrl)
-
-                    window.location.replace('/mypage')
+                    window.location.replace('/')
                 }
             },
-            onError: (err) => {
+            onError: () => {
                 alert('로그인 실패')
-                console.log(err)
                 window.location.replace('/')
             },
         }
     )
 
-    try {
-        const aaa = window.context.accountAPI.getKakaoLogin(code)
-
-        console.log(aaa)
-    } catch (error) {
-        console.log(error)
-    }
-
-    return <p>로그인 성공!!</p>
+    return <p>리다이렉션 성공!!</p>
 }
 
 export default Kakao

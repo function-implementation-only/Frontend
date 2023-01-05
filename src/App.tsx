@@ -29,7 +29,7 @@ function App() {
                             element={<PostDetailPage />}
                         />
                         <Route
-                            path="/socials/signup/kakao"
+                            path="/api/socials/signup/kakao"
                             element={<Kakao />}
                         />
                         <Route path="/api/google/test" element={<Google />} />
