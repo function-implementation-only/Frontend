@@ -2,6 +2,7 @@
 // jsx 내에서는 if문을 쓸 수 없어 일단 삼항 연산자 중첩 처리함, 이후 디자인 적용할 때 바꿀 예정
 import styled from 'styled-components'
 import useAllPost from 'src/hooks/useAllPost'
+import TagBarComponent from 'components/TagBarComponent'
 import { ContentResponse } from '../../types/response'
 import PostCardComponent from '../components/PostCardComponent'
 import AccordianComponent from '../components/AccordianComponent'
@@ -17,9 +18,12 @@ const ContentsBox = styled.div`
     display: grid;
     grid-template-columns: 3fr 7fr;
     margin: 0 auto;
+    margin-top: 24px;
 `
 
-const SideBarBox = styled.div``
+const ContentsBoxLeftSection = styled.section``
+const ContentsBoxRightSection = styled.section``
+
 const PostCardBox = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -37,7 +41,7 @@ function MainPage() {
             </MainPageRow>
             <MainPageRow>
                 <ContentsBox>
-                    <SideBarBox>
+                    <ContentsBoxLeftSection>
                         <AccordianComponent
                             title="모집 구분"
                             constantsArray={CATEGORY}
@@ -46,23 +50,26 @@ function MainPage() {
                             title="사용 기술 / 툴"
                             constantsArray={TECHLIST}
                         />
-                    </SideBarBox>
-                    <PostCardBox>
-                        {status === 'loading'
-                            ? 'Loading...'
-                            : error instanceof Error
-                            ? error.message
-                            : apiResponse?.data.content.map(
-                                  (post: ContentResponse) => {
-                                      return (
-                                          <PostCardComponent
-                                              key={post.postId}
-                                              post={post}
-                                          />
-                                      )
-                                  }
-                              )}
-                    </PostCardBox>
+                    </ContentsBoxLeftSection>
+                    <ContentsBoxRightSection>
+                        <TagBarComponent />
+                        <PostCardBox>
+                            {status === 'loading'
+                                ? 'Loading...'
+                                : error instanceof Error
+                                ? error.message
+                                : apiResponse?.data.content.map(
+                                      (post: ContentResponse) => {
+                                          return (
+                                              <PostCardComponent
+                                                  key={post.postId}
+                                                  post={post}
+                                              />
+                                          )
+                                      }
+                                  )}
+                        </PostCardBox>
+                    </ContentsBoxRightSection>
                 </ContentsBox>
             </MainPageRow>
         </MainPageLayout>

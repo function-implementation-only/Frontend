@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
-import { ConstantObj } from '../../lib/constants'
-import CheckBoxComponent from './CheckBoxComponent'
-import arrow from '../../assets/images/arrow.svg'
+import arrow from 'img/arrow.svg'
+import FilterCheckBoxComponent from 'components/checkbox/FilterCheckBoxComponent'
+import { ConstantObj } from 'lib/constants'
 
 const AccordianBox = styled.div``
 
@@ -31,6 +31,9 @@ const AccordianContents = styled.div`
     height: 0;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
 `
 
 interface AccordianComponentProps {
@@ -82,7 +85,7 @@ function AccordianComponent({
                 <AccordianContents ref={accordian}>
                     {constantsArray.map((item) => {
                         return (
-                            <CheckBoxComponent
+                            <FilterCheckBoxComponent
                                 key={item.value}
                                 title={item.title}
                                 parentHandler={ownHandler}

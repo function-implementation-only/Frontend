@@ -21,6 +21,7 @@ export default ({ mode }) => {
                     __dirname,
                     './src/presentation/components'
                 ),
+                img: path.resolve(__dirname, './src/assets/images'),
             },
         },
         plugins: [

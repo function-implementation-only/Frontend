@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
     --swiper-theme-color: #00C73C;
     --gray-900: #212529;
     --gray-600: #868E96;
+    --gray-700: #3E4145;
   }
   .App {
     width: 100%;
