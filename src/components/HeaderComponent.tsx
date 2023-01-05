@@ -7,7 +7,6 @@ import useModal from '../../hooks/useModal'
 import LoginModal from './modal/LoginModal'
 import SignupModal from './modal/SignupModal'
 import Logo from '../../assets/images/Logo.svg'
-import { deleteCookie, getTokenFromCookie } from '../../utils/cookie'
 import useServiceManager from 'src/hooks/useServiceManager'
 
 const HeaderComponentLayout = styled.div`
@@ -66,7 +65,6 @@ function HeaderComponent() {
         () => serviceManager.dataService.accountAPI.postLogOut(),
         {
             onSuccess: () => {
-                deleteCookie('token')
                 localStorage.clear()
                 setIsLogin(false)
                 window.location.reload()
@@ -82,9 +80,8 @@ function HeaderComponent() {
     }
 
     useEffect(() => {
-        const generalToken = getTokenFromCookie()
-        const socialToken = localStorage.getItem('token')
-        if (generalToken || socialToken) {
+        const token = localStorage.getItem('token')
+        if (token) {
             setIsLogin(true)
         }
     }, [])

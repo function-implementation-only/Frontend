@@ -20,6 +20,15 @@ const {
     VITE_GOOGLE_REDIRECT_URI,
 } = import.meta.env
 
+const SignupLayout = styled.div`
+    position: relative;
+    min-height: 684px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+
 const CloseButton = styled.img`
     position: absolute;
     width: 14px;
@@ -42,6 +51,7 @@ const Logo = styled.img`
 `
 
 const ButtonBox = styled.div`
+    margin-top: 207px;
     a {
         text-decoration: none;
     }
@@ -66,17 +76,19 @@ const Button = styled.button<{
     justify-content: center;
     color: ${(props) => props.color || '#fff'};
     margin-bottom: ${(props) => props.marginBottom}px;
-    img {
-        margin-left: 20px;
-    }
-    span {
+
+    a {
         width: 292px;
+        color: ${(props) => props.color || '#fff'};
+    }
+    :hover {
+        cursor: pointer;
     }
 `
 
 const DividerBox = styled.div`
     display: flex;
-    margin: 28px 0;
+    margin: 40px 0;
 `
 
 const DividerItem = styled.hr`
@@ -90,6 +102,20 @@ const DividerText = styled.span`
     color: #838485;
 `
 
+const LoginBox = styled.div`
+    margin: 153px 0 48px;
+    text-align: center;
+    font-family: 'Pretendard';
+    font-size: 14px;
+    span {
+        margin-right: 8px;
+        color: #838485;
+    }
+    a {
+        color: #ff9c30;
+    }
+`
+
 interface Props {
     isShowing: boolean
     handleShowing: () => void
@@ -101,22 +127,25 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
 
     return (
         <Modal isOpen={isShowing} onClose={handleShowing}>
-            <CloseButton
-                src={closeBtnImg}
-                onClick={() => {
-                    handleShowing()
-                }}
-                alt="closeButton"
-            />
-            <Logo src={logoImg} alt="logo" />
-            <ButtonBox>
-                <a href="/signup">
-                    <Button fontWeight={500} marginBottom={12}>
+            <SignupLayout>
+                <CloseButton
+                    src={closeBtnImg}
+                    onClick={() => {
+                        handleShowing()
+                    }}
+                    alt="closeButton"
+                />
+                <Logo src={logoImg} alt="logo" />
+                <ButtonBox>
+                    <Button fontWeight={700} marginBottom={12}>
                         <img src={smalllogoImg} alt="signupLogo" />
-                        <span>계정 만들기</span>
+                        <a href="/signup">계정 만들기 </a>
                     </Button>
-                </a>
-                <a href={KAKAO_AUTH_URL}>
+                    <DividerBox>
+                        <DividerItem />
+                        <DividerText>or</DividerText>
+                        <DividerItem />
+                    </DividerBox>
                     <Button
                         background="#F7E317"
                         color="#3E201E"
@@ -124,20 +153,22 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
                         marginBottom={12}
                     >
                         <img src={kakaoImg} alt="kakaoLogo" />
-                        <span>카카오 계정으로 시작하기</span>
+                        <a href={KAKAO_AUTH_URL}>카카오 계정으로 시작하기 </a>
                     </Button>
-                </a>
-                <a href={GOOGLE_URL}>
                     <Button
                         background="#F4F4F4"
                         color="#3E4145"
                         fontWeight={500}
                     >
                         <img src={googleImg} alt="kakaoLogo" />
-                        <span>구글 계정으로 시작하기</span>
+                        <a href={GOOGLE_URL}>구글 계정으로 시작하기 </a>
                     </Button>
-                </a>
-            </ButtonBox>
+                </ButtonBox>
+                <LoginBox>
+                    <span>조이너스가 처음이신가요?</span>
+                    <a href="/">로그인하기</a>
+                </LoginBox>
+            </SignupLayout>
         </Modal>
     )
 }
