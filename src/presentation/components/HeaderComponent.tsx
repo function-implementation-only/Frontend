@@ -29,13 +29,16 @@ const LogoBox = styled.div``
 const ButtonBox = styled.div`
     display: grid;
     grid-auto-flow: column;
-    grid-column-gap: 10px;
+    grid-column-gap: 16px;
 `
 
 const Button = styled.button<{ default?: boolean }>`
-    width: 100px;
-    height: 45px;
-    border-radius: 100px;
+    width: 110px;
+    height: 44px;
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-size: 16px;
+    border-radius: 10px;
     border: none;
     cursor: pointer;
     background-color: ${(props) =>

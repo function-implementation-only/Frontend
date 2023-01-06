@@ -8,11 +8,11 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   :root {
-    --primary-color: #00C73C;
+    --primary-color: #FF9C30;
     --swiper-theme-color: #00C73C;
   }
   .App {
-    width: 1920px;
+    // width: 1920px;
     margin: 0 auto;
   }
 `

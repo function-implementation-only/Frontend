@@ -3,20 +3,17 @@ import { AxiosResponse } from 'axios'
 import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
-import { Route } from 'react-router-dom'
 import styled from 'styled-components'
 import Modal from '../Modal'
-import { saveTokenToCookie } from '../../../utils/cookie'
 import { ErrorEmail, ErrorPassword } from '../Error'
 import { AccountInfo } from '../../../types/account'
-import MainPage from '../../pages/MainPage'
-import Google from '../Google'
 import closeBtnImg from '../../../assets/images/CloseBtn.svg'
 import logoImg from '../../../assets/images/Logo.svg'
 import kakaoImg from '../../../assets/images/kakaoLogo.svg'
 import googleImg from '../../../assets/images/googleLogo.svg'
 import showPwImg from '../../../assets/images/showPW.svg'
 import hidePwImg from '../../../assets/images/hidePW.svg'
+import Button from '../Button'
 
 const {
     VITE_KAKAO_API_KEY,
@@ -106,34 +103,6 @@ const ShowPwButton = styled.button`
 const ButtonBox = styled.div`
     a {
         text-decoration: none;
-    }
-`
-
-const Button = styled.button<{
-    background?: string
-    color?: string
-    fontWeight: number
-    marginBottom?: number
-}>`
-    width: 368px;
-    height: 48px;
-    background-color: ${(props) => props.background || '#ff9c30'};
-    border: none;
-    border-radius: 10px;
-    font-family: 'Pretendard';
-    font-weight: ${(props) => props.fontWeight};
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    margin-bottom: ${(props) => props.marginBottom}px;
-    a {
-        width: 292px;
-        color: ${(props) => props.color};
-    }
-    :hover {
-        cursor: pointer;
     }
 `
 
@@ -266,7 +235,7 @@ const LoginModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
                             disabled={isSubmitting}
                             fontWeight={700}
                         >
-                            <span>아이디로 로그인</span>
+                            아이디로 로그인
                         </Button>
                         <DividerBox>
                             <DividerItem />
@@ -279,20 +248,20 @@ const LoginModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
                             color="#3E201E"
                             fontWeight={500}
                             marginBottom={12}
+                            img={kakaoImg}
+                            url={KAKAO_AUTH_URL}
                         >
-                            <img src={kakaoImg} alt="kakaoLogo" />
-                            <a href={KAKAO_AUTH_URL}>
-                                카카오 계정으로 시작하기
-                            </a>
+                            카카오 계정으로 시작하기
                         </Button>
                         <Button
                             type="button"
                             background="#F4F4F4"
                             color="#3E4145"
                             fontWeight={500}
+                            img={googleImg}
+                            url={GOOGLE_URL}
                         >
-                            <img src={googleImg} alt="kakaoLogo" />
-                            <a href={GOOGLE_URL}>구글 계정으로 시작하기</a>
+                            구글 계정으로 시작하기
                         </Button>
                     </ButtonBox>
                     <SignUpBox>
