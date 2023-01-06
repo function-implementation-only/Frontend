@@ -33,7 +33,7 @@ const LogoBox = styled.div`
 const ModalButtonBox = styled.div`
     display: grid;
     grid-auto-flow: column;
-    grid-column-gap: 10px;
+    grid-column-gap: 16px;
 `
 
 export const DefaultButton = styled.button<{ default?: boolean }>`

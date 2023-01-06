@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-alert */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { useMutation } from 'react-query'
-import { AxiosResponse } from 'axios'
+import React from 'react'
 import styled from 'styled-components'
 import Modal from '../Modal'
 import closeBtnImg from '../../../assets/images/CloseBtn.svg'
@@ -12,6 +9,7 @@ import kakaoImg from '../../../assets/images/kakaoLogo.svg'
 import googleImg from '../../../assets/images/googleLogo.svg'
 import logoImg from '../../../assets/images/Logo.svg'
 import smalllogoImg from '../../../assets/images/signupLogo.svg'
+import Button from '../Button'
 
 const {
     VITE_KAKAO_API_KEY,
@@ -54,35 +52,6 @@ const ButtonBox = styled.div`
     margin-top: 207px;
     a {
         text-decoration: none;
-    }
-`
-
-const Button = styled.button<{
-    background?: string
-    color?: string
-    fontWeight: number
-    marginBottom?: number
-}>`
-    width: 368px;
-    height: 48px;
-    background-color: ${(props) => props.background || '#ff9c30'};
-    border: none;
-    border-radius: 10px;
-    font-family: 'Pretendard';
-    font-weight: ${(props) => props.fontWeight};
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: ${(props) => props.color || '#fff'};
-    margin-bottom: ${(props) => props.marginBottom}px;
-
-    a {
-        width: 292px;
-        color: ${(props) => props.color || '#fff'};
-    }
-    :hover {
-        cursor: pointer;
     }
 `
 
@@ -137,9 +106,15 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
                 />
                 <Logo src={logoImg} alt="logo" />
                 <ButtonBox>
-                    <Button fontWeight={700} marginBottom={12}>
-                        <img src={smalllogoImg} alt="signupLogo" />
-                        <a href="/signup">계정 만들기 </a>
+                    <Button
+                        type="button"
+                        fontWeight={700}
+                        color="#fff"
+                        marginBottom={12}
+                        img={smalllogoImg}
+                        url="/signup"
+                    >
+                        계정 만들기
                     </Button>
                     <DividerBox>
                         <DividerItem />
@@ -147,21 +122,25 @@ const SignupModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
                         <DividerItem />
                     </DividerBox>
                     <Button
+                        type="button"
                         background="#F7E317"
                         color="#3E201E"
                         fontWeight={500}
                         marginBottom={12}
+                        img={kakaoImg}
+                        url={KAKAO_AUTH_URL}
                     >
-                        <img src={kakaoImg} alt="kakaoLogo" />
-                        <a href={KAKAO_AUTH_URL}>카카오 계정으로 시작하기 </a>
+                        카카오 계정으로 시작하기
                     </Button>
                     <Button
+                        type="button"
                         background="#F4F4F4"
                         color="#3E4145"
                         fontWeight={500}
+                        img={googleImg}
+                        url={GOOGLE_URL}
                     >
-                        <img src={googleImg} alt="kakaoLogo" />
-                        <a href={GOOGLE_URL}>구글 계정으로 시작하기 </a>
+                        구글 계정으로 시작하기
                     </Button>
                 </ButtonBox>
                 <LoginBox>
