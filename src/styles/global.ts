@@ -8,8 +8,8 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   :root {
-    --primary-color: #00C73C;
-    --swiper-theme-color: #00C73C;
+    --primary-color: #FF9C30;
+    --swiper-theme-color: var(--primary-color);
     --gray-900: #212529;
     --gray-600: #868E96;
     --gray-700: #3E4145;
