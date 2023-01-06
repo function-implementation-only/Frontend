@@ -7,6 +7,15 @@ type ParseConstantObj = {
     [key: string]: string
 }
 
+export const POST_DETAIL_INFORMATION = [
+    { title: '모집 구분', type: 'tag', value: 'category' },
+    { title: '사용 언어', type: 'tag', value: 'techs' },
+    { title: '협업 프로그램', type: 'tag', value: 'techs' },
+    { title: '진행 방식', type: 'tag', value: 'place' },
+    { title: '예상 기간', type: 'tag', value: 'duration' },
+    { title: '모집 인원', type: 'table', value: 'peopleNum' },
+]
+
 export const CATEGORY: ConstantObj[] = [
     { title: '프로젝트', value: 'PROJECT' },
     { title: '스터디', value: 'STUDY' },

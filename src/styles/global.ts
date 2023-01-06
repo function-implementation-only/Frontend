@@ -9,10 +9,14 @@ const GlobalStyle = createGlobalStyle`
   }
   :root {
     --primary-color: #FF9C30;
+    --primary-color-100: #FFECD6;
     --swiper-theme-color: var(--primary-color);
     --gray-900: #212529;
     --gray-600: #868E96;
     --gray-700: #3E4145;
+    --gray-800: #212529;
+    --gray-500: #838485;
+    --gray-400: #B0B0B0;
   }
   .App {
     width: 100%;

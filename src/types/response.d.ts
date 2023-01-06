@@ -21,6 +21,7 @@ export interface PostResponse {
 }
 
 export interface ContentResponse extends PostObj {
+    [key: string]
     likeCheck: null | boolean
     likesLength: number
     profileImg: null | Object
