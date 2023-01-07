@@ -3,11 +3,11 @@
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
+import useServiceManager from 'src/hooks/useServiceManager'
 import useModal from '../../hooks/useModal'
 import LoginModal from './modal/LoginModal'
 import SignupModal from './modal/SignupModal'
 import Logo from '../../assets/images/Logo.svg'
-import useServiceManager from 'src/hooks/useServiceManager'
 
 const HeaderComponentLayout = styled.div`
     z-index: 999;
@@ -30,7 +30,7 @@ const LogoBox = styled.div`
     cursor: pointer;
 `
 
-const ModalButtonBox = styled.div`
+const ButtonBox = styled.div`
     display: grid;
     grid-auto-flow: column;
     grid-column-gap: 16px;
@@ -95,18 +95,26 @@ function HeaderComponent() {
                 </LogoBox>
                 <ButtonBox>
                     {isLogin ? (
-                        <Button default type="button" onClick={handleLogout}>
+                        <DefaultButton
+                            default
+                            type="button"
+                            onClick={handleLogout}
+                        >
                             로그아웃
-                        </Button>
+                        </DefaultButton>
                     ) : (
-                        <Button default type="button" onClick={handleLogin}>
+                        <DefaultButton
+                            default
+                            type="button"
+                            onClick={handleLogin}
+                        >
                             로그인
-                        </Button>
+                        </DefaultButton>
                     )}
-                    <Button type="button" onClick={handleSignUp}>
+                    <DefaultButton type="button" onClick={handleSignUp}>
                         회원가입
-                    </ModalButton>
-                </ModalButtonBox>
+                    </DefaultButton>
+                </ButtonBox>
             </HeaderComponentRow>
             <LoginModal
                 isShowing={isLoginModalOpen}

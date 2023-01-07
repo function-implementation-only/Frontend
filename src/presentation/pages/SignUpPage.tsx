@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { AxiosResponse } from 'axios'
 
+import useServiceManager from 'src/hooks/useServiceManager'
 import {
     ErrorEmail,
     ErrorEmailAuth,
@@ -28,12 +29,14 @@ function SignUpPage() {
 
     const [emailAuth, setEmailAuth] = useState()
     const [auth, setAuth] = useState(false)
+    const serviceManager = useServiceManager()
 
     // 회원가입 API
 
     const singnUpMutation = useMutation(
         'signUpInfo',
-        (data: SignUpInfo) => window.context.accountAPI.postSignUp(data),
+        (data: SignUpInfo) =>
+            serviceManager.dataService.accountAPI.postSignUp(data),
         {
             onSuccess: () => {
                 alert('회원가입이 완료되었습니다!')
@@ -48,7 +51,10 @@ function SignUpPage() {
 
     const emailAuthMutation = useMutation(
         'emailInfo',
-        () => window.context.accountAPI.postEmailAuth(email as string),
+        () =>
+            serviceManager.dataService.accountAPI.postEmailAuth(
+                email as string
+            ),
         {
             onSuccess: (res: AxiosResponse) => {
                 setEmailAuth(res.data)

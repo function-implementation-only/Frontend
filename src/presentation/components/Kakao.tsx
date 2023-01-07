@@ -1,11 +1,13 @@
 import { useQuery } from 'react-query'
+import useServiceManager from 'src/hooks/useServiceManager'
 
 function Kakao() {
     const code = new URL(window.location.href).searchParams.get('code')
+    const serviceManager = useServiceManager()
 
     useQuery(
         ['kakaoLogin', code],
-        () => window.context.accountAPI.getKakaoLogin(code),
+        () => serviceManager.dataService.accountAPI.getKakaoLogin(code),
         {
             // options
             refetchOnWindowFocus: false,

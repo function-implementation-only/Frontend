@@ -1,11 +1,13 @@
 import { useQuery } from 'react-query'
+import useServiceManager from 'src/hooks/useServiceManager'
 
 function Google() {
     const code = new URL(window.location.href).searchParams.get('code')
+    const serviceManager = useServiceManager()
 
     useQuery(
         ['GoogleLogin', code],
-        () => window.context.accountAPI.getGoogleLogin(code),
+        () => serviceManager.dataService.accountAPI.getGoogleLogin(code),
         {
             // options
             refetchOnWindowFocus: false,
