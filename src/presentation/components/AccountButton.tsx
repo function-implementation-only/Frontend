@@ -42,7 +42,7 @@ interface Props {
     children: React.ReactNode
 }
 
-function Button({
+function AccountButton({
     type,
     disabled,
     background,
@@ -68,4 +68,4 @@ function Button({
     )
 }
 
-export default Button
+export default AccountButton

@@ -5,9 +5,10 @@ import { useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
 import useServiceManager from 'src/hooks/useServiceManager'
 import useModal from '../../hooks/useModal'
-import LoginModal from './modal/LoginModal'
-import SignupModal from './modal/SignupModal'
+import LoginModal from './account/Login'
+import SignupModal from './account/Signup'
 import Logo from '../../assets/images/Logo.svg'
+import AccountModal from './account/AccountModal'
 
 const HeaderComponentLayout = styled.div`
     z-index: 999;
@@ -52,11 +53,10 @@ export const DefaultButton = styled.button<{ default?: boolean }>`
 const ModalButton = styled(DefaultButton)``
 
 function HeaderComponent() {
-    const { isShowing: isLoginModalOpen, handleShowing: handleLogin } =
-        useModal()
-    const { isShowing: isSignupModalOpen, handleShowing: handleSignUp } =
-        useModal()
+    const { isShowing, handleShowing } = useModal()
     const [isLogin, setIsLogin] = useState(false)
+    const [login, setLogin] = useState(false)
+    const [signup, setSignup] = useState(false)
 
     const serviceManager = useServiceManager()
 
@@ -77,6 +77,18 @@ function HeaderComponent() {
 
     const handleLogout = () => {
         logoutMutation.mutate()
+    }
+
+    const handleLogin = () => {
+        handleShowing()
+        setLogin(true)
+        setSignup(false)
+    }
+
+    const handleSignup = () => {
+        handleShowing()
+        setSignup(true)
+        setLogin(false)
     }
 
     useEffect(() => {
@@ -111,18 +123,18 @@ function HeaderComponent() {
                             로그인
                         </DefaultButton>
                     )}
-                    <DefaultButton type="button" onClick={handleSignUp}>
+                    <DefaultButton type="button" onClick={handleSignup}>
                         회원가입
                     </DefaultButton>
                 </ButtonBox>
             </HeaderComponentRow>
-            <LoginModal
-                isShowing={isLoginModalOpen}
-                handleShowing={handleLogin}
-            />
-            <SignupModal
-                isShowing={isSignupModalOpen}
-                handleShowing={handleSignUp}
+            <AccountModal
+                isShowing={isShowing}
+                handleShowing={handleShowing}
+                login={login}
+                signup={signup}
+                setLogin={setLogin}
+                setSignup={setSignup}
             />
         </HeaderComponentLayout>
     )

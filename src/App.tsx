@@ -5,11 +5,9 @@ import MainPage from './presentation/pages/MainPage'
 import PostDetailPage from './presentation/pages/Post/PostDetailPage'
 import PostPage from './presentation/pages/Post/PostPage'
 import HeaderComponent from './presentation/components/HeaderComponent'
-import Kakao from './presentation/components/Kakao'
-import Google from './presentation/components/Google'
+import Kakao from './presentation/components/account/Kakao'
+import Google from './presentation/components/account/Google'
 import SignUpPage from './presentation/pages/SignUpPage'
-// import SignupModal from './presentation/components/modal/SignupModal'
-// import LoginModal from './presentation/components/modal/LoginModal'
 
 const queryClient = new QueryClient()
 
