@@ -2,7 +2,6 @@ import { AxiosInstance, AxiosResponse } from 'axios'
 import setInterceptors from './interceptor'
 
 export interface ChatAPIInterface {
-    getChatCount: (id: number) => Promise<AxiosResponse>
     getChatRooms: () => Promise<AxiosResponse>
 }
 
@@ -11,12 +10,6 @@ export default class ChatAPI implements ChatAPIInterface {
 
     constructor(axiosInstance: AxiosInstance) {
         this.axiosInstance = axiosInstance
-    }
-
-    getChatCount(id?: number) {
-        return setInterceptors(this.axiosInstance).post('/api/chat/count', {
-            id,
-        })
     }
 
     getChatRooms() {

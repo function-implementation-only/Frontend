@@ -1,9 +1,8 @@
 import styled, { css } from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 import { ChatRoomWithUser } from '../../../types/chat'
-import useUnReadCount from '../../../hooks/useUnReadCount'
 import useChatRoomInfo from '../../../hooks/useChatInfo'
-import NoImageComponent from '../NoImageComponent'
+import defaultUuserAvatar from '../../../assets/images/default-user-avatar.svg'
 
 interface ChatItemWrapperProps {
     active?: boolean
@@ -46,7 +45,7 @@ export const ChatItemWrapper = styled.li<ChatItemWrapperProps>`
 `
 
 export const BorderAvatar = styled.img`
-    border: 2px solid purple;
+    border-radius: 30px;
 `
 
 export const MessageInfo = styled.p`
@@ -91,24 +90,17 @@ export default function ChatItemComponent(props: ChatRoomWithUser) {
         roomId,
         // title,
     } = props
-    const { data: count } = useUnReadCount(roomId)
     const { date, lastMessage, name } = useChatRoomInfo(props)
     const location = useLocation()
     const params = new URLSearchParams(location.search)
     const queryRoomId = Number(params.get('roomId'))
 
     return (
-        <Link to={`/auth/massager/${roomId}`}>
+        <Link to={`/auth/messenger?roomId=${roomId}`}>
             <ChatItemWrapper active={roomId === queryRoomId}>
-                {postUserImg ? (
-                    <BorderAvatar src={postUserImg} />
-                ) : (
-                    <NoImageComponent />
-                )}
+                <BorderAvatar src={postUserImg ?? defaultUuserAvatar} />
                 <MessageInfo>
-                    <Name>
-                        {name} {count && count.data.count > 0 && `(${count})`}
-                    </Name>
+                    <Name>{name}</Name>
                     {date && <Time>{date}</Time>}
                     <br />
                     {lastMessage ?? '채팅 내역이 존재하지 않습니다.'}
