@@ -79,18 +79,29 @@ export const SkeletonWrapper = styled.li`
 `
 
 export default function ChatItemComponent(props: ChatRoomWithUser) {
-    const { id, users } = props
-    const { data: count } = useUnReadCount(id)
+    const {
+        // chatList,
+        // joinUserId,
+        // joinUserImg,
+        // joinUserNickname,
+        // postId,
+        // postUserId,
+        postUserImg,
+        // postUserNickname,
+        roomId,
+        // title,
+    } = props
+    const { data: count } = useUnReadCount(roomId)
     const { date, lastMessage, name } = useChatRoomInfo(props)
     const location = useLocation()
     const params = new URLSearchParams(location.search)
-    const roomId = params.get('roomId')
+    const queryRoomId = Number(params.get('roomId'))
 
     return (
-        <Link to={`/auth/massager/${id}`}>
-            <ChatItemWrapper active={id === roomId}>
-                {users[0].image ? (
-                    <BorderAvatar src={users[0].image} />
+        <Link to={`/auth/massager/${roomId}`}>
+            <ChatItemWrapper active={roomId === queryRoomId}>
+                {postUserImg ? (
+                    <BorderAvatar src={postUserImg} />
                 ) : (
                     <NoImageComponent />
                 )}

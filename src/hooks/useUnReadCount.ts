@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query'
 import useServiceManager from './useServiceManager'
 
-const useUnReadCount = (id: string) => {
+const useUnReadCount = (id: number) => {
     const serviceManager = useServiceManager()
 
     const fetchFn = () => serviceManager.dataService.chatAPI.getChatCount(id)

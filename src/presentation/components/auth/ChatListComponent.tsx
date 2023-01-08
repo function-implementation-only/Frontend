@@ -5,7 +5,7 @@ import ChatItemComponent from './ChatItemComponent'
 import useChatRooms from '../../../hooks/useChatRooms'
 
 export const ChatListWrapper = styled.ul`
-    max-height: calc(100vh - 80px - 90px - 60px - 64px);
+    max-height: calc(100vh - 150px);
     overflow-y: auto;
     padding: 1rem;
 `
@@ -29,7 +29,7 @@ export default function ChatListComponent() {
                   ))
                 : chatRooms?.data?.data?.map(
                       (_item: JSX.IntrinsicAttributes & ChatRoomWithUser) => (
-                          <ChatItemComponent key={_item.id} {..._item} />
+                          <ChatItemComponent key={_item.roomId} {..._item} />
                       )
                   )}
         </ChatListWrapper>

@@ -1,27 +1,24 @@
-import { useCallback } from 'react'
+import { ChatRoom } from '../types/chat'
 
-import { ChatRoomWithUser, User } from '../types/chat'
+const useChatRoomInfo = (chats: ChatRoom) => {
+    // const user: User = {
+    //     id: 'string',
+    //     name: 'string | null',
+    //     email: 'string | null',
+    //     image: 'string | null',
+    // }
 
-const useChatRoomInfo = (chatRoom: ChatRoomWithUser) => {
-    // const user = useUser();
-    const user: User = {
-        id: 'string',
-        name: 'string | null',
-        email: 'string | null',
-        image: 'string | null',
-    }
-
-    const getName = useCallback(
-        (chatListByUsers: User[]) =>
-            chatListByUsers.find((chatUser) => chatUser.email !== user?.email)
-                ?.name,
-        [user?.email]
-    )
+    // const getName = useCallback(
+    //     (chatListByUsers: User[]) =>
+    //         chatListByUsers.find((chatUser) => chatUser.email !== user?.email)
+    //             ?.name,
+    //     [user?.email]
+    // )
 
     return {
-        date: chatRoom.chats[0]?.createAt?.toISOString?.(),
-        name: getName(chatRoom.users),
-        lastMessage: chatRoom.chats[0]?.message,
+        date: '2022-10',
+        name: '이름',
+        lastMessage: chats?.chatList?.reverse()[0],
     }
 }
 
