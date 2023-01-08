@@ -1,4 +1,8 @@
+/* eslint-disable no-console */
 import styled from 'styled-components'
+import * as StompJs from '@stomp/stompjs'
+import { IFrame } from '@stomp/stompjs'
+import { getTokenFromCookie } from '../../../../utils/cookie'
 
 const ChatMessageBox = styled.div`
     .div {
@@ -43,6 +47,33 @@ const ChatMessageBox = styled.div`
 `
 
 export default function ChatMessageView() {
+    const client = new StompJs.Client({
+        brokerURL: 'ws://joinus.p-e.kr/api/ws',
+        connectHeaders: {
+            token: getTokenFromCookie(),
+        },
+        debug(msg: string) {
+            console.log('Stomp msg', msg)
+        },
+        reconnectDelay: 5000,
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+    })
+
+    client.onConnect = (Iframe: IFrame) => {
+        console.log('Stomp 연결됨', Iframe)
+        // console.log(`frame ${frame}`)
+        // Do something, all subscribes must be done is this callback
+        // This is needed because this will be executed after a (re)connect
+    }
+
+    client.onStompError = (Iframe: IFrame) => {
+        console.log('Stomp 에서 에러 남', Iframe)
+        // console.log(`Broker reported error: ${iframe.headers.message}`)
+        // console.log(`Additional details: ${iframe.body}`)
+    }
+
+    client.activate()
     const user = 'troublesome.dev@gmail.com'
     const data = [
         {

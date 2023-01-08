@@ -1,6 +1,5 @@
-import { useMemo } from 'react'
-
 import styled from 'styled-components'
+import { ChatRoomWithUser } from 'src/types/chat'
 import ChatItemSkeleton from './skeleton'
 import ChatItemComponent from './ChatItemComponent'
 import useChatRooms from '../../../hooks/useChatRooms'
@@ -20,17 +19,7 @@ export const SearchBox = styled.div`
 `
 
 export default function ChatListComponent() {
-    const { data, isLoading } = useChatRooms()
-
-    const chatRooms = useMemo(() => {
-        if (data.status === 200) {
-            if (data.data != null) {
-                return data.data
-            }
-        }
-
-        return []
-    }, [data])
+    const { data: chatRooms, isLoading } = useChatRooms()
 
     return (
         <ChatListWrapper>
@@ -38,9 +27,11 @@ export default function ChatListComponent() {
                 ? Array.from({ length: 3 }).map((_, i) => (
                       <ChatItemSkeleton key={(i + 1).toString()} />
                   ))
-                : chatRooms.map((item: any) => (
-                      <ChatItemComponent key={item.id} {...item} />
-                  ))}
+                : chatRooms?.data?.data?.map(
+                      (_item: JSX.IntrinsicAttributes & ChatRoomWithUser) => (
+                          <ChatItemComponent key={_item.id} {..._item} />
+                      )
+                  )}
         </ChatListWrapper>
     )
 }

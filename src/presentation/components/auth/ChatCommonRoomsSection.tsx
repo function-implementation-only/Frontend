@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import ChatListComponent from './ChatListComponent'
 
-const ChatUserSectionWrapper = styled.section`
+const ChatCommonRoomsSectionWrapper = styled.section`
     border-right: 1px solid var(--gray-100);
     min-width: 350px;
     position: relative;
@@ -28,20 +28,20 @@ const CoffeeChatTab = styled.div`
     }
 `
 
-export default function ChatUserSection() {
+export default function ChatCommonRoomsSection() {
     const [choiceTab, setChoiceTab] = useState(0)
-    const [chatList, setChatList] = useState([])
+    // const [chatList, setChatList] = useState([])
 
     // choiceTab !== 1 초기화
-    if (choiceTab === 1) {
-        const chatSorting = chatList.filter(
-            (chat: any) => chat.unreadCount === 0
-        )
-        setChatList(chatSorting)
-    }
+    // if (choiceTab === 1) {
+    //     const chatSorting = chatList.filter(
+    //         (chat: any) => chat.unreadCount === 0
+    //     )
+    //     setChatList(chatSorting)
+    // }
 
     return (
-        <ChatUserSectionWrapper>
+        <ChatCommonRoomsSectionWrapper>
             <CoffeeChatTab>
                 <div
                     // tabIndex={0}
@@ -64,6 +64,6 @@ export default function ChatUserSection() {
                 </div>
             </CoffeeChatTab>
             <ChatListComponent />
-        </ChatUserSectionWrapper>
+        </ChatCommonRoomsSectionWrapper>
     )
 }
