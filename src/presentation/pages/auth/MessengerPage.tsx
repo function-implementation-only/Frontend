@@ -1,6 +1,6 @@
+import * as StompJs from '@stomp/stompjs'
 import styled from 'styled-components'
-import StompJs from '@stomp/stompjs'
-import { getTokenFromCookie } from 'src/utils/cookie'
+import { getTokenFromCookie } from '../../../utils/cookie'
 import ChatFoundSection from '../../components/auth/chat/ChatFoundSection'
 import ChatUserSection from '../../components/auth/ChatUserSection'
 
@@ -40,22 +40,15 @@ function AuthMessenger() {
         heartbeatOutgoing: 4000,
     })
 
-    client.onConnect = function t(frame: any) {
+    client.onConnect = (frame: any) => {
         console.log(`frame ${frame}`)
         // Do something, all subscribes must be done is this callback
         // This is needed because this will be executed after a (re)connect
     }
 
-    client.onStompError = function t(frame: {
-        headers: { message: any }
-        body: any
-    }) {
-        // Will be invoked in case of error encountered at Broker
-        // Bad login/passcode typically will cause an error
-        // Complaint brokers will set `message` header with a brief message. Body may contain details.
-        // Compliant brokers will terminate the connection after any error
-        console.log(`Broker reported error: ${frame.headers.message}`)
-        console.log(`Additional details: ${frame.body}`)
+    client.onStompError = (iframe) => {
+        console.log(`Broker reported error: ${iframe.headers.message}`)
+        console.log(`Additional details: ${iframe.body}`)
     }
 
     client.activate()
@@ -65,15 +58,9 @@ function AuthMessenger() {
             <ChatUserSection />
             {chatFlag ? (
                 <ChatNotFoundSection>
-                    <p>
-                        선택된 채팅이 없습니다.
-                        <br />
-                        <br />
-                        좌측 메뉴에 있는 채팅방을 선택하거나,
-                        <br />
-                        좌측 상단에 새로운 메시지 추가하기 버튼을 클릭하여
-                        채팅을 시작해주세요.
-                    </p>
+                    <p>이모지</p>
+                    <p>메세지 선택하기</p>
+                    <p>기존 대화에서 선택하거나 새로운 대화를 시작해보세요</p>
                 </ChatNotFoundSection>
             ) : (
                 <ChatFoundSection />
