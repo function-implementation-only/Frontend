@@ -4,10 +4,10 @@ import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import useServiceManager from 'src/hooks/useServiceManager'
+import { saveTokenToCookie } from 'utils/cookie'
+import { AccountInfo } from 'types/account'
 import Modal from '../Modal'
-import { saveTokenToCookie } from '../../../utils/cookie'
 import { ErrorEmail, ErrorPassword } from '../Error'
-import { AccountInfo } from '../../../types/account'
 
 interface Props {
     isShowing: boolean

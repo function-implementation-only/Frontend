@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { AccountInfo } from '../../types/account'
+import { AccountInfo } from 'types/account'
 
 interface Errors {
     errors: string | undefined

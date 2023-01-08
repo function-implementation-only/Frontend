@@ -1,4 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
+import { getRandomColor } from 'utils/random'
+import { push, splice } from 'src/store/features/tag/tagSlice'
+import { useAppDispatch, useAppSelector } from 'src/store/hooks'
 import styled from 'styled-components'
 
 const CheckBoxComponentLayout = styled.div`
@@ -35,13 +39,39 @@ interface CheckBoxComponentProps {
 }
 
 function CheckBoxComponent({ title, parentHandler }: CheckBoxComponentProps) {
+    const tags = useAppSelector((state) => state.tagReducer.tags)
+    const dispatch = useAppDispatch()
+
     const [isChecked, setIsChecked] = useState(false)
+
+    function checkTagInStore(): boolean {
+        const idx = tags.findIndex((tag) => tag.title === title)
+        if (idx === -1) {
+            return false
+        }
+        return true
+    }
+
+    useEffect(() => {
+        const isTagInStore = checkTagInStore()
+        if (!isTagInStore) setIsChecked(false)
+    }, [tags])
+
     function handleCheck(checked: boolean): void {
         if (checked) {
             setIsChecked(true)
+            dispatch(
+                push({
+                    title,
+                    backgroundColor: getRandomColor(),
+                })
+            )
+            // store로 체크된 태그 전송
             parentHandler('checked')
         } else {
             setIsChecked(false)
+            dispatch(splice(title))
+            // store로 체크 해제된 태그 전송
             parentHandler('canceled')
         }
     }

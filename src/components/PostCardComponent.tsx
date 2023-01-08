@@ -1,11 +1,10 @@
 import dayjs from 'dayjs'
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { ContentResponse } from '../../types/response'
-import lookupImg from '../../assets/images/lookup.svg'
-import { TechObj } from '../../types/post'
-import bookmarkBtnImg from '../../assets/images/bookmark.svg'
+import { ContentResponse } from 'types/response'
+import lookupImg from 'img/lookup.svg'
+import { TechObj } from 'types/post'
+import bookmarkBtnImg from 'img/bookmark.svg'
 
 const PostCardComponentLayout = styled.div`
     cursor: pointer;

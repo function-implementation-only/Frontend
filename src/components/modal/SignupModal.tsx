@@ -6,8 +6,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { AxiosResponse } from 'axios'
 import useServiceManager from 'src/hooks/useServiceManager'
+import { SignUpInfo } from 'types/account'
 import Modal from '../Modal'
-import { SignUpInfo } from '../../../types/account'
 import {
     ErrorEmail,
     ErrorEmailAuth,

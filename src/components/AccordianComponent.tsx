@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
-import { ConstantObj } from '../../lib/constants'
-import CheckBoxComponent from './CheckBoxComponent'
-import arrow from '../../assets/images/arrow.svg'
+import arrow from 'img/arrow.svg'
+import FilterCheckBoxComponent from 'components/checkbox/FilterCheckBoxComponent'
+import { ConstantObj } from 'lib/constants'
 
 const AccordianBox = styled.div``
 
@@ -11,6 +11,8 @@ const AccordianItem = styled.div``
 const AccordianTitle = styled.div<{
     isOpen: boolean
 }>`
+    --animation-delay: 0.3s;
+
     height: 52px;
     display: flex;
     cursor: pointer;
@@ -23,14 +25,19 @@ const AccordianTitle = styled.div<{
         align-items: center;
         transform: ${(props) =>
             props.isOpen ? 'rotateX(0)' : 'rotateX(180deg)'};
-        transition: transform 0.3s ease-in-out;
+        transition: transform var(--animation-delay) ease-in-out;
     }
 `
 
 const AccordianContents = styled.div`
+    --animation-delay: 0.3s;
+
     height: 0;
     overflow: hidden;
-    transition: all 0.3s ease-in-out;
+    transition: all var(--animation-delay) ease-in-out;
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
 `
 
 interface AccordianComponentProps {
@@ -82,7 +89,7 @@ function AccordianComponent({
                 <AccordianContents ref={accordian}>
                     {constantsArray.map((item) => {
                         return (
-                            <CheckBoxComponent
+                            <FilterCheckBoxComponent
                                 key={item.value}
                                 title={item.title}
                                 parentHandler={ownHandler}

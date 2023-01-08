@@ -13,12 +13,12 @@ import {
     PEOPLENUM,
     PLACE,
     TECHLIST,
-} from '../../../lib/constants'
-import { ContentResponse } from '../../../types/response'
-import SelectComponent from '../../components/SelectComponent'
-import RadioComponent from '../../components/RadioComponent'
-import { Inputs } from '../../../types/post'
-import { DefaultButton } from '../../components/HeaderComponent'
+} from 'lib/constants'
+import SelectComponent from 'components/SelectComponent'
+import RadioComponent from 'components/RadioComponent'
+import { DefaultButton } from 'components/HeaderComponent'
+import { ContentResponse } from 'types/response'
+import { Inputs } from 'types/post'
 
 const PostPageLayout = styled.div`
     width: 1440px;

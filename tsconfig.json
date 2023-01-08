@@ -19,8 +19,13 @@
     "baseUrl": ".",
     "paths": {
       "data/*": ["src/data/*"],
-      "pages/*": ["src/presentation/pages/*"],
-      "components/*": ["src/presentation/components/*"]
+      "pages/*": ["src/pages/*"],
+      "components/*": ["src/components/*"],
+      "img/*": ["src/assets/images/*"],
+      "lib/*": ["src/lib/*"],
+      "hooks/*": ["src/hooks/*"],
+      "utils/*": ["src/utils/*"],
+      "types/*": ["src/types/*"]
     }
   },
   "include": ["src", "./.eslintrc.cjs", "./vite.config.ts"],
