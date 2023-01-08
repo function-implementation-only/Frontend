@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import useChatRooms from '../../../hooks/useChatRooms'
-import CoffeeChatSvg from '../../../assets/images/coffee-chat.svg'
-import ChatFoundSection from '../../components/auth/chat/ChatFoundSection'
-import ChatCommonRoomsSection from '../../components/auth/ChatCommonRoomsSection'
+import ChatCommonRoomsSection from 'components/auth/ChatCommonRoomsSection'
+import ChatFoundSection from 'components/auth/chat/ChatFoundSection'
+import useChatRooms from 'hooks/useChatRooms'
+import CoffeeChatSvg from 'img/coffee-chat.svg'
 
 const ChatViewLayout = styled.div`
     display: flex;
@@ -37,7 +37,7 @@ const ChatNotFoundSection = styled.div`
     }
 `
 
-function AuthMessenger() {
+function Messenger() {
     const { data } = useChatRooms()
     // TODO: 메세지를 선택하면 Props 로 전달
 
@@ -59,4 +59,4 @@ function AuthMessenger() {
     )
 }
 
-export default AuthMessenger
+export default Messenger

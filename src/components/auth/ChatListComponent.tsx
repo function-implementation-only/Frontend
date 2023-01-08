@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { ChatRoomWithUser } from 'src/types/chat'
-import ChatItemSkeleton from './skeleton'
-import ChatItemComponent from './ChatItemComponent'
-import useChatRooms from '../../../hooks/useChatRooms'
+import useChatRooms from 'hooks/useChatRooms'
+import ChatItemSkeleton from 'components/auth/skeleton'
+import ChatItemComponent from 'components/auth/ChatItemComponent'
 
 export const ChatListWrapper = styled.ul`
     max-height: calc(100vh - 150px);

@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
-import { ChatRoomWithUser } from '../../../types/chat'
-import useChatRoomInfo from '../../../hooks/useChatInfo'
-import defaultUuserAvatar from '../../../assets/images/default-user-avatar.svg'
+import { ChatRoomWithUser } from 'types/chat'
+import useChatRoomInfo from 'hooks/useChatInfo'
+import defaultUserAvatar from 'img/default-user-avatar.svg'
 
 interface ChatItemWrapperProps {
     active?: boolean
@@ -98,7 +98,7 @@ export default function ChatItemComponent(props: ChatRoomWithUser) {
     return (
         <Link to={`/auth/messenger?roomId=${roomId}`}>
             <ChatItemWrapper active={roomId === queryRoomId}>
-                <BorderAvatar src={postUserImg ?? defaultUuserAvatar} />
+                <BorderAvatar src={postUserImg ?? defaultUserAvatar} />
                 <MessageInfo>
                     <Name>{name}</Name>
                     {date && <Time>{date}</Time>}

@@ -2,7 +2,7 @@
 import styled from 'styled-components'
 import * as StompJs from '@stomp/stompjs'
 import { IFrame } from '@stomp/stompjs'
-import { getTokenFromCookie } from '../../../../utils/cookie'
+import { getTokenFromCookie } from 'utils/cookie'
 
 const ChatMessageBox = styled.div`
     .div {
