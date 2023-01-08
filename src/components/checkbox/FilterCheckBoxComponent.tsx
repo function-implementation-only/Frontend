@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getRandomColor } from 'src/lib/utils'
+import { getRandomColor } from 'utils/random'
 import { push, splice } from 'src/store/features/tag/tagSlice'
 import { useAppDispatch, useAppSelector } from 'src/store/hooks'
 import CheckBoxComponent from './CheckBoxComponent'

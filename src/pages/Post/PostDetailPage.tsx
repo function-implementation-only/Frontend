@@ -3,8 +3,9 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import useDeletePost from 'src/hooks/useDeletePost'
 import usePostById from 'src/hooks/usePostById'
+import { TechObj } from 'src/types/post'
 import styled from 'styled-components'
-import NoImageComponent from '../../components/NoImageComponent'
+import NoImageComponent from 'components/NoImageComponent'
 
 const PostDetailLayout = styled.div``
 
@@ -38,7 +39,7 @@ function PostDetailPage() {
                     <p>place : {apiResponse?.data?.place}</p>
                     <ul>
                         techList :
-                        {apiResponse?.data?.techs.map((item) => {
+                        {apiResponse?.data?.techs.map((item: TechObj) => {
                             return <li key={item.id}>{item.tech}</li>
                         })}
                     </ul>

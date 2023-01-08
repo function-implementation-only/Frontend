@@ -3,11 +3,11 @@
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 // import { useMutation } from 'react-query'
-import useModal from '../../hooks/useModal'
+import useModal from 'hooks/useModal'
+import Logo from 'img/Logo.svg'
+import { deleteCookie, getTokenFromCookie } from 'utils/cookie'
 import LoginModal from './modal/LoginModal'
 import SignupModal from './modal/SignupModal'
-import Logo from '../../assets/images/Logo.svg'
-import { deleteCookie, getTokenFromCookie } from '../../utils/cookie'
 
 const HeaderComponentLayout = styled.div`
     z-index: 999;

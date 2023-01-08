@@ -3,11 +3,11 @@
 import styled from 'styled-components'
 import useAllPost from 'src/hooks/useAllPost'
 import TagBarComponent from 'components/TagBarComponent'
-import { ContentResponse } from '../../types/response'
-import PostCardComponent from '../components/PostCardComponent'
-import AccordianComponent from '../components/AccordianComponent'
-import { CATEGORY, TECHLIST } from '../../lib/constants'
-import BannerComponent from '../components/BannerComponent'
+import { ContentResponse } from 'types/response'
+import PostCardComponent from 'components/PostCardComponent'
+import AccordianComponent from 'components/AccordianComponent'
+import { CATEGORY, TECHLIST } from 'lib/constants'
+import BannerComponent from 'components/BannerComponent'
 
 const MainPageLayout = styled.div``
 
