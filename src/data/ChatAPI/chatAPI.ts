@@ -20,6 +20,6 @@ export default class ChatAPI implements ChatAPIInterface {
     }
 
     getChatRooms() {
-        return setInterceptors(this.axiosInstance).get('/chat/rooms')
+        return setInterceptors(this.axiosInstance).get('/chat/roomList')
     }
 }

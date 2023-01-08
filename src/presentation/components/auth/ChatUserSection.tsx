@@ -44,20 +44,19 @@ export default function ChatUserSection() {
         <ChatUserSectionWrapper>
             <CoffeeChatTab>
                 <div
-                    tabIndex={0}
+                    // tabIndex={0}
                     onClick={() => setChoiceTab(0)}
                     aria-hidden="true"
-                    role="button"
+                    // role="button"
                     key={0}
                     className={`chat-grid ${choiceTab === 0 && 'action'}`}
                 >
                     <span>전체</span>
                 </div>
                 <div
-                    tabIndex={0}
+                    // tabIndex={0}
                     onClick={() => setChoiceTab(1)}
                     aria-hidden="true"
-                    role="button"
                     key={1}
                     className={`chat-grid ${choiceTab === 1 && 'action'}`}
                 >

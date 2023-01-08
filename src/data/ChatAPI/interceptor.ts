@@ -8,6 +8,8 @@ function setInterceptors(axiosInstance: AxiosInstance) {
 
             returnConfig.headers = {
                 'Content-Type': 'application/json',
+                Access_Token:
+                    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0cm91Ymxlc29tZS5kZXZAZ21haWwuY29tIiwiZXhwIjoxNjczMjYyMTQzLCJpYXQiOjE2NzMxNzU3NDN9.knLsZMoT7Bo2HtHjm2ygBT6XILAyE3OPtQBbQdSp2u0', // getTokenFromCookie(),
                 // 토큰 관련 로직 필요
             }
 
