@@ -1,9 +1,7 @@
 import { useQuery } from 'react-query'
-import { useNavigate } from 'react-router-dom'
 import useServiceManager from 'src/hooks/useServiceManager'
 
 function Kakao() {
-    const navigate = useNavigate()
     const code = new URL(window.location.href).searchParams.get('code')
     const serviceManager = useServiceManager()
 
@@ -20,12 +18,12 @@ function Kakao() {
                         'refreshToken',
                         res.data.data.refreshToken
                     )
-                    navigate('/')
+                    window.location.replace('/')
                 }
             },
             onError: () => {
                 alert('로그인 실패')
-                navigate('/')
+                window.location.replace('/')
             },
         }
     )

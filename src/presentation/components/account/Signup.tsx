@@ -3,6 +3,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
+import { googleURL, kakaoURL } from 'src/utils/url'
 import kakaoImg from '../../../assets/images/kakaoLogo.svg'
 import googleImg from '../../../assets/images/googleLogo.svg'
 import smalllogoImg from '../../../assets/images/signupLogo.svg'
@@ -72,8 +73,11 @@ interface Props {
 }
 
 const Signup: React.FC<Props> = ({ handleShowing, setLogin, setSignup }) => {
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${VITE_KAKAO_API_KEY}&redirect_uri=${VITE_KAKAO_REDIRECT_URI}&response_type=code`
-    const GOOGLE_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${VITE_GOOGLE_CLIENT_ID}&redirect_uri=${VITE_GOOGLE_REDIRECT_URI}&response_type=code&scope=profile%20email`
+    const KAKAO_AUTH_URL = kakaoURL(VITE_KAKAO_API_KEY, VITE_KAKAO_REDIRECT_URI)
+    const GOOGLE_URL = googleURL(
+        VITE_GOOGLE_CLIENT_ID,
+        VITE_GOOGLE_REDIRECT_URI
+    )
 
     const handleLogin = () => {
         setLogin(true)
