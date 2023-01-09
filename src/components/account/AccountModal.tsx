@@ -3,9 +3,9 @@ import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 import Login from 'components/account/Login'
 import Signup from 'components/account/Signup'
+import closeBtnImg from 'img/CloseBtn.svg'
+import logoImg from 'img/Logo.svg'
 import Modal from '../Modal'
-import closeBtnImg from '../../../assets/images/CloseBtn.svg'
-import logoImg from '../../../assets/images/Logo.svg'
 
 const LoginLayout = styled.div`
     position: relative;
