@@ -4,10 +4,8 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import { useMutation } from 'react-query'
 import useServiceManager from 'src/hooks/useServiceManager'
-import useModal from '../../hooks/useModal'
-import LoginModal from './account/Login'
-import SignupModal from './account/Signup'
-import Logo from '../../assets/images/Logo.svg'
+import useModal from 'hooks/useModal'
+import Logo from 'img/Logo.svg'
 import AccountModal from './account/AccountModal'
 
 const HeaderComponentLayout = styled.div`

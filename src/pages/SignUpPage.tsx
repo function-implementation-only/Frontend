@@ -11,7 +11,7 @@ import {
     ErrorPassword,
     ErrorPasswordCheck,
 } from '../components/Error'
-import { SignUpInfo } from '../../types/account'
+import { SignUpInfo } from '../types/account'
 
 const MainPageLayout = styled.div``
 

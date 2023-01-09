@@ -4,9 +4,9 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 import { googleURL, kakaoURL } from 'src/utils/url'
-import kakaoImg from '../../../assets/images/kakaoLogo.svg'
-import googleImg from '../../../assets/images/googleLogo.svg'
-import smalllogoImg from '../../../assets/images/signupLogo.svg'
+import kakaoImg from 'img/kakaoLogo.svg'
+import googleImg from 'img/googleLogo.svg'
+import smalllogoImg from 'img/signupLogo.svg'
 import Button from '../AccountButton'
 
 const {
