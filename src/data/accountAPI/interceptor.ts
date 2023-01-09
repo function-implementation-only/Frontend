@@ -5,10 +5,16 @@ function setInterceptors(axiosInstance: AxiosInstance) {
         (config) => {
             // 요청을 보내기 전에 어떤 처리를 할 수 있다.
             const returnConfig = config
-
-            returnConfig.headers = {
-                'Content-Type': 'application/json',
-                // 토큰 관련 로직 필요
+            const token = localStorage.getItem('token')
+            if (token) {
+                returnConfig.headers = {
+                    'Content-Type': 'application/json',
+                    Access_Token: token,
+                }
+            } else {
+                returnConfig.headers = {
+                    'Content-Type': 'application/json',
+                }
             }
 
             return returnConfig

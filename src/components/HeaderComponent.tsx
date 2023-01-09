@@ -2,12 +2,13 @@
 // FIXME : ts 린트 잠시 피하는 용도. 나중에 수정 필요
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-// import { useMutation } from 'react-query'
-import useModal from 'hooks/useModal'
-import Logo from 'img/Logo.svg'
-import { deleteCookie, getTokenFromCookie } from 'utils/cookie'
-import LoginModal from './modal/LoginModal'
-import SignupModal from './modal/SignupModal'
+import { useMutation } from 'react-query'
+import useServiceManager from 'src/hooks/useServiceManager'
+import useModal from '../../hooks/useModal'
+import LoginModal from './account/Login'
+import SignupModal from './account/Signup'
+import Logo from '../../assets/images/Logo.svg'
+import AccountModal from './account/AccountModal'
 
 const HeaderComponentLayout = styled.div`
     z-index: 999;
@@ -30,10 +31,10 @@ const LogoBox = styled.div`
     cursor: pointer;
 `
 
-const ModalButtonBox = styled.div`
+const ButtonBox = styled.div`
     display: grid;
     grid-auto-flow: column;
-    grid-column-gap: 10px;
+    grid-column-gap: 16px;
 `
 
 export const DefaultButton = styled.button<{ default?: boolean }>`
@@ -52,40 +53,46 @@ export const DefaultButton = styled.button<{ default?: boolean }>`
 const ModalButton = styled(DefaultButton)``
 
 function HeaderComponent() {
-    const { isShowing: isLoginModalOpen, handleShowing: handleLogin } =
-        useModal()
-    const { isShowing: isSignupModalOpen, handleShowing: handleSignUp } =
-        useModal()
+    const { isShowing, handleShowing } = useModal()
     const [isLogin, setIsLogin] = useState(false)
+    const [login, setLogin] = useState(false)
+    const [signup, setSignup] = useState(false)
 
-    // 로그아웃 api 문제로인한 주석처리
+    const serviceManager = useServiceManager()
 
-    // const serviceManager = useServiceManager()
-
-    // const logoutMutation = useMutation(
-    //     'logout',
-    //     () => serviceManager.dataService.accountAPI.postLogOut(),
-    //     {
-    //         onSuccess: () => {
-    //             deleteCookie(token)
-    //             setIsLogin(false)
-    //             window.location.reload()
-    //         },
-    //         onError: (err) => {
-    //             alert(err)
-    //         },
-    //     }
-    // )
+    const logoutMutation = useMutation(
+        'logout',
+        () => serviceManager.dataService.accountAPI.postLogOut(),
+        {
+            onSuccess: () => {
+                localStorage.clear()
+                setIsLogin(false)
+                window.location.reload()
+            },
+            onError: (err) => {
+                alert(err)
+            },
+        }
+    )
 
     const handleLogout = () => {
-        // logoutMutation.mutate()
-        deleteCookie('token')
-        setIsLogin(false)
-        window.location.reload()
+        logoutMutation.mutate()
+    }
+
+    const handleLogin = () => {
+        handleShowing()
+        setLogin(true)
+        setSignup(false)
+    }
+
+    const handleSignup = () => {
+        handleShowing()
+        setSignup(true)
+        setLogin(false)
     }
 
     useEffect(() => {
-        const token = getTokenFromCookie()
+        const token = localStorage.getItem('token')
         if (token) {
             setIsLogin(true)
         }
@@ -98,22 +105,36 @@ function HeaderComponent() {
                         <img src={Logo} alt="logoImg" />
                     </a>
                 </LogoBox>
-                <ModalButtonBox>
-                    <ModalButton default type="button" onClick={handleLogin}>
-                        로그인
-                    </ModalButton>
-                    <ModalButton type="button" onClick={handleSignUp}>
+                <ButtonBox>
+                    {isLogin ? (
+                        <DefaultButton
+                            default
+                            type="button"
+                            onClick={handleLogout}
+                        >
+                            로그아웃
+                        </DefaultButton>
+                    ) : (
+                        <DefaultButton
+                            default
+                            type="button"
+                            onClick={handleLogin}
+                        >
+                            로그인
+                        </DefaultButton>
+                    )}
+                    <DefaultButton type="button" onClick={handleSignup}>
                         회원가입
-                    </ModalButton>
-                </ModalButtonBox>
+                    </DefaultButton>
+                </ButtonBox>
             </HeaderComponentRow>
-            <LoginModal
-                isShowing={isLoginModalOpen}
-                handleShowing={handleLogin}
-            />
-            <SignupModal
-                isShowing={isSignupModalOpen}
-                handleShowing={handleSignUp}
+            <AccountModal
+                isShowing={isShowing}
+                handleShowing={handleShowing}
+                login={login}
+                signup={signup}
+                setLogin={setLogin}
+                setSignup={setSignup}
             />
         </HeaderComponentLayout>
     )

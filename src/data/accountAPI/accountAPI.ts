@@ -7,6 +7,8 @@ export interface AccountAPIInterface {
     postLogIn: (data: AccountInfo) => Promise<AxiosResponse>
     postLogOut: () => Promise<AxiosResponse>
     postEmailAuth: (email: string) => Promise<AxiosResponse>
+    getKakaoLogin: (code: string | null) => Promise<AxiosResponse>
+    getGoogleLogin: (code: string | null) => Promise<AxiosResponse>
 }
 
 export default class AccountAPI implements AccountAPIInterface {
@@ -24,14 +26,26 @@ export default class AccountAPI implements AccountAPIInterface {
         return setInterceptors(this.axiosInstance).post('/account/login', data)
     }
 
-    postLogOut() {
-        return setInterceptors(this.axiosInstance).post('/logout')
+    public postLogOut() {
+        return setInterceptors(this.axiosInstance).post('/account/logout')
     }
 
     postEmailAuth(email: string) {
         return setInterceptors(this.axiosInstance).post(
             '/account/signup/email-check',
             { email }
+        )
+    }
+
+    public getKakaoLogin(code: string | null) {
+        return setInterceptors(this.axiosInstance).get(
+            `/socials/signup/kakao?code=${code}`
+        )
+    }
+
+    public getGoogleLogin(code: string | null) {
+        return setInterceptors(this.axiosInstance).get(
+            `/google/test?code=${code}`
         )
     }
 }
