@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useLocation, useParams } from 'react-router-dom'
 import styled, { css } from 'styled-components'
@@ -8,17 +8,25 @@ import useCreatePost from 'src/hooks/useCreatePost'
 import usePostById from 'src/hooks/usePostById'
 import {
     CATEGORY,
-    ConstantObj,
     DURATION,
-    PEOPLENUM,
+    PARSE_CONSTANT,
     PLACE,
-    TECHLIST,
+    POST_STATE,
 } from 'lib/constants'
-import SelectComponent from 'components/SelectComponent'
-import RadioComponent from 'components/RadioComponent'
 import { ContentResponse } from 'types/response'
 import { Inputs } from 'types/post'
 import DefaultButton from 'components/common/DefaultButton'
+import '@toast-ui/editor/dist/toastui-editor.css'
+import { Editor } from '@toast-ui/react-editor'
+import {
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    MenuItem,
+    Radio,
+    RadioGroup,
+    Select,
+} from '@mui/material'
 
 const PostPageLayout = styled.div`
     width: 1440px;
@@ -39,32 +47,20 @@ const FormLayout = styled.form``
 
 const FormRow = styled.div``
 
-const SelectComponentBox = styled.div`
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-`
-
-const RadioComponentBox = styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, max-content);
-    grid-auto-flow: column;
-    grid-column-gap: 26px;
-`
-
 const TextCss = css`
     border: 1px solid #e9ecef;
     padding: 13px 12px;
     margin-bottom: 12px;
 `
 
-const Title = styled.input`
-    ${TextCss}
+const TitleBox = styled.div`
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: max-content 1fr;
 `
 
-const Contents = styled.textarea`
+const Title = styled.input`
     ${TextCss}
-    resize: none;
-    height: 412px;
 `
 
 const FormCol = styled.div`
@@ -80,6 +76,8 @@ const ButtonBox = styled.div`
 const WriteButton = styled(DefaultButton)``
 
 function PostPage() {
+    const editorRef = useRef(null)
+
     const location = useLocation()
     const { id: paramId } = useParams()
 
@@ -90,17 +88,13 @@ function PostPage() {
     // 페이지 url로 수정 페이지인지 판단
 
     const { register, handleSubmit, setValue } = useForm<Inputs>()
-    const [imgFiles, setImgFiles] = useState<FileList | null>(null)
 
     const [isInitialized, setIsInitialized] = useState(false)
     // 수정시 초기값 세팅 여부
 
-    const category = register('category')
-    const place = register('place')
-
     function setServerData(serverData: ContentResponse) {
         setValue('category', serverData.category)
-        setValue('contents', serverData.contents)
+        // setValue('contents', serverData.contents)
         setValue('duration', serverData.duration)
         setValue('peopleNum', Number(serverData.peopleNum))
         setValue('place', serverData.place)
@@ -123,15 +117,24 @@ function PostPage() {
     // 수정 페이지로 진입시 초기값 세팅
 
     const onSubmit: SubmitHandler<Inputs> = async (inputData) => {
-        // FIXME : 메서드명 고민 필요
         const formData = new FormData()
         const inputDataCopied = JSON.parse(JSON.stringify(inputData))
+
         const { techList } = inputData
         delete inputDataCopied.techList
+        // techList 분리
+
+        inputDataCopied.contents = editorRef.current.editorInst.getHTML()
+        console.log(editorRef.current.editorInst.getHTML())
+
+        console.log(inputDataCopied)
+        return
 
         formData.append(
             'data',
-            new Blob([JSON.stringify(inputData)], { type: 'application/json' })
+            new Blob([JSON.stringify(inputDataCopied)], {
+                type: 'application/json',
+            })
             // Spring 서버를 위한 처리
         )
         formData.append(
@@ -139,9 +142,6 @@ function PostPage() {
             new Blob([JSON.stringify(techList)], { type: 'application/json' })
             // Spring 서버를 위한 처리
         )
-        if (imgFiles) {
-            formData.append('image', imgFiles[0])
-        }
 
         if (isUpdate) {
             updatePost.mutate({ formData, id: paramId })
@@ -160,148 +160,163 @@ function PostPage() {
             <PostPageRow>
                 <FormLayout onSubmit={handleSubmit(onSubmit)}>
                     <FormRow>
-                        <SelectComponentBox>
-                            <SelectComponent
-                                title="모집 구분"
-                                htmlFor="categorySelect"
+                        <FormControl>
+                            <FormLabel id="categoryRadioGroup-label">
+                                모집 구분
+                            </FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="categoryRadioGroup-label"
+                                name="categoryRadioGroup"
                             >
-                                <RadioComponentBox>
-                                    {CATEGORY.map((item) => {
-                                        return (
-                                            <RadioComponent
-                                                key={item.title}
-                                                title={item.title}
-                                                value={item.value}
-                                                name={category.name}
-                                                onChange={category.onChange}
-                                                onBlur={category.onBlur}
-                                                inputRef={category.ref}
-                                            />
-                                        )
-                                    })}
-                                </RadioComponentBox>
-                            </SelectComponent>
-                            <SelectComponent
-                                title="진행 기간"
-                                htmlFor="durationSelect"
+                                {CATEGORY.map((item) => {
+                                    return (
+                                        <FormControlLabel
+                                            key={item.title}
+                                            value={item.value}
+                                            control={<Radio />}
+                                            label={item.title}
+                                            {...register('category')}
+                                        />
+                                    )
+                                })}
+                            </RadioGroup>
+                        </FormControl>
+                        <FormControl>
+                            <FormLabel id="placeRadioGroup-label">
+                                진행 방식
+                            </FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="placeRadioGroup-label"
+                                name="placeRadioGroup"
                             >
-                                <select
-                                    id="durationSelect"
-                                    {...register('duration')}
-                                >
-                                    <option value="">
-                                        --Please choose an option--
-                                    </option>
-                                    {DURATION.map((item) => {
-                                        return (
-                                            <option
-                                                value={item.value}
-                                                key={item.title}
-                                            >
-                                                {item.title}
-                                            </option>
-                                        )
-                                    })}
-                                </select>
-                            </SelectComponent>
-                            <SelectComponent
-                                title="모집 인원"
-                                htmlFor="peopleNumSelect"
+                                {PLACE.map((item) => {
+                                    return (
+                                        <FormControlLabel
+                                            key={item.title}
+                                            value={item.value}
+                                            control={<Radio />}
+                                            label={item.title}
+                                            {...register('place')}
+                                        />
+                                    )
+                                })}
+                            </RadioGroup>
+                        </FormControl>
+                        <FormControl
+                            sx={{ m: 0.5, minWidth: 120 }}
+                            size="small"
+                        >
+                            <FormLabel id="durationSelect-label">
+                                예상 기간
+                            </FormLabel>
+                            <Select
+                                id="durationSelect"
+                                displayEmpty
+                                defaultValue=""
+                                {...register('duration')}
                             >
-                                <select
-                                    id="peopleNumSelect"
-                                    {...register('peopleNum')}
-                                >
-                                    <option value="">
-                                        --Please choose an option--
-                                    </option>
-                                    {PEOPLENUM.map((item) => {
-                                        return (
-                                            <option
-                                                value={item.value}
-                                                key={item.title}
-                                            >
-                                                {item.title}
-                                            </option>
-                                        )
-                                    })}
-                                </select>
-                            </SelectComponent>
-                            <SelectComponent
-                                title="진행 방식"
-                                htmlFor="placeSelect"
+                                <MenuItem value="" disabled>
+                                    선택해주세요.
+                                </MenuItem>
+                                {DURATION.map((item) => {
+                                    return (
+                                        <MenuItem
+                                            value={item.value}
+                                            key={item.title}
+                                        >
+                                            {item.title}
+                                        </MenuItem>
+                                    )
+                                })}
+                            </Select>
+                        </FormControl>
+                        <FormControl
+                            sx={{ m: 0.5, minWidth: 120 }}
+                            size="small"
+                        >
+                            <FormLabel id="cooperationProgramSelect-label">
+                                협업 프로그램
+                            </FormLabel>
+                            <Select
+                                id="cooperationProgramSelect"
+                                displayEmpty
+                                multiple
+                                defaultValue={[]}
+                                renderValue={(selected: string[]) => {
+                                    if (selected.length === 0) {
+                                        return <em>선택해주세요.</em>
+                                    }
+
+                                    const selectedParsed = selected.map(
+                                        (item) => {
+                                            return PARSE_CONSTANT[item]
+                                        }
+                                    )
+
+                                    return selectedParsed.join(', ')
+                                }}
+                                {...register('cooperationProgram')}
                             >
-                                <RadioComponentBox>
-                                    {PLACE.map((item) => {
-                                        return (
-                                            <RadioComponent
-                                                key={item.title}
-                                                title={item.title}
-                                                value={item.value}
-                                                name={place.name}
-                                                onChange={place.onChange}
-                                                onBlur={place.onBlur}
-                                                inputRef={place.ref}
-                                            />
-                                        )
-                                    })}
-                                </RadioComponentBox>
-                            </SelectComponent>
-                            <SelectComponent
-                                title="기술 스택"
-                                htmlFor="techSelect"
-                            >
-                                <select
-                                    multiple
-                                    id="techSelect"
-                                    {...register('techList')}
-                                >
-                                    {TECHLIST.map((item: ConstantObj) => {
-                                        return (
-                                            <option
-                                                key={item.value}
-                                                value={item.value}
-                                            >
-                                                {item.value}
-                                            </option>
-                                        )
-                                    })}
-                                </select>
-                            </SelectComponent>
-                            <SelectComponent
-                                title="시작 예정일"
-                                htmlFor="startDateSelect"
-                            >
-                                <input
-                                    id="startDateSelect"
-                                    type="date"
-                                    {...register('startDate')}
-                                />
-                            </SelectComponent>
-                            <SelectComponent
-                                title="이미지 파일"
-                                htmlFor="imgFile"
-                            >
-                                <input
-                                    id="imgFile"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => {
-                                        setImgFiles(e.target.files)
-                                    }}
-                                />
-                            </SelectComponent>
-                        </SelectComponentBox>
+                                <MenuItem value="" disabled>
+                                    선택해주세요.
+                                </MenuItem>
+                                {DURATION.map((item) => {
+                                    return (
+                                        <MenuItem
+                                            value={item.value}
+                                            key={item.title}
+                                        >
+                                            {item.title}
+                                        </MenuItem>
+                                    )
+                                })}
+                            </Select>
+                        </FormControl>
                     </FormRow>
                     <FormCol>
-                        <Title
-                            type="text"
-                            placeholder="제목을 입력해주세요."
-                            {...register('title')}
-                        />
-                        <Contents
-                            placeholder="내용을 입력해주세요."
-                            {...register('contents')}
+                        <TitleBox>
+                            <FormControl
+                                sx={{ m: 0.5, minWidth: 'max-content' }}
+                                size="small"
+                            >
+                                <Select
+                                    displayEmpty
+                                    defaultValue=""
+                                    {...register('postState')}
+                                >
+                                    <MenuItem value="" disabled>
+                                        선택해주세요.
+                                    </MenuItem>
+                                    {POST_STATE.map((item) => {
+                                        return (
+                                            <MenuItem
+                                                value={item.value}
+                                                key={item.title}
+                                                disabled={
+                                                    !isUpdate &&
+                                                    item.title === '모집완료'
+                                                }
+                                            >
+                                                {item.title}
+                                            </MenuItem>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
+                            <Title
+                                type="text"
+                                placeholder="제목을 입력해주세요."
+                                {...register('title')}
+                            />
+                        </TitleBox>
+                        <Editor
+                            previewStyle="vertical"
+                            height="600px"
+                            initialEditType="markdown"
+                            useCommandShortcut
+                            ref={editorRef}
                         />
                     </FormCol>
                     <FormRow>

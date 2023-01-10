@@ -16,6 +16,11 @@ export const POST_DETAIL_INFORMATION = [
     { title: '모집 인원', type: 'table', value: 'peopleNum' },
 ]
 
+export const POST_STATE: ConstantObj[] = [
+    { title: '모집중', value: 'ON' },
+    { title: '모집완료', value: 'OFF' },
+]
+
 export const CATEGORY: ConstantObj[] = [
     { title: '프로젝트', value: 'PROJECT' },
     { title: '스터디', value: 'STUDY' },
