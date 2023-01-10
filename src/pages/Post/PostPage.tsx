@@ -81,8 +81,10 @@ const WriteButton = styled(DefaultButton)``
 
 function PostPage() {
     const location = useLocation()
-
     const { id: paramId } = useParams()
+
+    const createPost = useCreatePost()
+    const updatePost = useUpdatePost()
 
     const isUpdate = /update/.test(location.pathname)
     // 페이지 url로 수정 페이지인지 판단
@@ -142,9 +144,9 @@ function PostPage() {
         }
 
         if (isUpdate) {
-            useUpdatePost().mutate({ formData, id: paramId })
+            updatePost.mutate({ formData, id: paramId })
         } else {
-            useCreatePost().mutate(formData)
+            createPost.mutate(formData)
         }
     }
 

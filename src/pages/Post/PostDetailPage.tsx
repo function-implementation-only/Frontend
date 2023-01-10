@@ -3,7 +3,6 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import useDeletePost from 'src/hooks/useDeletePost'
 import usePostById from 'src/hooks/usePostById'
-import { TechObj } from 'src/types/post'
 import styled from 'styled-components'
 import { useState } from 'react'
 import { POST_DETAIL_INFORMATION } from 'lib/constants'

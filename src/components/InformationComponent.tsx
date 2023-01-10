@@ -1,4 +1,4 @@
-import { getRandomColor } from 'lib/utils'
+import { getRandomColor } from 'utils/random'
 import { TechObj } from 'src/types/post'
 import styled from 'styled-components'
 // import TableComponent from './TableComponent'
