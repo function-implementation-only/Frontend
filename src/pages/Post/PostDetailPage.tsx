@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { POST_DETAIL_INFORMATION } from 'lib/constants'
 import InformationComponent from 'components/InformationComponent'
+import DefaultButton from 'components/common/DefaultButton'
 
 const PostDetailLayout = styled.div`
     width: 1440px;
@@ -31,6 +32,7 @@ const TitleBox = styled.div<{ fontSize: string }>`
 const ButtonBox = styled.div`
     display: flex;
     column-gap: 24px;
+    align-items: center;
 `
 const HeaderDetailBox = styled.div<{
     justifyContent?: string
@@ -110,9 +112,16 @@ const BookMarkButton = styled.button<{
     height: ${(props) => (props.isAuthor ? '40px' : '30px')};
     border: none;
     cursor: pointer;
+    margin-left: auto;
 `
 
 const ContentsBox = styled.div``
+
+const ErrorButton = styled(DefaultButton)`
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+    background-color: white;
+`
 
 function PostDetailPage() {
     const { id: paramId } = useParams()
@@ -159,27 +168,27 @@ function PostDetailPage() {
                                 <ButtonBox>
                                     {isAuthor ? (
                                         <>
-                                            <button
-                                                type="button"
-                                                onClick={handleUpdatePost}
-                                            >
-                                                수정하기
-                                            </button>
-                                            <button
+                                            <ErrorButton
                                                 type="button"
                                                 onClick={handleDeletePost}
                                             >
                                                 삭제하기
-                                            </button>
+                                            </ErrorButton>
+                                            <DefaultButton
+                                                type="button"
+                                                onClick={handleUpdatePost}
+                                            >
+                                                수정하기
+                                            </DefaultButton>
                                         </>
                                     ) : (
                                         <>
-                                            <button
+                                            <DefaultButton
                                                 type="button"
                                                 onClick={handleApply}
                                             >
                                                 지원하기
-                                            </button>
+                                            </DefaultButton>
                                             <BookMarkButton
                                                 isAuthor={isAuthor}
                                             />

@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
     --gray-800: #212529;
     --gray-500: #838485;
     --gray-400: #B0B0B0;
+    --error-color: #FF3257
   }
   .App {
     width: 100%;

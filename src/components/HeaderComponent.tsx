@@ -7,6 +7,7 @@ import useServiceManager from 'src/hooks/useServiceManager'
 import useModal from 'hooks/useModal'
 import Logo from 'img/Logo.svg'
 import AccountModal from './account/AccountModal'
+import DefaultButton from './common/DefaultButton'
 
 const HeaderComponentLayout = styled.div`
     z-index: 999;
@@ -34,18 +35,10 @@ const ButtonBox = styled.div`
     grid-auto-flow: column;
     grid-column-gap: 16px;
 `
-
-export const DefaultButton = styled.button<{ default?: boolean }>`
-    width: 100px;
-    height: 45px;
-    border-radius: 100px;
-    border: none;
-    cursor: pointer;
-    background-color: ${(props) =>
-        props.default ? 'white' : ' var(--primary-color)'};
-    color: ${(props) => (props.default ? 'var(--primary-color)' : 'white')};
-    border: ${(props) =>
-        props.default ? 'solid 1px var(--primary-color)' : 'none'};
+const DefaultButtonReversed = styled(DefaultButton)`
+    border: 1px solid var(--primary-color);
+    background-color: white;
+    color: var(--primary-color);
 `
 
 const ModalButton = styled(DefaultButton)``
@@ -105,25 +98,17 @@ function HeaderComponent() {
                 </LogoBox>
                 <ButtonBox>
                     {isLogin ? (
-                        <DefaultButton
-                            default
-                            type="button"
-                            onClick={handleLogout}
-                        >
+                        <DefaultButton type="button" onClick={handleLogout}>
                             로그아웃
                         </DefaultButton>
                     ) : (
-                        <DefaultButton
-                            default
-                            type="button"
-                            onClick={handleLogin}
-                        >
+                        <DefaultButton type="button" onClick={handleLogin}>
                             로그인
                         </DefaultButton>
                     )}
-                    <DefaultButton type="button" onClick={handleSignup}>
+                    <DefaultButtonReversed type="button" onClick={handleSignup}>
                         회원가입
-                    </DefaultButton>
+                    </DefaultButtonReversed>
                 </ButtonBox>
             </HeaderComponentRow>
             <AccountModal
