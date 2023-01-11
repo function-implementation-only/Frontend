@@ -1,5 +1,5 @@
 export type ChatRoom = {
-    chatList: []
+    chatList: ChatList
     joinUserId: number
     joinUserImg: string | null
     joinUserNickname: string
@@ -10,6 +10,13 @@ export type ChatRoom = {
     roomId: number
     title: string
 }
+
+export type ChatList = {
+    id: number
+    message: string
+    sendDate: string
+    sender: string
+}[]
 
 // TODO: 수정해야함
 export type User = {

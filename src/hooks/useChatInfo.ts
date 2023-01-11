@@ -1,24 +1,50 @@
 import { ChatRoom } from '../types/chat'
 
-const useChatRoomInfo = (chats: ChatRoom) => {
-    // const user: User = {
-    //     id: 'string',
-    //     name: 'string | null',
-    //     email: 'string | null',
-    //     image: 'string | null',
-    // }
+function timeForToday(value?: string) {
+    if (value == null) {
+        return 'New!'
+    }
+    const today = new Date()
+    const timeValue = new Date(value)
 
-    // const getName = useCallback(
-    //     (chatListByUsers: User[]) =>
-    //         chatListByUsers.find((chatUser) => chatUser.email !== user?.email)
-    //             ?.name,
-    //     [user?.email]
-    // )
+    const betweenTime = Math.floor(
+        (today.getTime() - timeValue.getTime()) / 1000 / 60
+    )
+    if (betweenTime < 1) return '방금전'
+    if (betweenTime < 60) {
+        return `${betweenTime}분전`
+    }
+
+    const betweenTimeHour = Math.floor(betweenTime / 60)
+    if (betweenTimeHour < 24) {
+        return `${betweenTimeHour}시간전`
+    }
+
+    const betweenTimeDay = Math.floor(betweenTime / 60 / 24)
+    if (betweenTimeDay < 365) {
+        return `${betweenTimeDay}일전`
+    }
+
+    return `${Math.floor(betweenTimeDay / 365)}년전`
+}
+
+const useChatRoomInfo = (chat: ChatRoom) => {
+    const last = chat?.chatList.sort(
+        (a, b) =>
+            new Date(a.sendDate).getTime() - new Date(b.sendDate).getTime()
+    )
+
+    const sendUser = () => {
+        if (Number(last[0]?.sender) === chat?.joinUserId) {
+            return chat?.joinUserNickname
+        }
+        return chat?.postUserNickname
+    }
 
     return {
-        date: '2022-10',
-        name: '이름',
-        lastMessage: chats?.chatList?.reverse()[0],
+        date: timeForToday(last[0]?.sendDate),
+        name: sendUser(),
+        lastMessage: last[0]?.message,
     }
 }
 
