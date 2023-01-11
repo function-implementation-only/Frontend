@@ -67,12 +67,11 @@ const LoginBox = styled.div`
 `
 
 interface Props {
-    handleShowing: () => void
     setLogin: Dispatch<SetStateAction<boolean>>
     setSignup: Dispatch<SetStateAction<boolean>>
 }
 
-const Signup: React.FC<Props> = ({ handleShowing, setLogin, setSignup }) => {
+const Signup: React.FC<Props> = ({ setLogin, setSignup }) => {
     const KAKAO_AUTH_URL = kakaoURL(VITE_KAKAO_API_KEY, VITE_KAKAO_REDIRECT_URI)
     const GOOGLE_URL = googleURL(
         VITE_GOOGLE_CLIENT_ID,

@@ -26,8 +26,14 @@ export default class AccountAPI implements AccountAPIInterface {
         return setInterceptors(this.axiosInstance).post('/account/login', data)
     }
 
-    public postLogOut() {
+    postLogOut() {
         return setInterceptors(this.axiosInstance).post('/account/logout')
+    }
+
+    postEmailCheck(email: string) {
+        return setInterceptors(this.axiosInstance).post('/account/email', {
+            email,
+        })
     }
 
     postEmailAuth(email: string) {
@@ -37,13 +43,13 @@ export default class AccountAPI implements AccountAPIInterface {
         )
     }
 
-    public getKakaoLogin(code: string | null) {
+    getKakaoLogin(code: string | null) {
         return setInterceptors(this.axiosInstance).get(
             `/socials/signup/kakao?code=${code}`
         )
     }
 
-    public getGoogleLogin(code: string | null) {
+    getGoogleLogin(code: string | null) {
         return setInterceptors(this.axiosInstance).get(
             `/google/test?code=${code}`
         )

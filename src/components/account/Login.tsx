@@ -8,9 +8,8 @@ import styled from 'styled-components'
 import { googleURL, kakaoURL } from 'src/utils/url'
 import kakaoImg from 'img/kakaoLogo.svg'
 import googleImg from 'img/googleLogo.svg'
-import showPwImg from 'img/showPW.svg'
-import hidePwImg from 'img/hidePW.svg'
 import { AccountInfo } from 'types/account'
+import ShowPWButton from 'components/ShowPWButton'
 import { ErrorEmail, ErrorPassword } from '../Error'
 import Button from '../AccountButton'
 
@@ -60,21 +59,6 @@ const Input = styled.input`
     line-height: 20px;
     &::placeholder {
         color: #b0b0b0;
-    }
-`
-
-const ShowPwButton = styled.button`
-    position: absolute;
-    top: 36%;
-    right: 7px;
-    width: auto;
-    border: none;
-    background-color: transparent;
-    :hover {
-        cursor: pointer;
-    }
-    img {
-        vertical-align: middle;
     }
 `
 
@@ -172,7 +156,7 @@ const Login: React.FC<Props> = ({ handleShowing, setLogin, setSignup }) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <InputBox>
                     <InputItem>
-                        <Label htmlFor="email">아이디</Label>
+                        <Label htmlFor="email">이메일</Label>
                         <Input
                             id="email"
                             type="text"
@@ -198,18 +182,12 @@ const Login: React.FC<Props> = ({ handleShowing, setLogin, setSignup }) => {
                                     /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{6,12}$/,
                             })}
                         />
-                        <ShowPwButton
-                            type="button"
-                            onClick={() => {
-                                setShowingPW(!showingPW)
-                            }}
-                        >
-                            {showingPW ? (
-                                <img src={hidePwImg} alt="hidePW" />
-                            ) : (
-                                <img src={showPwImg} alt="showPW" />
-                            )}
-                        </ShowPwButton>
+                        <ShowPWButton
+                            showingPW={showingPW}
+                            setShowingPW={setShowingPW}
+                            top="36%"
+                            right="7px"
+                        />
                         <ErrorPassword errors={errors.password?.type} />
                     </InputItem>
                 </InputBox>

@@ -12,7 +12,7 @@ interface ModalProps {
 
 const Box = styled.div`
     position: fixed;
-    z-index: 10;
+    z-index: 1000;
     top: 0;
     right: 0;
     bottom: 0;
@@ -39,7 +39,7 @@ const Container = styled.div`
     z-index: 100;
     justify-content: center;
     background-color: #fff;
-    border-radius: 6px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
 `
