@@ -299,8 +299,7 @@ function SignUpPage() {
                                 required: true,
                                 maxLength: 12,
                                 minLength: 6,
-                                pattern:
-                                    /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{6,12}$/,
+                                pattern: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,12}$/,
                             })}
                         />
                         <ShowPWButton
