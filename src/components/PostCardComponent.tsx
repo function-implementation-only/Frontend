@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { ContentResponse } from 'types/response'
@@ -67,7 +68,7 @@ function PostCardComponent({ post }: PostCardComponentProps) {
             }}
         >
             <PostCardComponentRow>
-                <p>{dayjs(post.startDate).format('YYYY.MM.DD')}</p>
+                <p>{post.startDate}</p>
                 <p>{post.category}</p>
                 <Title>{post.title}</Title>
                 <p>{`#${post.place} #${post.peopleNum}명 #${post.duration}`}</p>

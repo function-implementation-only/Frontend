@@ -1,4 +1,3 @@
-import React from 'react'
 import { useAppSelector } from 'src/store/hooks'
 import styled from 'styled-components'
 import RecruitingCheckBoxComponent from './checkbox/RecruitingCheckBoxComponent'
@@ -30,6 +29,7 @@ function TagBarComponent() {
                             key={tag.title}
                             title={tag.title}
                             backgroundColor={tag.backgroundColor}
+                            displayCancelButton
                         />
                     )
                 })}

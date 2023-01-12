@@ -26,18 +26,28 @@ const TagComponentLayout = styled.div<{
 interface TagComponentProps {
     title: string
     backgroundColor: string
+    displayCancelButton: boolean
 }
 
-function TagComponent({ title, backgroundColor }: TagComponentProps) {
+function TagComponent({
+    title,
+    backgroundColor,
+    displayCancelButton,
+}: TagComponentProps) {
     const dispatch = useAppDispatch()
-    function handleCancelClick() {
-        dispatch(splice(title))
-    }
 
+    function handleCancel() {
+        return dispatch(splice(title))
+    }
+    // FIXME : 체크박스와 동일하게 prop으로 핸들러 받도록 처리
     return (
         <TagComponentLayout backgroundColor={backgroundColor}>
             {title}
-            <img src={cancel} alt="cancel" onClick={handleCancelClick} />
+            {displayCancelButton ? (
+                <img src={cancel} alt="cancel" onClick={handleCancel} />
+            ) : (
+                ''
+            )}
         </TagComponentLayout>
     )
 }
