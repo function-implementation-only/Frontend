@@ -4,7 +4,7 @@ export interface AccountInfo {
 }
 
 export interface SignUpInfo extends AccountInfo {
-    nickname: string
+    nickname?: string
     passwordCheck: string
     emailAuth: string
 }

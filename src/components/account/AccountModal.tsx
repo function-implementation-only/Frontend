@@ -72,13 +72,7 @@ const AccountModal: React.FC<Props> = ({
                         setSignup={setSignup}
                     />
                 )}
-                {signup && (
-                    <Signup
-                        handleShowing={handleShowing}
-                        setLogin={setLogin}
-                        setSignup={setSignup}
-                    />
-                )}
+                {signup && <Signup setLogin={setLogin} setSignup={setSignup} />}
             </LoginLayout>
         </Modal>
     )
