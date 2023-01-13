@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 import Login from 'components/account/Login'
 import Signup from 'components/account/Signup'
-import closeBtnImg from 'img/CloseBtn.svg'
+import closeBtnImg from 'img/closeBtn.svg'
 import logoImg from 'img/Logo.svg'
 import Modal from '../Modal'
 
