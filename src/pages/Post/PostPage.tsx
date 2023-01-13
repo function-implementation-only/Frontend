@@ -2,7 +2,6 @@ import { useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useLocation, useParams } from 'react-router-dom'
 import styled, { css } from 'styled-components'
-import dayjs from 'dayjs'
 import useUpdatePost from 'src/hooks/useUpdatePost'
 import useCreatePost from 'src/hooks/useCreatePost'
 import usePostById from 'src/hooks/usePostById'
@@ -27,6 +26,9 @@ import {
     RadioGroup,
     Select,
 } from '@mui/material'
+import PeopleNumSelectComponent from 'components/PeopleNumSelectComponent'
+import { useAppSelector } from 'src/store/hooks'
+import TechListSelectComponent from 'components/TechListSelectComponent'
 
 const PostPageLayout = styled.div`
     width: 1440px;
@@ -75,6 +77,18 @@ const ButtonBox = styled.div`
 
 const WriteButton = styled(DefaultButton)``
 
+const PeopleNumComponentLayout = styled.div``
+
+const PeopleNumSelectBox = styled.div`
+    display: flex;
+`
+
+const TechListComponentLayout = styled.div``
+
+const TechListSelectBox = styled.div`
+    display: flex;
+`
+
 function PostPage() {
     const editorRef = useRef(null)
 
@@ -92,13 +106,20 @@ function PostPage() {
     const [isInitialized, setIsInitialized] = useState(false)
     // 수정시 초기값 세팅 여부
 
+    const peopleNumArr = useAppSelector(
+        (state) => state.postCreateReducer.peopleNumArr
+    )
+    const techListFromStore = useAppSelector(
+        (state) => state.postCreateReducer.techList
+    )
+    // const dispatch = useAppDispatch()
+
     function setServerData(serverData: ContentResponse) {
         setValue('category', serverData.category)
         // setValue('contents', serverData.contents)
         setValue('duration', serverData.duration)
         setValue('peopleNum', Number(serverData.peopleNum))
         setValue('place', serverData.place)
-        setValue('startDate', dayjs(serverData.startDate).format('YYYY-MM-DD'))
         setValue('title', serverData.title)
         setValue(
             'techList',
@@ -106,7 +127,6 @@ function PostPage() {
                 return item.tech
             })
         )
-        // FIXME : 이미지 초기화 로직에 대해서 고민해보기
         setIsInitialized(true)
     }
 
@@ -125,9 +145,6 @@ function PostPage() {
         // techList 분리
 
         inputDataCopied.contents = editorRef.current.editorInst.getHTML()
-        console.log(editorRef.current.editorInst.getHTML())
-
-        console.log(inputDataCopied)
         return
 
         formData.append(
@@ -215,6 +232,7 @@ function PostPage() {
                                 id="durationSelect"
                                 displayEmpty
                                 defaultValue=""
+                                aria-labelledby="durationSelect-label"
                                 {...register('duration')}
                             >
                                 <MenuItem value="" disabled>
@@ -241,6 +259,7 @@ function PostPage() {
                             </FormLabel>
                             <Select
                                 id="cooperationProgramSelect"
+                                aria-labelledby="cooperationProgramSelect-label"
                                 displayEmpty
                                 multiple
                                 defaultValue={[]}
@@ -259,9 +278,7 @@ function PostPage() {
                                 }}
                                 {...register('cooperationProgram')}
                             >
-                                <MenuItem value="" disabled>
-                                    선택해주세요.
-                                </MenuItem>
+                                <MenuItem disabled>선택해주세요.</MenuItem>
                                 {DURATION.map((item) => {
                                     return (
                                         <MenuItem
@@ -274,6 +291,32 @@ function PostPage() {
                                 })}
                             </Select>
                         </FormControl>
+
+                        <PeopleNumComponentLayout>
+                            <FormLabel id="PeopleNum-label">
+                                모집 인원
+                            </FormLabel>
+                            <PeopleNumSelectBox>
+                                {peopleNumArr?.map((item) => (
+                                    <PeopleNumSelectComponent
+                                        key={item.id}
+                                        id={item.id}
+                                    />
+                                ))}
+                            </PeopleNumSelectBox>
+                        </PeopleNumComponentLayout>
+
+                        <TechListComponentLayout>
+                            <FormLabel id="techList-label">기술 스택</FormLabel>
+                            <TechListSelectBox>
+                                {techListFromStore?.map((item) => (
+                                    <TechListSelectComponent
+                                        key={item.id}
+                                        id={item.id}
+                                    />
+                                ))}
+                            </TechListSelectBox>
+                        </TechListComponentLayout>
                     </FormRow>
                     <FormCol>
                         <TitleBox>

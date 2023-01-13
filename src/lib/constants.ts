@@ -1,13 +1,27 @@
 export type ConstantObj = {
     title: string
     value: string | number
+    type?: string
 }
 
 type ParseConstantObj = {
     [key: string]: string
 }
 
-export const POST_DETAIL_INFORMATION = [
+export const RECRUITMENT_PART: ConstantObj[] = [
+    { title: '프론트엔드', value: 'FrontEnd' },
+    { title: '백엔드', value: 'BackEnd' },
+    { title: '디자인', value: 'Design' },
+]
+
+export const TECH_PART: ConstantObj[] = [
+    { title: '프론트엔드', value: 'FrontEnd' },
+    { title: '백엔드', value: 'BackEnd' },
+    { title: '모바일', value: 'Mobile' },
+    { title: '기타', value: 'Etc' },
+]
+
+export const POST_DETAIL_INFORMATION: ConstantObj[] = [
     { title: '모집 구분', type: 'tag', value: 'category' },
     { title: '사용 언어', type: 'tag', value: 'techs' },
     { title: '협업 프로그램', type: 'tag', value: 'techs' },
@@ -46,36 +60,38 @@ export const PLACE: ConstantObj[] = [
 ]
 
 export const TECHLIST: ConstantObj[] = [
-    { title: 'JAVASCRIPT', value: 'JAVASCRIPT' },
-    { title: 'TYPESCRIPT', value: 'TYPESCRIPT' },
-    { title: 'REACT', value: 'REACT' },
-    { title: 'VUE', value: 'VUE' },
-    { title: 'NODEJS', value: 'NODEJS' },
-    { title: 'SPRING', value: 'SPRING' },
-    { title: 'NEXTJS', value: 'NEXTJS' },
-    { title: 'JAVA', value: 'JAVA' },
-    { title: 'NESTJS', value: 'NESTJS' },
-    { title: 'EXPRESS', value: 'EXPRESS' },
-    { title: 'GO', value: 'GO' },
-    { title: 'C', value: 'C' },
-    { title: 'PYTHON', value: 'PYTHON' },
-    { title: 'DJANGO', value: 'DJANGO' },
-    { title: 'SWIFT', value: 'SWIFT' },
-    { title: 'KOTLIN', value: 'KOTLIN' },
-    { title: 'MYSQL', value: 'MYSQL' },
-    { title: 'MONGODB', value: 'MONGODB' },
-    { title: 'PHP', value: 'PHP' },
-    { title: 'GRAPHQL', value: 'GRAPHQL' },
-    { title: 'FIREBASE', value: 'FIREBASE' },
-    { title: 'REACTNATIVE', value: 'REACTNATIVE' },
-    { title: 'UNITY', value: 'UNITY' },
-    { title: 'FLUTTER', value: 'FLUTTER' },
-    { title: 'AWS', value: 'AWS' },
-    { title: 'KUBERNETES', value: 'KUBERNETES' },
-    { title: 'DOCKER', value: 'DOCKER' },
-    { title: 'GIT', value: 'GIT' },
-    { title: 'FIGMA', value: 'FIGMA' },
-    { title: 'ZEPLIN', value: 'ZEPLIN' },
+    { title: 'JAVASCRIPT', value: 'JAVASCRIPT', type: 'FrontEnd' },
+    { title: 'TYPESCRIPT', value: 'TYPESCRIPT', type: 'FrontEnd' },
+    { title: 'REACT', value: 'REACT', type: 'FrontEnd' },
+    { title: 'VUE', value: 'VUE', type: 'FrontEnd' },
+    { title: 'Svelte', value: 'Svelte', type: 'FrontEnd' },
+    { title: 'NEXTJS', value: 'NEXTJS', type: 'FrontEnd' },
+    { title: 'NODEJS', value: 'NODEJS', type: 'BackEnd' },
+    { title: 'SPRING', value: 'SPRING', type: 'BackEnd' },
+    { title: 'JAVA', value: 'JAVA', type: 'BackEnd' },
+    { title: 'NESTJS', value: 'NESTJS', type: 'BackEnd' },
+    { title: 'EXPRESS', value: 'EXPRESS', type: 'BackEnd' },
+    { title: 'GO', value: 'GO', type: 'BackEnd' },
+    { title: 'PYTHON', value: 'PYTHON', type: 'BackEnd' },
+    { title: 'DJANGO', value: 'DJANGO', type: 'BackEnd' },
+    { title: 'MYSQL', value: 'MYSQL', type: 'BackEnd' },
+    { title: 'MONGODB', value: 'MONGODB', type: 'BackEnd' },
+    { title: 'PHP', value: 'PHP', type: 'BackEnd' },
+    { title: 'GRAPHQL', value: 'GRAPHQL', type: 'BackEnd' },
+    { title: 'FIREBASE', value: 'FIREBASE', type: 'BackEnd' },
+    { title: 'KOTLIN', value: 'KOTLIN', type: 'Mobile' },
+    { title: 'SWIFT', value: 'SWIFT', type: 'Mobile' },
+    { title: 'REACTNATIVE', value: 'REACTNATIVE', type: 'Mobile' },
+    { title: 'FLUTTER', value: 'FLUTTER', type: 'Mobile' },
+    { title: 'UNITY', value: 'UNITY', type: 'Mobile' },
+    { title: 'C', value: 'C', type: 'Etc' },
+    { title: 'AWS', value: 'AWS', type: 'Etc' },
+    { title: 'KUBERNETES', value: 'KUBERNETES', type: 'Etc' },
+    { title: 'DOCKER', value: 'DOCKER', type: 'Etc' },
+    { title: 'GIT', value: 'GIT', type: 'Etc' },
+    { title: 'FIGMA', value: 'FIGMA', type: 'Etc' },
+    { title: 'ZEPLIN', value: 'ZEPLIN', type: 'Etc' },
+    { title: 'JEST', value: 'JEST', type: 'Etc' },
 ]
 
 export const DURATION: ConstantObj[] = [
