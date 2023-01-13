@@ -71,7 +71,7 @@ export default function InformationComponent({
             <TitleBox>{title}</TitleBox>
             <ContentsBox>
                 {contentsType === 'tag' ? (
-                    contents.map((item) => {
+                    contents?.map((item) => {
                         return (
                             <TagComponent
                                 backgroundColor={getRandomColor()}

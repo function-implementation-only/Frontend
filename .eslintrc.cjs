@@ -14,6 +14,7 @@ module.exports = {
         project: './tsconfig.json',
     },
     rules: {
+        'no-nested-ternary': 'off',
         'no-param-reassign': 'off',
         // redux 로직을 작성할 수 없어 off 처리
         'class-methods-use-this': 'off',

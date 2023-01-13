@@ -3,7 +3,7 @@
 import styled from 'styled-components'
 import cancel from 'img/cancel.svg'
 import { useAppDispatch } from 'src/store/hooks'
-import { splice } from 'src/store/features/tag/tagSlice'
+import { spliceTag } from 'src/store/features/tag/tagSlice'
 
 const TagComponentLayout = styled.div<{
     backgroundColor: string
@@ -37,7 +37,7 @@ function TagComponent({
     const dispatch = useAppDispatch()
 
     function handleCancel() {
-        return dispatch(splice(title))
+        return dispatch(spliceTag(title))
     }
     // FIXME : 체크박스와 동일하게 prop으로 핸들러 받도록 처리
     return (

@@ -19,10 +19,10 @@ export const tagSlice = createSlice({
     name: 'tag',
     initialState,
     reducers: {
-        push: (state, action: PayloadAction<Tag>) => {
+        pushTag: (state, action: PayloadAction<Tag>) => {
             state.tags.push(action.payload)
         },
-        splice: (state, action: PayloadAction<string>) => {
+        spliceTag: (state, action: PayloadAction<string>) => {
             const idx = state.tags.findIndex(
                 (tag) => tag.title === action.payload
             )
@@ -32,6 +32,6 @@ export const tagSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { push, splice } = tagSlice.actions
+export const { pushTag, spliceTag } = tagSlice.actions
 
 export default tagSlice.reducer

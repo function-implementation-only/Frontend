@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getRandomColor } from 'utils/random'
-import { push, splice } from 'src/store/features/tag/tagSlice'
+import { pushTag, spliceTag } from 'src/store/features/tag/tagSlice'
 import { useAppDispatch, useAppSelector } from 'src/store/hooks'
 import CheckBoxComponent from './CheckBoxComponent'
 
@@ -22,7 +22,7 @@ function FilterCheckBoxComponent({
             parentHandler('checked')
         } else {
             dispatch(
-                push({
+                pushTag({
                     title,
                     backgroundColor: getRandomColor(),
                 })
@@ -36,7 +36,7 @@ function FilterCheckBoxComponent({
         if (isEffect) {
             parentHandler('canceled')
         } else {
-            dispatch(splice(title))
+            dispatch(spliceTag(title))
             parentHandler('canceled')
         }
     }

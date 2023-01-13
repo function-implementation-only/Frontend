@@ -8,6 +8,8 @@ export type Inputs = {
     techList?: string[]
     // 아직 Spring 서버에서 배열로 받을 수 없어 하나의 값으로 처리
     startDate: Date | string
+    cooperationProgram: string[]
+    postState: string
 }
 
 export type ImageObj = {

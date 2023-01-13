@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { getRandomColor } from 'utils/random'
-import { push, splice } from 'src/store/features/tag/tagSlice'
+import { pushTag, spliceTag } from 'src/store/features/tag/tagSlice'
 import { useAppDispatch, useAppSelector } from 'src/store/hooks'
 import styled from 'styled-components'
 
@@ -61,7 +61,7 @@ function CheckBoxComponent({ title, parentHandler }: CheckBoxComponentProps) {
         if (checked) {
             setIsChecked(true)
             dispatch(
-                push({
+                pushTag({
                     title,
                     backgroundColor: getRandomColor(),
                 })
@@ -70,7 +70,7 @@ function CheckBoxComponent({ title, parentHandler }: CheckBoxComponentProps) {
             parentHandler('checked')
         } else {
             setIsChecked(false)
-            dispatch(splice(title))
+            dispatch(spliceTag(title))
             // store로 체크 해제된 태그 전송
             parentHandler('canceled')
         }
