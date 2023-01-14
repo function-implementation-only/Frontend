@@ -18,7 +18,8 @@ function Kakao() {
                         'refreshToken',
                         res.data.data.refreshToken
                     )
-                    window.location.replace('/')
+                    console.log(res)
+                    // window.location.replace('/')
                 }
             },
             onError: () => {

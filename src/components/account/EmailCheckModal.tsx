@@ -1,5 +1,6 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import Modal from '../Modal'
@@ -47,16 +48,17 @@ const Button = styled.button`
 interface Props {
     isShowing: boolean
     handleShowing: () => void
-    setSendingMail: Dispatch<SetStateAction<boolean>>
+    resendingMail: boolean
+    auth: boolean
 }
 
 const EmailCheckModal: React.FC<Props> = ({
     isShowing,
     handleShowing,
-    setSendingMail,
+    resendingMail,
+    auth,
 }) => {
     const handleClick = () => {
-        setSendingMail(true)
         handleShowing()
     }
     return (
@@ -64,7 +66,13 @@ const EmailCheckModal: React.FC<Props> = ({
             <EmailCheckLayout>
                 <ContentBox>
                     <CheckCircleOutlineIcon />
-                    <span> 인증번호가 전송되었습니다</span>
+                    {auth ? (
+                        <span> 인증이 완료되었습니다</span>
+                    ) : resendingMail ? (
+                        <span> 인증번호가 재전송되었습니다</span>
+                    ) : (
+                        <span> 인증번호가 전송되었습니다</span>
+                    )}
                 </ContentBox>
                 <Button type="button" onClick={handleClick}>
                     확인
