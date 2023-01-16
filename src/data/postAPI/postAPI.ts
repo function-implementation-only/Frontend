@@ -5,7 +5,7 @@ import {
     PostResponse,
 } from '../../types/response'
 
-import setInterceptors from './interceptor'
+import setInterceptors from '../interceptor'
 
 export interface PostAPIInterface {
     createPost: (
@@ -37,15 +37,18 @@ export class PostAPI implements PostAPIInterface {
     createPost(
         payload: FormData
     ): Promise<AxiosResponse<APIResponse<PostResponse>>> {
-        return setInterceptors(this.axiosInstance).post('/posts', payload)
+        setInterceptors.defaults.headers.post['Content-Type'] =
+            'multipart/form-data'
+
+        return setInterceptors.post('/posts', payload)
     }
 
     /**
      * getAllPost
      * 모든 공고 가져오기
      */
-    getAllPost(): Promise<AxiosResponse<APIResponse<PostResponse>>> {
-        return this.axiosInstance.get('/posts/all')
+    getAllPost(): any {
+        return setInterceptors.get('/posts/all')
     }
 
     /**
@@ -55,7 +58,7 @@ export class PostAPI implements PostAPIInterface {
     getPostById(
         id: string
     ): Promise<AxiosResponse<APIResponse<ContentResponse>>> {
-        return this.axiosInstance.get(`/posts/${id}`)
+        return setInterceptors.get(`/posts/${id}`)
     }
 
     /**
@@ -66,10 +69,10 @@ export class PostAPI implements PostAPIInterface {
         payload: FormData,
         id: string
     ): Promise<AxiosResponse<APIResponse<PostResponse>>> {
-        return setInterceptors(this.axiosInstance).patch(
-            `/posts/${id}`,
-            payload
-        )
+        setInterceptors.defaults.headers.post['Content-Type'] =
+            'multipart/form-data'
+
+        return setInterceptors.patch(`/posts/${id}`, payload)
     }
 
     /**
@@ -77,6 +80,6 @@ export class PostAPI implements PostAPIInterface {
      * 공고 지우기
      */
     deletePost(id: string): Promise<AxiosResponse<APIResponse<string>>> {
-        return setInterceptors(this.axiosInstance).delete(`/posts/${id}`)
+        return setInterceptors.delete(`/posts/${id}`)
     }
 }
