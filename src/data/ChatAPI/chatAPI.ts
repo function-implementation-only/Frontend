@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
-import setInterceptors from './interceptor'
+import setInterceptors from '../interceptor'
 
 export interface ChatAPIInterface {
     getChatRooms: () => Promise<AxiosResponse>

@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import styled from 'styled-components'
-import * as StompJs from '@stomp/stompjs'
 import { IFrame } from '@stomp/stompjs'
-import useChatById from 'hooks/useChatById'
+// import useChatById from 'hooks/useChatById'
+import { useCallback, useState } from 'react'
+import useStomp from 'hooks/useStomp'
+
+// import { Client } from '@stomp/stompjs'
 
 const ChatMessageBox = styled.div`
     .div {
@@ -47,38 +51,34 @@ const ChatMessageBox = styled.div`
 `
 
 export default function ChatMessageView() {
-    const { data } = useChatById()
-    const client = new StompJs.Client({
-        brokerURL: '/ws/pub/1',
+    const config = {
+        brokerURL: 'ws://localhost:8080/api/ws',
         connectHeaders: {
-            token: window.localStorage.getItem('token'),
+            Access_Token: window.localStorage.getItem('token'),
         },
-        debug(msg: string) {
-            console.log('Stomp msg', msg)
-        },
-        reconnectDelay: 5000,
-        heartbeatIncoming: 4000,
-        heartbeatOutgoing: 4000,
+    }
+    const {
+        disconnect,
+        subscribe,
+        unsubscribe,
+        subscriptions,
+        send,
+        isConnected,
+    } = useStomp(config)
+
+    subscribe('/sub/1', (body) => {
+        console.log(body, 'body')
+
+        // Body is Object Changed to JSON
     })
 
-    client.onConnect = (Iframe: IFrame) => {
-        console.log('Stomp 연결됨', Iframe)
-        // console.log(`frame ${frame}`)
-        // Do something, all subscribes must be done is this callback
-        // This is needed because this will be executed after a (re)connect
-    }
+    console.log('isConnected', isConnected)
+    console.log('subscriptions', subscriptions)
 
-    client.onStompError = (Iframe: IFrame) => {
-        console.log('Stomp 에서 에러 남', Iframe)
-        // console.log(`Broker reported error: ${iframe.headers.message}`)
-        // console.log(`Additional details: ${iframe.body}`)
-    }
-
-    client.activate()
     const user = 'troublesome.dev@gmail.com'
     return (
         <ChatMessageBox>
-            {data?.map((e) =>
+            {[].map((e) =>
                 e.email === user ? (
                     <div className="you">
                         <span className="class">Hello</span>
@@ -89,6 +89,21 @@ export default function ChatMessageView() {
                     </div>
                 )
             )}
+            <button
+                type="button"
+                onClick={() =>
+                    send(
+                        '/sub/1',
+                        {
+                            sender: '신규',
+                            message: '하이로',
+                        },
+                        config
+                    )
+                }
+            >
+                하이
+            </button>
         </ChatMessageBox>
     )
 }
