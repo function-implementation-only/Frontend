@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable react/require-default-props */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
@@ -15,8 +16,9 @@ const Text = styled.p<{ margin?: string }>`
 `
 
 interface Errors {
-    errors: string | undefined
+    errors?: string | undefined
     margin?: string
+    emailError?: boolean
 }
 
 export const ErrorEmail: React.FC<Errors> = ({ errors, margin }) => {
@@ -25,6 +27,16 @@ export const ErrorEmail: React.FC<Errors> = ({ errors, margin }) => {
             return <Text margin={margin}>이메일은 필수 항목입니다.</Text>
         case 'pattern':
             return <Text margin={margin}>이메일 형식에 맞지 않습니다.</Text>
+        default:
+            return null
+    }
+}
+
+export const ErrorEmailCheck: React.FC<Errors> = ({ emailError, margin }) => {
+    switch (emailError) {
+        case true:
+            return <Text margin={margin}>이미 가입된 이메일 입니다.</Text>
+
         default:
             return null
     }

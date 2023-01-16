@@ -12,6 +12,7 @@ import ShowPWButton from 'components/ShowPWButton'
 import {
     ErrorEmail,
     ErrorEmailAuth,
+    ErrorEmailCheck,
     ErrorNickname,
     ErrorPassword,
     ErrorPasswordCheck,
@@ -109,16 +110,19 @@ function SignUpPage() {
         reset,
         trigger,
         formState: { errors, isSubmitting },
-    } = useForm<SignUpInfo>()
+    } = useForm<SignUpInfo>({ mode: 'onChange' })
 
     const { email, password } = watch()
     const [emailAuth, setEmailAuth] = useState()
     const [auth, setAuth] = useState(false)
     const [emailCheck, setEmailCheck] = useState(false)
     const [sendingMail, setSendingMail] = useState(false)
+    const [resendingMail, setResendingMail] = useState(false)
+    const [emailError, setEmailError] = useState(false)
     const { isShowing, handleShowing } = useModal()
     const [showingPW, setShowingPW] = useState(false)
     const [showingPWcheck, setShowingPWcheck] = useState(false)
+    const [authCheck, setAuthCheck] = useState(false)
 
     const navigate = useNavigate()
     const serviceManager = useServiceManager()
@@ -152,8 +156,9 @@ function SignUpPage() {
             onSuccess: (res: AxiosResponse) => {
                 if (res.data.data === true) {
                     setEmailCheck(true)
+                    setEmailError(false)
                 } else {
-                    alert('사용할 수 없는 아이디입니다.')
+                    setEmailError(true)
                 }
             },
             onError: (err) => {
@@ -182,16 +187,35 @@ function SignUpPage() {
     )
 
     const onSubmitEmailCheck = () => {
-        trigger('email')
-        // 에러가 한박자 늦게 세팅되어서 생기는 이슈있음
         if (email !== undefined && errors.email === undefined) {
             emailCheckMutation.mutate()
         }
     }
 
     const onSubmitEmailAuth = () => {
+        setSendingMail(true)
         handleShowing()
         emailAuthMutation.mutate()
+    }
+
+    const onResubmitEmailAuth = () => {
+        handleShowing()
+        emailAuthMutation.mutate()
+        setResendingMail(true)
+        setAuthCheck(false)
+        setAuth(false)
+    }
+
+    const onSubmitEmailAuthCheck = () => {
+        trigger('emailAuth')
+        if (errors.emailAuth === undefined) {
+            handleShowing()
+            setAuth(true)
+        }
+    }
+
+    const handleAuthCheck = () => {
+        setAuthCheck(true)
     }
 
     const onSubmitSignUp: SubmitHandler<SignUpInfo> = (data) => {
@@ -211,18 +235,29 @@ function SignUpPage() {
                         <Input
                             id="email"
                             type="text"
-                            disabled={!!emailCheck}
+                            disabled={!!auth}
                             placeholder="이메일을 입력해 주세요."
                             {...register('email', {
                                 required: true,
                                 pattern: /\S+@\S+\.\S+/,
+                                onBlur: () => onSubmitEmailCheck(),
                             })}
                         />
-                        {emailCheck ? (
-                            <Button disabled>중복확인 완료</Button>
+                        {!sendingMail ? (
+                            <Button
+                                type="button"
+                                onClick={onSubmitEmailAuth}
+                                disabled={!emailCheck}
+                            >
+                                인증번호 받기
+                            </Button>
                         ) : (
-                            <Button type="button" onClick={onSubmitEmailCheck}>
-                                중복확인
+                            <Button
+                                type="button"
+                                onClick={onResubmitEmailAuth}
+                                disabled={!!auth}
+                            >
+                                재전송
                             </Button>
                         )}
                     </InputItem>
@@ -231,37 +266,29 @@ function SignUpPage() {
                             errors={errors.email?.type}
                             margin="-22px 0 18px 142px;"
                         />
-                    </ErrorItem>
-                    <InputItem>
-                        <Input
-                            id="emailAuth"
-                            type="text"
-                            placeholder="인증번호를 입력해 주세요."
-                            disabled={
-                                auth && errors.emailAuth?.type === undefined
-                            }
-                            {...register('emailAuth', {
-                                required: true,
-                                validate: (value) => value === emailAuth,
-                            })}
+                        <ErrorEmailCheck
+                            emailError={emailError}
+                            margin="-22px 0 18px 142px;"
                         />
-                        {!sendingMail ? (
-                            <>
-                                <Button
-                                    type="button"
-                                    onClick={onSubmitEmailAuth}
-                                    disabled={!emailCheck}
-                                >
-                                    인증번호 받기
-                                </Button>
-                                <EmailCheckModal
-                                    isShowing={isShowing}
-                                    handleShowing={handleShowing}
-                                    setSendingMail={setSendingMail}
+                    </ErrorItem>
+                    {sendingMail && (
+                        <>
+                            <InputItem>
+                                <Input
+                                    id="emailAuth"
+                                    type="text"
+                                    placeholder="인증번호를 입력해 주세요."
+                                    disabled={
+                                        auth &&
+                                        errors.emailAuth?.type === undefined
+                                    }
+                                    {...register('emailAuth', {
+                                        required: true,
+                                        validate: (value) =>
+                                            value === emailAuth,
+                                        onChange: () => handleAuthCheck(),
+                                    })}
                                 />
-                            </>
-                        ) : (
-                            <div>
                                 {auth &&
                                 errors.emailAuth?.type === undefined ? (
                                     <Button type="button" disabled>
@@ -271,22 +298,25 @@ function SignUpPage() {
                                     <Button
                                         type="button"
                                         onClick={() => {
-                                            trigger('emailAuth')
-                                            setAuth(true)
+                                            onSubmitEmailAuthCheck()
                                         }}
+                                        disabled={
+                                            errors.emailAuth?.type !==
+                                                undefined || !authCheck
+                                        }
                                     >
-                                        확인
+                                        인증하기
                                     </Button>
                                 )}
-                            </div>
-                        )}
-                    </InputItem>
-                    <ErrorItem>
-                        <ErrorEmailAuth
-                            errors={errors.emailAuth?.type}
-                            margin="-22px 0 18px 142px;"
-                        />
-                    </ErrorItem>
+                            </InputItem>
+                            <ErrorItem>
+                                <ErrorEmailAuth
+                                    errors={errors.emailAuth?.type}
+                                    margin="-22px 0 18px 142px;"
+                                />
+                            </ErrorItem>
+                        </>
+                    )}
                     <InputItem>
                         <Label htmlFor="password">
                             비밀번호 <span>*</span>
@@ -371,6 +401,12 @@ function SignUpPage() {
                     </AccountButtonItem>
                 </ButtonBox>
             </form>
+            <EmailCheckModal
+                isShowing={isShowing}
+                handleShowing={handleShowing}
+                resendingMail={resendingMail}
+                auth={auth}
+            />
         </SignUpPageLayout>
     )
 }
