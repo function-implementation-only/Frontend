@@ -2,7 +2,7 @@
 import styled from 'styled-components'
 import * as StompJs from '@stomp/stompjs'
 import { IFrame } from '@stomp/stompjs'
-import { getTokenFromCookie } from 'utils/cookie'
+import useChatById from 'hooks/useChatById'
 
 const ChatMessageBox = styled.div`
     .div {
@@ -47,10 +47,11 @@ const ChatMessageBox = styled.div`
 `
 
 export default function ChatMessageView() {
+    const { data } = useChatById()
     const client = new StompJs.Client({
-        brokerURL: 'ws://joinus.p-e.kr/api/ws',
+        brokerURL: '/ws/pub/1',
         connectHeaders: {
-            token: getTokenFromCookie(),
+            token: window.localStorage.getItem('token'),
         },
         debug(msg: string) {
             console.log('Stomp msg', msg)
@@ -75,51 +76,9 @@ export default function ChatMessageView() {
 
     client.activate()
     const user = 'troublesome.dev@gmail.com'
-    const data = [
-        {
-            email: 'troublesome.dev@gmail.com',
-            message: '하이',
-        },
-        {
-            email: 'troublesome2.dev@gmail.com',
-            message: '하이',
-        },
-        {
-            email: 'troublesome.dev@gmail.com',
-            message: '하이',
-        },
-        {
-            email: 'troublesome2.dev@gmail.com',
-            message: '하이',
-        },
-        {
-            email: 'troublesome.dev@gmail.com',
-            message: '하이',
-        },
-        {
-            email: 'troublesome2.dev@gmail.com',
-            message: '하이',
-        },
-        {
-            email: 'troublesome2.dev@gmail.com',
-            message: '하이',
-        },
-        {
-            email: 'troublesome.dev@gmail.com',
-            message: '하이',
-        },
-        {
-            email: 'troublesome2.dev@gmail.com',
-            message: '하이',
-        },
-        {
-            email: 'troublesome2.dev@gmail.com',
-            message: '하이',
-        },
-    ]
     return (
         <ChatMessageBox>
-            {data.map((e) =>
+            {data?.map((e) =>
                 e.email === user ? (
                     <div className="you">
                         <span className="class">Hello</span>
