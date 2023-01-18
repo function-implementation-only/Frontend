@@ -2,7 +2,7 @@
 import StompJs from '@stomp/stompjs'
 
 const client = new StompJs.Client({
-    brokerURL: 'ws://joinus.p-e.kr/api/chat/room',
+    brokerURL: 'ws://127.0.01:6000/api/chat/room',
     connectHeaders: {
         login: 'user',
         passcode: 'password',
