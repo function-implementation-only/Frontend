@@ -8,3 +8,11 @@ export interface SignUpInfo extends AccountInfo {
     passwordCheck: string
     emailAuth: string
 }
+
+export interface DefaultAccountInfo {
+    email: string
+    nickname: string
+    field: string
+    introduction: string
+    availableTime: string
+}

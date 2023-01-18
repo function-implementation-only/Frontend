@@ -35,6 +35,7 @@ const ThemeItem = styled.span`
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
+    color: #3e4145;
     margin: 100px 0 60px;
 `
 

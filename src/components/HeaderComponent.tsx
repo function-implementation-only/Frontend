@@ -35,10 +35,22 @@ const ButtonBox = styled.div`
     grid-auto-flow: column;
     grid-column-gap: 16px;
 `
-const DefaultButtonReversed = styled(DefaultButton)`
-    border: 1px solid var(--primary-color);
-    background-color: white;
-    color: var(--primary-color);
+
+export const DefaultButton = styled.button<{ default?: boolean }>`
+    width: 100px;
+    height: 45px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: ${(props) =>
+        props.default ? 'white' : ' var(--primary-color)'};
+    color: ${(props) => (props.default ? 'var(--primary-color)' : 'white')};
+    border: ${(props) =>
+        props.default ? 'solid 1px var(--primary-color)' : 'none'};
+    a {
+        text-decoration: none;
+        color: #fff;
+    }
 `
 
 const ModalButton = styled(DefaultButton)``

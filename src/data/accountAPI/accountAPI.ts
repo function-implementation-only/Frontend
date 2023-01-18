@@ -9,6 +9,8 @@ export interface AccountAPIInterface {
     postEmailAuth: (email: string) => Promise<any>
     getKakaoLogin: (code: string | null) => Promise<any>
     getGoogleLogin: (code: string | null) => Promise<any>
+    getAccountInfo: () => Promise<any>
+    editAccountInfo: (payload: FormData) => Promise<any>
 }
 
 export default class AccountAPI implements AccountAPIInterface {
@@ -46,5 +48,13 @@ export default class AccountAPI implements AccountAPIInterface {
 
     getGoogleLogin(code: string | null) {
         return setInterceptors.get(`/google/test?code=${code}`)
+    }
+
+    getAccountInfo() {
+        return setInterceptors.get('account/info')
+    }
+
+    editAccountInfo(payload: FormData) {
+        return setInterceptors.patch('account', payload)
     }
 }
