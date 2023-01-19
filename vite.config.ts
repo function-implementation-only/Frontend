@@ -39,12 +39,12 @@ export default defineConfig(({ mode }) => {
             proxy: {
                 // Proxying websockets or socket.io
                 '/api/ws': {
-                    target: 'wss://127.0.0.1:8080',
+                    target: 'wss//127.0.0.1:8080',
                     ws: true,
                 },
                 // with options
                 '/api': {
-                    target: 'https://127.0.01:8080',
+                    target: 'http://127.0.01:8080',
                     changeOrigin: true,
                 },
             },
