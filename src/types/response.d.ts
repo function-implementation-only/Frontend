@@ -44,3 +44,9 @@ export interface SortResponse {
     unsorted: boolean
     sorted: boolean
 }
+
+export interface ChatRoomsRespone extends APIResponse {
+    data: any[] | []
+    msg: string
+    success: string
+}

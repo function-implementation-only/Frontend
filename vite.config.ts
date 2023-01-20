@@ -44,7 +44,7 @@ export default defineConfig(({ mode }) => {
                 },
                 // with options
                 '/api': {
-                    target: 'http://127.0.01:8080',
+                    target: 'http://127.0.0.1:8080',
                     changeOrigin: true,
                 },
             },

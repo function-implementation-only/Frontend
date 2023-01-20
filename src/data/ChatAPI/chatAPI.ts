@@ -1,9 +1,11 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
+import { ChatRoomsRespone } from 'types/response'
 import setInterceptors from '../interceptor'
 
+type GatChatRoomsType = Promise<AxiosResponse<ChatRoomsRespone>>
 export interface ChatAPIInterface {
-    getChatRooms: () => Promise<AxiosResponse>
-    getChatById: (roomId: number) => Promise<AxiosResponse>
+    getChatRooms: () => GatChatRoomsType
+    getChatById: (roomId: number) => Promise<any>
 }
 
 export default class ChatAPI implements ChatAPIInterface {
@@ -13,11 +15,11 @@ export default class ChatAPI implements ChatAPIInterface {
         this.axiosInstance = axiosInstance
     }
 
-    getChatRooms() {
-        return setInterceptors(this.axiosInstance).get('/chat/roomList')
+    getChatRooms(): GatChatRoomsType {
+        return setInterceptors.get('/chat/roomList')
     }
 
     getChatById(roomId: number) {
-        return setInterceptors(this.axiosInstance).get(`/chat/${roomId}`)
+        return setInterceptors.get(`/chat/${roomId}`)
     }
 }

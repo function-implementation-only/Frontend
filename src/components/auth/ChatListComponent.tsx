@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import styled from 'styled-components'
 import { ChatRoomWithUser } from 'src/types/chat'
 import useChatRooms from 'hooks/useChatRooms'
@@ -18,8 +19,9 @@ export const SearchBox = styled.div`
     border-bottom: 1px solid var(--gray-100);
 `
 
-export default function ChatListComponent() {
+export default function ChatListComponent({ data }: { data: any }) {
     const { data: chatRooms, isLoading } = useChatRooms()
+    console.log('ChatListComponent', data)
 
     return (
         <ChatListWrapper>
@@ -27,7 +29,7 @@ export default function ChatListComponent() {
                 ? Array.from({ length: 3 }).map((_, i) => (
                       <ChatItemSkeleton key={(i + 1).toString()} />
                   ))
-                : chatRooms?.data?.data?.map(
+                : chatRooms?.data?.map(
                       (_item: JSX.IntrinsicAttributes & ChatRoomWithUser) => (
                           <ChatItemComponent key={_item.roomId} {..._item} />
                       )
