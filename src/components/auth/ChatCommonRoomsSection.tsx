@@ -28,7 +28,7 @@ const CoffeeChatTab = styled.div`
     }
 `
 
-export default function ChatCommonRoomsSection({ data }: { data: any }) {
+export default function ChatCommonRoomsSection() {
     const [choiceTab, setChoiceTab] = useState(0)
     // const [chatList, setChatList] = useState([])
 
@@ -63,7 +63,7 @@ export default function ChatCommonRoomsSection({ data }: { data: any }) {
                     <span>안 읽음</span>
                 </div>
             </CoffeeChatTab>
-            <ChatListComponent data={data} />
+            <ChatListComponent />
         </ChatCommonRoomsSectionWrapper>
     )
 }

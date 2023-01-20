@@ -43,7 +43,7 @@ function Messenger() {
 
     return (
         <ChatViewLayout>
-            <ChatCommonRoomsSection data={data} />
+            <ChatCommonRoomsSection />
             {data?.data?.length > 0 ? (
                 <ChatFoundSection />
             ) : (
