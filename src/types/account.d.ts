@@ -11,6 +11,9 @@ export interface SignUpInfo extends AccountInfo {
 
 export interface DefaultAccountInfo {
     email: string
+    password: string
+    changePassword: string
+    passwordCheck: string
     nickname: string
     field: string
     introduction: string

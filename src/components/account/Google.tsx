@@ -1,3 +1,4 @@
+import Loading from 'components/Loading'
 import { useQuery } from 'react-query'
 import useServiceManager from 'src/hooks/useServiceManager'
 
@@ -29,7 +30,7 @@ function Google() {
         }
     )
 
-    return <p>Loading...</p>
+    return <Loading />
 }
 
 export default Google

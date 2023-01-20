@@ -25,6 +25,7 @@
     "@storybook/testing-library": "^0.0.13",
     "@toast-ui/editor": "^3.2.1",
     "@toast-ui/react-editor": "^3.2.2",
+    "@types/node": "^18.11.18",
     "@types/react-transition-group": "^4.4.5",
     "@vitejs/plugin-react": "^2.2.0",
     "axios": "^1.2.1",
