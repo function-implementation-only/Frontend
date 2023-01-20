@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { POST_DETAIL_INFORMATION } from 'lib/constants'
 import InformationComponent from 'components/InformationComponent'
 import DefaultButton from 'components/common/DefaultButton'
+import { Viewer } from '@toast-ui/react-editor'
 
 const PostDetailLayout = styled.div`
     width: 1440px;
@@ -161,7 +162,7 @@ function PostDetailPage() {
                                 marginBottom="38px"
                             >
                                 <TitleBox fontSize="32px">
-                                    {apiResponse.data.title}
+                                    {apiResponse?.data.title}
                                 </TitleBox>
                                 <ButtonBox>
                                     {isAuthor ? (
@@ -205,7 +206,7 @@ function PostDetailPage() {
                                             />
                                         </ProfileImageBox>
                                         <NicknameSpan>
-                                            {apiResponse.data.nickname}
+                                            {apiResponse?.data.nickname}
                                         </NicknameSpan>
                                         {isAuthor ? (
                                             ''
@@ -247,7 +248,11 @@ function PostDetailPage() {
                     <PostDetailRow>
                         <TitleBox fontSize="24px">프로젝트 개요</TitleBox>
                         <DividerRow marginTopBottom="24px" />
-                        <ContentsBox>{apiResponse.data.contents}</ContentsBox>
+                        <ContentsBox>
+                            <Viewer
+                                initialValue={apiResponse?.data?.contentsParsed}
+                            />
+                        </ContentsBox>
                     </PostDetailRow>
                 </>
             )}

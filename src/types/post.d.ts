@@ -27,11 +27,14 @@ export interface PostObj {
     category: string
     contents: string
     duration: string
-    peopleNum: number
     place: string
     startDate: string
     title: string
     postId: number
-    imageList: imageObj[]
     techs: techObj[]
+    frontReqNum: number
+    backReqNum: number
+    designReqNum: number
+    pmReqNum: number
+    mobileReqNum: number
 }
