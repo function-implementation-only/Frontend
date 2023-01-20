@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { DefaultButton } from 'components/HeaderComponent'
 import Avatar from '@mui/material/Avatar'
 import useGetAccountInfo from 'hooks/useGetAccountInfo'
+import { useNavigate } from 'react-router-dom'
 
 const MyPageLayout = styled.div`
     form {
@@ -83,6 +84,11 @@ const AccountIntroductionItem = styled.p`
 
 function MyPage() {
     const { data: accountData } = useGetAccountInfo()
+    const navigate = useNavigate()
+
+    const handleProfilePage = () => {
+        navigate('/profilepage')
+    }
 
     return (
         <MyPageLayout>
@@ -113,8 +119,8 @@ function MyPage() {
                         </AccountIntroductionItem>
                     </div>
                 </AccountInfoList>
-                <DefaultButton>
-                    <a href="/profilepage">프로필 수정</a>
+                <DefaultButton onClick={handleProfilePage}>
+                    프로필 수정
                 </DefaultButton>
             </AccountInfoBox>
         </MyPageLayout>

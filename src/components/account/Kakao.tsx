@@ -1,3 +1,4 @@
+import Loading from 'components/Loading'
 import { useQuery } from 'react-query'
 import useServiceManager from 'src/hooks/useServiceManager'
 
@@ -29,7 +30,7 @@ function Kakao() {
         }
     )
 
-    return <p>리다이렉션 성공!!</p>
+    return <Loading />
 }
 
 export default Kakao

@@ -6,8 +6,12 @@ import { useMutation } from 'react-query'
 import useServiceManager from 'src/hooks/useServiceManager'
 import useModal from 'hooks/useModal'
 import Logo from 'img/Logo.svg'
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined'
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { Menu, MenuItem } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import AccountModal from './account/AccountModal'
-import DefaultButton from './common/DefaultButton'
 
 const HeaderComponentLayout = styled.div`
     z-index: 999;
@@ -30,7 +34,40 @@ const LogoBox = styled.div`
     cursor: pointer;
 `
 
-const ButtonBox = styled.div`
+const UtilityBox = styled.div`
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 16px;
+`
+
+const LogInList = styled.div`
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 16px;
+    svg {
+        color: #b0b0b0;
+    }
+`
+
+const ChatItem = styled.button`
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+`
+
+const AlertItem = styled(ChatItem)``
+
+const AccountItem = styled(ChatItem)``
+
+const Divider = styled.div`
+    width: 1px;
+    height: 40px;
+    margin-top: 3px;
+    background: #b0b0b0;
+`
+
+const LogOutList = styled.div`
     display: grid;
     grid-auto-flow: column;
     grid-column-gap: 16px;
@@ -38,7 +75,7 @@ const ButtonBox = styled.div`
 
 export const DefaultButton = styled.button<{ default?: boolean }>`
     width: 100px;
-    height: 45px;
+    height: 46px;
     border-radius: 10px;
     border: none;
     cursor: pointer;
@@ -53,6 +90,12 @@ export const DefaultButton = styled.button<{ default?: boolean }>`
     }
 `
 
+const DefaultButtonReversed = styled(DefaultButton)`
+    border: 1px solid var(--primary-color);
+    background-color: white;
+    color: var(--primary-color);
+`
+
 const ModalButton = styled(DefaultButton)``
 
 function HeaderComponent() {
@@ -60,6 +103,16 @@ function HeaderComponent() {
     const [isLogin, setIsLogin] = useState(false)
     const [login, setLogin] = useState(false)
     const [signup, setSignup] = useState(false)
+    const [anchorEl, setAnchorEl] = useState(null)
+    const open = Boolean(anchorEl)
+    const navigate = useNavigate()
+
+    const handleClick = (event: { currentTarget: any }) => {
+        setAnchorEl(event.currentTarget)
+    }
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
 
     const serviceManager = useServiceManager()
 
@@ -77,6 +130,10 @@ function HeaderComponent() {
             },
         }
     )
+
+    const handleMypage = () => {
+        navigate('/mypage')
+    }
 
     const handleLogout = () => {
         logoutMutation.mutate()
@@ -108,20 +165,51 @@ function HeaderComponent() {
                         <img src={Logo} alt="logoImg" />
                     </a>
                 </LogoBox>
-                <ButtonBox>
+                <UtilityBox>
                     {isLogin ? (
-                        <DefaultButton type="button" onClick={handleLogout}>
-                            로그아웃
-                        </DefaultButton>
+                        <LogInList>
+                            <ChatItem type="button">
+                                <ChatOutlinedIcon />
+                            </ChatItem>
+                            <AlertItem type="button">
+                                <NotificationsOutlinedIcon />
+                            </AlertItem>
+                            <AccountItem type="button" onClick={handleClick}>
+                                <AccountCircleIcon />
+                            </AccountItem>
+                            <Menu
+                                id="basic-menu"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleClose}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                }}
+                            >
+                                <MenuItem onClick={handleMypage}>
+                                    마이페이지
+                                </MenuItem>
+                                <MenuItem onClick={handleLogout}>
+                                    로그아웃
+                                </MenuItem>
+                            </Menu>
+                            <Divider />
+                            <DefaultButton type="button">글쓰기</DefaultButton>
+                        </LogInList>
                     ) : (
-                        <DefaultButton type="button" onClick={handleLogin}>
-                            로그인
-                        </DefaultButton>
+                        <LogOutList>
+                            <DefaultButton type="button" onClick={handleLogin}>
+                                로그인
+                            </DefaultButton>
+                            <DefaultButtonReversed
+                                type="button"
+                                onClick={handleSignup}
+                            >
+                                회원가입
+                            </DefaultButtonReversed>
+                        </LogOutList>
                     )}
-                    <DefaultButtonReversed type="button" onClick={handleSignup}>
-                        회원가입
-                    </DefaultButtonReversed>
-                </ButtonBox>
+                </UtilityBox>
             </HeaderComponentRow>
             <AccountModal
                 isShowing={isShowing}
