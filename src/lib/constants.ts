@@ -8,6 +8,16 @@ type ParseConstantObj = {
     [key: string]: string
 }
 
+export const COLLABORATION_TOOL: ConstantObj[] = [
+    { title: 'FIGMA', value: 'FIGMA' },
+    { title: 'SLACK', value: 'SLACK' },
+    { title: 'GITHUB', value: 'GITHUB' },
+    { title: 'ZIRA', value: 'ZIRA' },
+    { title: 'DISCORD', value: 'DISCORD' },
+    { title: 'NOTION', value: 'FIGMA' },
+    { title: 'ZEPLIN', value: 'ZEPLIN' },
+]
+
 export const RECRUITMENT_PART: ConstantObj[] = [
     { title: '프론트엔드', value: 'FrontEnd' },
     { title: '백엔드', value: 'BackEnd' },
@@ -18,7 +28,6 @@ export const TECH_PART: ConstantObj[] = [
     { title: '프론트엔드', value: 'FrontEnd' },
     { title: '백엔드', value: 'BackEnd' },
     { title: '모바일', value: 'Mobile' },
-    { title: '기타', value: 'Etc' },
 ]
 
 export const POST_DETAIL_INFORMATION: ConstantObj[] = [
@@ -64,7 +73,7 @@ export const TECHLIST: ConstantObj[] = [
     { title: 'TYPESCRIPT', value: 'TYPESCRIPT', type: 'FrontEnd' },
     { title: 'REACT', value: 'REACT', type: 'FrontEnd' },
     { title: 'VUE', value: 'VUE', type: 'FrontEnd' },
-    { title: 'Svelte', value: 'Svelte', type: 'FrontEnd' },
+    { title: 'SVELTE', value: 'SVELTE', type: 'FrontEnd' },
     { title: 'NEXTJS', value: 'NEXTJS', type: 'FrontEnd' },
     { title: 'NODEJS', value: 'NODEJS', type: 'BackEnd' },
     { title: 'SPRING', value: 'SPRING', type: 'BackEnd' },
@@ -84,14 +93,6 @@ export const TECHLIST: ConstantObj[] = [
     { title: 'REACTNATIVE', value: 'REACTNATIVE', type: 'Mobile' },
     { title: 'FLUTTER', value: 'FLUTTER', type: 'Mobile' },
     { title: 'UNITY', value: 'UNITY', type: 'Mobile' },
-    { title: 'C', value: 'C', type: 'Etc' },
-    { title: 'AWS', value: 'AWS', type: 'Etc' },
-    { title: 'KUBERNETES', value: 'KUBERNETES', type: 'Etc' },
-    { title: 'DOCKER', value: 'DOCKER', type: 'Etc' },
-    { title: 'GIT', value: 'GIT', type: 'Etc' },
-    { title: 'FIGMA', value: 'FIGMA', type: 'Etc' },
-    { title: 'ZEPLIN', value: 'ZEPLIN', type: 'Etc' },
-    { title: 'JEST', value: 'JEST', type: 'Etc' },
 ]
 
 export const DURATION: ConstantObj[] = [
