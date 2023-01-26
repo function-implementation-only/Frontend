@@ -38,7 +38,7 @@ export default defineConfig(({ mode }) => {
         server: {
             proxy: {
                 // Proxying websockets or socket.io
-                '/api/ws': {
+                '/api/stomp': {
                     target: 'wss//127.0.0.1:8080',
                     ws: true,
                 },

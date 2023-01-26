@@ -78,18 +78,8 @@ export const SkeletonWrapper = styled.li`
 `
 
 export default function ChatItemComponent(props: ChatRoomWithUser) {
-    const {
-        // chatList,
-        // joinUserId,
-        // joinUserImg,
-        // joinUserNickname,
-        // postId,
-        // postUserId,
-        postUserImg,
-        // postUserNickname,
-        roomId,
-        // title,
-    } = props
+    const { roomId, postUserImg } = props
+
     const { date, lastMessage, name } = useChatRoomInfo(props)
     const location = useLocation()
     const params = new URLSearchParams(location.search)

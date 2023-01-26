@@ -29,6 +29,7 @@ function timeForToday(value?: string) {
 }
 
 const useChatRoomInfo = (chat: ChatRoom) => {
+    // count, createdAt, modifiedAt, name, roomId, user
     const last = chat?.chatList.sort(
         (a, b) =>
             new Date(a.sendDate).getTime() - new Date(b.sendDate).getTime()

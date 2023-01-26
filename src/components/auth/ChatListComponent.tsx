@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import styled from 'styled-components'
-import { ChatRoomWithUser } from 'src/types/chat'
 import useChatRooms from 'hooks/useChatRooms'
 import ChatItemSkeleton from 'components/auth/skeleton'
 import ChatItemComponent from 'components/auth/ChatItemComponent'
+import { ChatRoomWithUser } from 'types/chat'
 
 export const ChatListWrapper = styled.ul`
     max-height: calc(100vh - 150px);
@@ -21,6 +21,7 @@ export const SearchBox = styled.div`
 
 export default function ChatListComponent() {
     const { data: chatRooms, isLoading } = useChatRooms()
+    console.log(chatRooms)
 
     return (
         <ChatListWrapper>
@@ -28,11 +29,10 @@ export default function ChatListComponent() {
                 ? Array.from({ length: 3 }).map((_, i) => (
                       <ChatItemSkeleton key={(i + 1).toString()} />
                   ))
-                : chatRooms?.data?.map(
-                      (_item: JSX.IntrinsicAttributes & ChatRoomWithUser) => (
-                          <ChatItemComponent key={_item.roomId} {..._item} />
-                      )
-                  )}
+                : chatRooms?.map((item) => {
+                      const aaa = item as unknown as ChatRoomWithUser
+                      return <ChatItemComponent key={item.roomId} {...aaa} />
+                  })}
         </ChatListWrapper>
     )
 }

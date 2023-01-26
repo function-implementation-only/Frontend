@@ -4,13 +4,10 @@ import useServiceManager from './useServiceManager'
 const useChatRooms = () => {
     const serviceManager = useServiceManager()
 
-    return useQuery(['chat/roomList'], async () => {
+    return useQuery(['rooms'], async () => {
         const { data } = await serviceManager.dataService.chatAPI.getChatRooms()
 
-        return {
-            data: data.data || [],
-            message: data.msg,
-        }
+        return data
     })
 }
 

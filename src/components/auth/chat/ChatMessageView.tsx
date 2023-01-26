@@ -52,7 +52,7 @@ const ChatMessageBox = styled.div`
 
 export default function ChatMessageView() {
     const config = {
-        brokerURL: 'ws://localhost:8080/api/ws',
+        brokerURL: '/api/stomp/chat',
         connectHeaders: {
             Access_Token: window.localStorage.getItem('token'),
         },
@@ -66,7 +66,7 @@ export default function ChatMessageView() {
         isConnected,
     } = useStomp(config)
 
-    subscribe('/sub/1', (body) => {
+    subscribe('/pub/chat/message', (body) => {
         console.log(body, 'body')
 
         // Body is Object Changed to JSON

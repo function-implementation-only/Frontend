@@ -46,7 +46,9 @@ export interface SortResponse {
 }
 
 export interface ChatRoomsRespone extends APIResponse {
-    data: any[] | []
-    msg: string
-    success: string
+    count: number
+    createdAt: Date
+    modifiedAt: Date
+    name: string
+    roomId: number
 }
