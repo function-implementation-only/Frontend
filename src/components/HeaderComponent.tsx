@@ -1,9 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// FIXME : ts 린트 잠시 피하는 용도. 나중에 수정 필요
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-import { useMutation } from 'react-query'
-import useServiceManager from 'src/hooks/useServiceManager'
 import useModal from 'hooks/useModal'
 import Logo from 'img/Logo.svg'
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined'
@@ -11,6 +7,8 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { Menu, MenuItem } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import useGetAccountInfo from 'hooks/useGetAccountInfo'
+import usePostLogOut from 'hooks/usePostLogOut'
 import AccountModal from './account/AccountModal'
 
 const HeaderComponentLayout = styled.div`
@@ -60,6 +58,12 @@ const AlertItem = styled(ChatItem)``
 
 const AccountItem = styled(ChatItem)``
 
+const AvatarImage = styled.img`
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+`
+
 const Divider = styled.div`
     width: 1px;
     height: 40px;
@@ -96,8 +100,6 @@ const DefaultButtonReversed = styled(DefaultButton)`
     color: var(--primary-color);
 `
 
-const ModalButton = styled(DefaultButton)``
-
 function HeaderComponent() {
     const { isShowing, handleShowing } = useModal()
     const [isLogin, setIsLogin] = useState(false)
@@ -107,6 +109,12 @@ function HeaderComponent() {
     const open = Boolean(anchorEl)
     const navigate = useNavigate()
 
+    // 사용자 기본정보 API
+    const { data: accountData } = useGetAccountInfo()
+
+    // 로그아웃 API
+    const postLogout = usePostLogOut(setIsLogin)
+
     const handleClick = (event: { currentTarget: any }) => {
         setAnchorEl(event.currentTarget)
     }
@@ -114,29 +122,14 @@ function HeaderComponent() {
         setAnchorEl(null)
     }
 
-    const serviceManager = useServiceManager()
-
-    const logoutMutation = useMutation(
-        'logout',
-        () => serviceManager.dataService.accountAPI.postLogOut(),
-        {
-            onSuccess: () => {
-                localStorage.clear()
-                setIsLogin(false)
-                window.location.reload()
-            },
-            onError: (err) => {
-                alert(err)
-            },
-        }
-    )
-
     const handleMypage = () => {
         navigate('/mypage')
+        handleClose()
     }
 
     const handleLogout = () => {
-        logoutMutation.mutate()
+        postLogout.mutate()
+        navigate('/')
     }
 
     const handleLogin = () => {
@@ -175,7 +168,14 @@ function HeaderComponent() {
                                 <NotificationsOutlinedIcon />
                             </AlertItem>
                             <AccountItem type="button" onClick={handleClick}>
-                                <AccountCircleIcon />
+                                {accountData?.data.imgUrl ? (
+                                    <AvatarImage
+                                        src={accountData?.data.imgUrl}
+                                        alt="프로필 이미지"
+                                    />
+                                ) : (
+                                    <AccountCircleIcon />
+                                )}
                             </AccountItem>
                             <Menu
                                 id="basic-menu"

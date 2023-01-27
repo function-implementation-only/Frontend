@@ -16,6 +16,7 @@ export interface DefaultAccountInfo {
     passwordCheck: string
     nickname: string
     field: string
+    imgUrl: string
     introduction: string
     availableTime: string
 }

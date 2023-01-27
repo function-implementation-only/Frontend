@@ -1,15 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { AxiosResponse } from 'axios'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useMutation } from 'react-query'
-import useServiceManager from 'src/hooks/useServiceManager'
 import styled from 'styled-components'
 import { googleURL, kakaoURL } from 'src/utils/url'
 import kakaoImg from 'img/kakaoLogo.svg'
 import googleImg from 'img/googleLogo.svg'
 import { AccountInfo } from 'types/account'
 import ShowPWButton from 'components/ShowPWButton'
+import usePostLogIn from 'hooks/usePostLogIn'
 import { ErrorEmail, ErrorPassword } from '../Error'
 import Button from '../AccountButton'
 
@@ -109,47 +106,29 @@ interface Props {
 }
 
 const Login: React.FC<Props> = ({ handleShowing, setLogin, setSignup }) => {
+    const [showingPW, setShowingPW] = useState(false)
     const KAKAO_AUTH_URL = kakaoURL(VITE_KAKAO_API_KEY, VITE_KAKAO_REDIRECT_URI)
     const GOOGLE_URL = googleURL(
         VITE_GOOGLE_CLIENT_ID,
         VITE_GOOGLE_REDIRECT_URI
     )
-
-    const [showingPW, setShowingPW] = useState(false)
-
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<AccountInfo>()
 
-    const serviceManager = useServiceManager()
-    const mutation = useMutation(
-        'loginInfo',
-        (data: AccountInfo) =>
-            serviceManager.dataService.accountAPI.postLogIn(data),
-        {
-            onSuccess: (res: AxiosResponse) => {
-                const token = res?.headers?.access_token
-                if (token) {
-                    localStorage.setItem('token', token)
-                    window.location.reload()
-                }
-            },
-            onError: (err) => {
-                alert(err)
-            },
-        }
-    )
-
-    const onSubmit: SubmitHandler<AccountInfo> = (data) => {
-        mutation.mutate(data)
-        handleShowing()
-    }
+    // 로그인 API
+    const postLogIn = usePostLogIn()
 
     const handleSignup = () => {
         setLogin(false)
         setSignup(true)
+    }
+
+    const onSubmit: SubmitHandler<AccountInfo> = (data) => {
+        postLogIn.mutate(data)
+        handleShowing()
     }
     return (
         <LoginLayout>

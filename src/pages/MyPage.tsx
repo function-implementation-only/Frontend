@@ -82,6 +82,13 @@ const AccountIntroductionItem = styled.p`
     border-radius: 5px;
 `
 
+const AvatarImage = styled.img`
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 36px;
+`
+
 function MyPage() {
     const { data: accountData } = useGetAccountInfo()
     const navigate = useNavigate()
@@ -97,10 +104,17 @@ function MyPage() {
             </ThemeBox>
             <AccountInfoBox>
                 <AccountInfoList>
-                    <Avatar
-                        src="/broken-image.jpg"
-                        sx={{ width: 150, height: 150, mr: '36px' }}
-                    />
+                    {accountData?.data.imgUrl ? (
+                        <AvatarImage
+                            src={accountData?.data.imgUrl}
+                            alt="프로필 이미지"
+                        />
+                    ) : (
+                        <Avatar
+                            src="/broken-image.jpg"
+                            sx={{ width: 150, height: 150, mr: '36px' }}
+                        />
+                    )}
                     <div>
                         <AccountNameItem>
                             {accountData?.data.nickname}
