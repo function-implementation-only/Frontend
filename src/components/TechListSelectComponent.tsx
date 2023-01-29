@@ -113,7 +113,7 @@ function TechListSelectComponent({ id }: TechListSelectComponentProps) {
                 </Select>
             </FormControl>
             <FormControl
-                sx={{ m: 0.5, minWidth: 120 }}
+                sx={{ m: 0.5, minWidth: 120, maxWidth: 300 }}
                 size="small"
                 id="techList-label"
             >

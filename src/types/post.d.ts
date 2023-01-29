@@ -1,14 +1,12 @@
 export type Inputs = {
     title: string
-    contents: string
     category: string
     duration: string
-    peopleNum: number
     place: string
     techList?: string[]
     // 아직 Spring 서버에서 배열로 받을 수 없어 하나의 값으로 처리
     startDate: Date | string
-    cooperationProgram: string[]
+    collaborationTool: string[]
     postState: string
 }
 
@@ -25,7 +23,6 @@ export type TechObj = {
 
 export interface PostObj {
     category: string
-    contents: string
     duration: string
     place: string
     startDate: string
@@ -37,4 +34,6 @@ export interface PostObj {
     designReqNum: number
     pmReqNum: number
     mobileReqNum: number
+    postState: string
+    collaborationTool?: string[]
 }

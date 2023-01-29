@@ -40,7 +40,7 @@ export class PostAPI implements PostAPIInterface {
         setInterceptors.defaults.headers.post['Content-Type'] =
             'multipart/form-data'
 
-        return setInterceptors.post('/posts', payload)
+        return setInterceptors.post('/posts/v2', payload)
     }
 
     /**
@@ -48,7 +48,8 @@ export class PostAPI implements PostAPIInterface {
      * 모든 공고 가져오기
      */
     getAllPost(): any {
-        return setInterceptors.get('/posts/all')
+        const POST_SIZE = 12
+        return setInterceptors.get(`posts/v7/all?page=0&size=${POST_SIZE}`)
     }
 
     /**

@@ -10,6 +10,7 @@ function usePostById(id: string) {
         const { data } = await serviceManager.dataService.postAPI.getPostById(
             id
         )
+
         const dataParsed = await serviceManager.dataService.parserAPI.parse(
             RESPONSE_TYPE.POST.GET,
             data.data

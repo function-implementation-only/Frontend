@@ -42,7 +42,8 @@ function PeopleNumSelectComponent({ id }: PeopleNumSelectComponentProps) {
     )
     const isLastIdx = useCheckIsLastIdx(id)
     const isMax = useCheckIsMax()
-    const { isFrontEndSet, isBackEndSet, isDesignSet } = useCheckPart()
+    const { isFrontEndSet, isBackEndSet, isDesignerSet, isPmSet, isMobileSet } =
+        useCheckPart()
 
     function handleRecruitPartChange(e: SelectChangeEvent<string>) {
         dispatch(
@@ -63,8 +64,8 @@ function PeopleNumSelectComponent({ id }: PeopleNumSelectComponentProps) {
     }
 
     function handlePeopleNumPlusClick() {
-        if (peopleNumArr.length === 3) return
-        // 프론트엔드, 백엔드, 디자이너 총 3가지 파트 이외 추가 불가
+        if (peopleNumArr.length === 5) return
+        // 프론트엔드, 백엔드, 디자이너, PM, 모바일 총 5가지 파트 이외 추가 불가
         dispatch(pushPeopleNumObj({ id: uuidv4(), part: '', num: null }))
     }
 
@@ -97,7 +98,10 @@ function PeopleNumSelectComponent({ id }: PeopleNumSelectComponentProps) {
                                     (isFrontEndSet &&
                                         item.title === '프론트엔드') ||
                                     (isBackEndSet && item.title === '백엔드') ||
-                                    (isDesignSet && item.title === '디자인')
+                                    (isDesignerSet &&
+                                        item.title === '디자이너') ||
+                                    (isPmSet && item.title === 'PM') ||
+                                    (isMobileSet && item.title === '모바일')
                                 }
                             >
                                 {item.title}
