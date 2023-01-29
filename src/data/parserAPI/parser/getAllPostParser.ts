@@ -10,6 +10,7 @@ class GetAllPostResponseParser implements ParserInterface {
 
     getParser() {
         return (responses: ContentResponse[]) => {
+            if (responses == null || responses.length === 0) return []
             return responses.map((response: ContentResponse) => {
                 response.category = PARSE_CONSTANT[response.category]
                 response.place = PARSE_CONSTANT[response.place]
