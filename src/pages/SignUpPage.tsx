@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useMutation } from 'react-query'
-import { AxiosResponse } from 'axios'
-import useServiceManager from 'src/hooks/useServiceManager'
 import AccountButtonItem from 'components/AccountButton'
 import useModal from 'hooks/useModal'
 import EmailCheckModal from 'components/account/EmailCheckModal'
-import { useNavigate } from 'react-router-dom'
 import ShowPWButton from 'components/ShowPWButton'
+import usePostSignUp from 'hooks/usePostSignUp'
+import usePostEmailCheck from 'hooks/usePostEmailCheck'
+import usePostEmailAuth from 'hooks/usePostEmailAuth'
 import {
     ErrorEmail,
     ErrorEmailAuth,
@@ -114,7 +113,7 @@ function SignUpPage() {
     } = useForm<SignUpInfo>({ mode: 'onChange' })
 
     const { email, password } = watch()
-    const [emailAuth, setEmailAuth] = useState()
+    const [emailAuth, setEmailAuth] = useState(null)
     const [auth, setAuth] = useState(false)
     const [emailCheck, setEmailCheck] = useState(false)
     const [sendingMail, setSendingMail] = useState(false)
@@ -125,83 +124,34 @@ function SignUpPage() {
     const [showingPWcheck, setShowingPWcheck] = useState(false)
     const [authCheck, setAuthCheck] = useState(false)
 
-    const navigate = useNavigate()
-    const serviceManager = useServiceManager()
-
     // 회원가입 API
-
-    const singnUpMutation = useMutation(
-        'signUpInfo',
-        (data: SignUpInfo) =>
-            serviceManager.dataService.accountAPI.postSignUp(data),
-        {
-            onSuccess: () => {
-                alert('회원가입이 완료되었습니다!')
-                navigate('/')
-            },
-            onError: (err) => {
-                alert(err)
-            },
-        }
-    )
+    const postSignUp = usePostSignUp()
 
     // 이메일 중복확인 API
-
-    const emailCheckMutation = useMutation(
-        'emailCheck',
-        () =>
-            serviceManager.dataService.accountAPI.postEmailCheck(
-                email as string
-            ),
-        {
-            onSuccess: (res: AxiosResponse) => {
-                if (res.data.data === true) {
-                    setEmailCheck(true)
-                    setEmailError(false)
-                } else {
-                    setEmailError(true)
-                }
-            },
-            onError: (err) => {
-                alert(err)
-            },
-        }
+    const postEmailCheck = usePostEmailCheck(
+        setEmailCheck,
+        setEmailError,
+        email
     )
 
     // 이메일 인증 API
-
-    const emailAuthMutation = useMutation(
-        'emailInfo',
-        () =>
-            serviceManager.dataService.accountAPI.postEmailAuth(
-                email as string
-            ),
-        {
-            onSuccess: (res: AxiosResponse) => {
-                setEmailAuth(res.data)
-                console.log(res.data)
-            },
-            onError: (err) => {
-                alert(err)
-            },
-        }
-    )
+    const postEmailAuth = usePostEmailAuth(setEmailAuth, email)
 
     const onSubmitEmailCheck = () => {
         if (email !== undefined && errors.email === undefined) {
-            emailCheckMutation.mutate()
+            postEmailCheck.mutate()
         }
     }
 
     const onSubmitEmailAuth = () => {
         setSendingMail(true)
         handleShowing()
-        emailAuthMutation.mutate()
+        postEmailAuth.mutate()
     }
 
     const onResubmitEmailAuth = () => {
         handleShowing()
-        emailAuthMutation.mutate()
+        postEmailAuth.mutate()
         setResendingMail(true)
         setAuthCheck(false)
         setAuth(false)
@@ -220,7 +170,7 @@ function SignUpPage() {
     }
 
     const onSubmitSignUp: SubmitHandler<SignUpInfo> = (data) => {
-        singnUpMutation.mutate(data)
+        postSignUp.mutate(data)
         reset()
     }
 

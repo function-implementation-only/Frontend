@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useMutation } from 'react-query'
-import useServiceManager from 'src/hooks/useServiceManager'
 import AccountButtonItem from 'components/AccountButton'
 import useModal from 'hooks/useModal'
-import { useNavigate } from 'react-router-dom'
 import { Avatar, FormControl, MenuItem, Select } from '@mui/material'
 import useGetAccountInfo from 'hooks/useGetAccountInfo'
 import ShowPWButton from 'components/ShowPWButton'
 import PasswordChangeModal from 'components/account/PasswordChangeModal'
+import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined'
+import usePostPasswordCheck from 'hooks/usePostPasswordCheck'
+import useEditPassword from 'hooks/useEditPassword'
+import useEditAccountInfo from 'hooks/useEditAccountInfo'
 import {
     ErrorNickname,
     ErrorPassword,
@@ -28,9 +29,16 @@ const ProfilePageLayout = styled.div`
     }
 `
 const AvatarBox = styled.div`
+    position: relative;
     display: flex;
     justify-content: center;
     margin: 36px 0;
+`
+
+const AvatarImage = styled.img`
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
 `
 
 const ThemeBox = styled.span`
@@ -111,6 +119,24 @@ const Button = styled.button`
     }
 `
 
+const AddButton = styled.button`
+    position: absolute;
+    left: 54.5%;
+    right: 2.31%;
+    top: 72.31%;
+    z-index: 10;
+    width: 37px;
+    height: 37px;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #ff9c30;
+    border-radius: 50%;
+    color: #ff9c30;
+    svg {
+        vertical-align: middle;
+    }
+`
+
 const ErrorItem = styled.div``
 
 const ButtonBox = styled.div`
@@ -137,8 +163,9 @@ function ProfilePage() {
     const [showingPwChange, setShowingPwChange] = useState(false)
     const [showingPWcheck, setShowingPWcheck] = useState(false)
     const [authCheck, setAuthCheck] = useState(false)
-    const [imgFiles, setImgFiles] = useState<FileList | null>(null)
-
+    const [imgFiles, setImgFiles] = useState(null)
+    const [previewImage, setPreviewImage] = useState('')
+    const imgRef = useRef<HTMLInputElement>(null)
     const [amPmStart, setAmPmStart] = useState('')
     const [amPmEnd, setAmPmEnd] = useState('')
     const [startTime, setStartTime] = useState('')
@@ -156,6 +183,18 @@ function ProfilePage() {
         '11시',
         '12시',
     ]
+
+    // 사용자 패스워드 확인 API
+    const postPasswordCheck = usePostPasswordCheck(setPwCheck, email, password)
+
+    // 사용자 패스워드 수정 API
+    const editPassword = useEditPassword(handleShowing, email, changePassword)
+
+    // 사용자 기본정보 수정 API
+    const editAccountInfo = useEditAccountInfo()
+
+    // 사용자 기본정보 API
+    const { data: accountData } = useGetAccountInfo()
 
     const handleAmPmStart = (event: {
         target: { value: React.SetStateAction<string> }
@@ -185,78 +224,6 @@ function ProfilePage() {
         setPwChange(true)
     }
 
-    const navigate = useNavigate()
-    const serviceManager = useServiceManager()
-
-    // 사용자 패스워드 확인 API
-
-    const passwordCheckMutation = useMutation(
-        'editAccountInfo',
-        () =>
-            serviceManager.dataService.accountAPI.postPasswordCheck(
-                email,
-                password
-            ),
-        {
-            onSuccess: (res) => {
-                if (res.data.data === true) {
-                    setPwCheck(true)
-                    console.log('success')
-                } else {
-                    setPwCheck(false)
-                    console.log('fail')
-                }
-            },
-            onError: (err) => {
-                alert(err)
-            },
-        }
-    )
-
-    // 사용자 패스워드 수정 API
-
-    const passwordChangekMutation = useMutation(
-        'editPassword',
-        () =>
-            serviceManager.dataService.accountAPI.editPassword(
-                email,
-                changePassword
-            ),
-        {
-            onSuccess: (res) => {
-                if (res.data.data === true) {
-                    console.log('success!!')
-                    handleShowing()
-                } else {
-                    console.log('fail!!')
-                }
-            },
-            onError: (err) => {
-                alert(err)
-            },
-        }
-    )
-
-    // 사용자 기본정보 수정 API
-
-    const accountInfoMutation = useMutation(
-        'editAccountInfo',
-        (formData: FormData) =>
-            serviceManager.dataService.accountAPI.editAccountInfo(formData),
-        {
-            onSuccess: () => {
-                navigate('/')
-            },
-            onError: (err) => {
-                alert(err)
-            },
-        }
-    )
-
-    // 사용자 기본정보 API
-
-    const { data: accountData } = useGetAccountInfo()
-
     const onSubmit: SubmitHandler<DefaultAccountInfo> = (inputData) => {
         const formData = new FormData()
 
@@ -266,17 +233,16 @@ function ProfilePage() {
             // Spring 서버를 위한 처리
         )
         if (imgFiles) {
-            formData.append('profileImg', imgFiles[0])
+            formData.append('profileImg', imgFiles)
         }
-        console.log(inputData)
 
-        accountInfoMutation.mutate(formData)
+        editAccountInfo.mutate(formData)
         reset()
     }
 
     const onSubmitPasswordCheck = () => {
         if (password !== undefined && errors.password === undefined) {
-            passwordCheckMutation.mutate()
+            postPasswordCheck.mutate()
         }
     }
 
@@ -289,7 +255,23 @@ function ProfilePage() {
             errors.passwordCheck === undefined &&
             errors.changePassword === undefined
         ) {
-            passwordChangekMutation.mutate()
+            editPassword.mutate()
+        }
+    }
+
+    const handleButtonClick = () => {
+        imgRef.current.click()
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = imgRef.current.files[0]
+        // const file = e.target.files[0]
+        if (!file) return
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onloadend = () => {
+            setPreviewImage(reader.result as string)
+            setImgFiles(e.target.files[0])
         }
     }
 
@@ -299,6 +281,7 @@ function ProfilePage() {
         setValue('field', accountData?.data.field)
         setValue('introduction', accountData?.data.introduction)
         setValue('availableTime', accountData?.data.availableTime)
+        setPreviewImage(accountData?.data.imgUrl)
     }, [])
 
     return (
@@ -306,10 +289,27 @@ function ProfilePage() {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <ThemeBox>기본 정보 수정</ThemeBox>
                 <AvatarBox>
-                    <Avatar
-                        src="/broken-image.jpg"
-                        sx={{ width: 130, height: 130 }}
+                    <AddButton type="button" onClick={handleButtonClick}>
+                        <PhotoCameraOutlinedIcon />
+                    </AddButton>
+                    <input
+                        type="file"
+                        style={{ display: 'none' }}
+                        accept="image/jpeg, image/jpg, image/png"
+                        ref={imgRef}
+                        onChange={handleChange}
                     />
+                    {previewImage || accountData?.data.imgUrl ? (
+                        <AvatarImage
+                            src={previewImage || accountData?.data.imgUrl}
+                            alt="프로필 이미지"
+                        />
+                    ) : (
+                        <Avatar
+                            src="/broken-image.jpg"
+                            sx={{ width: 130, height: 130 }}
+                        />
+                    )}
                 </AvatarBox>
                 <ItemBox>
                     <InputItem>

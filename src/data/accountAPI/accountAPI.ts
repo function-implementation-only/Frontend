@@ -68,6 +68,9 @@ export default class AccountAPI implements AccountAPIInterface {
     }
 
     editAccountInfo(payload: FormData): Promise<AxiosResponse> {
+        setInterceptors.defaults.headers.post['Content-Type'] =
+            'multipart/form-data'
+
         return setInterceptors.patch('account', payload)
     }
 
