@@ -50,8 +50,11 @@ const Modal: React.FC<ModalProps> = ({
     onClose,
     selector = '#modal-root',
 }) => {
+    const nodeRef = React.useRef(null)
+
     return (
         <CSSTransition
+            nodeRef={nodeRef}
             in={isOpen}
             timeout={300}
             classNames="modal"
