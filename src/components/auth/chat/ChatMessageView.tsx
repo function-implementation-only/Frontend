@@ -52,7 +52,7 @@ const ChatMessageBox = styled.div`
 
 export default function ChatMessageView() {
     const config = {
-        brokerURL: '/api/stomp/chat',
+        brokerURL: '/api/ws',
         connectHeaders: {
             Access_Token: window.localStorage.getItem('token'),
         },
