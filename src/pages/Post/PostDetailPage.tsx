@@ -149,9 +149,10 @@ function PostDetailPage() {
         console.log('Start chatting')
     }
 
-    if (isLoading) return 'loading'
+    if (isLoading) return <PostDetailLayout>loading</PostDetailLayout>
 
-    if (error instanceof Error) return error.message
+    if (error instanceof Error)
+        return <PostDetailLayout>{error.message}</PostDetailLayout>
 
     return (
         <PostDetailLayout>
