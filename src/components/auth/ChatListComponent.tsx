@@ -20,8 +20,7 @@ export const SearchBox = styled.div`
 `
 
 export default function ChatListComponent() {
-    const { data: chatRooms, isLoading } = useChatRooms()
-    console.log(chatRooms)
+    const { data, isLoading } = useChatRooms()
 
     return (
         <ChatListWrapper>
@@ -29,7 +28,7 @@ export default function ChatListComponent() {
                 ? Array.from({ length: 3 }).map((_, i) => (
                       <ChatItemSkeleton key={(i + 1).toString()} />
                   ))
-                : chatRooms?.map((item) => {
+                : data?.map((item) => {
                       const aaa = item as unknown as ChatRoomWithUser
                       return <ChatItemComponent key={item.roomId} {...aaa} />
                   })}

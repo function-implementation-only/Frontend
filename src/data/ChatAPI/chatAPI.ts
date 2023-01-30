@@ -16,7 +16,7 @@ export default class ChatAPI implements ChatAPIInterface {
     }
 
     getChatRooms(): GatChatRoomsType {
-        return setInterceptors.get('/rooms')
+        return setInterceptors.get('/chat/roomList')
     }
 
     getChatById(roomId: number) {

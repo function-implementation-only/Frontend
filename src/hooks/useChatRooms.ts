@@ -1,13 +1,19 @@
 import { useQuery } from 'react-query'
+import { ChatRoomsRespone } from 'types/response'
 import useServiceManager from './useServiceManager'
 
 const useChatRooms = () => {
     const serviceManager = useServiceManager()
 
-    return useQuery(['rooms'], async () => {
-        const { data } = await serviceManager.dataService.chatAPI.getChatRooms()
+    return useQuery(['chat/roomList'], async () => {
+        const { data } =
+            (await serviceManager.dataService.chatAPI.getChatRooms()) as unknown as {
+                data: {
+                    data: ChatRoomsRespone[]
+                }
+            }
 
-        return data
+        return data?.data || []
     })
 }
 
