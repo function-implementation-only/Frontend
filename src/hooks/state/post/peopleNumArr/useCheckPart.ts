@@ -4,7 +4,9 @@ import { useAppSelector } from 'src/store/hooks'
 function useCheckPart() {
     const [isFrontEndSet, SetIsFrontEndSet] = useState(false)
     const [isBackEndSet, SetIsBackEndSet] = useState(false)
-    const [isDesignSet, SetIsDesignSet] = useState(false)
+    const [isDesignerSet, SetIsDesignerSet] = useState(false)
+    const [isPmSet, SetIsPmSet] = useState(false)
+    const [isMobileSet, SetIsMobileSet] = useState(false)
 
     const peopleNumArr = useAppSelector(
         (state) => state.postCreateReducer.peopleNumArr
@@ -13,7 +15,9 @@ function useCheckPart() {
     function initializeSetPart() {
         SetIsFrontEndSet(false)
         SetIsBackEndSet(false)
-        SetIsDesignSet(false)
+        SetIsDesignerSet(false)
+        SetIsPmSet(false)
+        SetIsMobileSet(false)
     }
 
     useEffect(() => {
@@ -27,14 +31,20 @@ function useCheckPart() {
                 case 'BackEnd':
                     SetIsBackEndSet(true)
                     break
-                case 'Design':
-                    SetIsDesignSet(true)
+                case 'Designer':
+                    SetIsDesignerSet(true)
+                    break
+                case 'PM':
+                    SetIsPmSet(true)
+                    break
+                case 'Mobile':
+                    SetIsMobileSet(true)
                     break
             }
         })
     }, [peopleNumArr])
 
-    return { isFrontEndSet, isBackEndSet, isDesignSet }
+    return { isFrontEndSet, isBackEndSet, isDesignerSet, isPmSet, isMobileSet }
 }
 
 export default useCheckPart

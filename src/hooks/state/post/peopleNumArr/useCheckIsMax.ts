@@ -8,7 +8,7 @@ function useCheckIsMax() {
     const [isMax, setIsMax] = useState(false)
 
     useEffect(() => {
-        if (peopleNumArr.length === 3) {
+        if (peopleNumArr.length === 5) {
             setIsMax(true)
         } else {
             setIsMax(false)

@@ -1,25 +1,15 @@
 import axios from 'axios'
-import dayjs from 'dayjs'
 import { ContentResponse } from 'src/types/response'
-import {
-    COLLABORATION_TOOL,
-    PARSE_CONSTANT,
-    RESPONSE_TYPE,
-} from '../../../lib/constants'
+import { COLLABORATION_TOOL, RESPONSE_TYPE } from '../../../lib/constants'
 import { ParserInterface } from '../../../types/parser'
 
-class GetPostResponseParser implements ParserInterface {
+class GetPostResponseForUpdateParser implements ParserInterface {
     getResponseType() {
-        return RESPONSE_TYPE.POST.GET
+        return RESPONSE_TYPE.POST.GET_UPDATE
     }
 
     getParser() {
         return async (response: ContentResponse) => {
-            response.category = PARSE_CONSTANT[response.category]
-            response.place = PARSE_CONSTANT[response.place]
-            response.duration = PARSE_CONSTANT[response.duration]
-            response.startDate = dayjs(response.startDate).format('YYYY.MM.DD')
-
             const { data } = await axios.get(response.contentUrl)
             response.contentsParsed = data
 
@@ -42,4 +32,4 @@ class GetPostResponseParser implements ParserInterface {
     }
 }
 
-export default GetPostResponseParser
+export default GetPostResponseForUpdateParser

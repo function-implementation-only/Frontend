@@ -21,12 +21,15 @@ export interface PostResponse {
 }
 
 export interface ContentResponse extends PostObj {
+    contentUrl: string
     [key: string]
-    likeCheck: null | boolean
     likesLength: number
-    profileImg: null | Object
-    // FIXME : profile Img는 어떻게 올 지 확인 필요
     nickname: string
+    backendNum: number
+    frontendNum: number
+    designNum: number
+    pmNum: number
+    mobileNum: number
 }
 
 export interface PageableResponse {

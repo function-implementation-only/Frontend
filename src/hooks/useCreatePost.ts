@@ -7,9 +7,9 @@ function useCreatePost() {
     const serviceManager = useServiceManager()
 
     return useMutation(
-        async (formdata: FormData) => {
+        async (formData: FormData) => {
             const { data } =
-                await serviceManager.dataService.postAPI.createPost(formdata)
+                await serviceManager.dataService.postAPI.createPost(formData)
             return data
         },
         {

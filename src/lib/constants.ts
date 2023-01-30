@@ -8,26 +8,36 @@ type ParseConstantObj = {
     [key: string]: string
 }
 
+export const COLLABORATION_TOOL: ConstantObj[] = [
+    { title: 'FIGMA', value: 'FIGMA' },
+    { title: 'SLACK', value: 'SLACK' },
+    { title: 'GITHUB', value: 'GITHUB' },
+    { title: 'ZIRA', value: 'ZIRA' },
+    { title: 'DISCORD', value: 'DISCORD' },
+    { title: 'NOTION', value: 'FIGMA' },
+    { title: 'ZEPLIN', value: 'ZEPLIN' },
+]
+
 export const RECRUITMENT_PART: ConstantObj[] = [
     { title: '프론트엔드', value: 'FrontEnd' },
     { title: '백엔드', value: 'BackEnd' },
-    { title: '디자인', value: 'Design' },
+    { title: '디자이너', value: 'Designer' },
+    { title: 'PM', value: 'PM' },
+    { title: '모바일', value: 'Mobile' },
 ]
 
 export const TECH_PART: ConstantObj[] = [
     { title: '프론트엔드', value: 'FrontEnd' },
     { title: '백엔드', value: 'BackEnd' },
     { title: '모바일', value: 'Mobile' },
-    { title: '기타', value: 'Etc' },
 ]
 
 export const POST_DETAIL_INFORMATION: ConstantObj[] = [
     { title: '모집 구분', type: 'tag', value: 'category' },
     { title: '사용 언어', type: 'tag', value: 'techs' },
-    { title: '협업 프로그램', type: 'tag', value: 'techs' },
+    { title: '협업 프로그램', type: 'tag', value: 'collaborationTool' },
     { title: '진행 방식', type: 'tag', value: 'place' },
     { title: '예상 기간', type: 'tag', value: 'duration' },
-    { title: '모집 인원', type: 'table', value: 'peopleNum' },
 ]
 
 export const POST_STATE: ConstantObj[] = [
@@ -46,12 +56,12 @@ export const PARSE_CONSTANT: ParseConstantObj = {
     ONLINE: '온라인',
     OFFLINE: '오프라인',
     UNDEFINED: '기간 미정',
-    ONE: '1개월',
-    TWO: '2개월',
-    THREE: '3개월',
-    FOUR: '4개월',
-    FIVE: '5개월',
-    SIX: '6개월 이상',
+    1: '1개월',
+    2: '2개월',
+    3: '3개월',
+    4: '4개월',
+    5: '5개월',
+    6: '6개월 이상',
 }
 
 export const PLACE: ConstantObj[] = [
@@ -64,7 +74,7 @@ export const TECHLIST: ConstantObj[] = [
     { title: 'TYPESCRIPT', value: 'TYPESCRIPT', type: 'FrontEnd' },
     { title: 'REACT', value: 'REACT', type: 'FrontEnd' },
     { title: 'VUE', value: 'VUE', type: 'FrontEnd' },
-    { title: 'Svelte', value: 'Svelte', type: 'FrontEnd' },
+    { title: 'SVELTE', value: 'SVELTE', type: 'FrontEnd' },
     { title: 'NEXTJS', value: 'NEXTJS', type: 'FrontEnd' },
     { title: 'NODEJS', value: 'NODEJS', type: 'BackEnd' },
     { title: 'SPRING', value: 'SPRING', type: 'BackEnd' },
@@ -84,24 +94,16 @@ export const TECHLIST: ConstantObj[] = [
     { title: 'REACTNATIVE', value: 'REACTNATIVE', type: 'Mobile' },
     { title: 'FLUTTER', value: 'FLUTTER', type: 'Mobile' },
     { title: 'UNITY', value: 'UNITY', type: 'Mobile' },
-    { title: 'C', value: 'C', type: 'Etc' },
-    { title: 'AWS', value: 'AWS', type: 'Etc' },
-    { title: 'KUBERNETES', value: 'KUBERNETES', type: 'Etc' },
-    { title: 'DOCKER', value: 'DOCKER', type: 'Etc' },
-    { title: 'GIT', value: 'GIT', type: 'Etc' },
-    { title: 'FIGMA', value: 'FIGMA', type: 'Etc' },
-    { title: 'ZEPLIN', value: 'ZEPLIN', type: 'Etc' },
-    { title: 'JEST', value: 'JEST', type: 'Etc' },
 ]
 
 export const DURATION: ConstantObj[] = [
     { title: '기간 미정', value: 'UNDEFINED' },
-    { title: '1개월', value: 'ONE' },
-    { title: '2개월', value: 'TWO' },
-    { title: '3개월', value: 'THREE' },
-    { title: '4개월', value: 'FOUR' },
-    { title: '5개월', value: 'FIVE' },
-    { title: '6개월 이상', value: 'SIX' },
+    { title: '1개월', value: 1 },
+    { title: '2개월', value: 2 },
+    { title: '3개월', value: 3 },
+    { title: '4개월', value: 4 },
+    { title: '5개월', value: 5 },
+    { title: '6개월 이상', value: 6 },
 ]
 
 export const PEOPLENUM: ConstantObj[] = [
@@ -121,6 +123,7 @@ export const RESPONSE_TYPE = {
     POST: {
         GET: 'getPost',
         GET_ALL: 'getAllPost',
+        GET_UPDATE: 'getPostForUpdate',
     },
 }
 // 상수 정의

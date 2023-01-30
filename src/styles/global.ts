@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
   :root {
     --primary-color: #FF9C30;
     --primary-color-100: #FFECD6;
-    --swiper-theme-color: var(--primary-color);
+    --swiper-theme-color: white;
     --gray-900: #212529;
     --gray-600: #868E96;
     --gray-700: #3E4145;
