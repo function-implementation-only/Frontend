@@ -6,9 +6,12 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import styled from 'styled-components'
 
-const BannerBox = styled.div`
-    background-color: gray;
+const BannerBox = styled.div<{
+    imgSrc?: string
+}>`
     height: 320px;
+    background: center / cover no-repeat url(${(props) => props.imgSrc});
+    background-color: gray;
 `
 
 function BannerComponent() {
@@ -22,16 +25,10 @@ function BannerComponent() {
             onSlideChange={() => console.log('slide change')}
         >
             <SwiperSlide>
-                <BannerBox>배너1</BannerBox>
+                <BannerBox imgSrc="/src/assets/images/banner/banner_1.svg" />
             </SwiperSlide>
             <SwiperSlide>
                 <BannerBox>배너2</BannerBox>
-            </SwiperSlide>
-            <SwiperSlide>
-                <BannerBox>배너3</BannerBox>
-            </SwiperSlide>
-            <SwiperSlide>
-                <BannerBox>배너4</BannerBox>
             </SwiperSlide>
         </Swiper>
     )
