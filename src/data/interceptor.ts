@@ -1,10 +1,8 @@
 import axios, {
-    AxiosHeaders,
     AxiosInstance,
     AxiosInterceptorManager,
     AxiosRequestConfig,
     AxiosResponse,
-    RawAxiosRequestHeaders,
 } from 'axios'
 
 type CustomResponseFormat<T = any> = {
@@ -13,10 +11,7 @@ type CustomResponseFormat<T = any> = {
 }
 export interface ClientInstance extends AxiosInstance {
     interceptors: {
-        request: AxiosInterceptorManager<
-            | AxiosRequestConfig
-            | { headers: RawAxiosRequestHeaders | AxiosHeaders | any }
-        >
+        request: AxiosInterceptorManager<AxiosRequestConfig | { headers: any }>
         response: AxiosInterceptorManager<AxiosResponse<CustomResponseFormat>>
     }
     getUri(config?: AxiosRequestConfig): string
