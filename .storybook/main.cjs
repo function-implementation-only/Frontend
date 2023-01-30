@@ -14,5 +14,6 @@ module.exports = {
   },
   "features": {
     "storyStoreV7": true
-  }
+  },
+  "staticDirs": ['../src/assets'],
 }
