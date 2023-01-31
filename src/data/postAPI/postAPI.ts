@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import {
     APIResponse,
     ContentResponse,
@@ -24,12 +24,6 @@ export interface PostAPIInterface {
 }
 
 export class PostAPI implements PostAPIInterface {
-    axiosInstance: AxiosInstance
-
-    constructor(axiosInstance: AxiosInstance) {
-        this.axiosInstance = axiosInstance
-    }
-
     /**
      * createPost
      * 공고 작성하기

@@ -25,7 +25,7 @@ function BannerComponent() {
             onSlideChange={() => console.log('slide change')}
         >
             <SwiperSlide>
-                <BannerBox imgSrc="/src/assets/images/banner/banner_1.svg" />
+                <BannerBox imgSrc="/assets/images/banner/banner_1.svg" />
             </SwiperSlide>
             <SwiperSlide>
                 <BannerBox>배너2</BannerBox>

@@ -18,7 +18,6 @@ export default defineConfig(({ mode }) => {
                 data: path.resolve(__dirname, './src/data/'),
                 pages: path.resolve(__dirname, './src/pages'),
                 components: path.resolve(__dirname, './src/components'),
-                img: path.resolve(__dirname, './src/assets/images'),
                 lib: path.resolve(__dirname, './src/lib'),
                 hooks: path.resolve(__dirname, './src/hooks'),
                 utils: path.resolve(__dirname, './src/utils'),

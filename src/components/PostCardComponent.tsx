@@ -1,9 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { ContentResponse } from 'types/response'
-import lookupImg from 'img/lookup.svg'
 import { TechObj } from 'types/post'
-import bookmarkBtnImg from 'img/bookmark.svg'
 
 const PostCardComponentLayout = styled.div`
     cursor: pointer;
@@ -72,7 +70,7 @@ function PostCardComponent({ post }: PostCardComponentProps) {
                 <p>{`#${post.place} #${post.peopleNum}명 #${post.duration}`}</p>
                 <TechList>
                     {post.techs.slice(0, 6).map((item: TechObj) => {
-                        const basePath = 'src/assets/images/techIcon'
+                        const basePath = '/assets/images/techIcon'
                         const imgPath = `${basePath}/${item.tech.toLowerCase()}.svg`
                         return (
                             <TechImage
@@ -84,7 +82,7 @@ function PostCardComponent({ post }: PostCardComponentProps) {
                     })}
                 </TechList>
                 <BookmarkButton
-                    src={bookmarkBtnImg}
+                    src="/assets/images/bookmark.svg"
                     onClick={() => {
                         handleBookmark()
                     }}
@@ -95,7 +93,8 @@ function PostCardComponent({ post }: PostCardComponentProps) {
                 <footer>
                     <span>{post.nickname}</span>
                     <span>
-                        <img src={lookupImg} alt="lookupImg" /> 0
+                        <img src="/assets/images/lookup.svg" alt="lookupImg" />{' '}
+                        0
                     </span>
                 </footer>
             </PostCardComponentRow>

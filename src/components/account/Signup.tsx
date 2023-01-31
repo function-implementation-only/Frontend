@@ -4,9 +4,6 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 import { googleURL, kakaoURL } from 'src/utils/url'
-import kakaoImg from 'img/kakaoLogo.svg'
-import googleImg from 'img/googleLogo.svg'
-import smalllogoImg from 'img/signupLogo.svg'
 import Button from '../AccountButton'
 
 const {
@@ -91,7 +88,7 @@ const Signup: React.FC<Props> = ({ setLogin, setSignup }) => {
                     fontWeight={700}
                     color="#fff"
                     marginBottom={12}
-                    img={smalllogoImg}
+                    img="/assets/images/signupLogo.svg"
                     url="/signup"
                 >
                     계정 만들기
@@ -107,7 +104,7 @@ const Signup: React.FC<Props> = ({ setLogin, setSignup }) => {
                     color="#3E201E"
                     fontWeight={500}
                     marginBottom={12}
-                    img={kakaoImg}
+                    img="assets/images/kakaoLogo.svg"
                     url={KAKAO_AUTH_URL}
                 >
                     카카오 계정으로 시작하기
@@ -117,7 +114,7 @@ const Signup: React.FC<Props> = ({ setLogin, setSignup }) => {
                     background="#F4F4F4"
                     color="#3E4145"
                     fontWeight={500}
-                    img={googleImg}
+                    img="assets/images/googleLogo.svg"
                     url={GOOGLE_URL}
                 >
                     구글 계정으로 시작하기

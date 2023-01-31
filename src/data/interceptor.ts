@@ -1,8 +1,10 @@
 import axios, {
+    AxiosHeaders,
     AxiosInstance,
     AxiosInterceptorManager,
     AxiosRequestConfig,
     AxiosResponse,
+    RawAxiosRequestHeaders,
 } from 'axios'
 
 type CustomResponseFormat<T = any> = {
@@ -11,7 +13,10 @@ type CustomResponseFormat<T = any> = {
 }
 export interface ClientInstance extends AxiosInstance {
     interceptors: {
-        request: AxiosInterceptorManager<AxiosRequestConfig | { headers: any }>
+        request: AxiosInterceptorManager<
+            | AxiosRequestConfig
+            | { headers: RawAxiosRequestHeaders | AxiosHeaders | any }
+        >
         response: AxiosInterceptorManager<AxiosResponse<CustomResponseFormat>>
     }
     getUri(config?: AxiosRequestConfig): string
@@ -26,7 +31,7 @@ export interface ClientInstance extends AxiosInstance {
 }
 
 const client: ClientInstance = axios.create({
-    baseURL: '/api',
+    baseURL: import.meta.env.VITE_API_END_POINT,
 })
 
 client.interceptors.request.use((request) => {

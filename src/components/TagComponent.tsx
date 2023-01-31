@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import styled from 'styled-components'
-import cancel from 'img/cancel.svg'
 import { useAppDispatch } from 'src/store/hooks'
 import { spliceTag } from 'src/store/features/tag/tagSlice'
 
@@ -44,7 +43,11 @@ function TagComponent({
         <TagComponentLayout backgroundColor={backgroundColor}>
             {title}
             {displayCancelButton ? (
-                <img src={cancel} alt="cancel" onClick={handleCancel} />
+                <img
+                    src="/assets/images/cancel.svg"
+                    alt="cancel"
+                    onClick={handleCancel}
+                />
             ) : (
                 ''
             )}
