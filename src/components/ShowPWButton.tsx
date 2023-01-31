@@ -2,8 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from 'styled-components'
 import React, { Dispatch, SetStateAction } from 'react'
-import showPwImg from 'img/showPW.svg'
-import hidePwImg from 'img/hidePW.svg'
 
 const ShowPwButton = styled.button<{ top?: string; right?: string }>`
     position: absolute;
@@ -42,9 +40,9 @@ const ShowPWButton: React.FC<Props> = ({
             right={right}
         >
             {showingPW ? (
-                <img src={hidePwImg} alt="hidePW" />
+                <img src="/assets/images/showPW.svg" alt="hidePW" />
             ) : (
-                <img src={showPwImg} alt="showPW" />
+                <img src="/assets/images/hidePW.svg" alt="showPW" />
             )}
         </ShowPwButton>
     )

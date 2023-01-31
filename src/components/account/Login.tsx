@@ -2,8 +2,6 @@ import React, { Dispatch, SetStateAction, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { googleURL, kakaoURL } from 'src/utils/url'
-import kakaoImg from 'img/kakaoLogo.svg'
-import googleImg from 'img/googleLogo.svg'
 import { AccountInfo } from 'types/account'
 import ShowPWButton from 'components/ShowPWButton'
 import usePostLogIn from 'hooks/usePostLogIn'
@@ -188,7 +186,7 @@ const Login: React.FC<Props> = ({ handleShowing, setLogin, setSignup }) => {
                         color="#3E201E"
                         fontWeight={500}
                         marginBottom={12}
-                        img={kakaoImg}
+                        img="assets/images/kakaoLogo.svg"
                         url={KAKAO_AUTH_URL}
                     >
                         카카오 계정으로 시작하기
@@ -198,7 +196,7 @@ const Login: React.FC<Props> = ({ handleShowing, setLogin, setSignup }) => {
                         background="#F4F4F4"
                         color="#3E4145"
                         fontWeight={500}
-                        img={googleImg}
+                        img="assets/images/googleLogo.svg"
                         url={GOOGLE_URL}
                     >
                         구글 계정으로 시작하기

@@ -25,10 +25,10 @@ const OperatorButton = styled.button`
     height: 20px;
 `
 const PlusButton = styled(OperatorButton)`
-    background: center / cover no-repeat url('/src/assets/images/plus.svg');
+    background: center / cover no-repeat url('/assets/images/plus.svg');
 `
 const MinusButton = styled(OperatorButton)`
-    background: center / cover no-repeat url('/src/assets/images/minus.svg');
+    background: center / cover no-repeat url('/assets/images/minus.svg');
 `
 
 interface PeopleNumSelectComponentProps {

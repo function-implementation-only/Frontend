@@ -21,7 +21,6 @@
       "data/*": ["src/data/*"],
       "pages/*": ["src/pages/*"],
       "components/*": ["src/components/*"],
-      "img/*": ["src/assets/images/*"],
       "lib/*": ["src/lib/*"],
       "hooks/*": ["src/hooks/*"],
       "utils/*": ["src/utils/*"],

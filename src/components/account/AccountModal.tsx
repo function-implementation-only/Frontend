@@ -3,8 +3,6 @@ import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 import Login from 'components/account/Login'
 import Signup from 'components/account/Signup'
-import closeBtnImg from 'img/closeBtn.svg'
-import logoImg from 'img/Logo.svg'
 import Modal from '../Modal'
 
 const LoginLayout = styled.div`
@@ -58,13 +56,13 @@ const AccountModal: React.FC<Props> = ({
         <Modal isOpen={isShowing} onClose={handleShowing}>
             <LoginLayout>
                 <CloseButton
-                    src={closeBtnImg}
+                    src="/assets/images/closeBtn.svg"
                     onClick={() => {
                         handleShowing()
                     }}
                     alt="closeButton"
                 />
-                <Logo src={logoImg} alt="logo" />
+                <Logo src="/assets/images/Logo.svg" alt="logo" />
                 {login && (
                     <Login
                         handleShowing={handleShowing}
