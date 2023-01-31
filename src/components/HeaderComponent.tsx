@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import useModal from 'hooks/useModal'
-import Logo from 'img/Logo.svg'
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
@@ -155,7 +154,7 @@ function HeaderComponent() {
             <HeaderComponentRow>
                 <LogoBox>
                     <a href="/">
-                        <img src={Logo} alt="logoImg" />
+                        <img src="/assets/images/Logo.svg" alt="logoImg" />
                     </a>
                 </LogoBox>
                 <UtilityBox>

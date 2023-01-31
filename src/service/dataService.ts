@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { ParserAPI } from 'data/parserAPI/parserAPI'
 import { PostAPI, PostAPIInterface } from 'data/postAPI/postAPI'
 import AccountAPI, { AccountAPIInterface } from 'data/accountAPI/accountAPI'
@@ -17,12 +16,8 @@ export class DataService implements DataServiceInterface {
     parserAPI
 
     constructor() {
-        const axiosInstance = axios.create({
-            baseURL: import.meta.env.VITE_API_END_POINT,
-        })
-
-        this.postAPI = new PostAPI(axiosInstance)
-        this.accountAPI = new AccountAPI(axiosInstance)
+        this.postAPI = new PostAPI()
+        this.accountAPI = new AccountAPI()
         this.parserAPI = new ParserAPI()
     }
 }

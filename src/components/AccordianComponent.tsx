@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
-import arrow from 'img/arrow.svg'
 import FilterCheckBoxComponent from 'components/checkbox/FilterCheckBoxComponent'
 import { ConstantObj } from 'lib/constants'
 
@@ -83,7 +82,7 @@ function AccordianComponent({
                 <AccordianTitle isOpen={isOpen} onClick={handleClickAccordian}>
                     <div>{`${title}(${selectedNum})`}</div>
                     <div>
-                        <img src={arrow} alt="arrowImg" />
+                        <img src="/assets/images/arrow.svg" alt="arrowImg" />
                     </div>
                 </AccordianTitle>
                 <AccordianContents ref={accordian}>

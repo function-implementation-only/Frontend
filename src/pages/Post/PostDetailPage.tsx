@@ -96,8 +96,7 @@ const DateBox = styled.div`
 `
 
 const ChatButton = styled.button`
-    background: center / cover no-repeat
-        url('/src/assets/images/messageBubble.svg');
+    background: center / cover no-repeat url('/assets/images/messageBubble.svg');
     width: 24px;
     height: 22px;
     border: none;
@@ -107,7 +106,7 @@ const ChatButton = styled.button`
 const BookMarkButton = styled.button<{
     isAuthor: boolean
 }>`
-    background: center / cover no-repeat url('/src/assets/images/bookmark.svg');
+    background: center / cover no-repeat url('/assets/images/bookmark.svg');
     width: ${(props) => (props.isAuthor ? '42px' : '32px')};
     height: ${(props) => (props.isAuthor ? '40px' : '30px')};
     border: none;
