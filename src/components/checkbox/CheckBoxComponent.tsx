@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 const CheckBoxComponentLayout = styled.div`
     display: flex;
+    height: 52px;
     align-items: center;
     padding: 0 22px 0 26px;
 `
@@ -49,7 +50,7 @@ function CheckBoxComponent({
         if (effectState === true && isChecked === false) {
             // 외부 변경이 일어났고, checked로 변경 필요
             checkedHandlerProp(true)
-            setIsChecked(false)
+            setIsChecked(true)
         } else if (effectState === false && isChecked === true) {
             // 외부 변경이 일어났고, canceled로 변경 필요
             canceledHandlerProp(true)

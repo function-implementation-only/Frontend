@@ -1,53 +1,79 @@
-export type ConstantObj = {
+export type ConstantObj<T> = {
     title: string
-    value: string | number
+    value: T
     type?: string
+    source: string
 }
 
 type ParseConstantObj = {
     [key: string]: string
 }
 
-export const COLLABORATION_TOOL: ConstantObj[] = [
-    { title: 'FIGMA', value: 'FIGMA' },
-    { title: 'SLACK', value: 'SLACK' },
-    { title: 'GITHUB', value: 'GITHUB' },
-    { title: 'ZIRA', value: 'ZIRA' },
-    { title: 'DISCORD', value: 'DISCORD' },
-    { title: 'NOTION', value: 'FIGMA' },
-    { title: 'ZEPLIN', value: 'ZEPLIN' },
+export const COLLABORATION_TOOL: ConstantObj<string>[] = [
+    { title: 'FIGMA', value: 'FIGMA', source: 'COLLABORATION_TOOL' },
+    { title: 'SLACK', value: 'SLACK', source: 'COLLABORATION_TOOL' },
+    { title: 'GITHUB', value: 'GITHUB', source: 'COLLABORATION_TOOL' },
+    { title: 'ZIRA', value: 'ZIRA', source: 'COLLABORATION_TOOL' },
+    { title: 'DISCORD', value: 'DISCORD', source: 'COLLABORATION_TOOL' },
+    { title: 'NOTION', value: 'NOTION', source: 'COLLABORATION_TOOL' },
+    { title: 'ZEPLIN', value: 'ZEPLIN', source: 'COLLABORATION_TOOL' },
 ]
 
-export const RECRUITMENT_PART: ConstantObj[] = [
-    { title: '프론트엔드', value: 'FrontEnd' },
-    { title: '백엔드', value: 'BackEnd' },
-    { title: '디자이너', value: 'Designer' },
-    { title: 'PM', value: 'PM' },
-    { title: '모바일', value: 'Mobile' },
+export const RECRUITMENT_PART: ConstantObj<string>[] = [
+    { title: '프론트엔드', value: 'FrontEnd', source: 'RECRUITMENT_PART' },
+    { title: '백엔드', value: 'BackEnd', source: 'RECRUITMENT_PART' },
+    { title: '디자이너', value: 'Designer', source: 'RECRUITMENT_PART' },
+    { title: 'PM', value: 'PM', source: 'RECRUITMENT_PART' },
+    { title: '모바일', value: 'Mobile', source: 'RECRUITMENT_PART' },
 ]
 
-export const TECH_PART: ConstantObj[] = [
-    { title: '프론트엔드', value: 'FrontEnd' },
-    { title: '백엔드', value: 'BackEnd' },
-    { title: '모바일', value: 'Mobile' },
+export const TECH_PART: ConstantObj<string>[] = [
+    { title: '프론트엔드', value: 'FrontEnd', source: 'TECH_PART' },
+    { title: '백엔드', value: 'BackEnd', source: 'TECH_PART' },
+    { title: '모바일', value: 'Mobile', source: 'TECH_PART' },
 ]
 
-export const POST_DETAIL_INFORMATION: ConstantObj[] = [
-    { title: '모집 구분', type: 'tag', value: 'category' },
-    { title: '사용 언어', type: 'tag', value: 'techs' },
-    { title: '협업 프로그램', type: 'tag', value: 'collaborationTool' },
-    { title: '진행 방식', type: 'tag', value: 'place' },
-    { title: '예상 기간', type: 'tag', value: 'duration' },
+export const POST_DETAIL_INFORMATION: ConstantObj<string>[] = [
+    {
+        title: '모집 구분',
+        type: 'tag',
+        value: 'category',
+        source: 'POST_DETAIL_INFORMATION',
+    },
+    {
+        title: '사용 언어',
+        type: 'tag',
+        value: 'techs',
+        source: 'POST_DETAIL_INFORMATION',
+    },
+    {
+        title: '협업 프로그램',
+        type: 'tag',
+        value: 'collaborationTool',
+        source: 'POST_DETAIL_INFORMATION',
+    },
+    {
+        title: '진행 방식',
+        type: 'tag',
+        value: 'place',
+        source: 'POST_DETAIL_INFORMATION',
+    },
+    {
+        title: '예상 기간',
+        type: 'tag',
+        value: 'duration',
+        source: 'POST_DETAIL_INFORMATION',
+    },
 ]
 
-export const POST_STATE: ConstantObj[] = [
-    { title: '모집중', value: 'ON' },
-    { title: '모집완료', value: 'OFF' },
+export const POST_STATE: ConstantObj<string>[] = [
+    { title: '모집중', value: 'ON', source: 'POST_STATE' },
+    { title: '모집완료', value: 'OFF', source: 'POST_STATE' },
 ]
 
-export const CATEGORY: ConstantObj[] = [
-    { title: '프로젝트', value: 'PROJECT' },
-    { title: '스터디', value: 'STUDY' },
+export const CATEGORY: ConstantObj<string>[] = [
+    { title: '프로젝트', value: 'PROJECT', source: 'CATEGORY' },
+    { title: '스터디', value: 'STUDY', source: 'CATEGORY' },
 ]
 
 export const PARSE_CONSTANT: ParseConstantObj = {
@@ -64,59 +90,79 @@ export const PARSE_CONSTANT: ParseConstantObj = {
     6: '6개월 이상',
 }
 
-export const PLACE: ConstantObj[] = [
-    { title: '온라인', value: 'ONLINE' },
-    { title: '오프라인', value: 'OFFLINE' },
+export const PLACE: ConstantObj<string>[] = [
+    { title: '온라인', value: 'ONLINE', source: 'PLACE' },
+    { title: '오프라인', value: 'OFFLINE', source: 'PLACE' },
 ]
 
-export const TECHLIST: ConstantObj[] = [
-    { title: 'JAVASCRIPT', value: 'JAVASCRIPT', type: 'FrontEnd' },
-    { title: 'TYPESCRIPT', value: 'TYPESCRIPT', type: 'FrontEnd' },
-    { title: 'REACT', value: 'REACT', type: 'FrontEnd' },
-    { title: 'VUE', value: 'VUE', type: 'FrontEnd' },
-    { title: 'SVELTE', value: 'SVELTE', type: 'FrontEnd' },
-    { title: 'NEXTJS', value: 'NEXTJS', type: 'FrontEnd' },
-    { title: 'NODEJS', value: 'NODEJS', type: 'BackEnd' },
-    { title: 'SPRING', value: 'SPRING', type: 'BackEnd' },
-    { title: 'JAVA', value: 'JAVA', type: 'BackEnd' },
-    { title: 'NESTJS', value: 'NESTJS', type: 'BackEnd' },
-    { title: 'EXPRESS', value: 'EXPRESS', type: 'BackEnd' },
-    { title: 'GO', value: 'GO', type: 'BackEnd' },
-    { title: 'PYTHON', value: 'PYTHON', type: 'BackEnd' },
-    { title: 'DJANGO', value: 'DJANGO', type: 'BackEnd' },
-    { title: 'MYSQL', value: 'MYSQL', type: 'BackEnd' },
-    { title: 'MONGODB', value: 'MONGODB', type: 'BackEnd' },
-    { title: 'PHP', value: 'PHP', type: 'BackEnd' },
-    { title: 'GRAPHQL', value: 'GRAPHQL', type: 'BackEnd' },
-    { title: 'FIREBASE', value: 'FIREBASE', type: 'BackEnd' },
-    { title: 'KOTLIN', value: 'KOTLIN', type: 'Mobile' },
-    { title: 'SWIFT', value: 'SWIFT', type: 'Mobile' },
-    { title: 'REACTNATIVE', value: 'REACTNATIVE', type: 'Mobile' },
-    { title: 'FLUTTER', value: 'FLUTTER', type: 'Mobile' },
-    { title: 'UNITY', value: 'UNITY', type: 'Mobile' },
+export const TECHLIST: ConstantObj<string>[] = [
+    {
+        title: 'JAVASCRIPT',
+        value: 'JAVASCRIPT',
+        type: 'FrontEnd',
+        source: 'TECHLIST',
+    },
+    {
+        title: 'TYPESCRIPT',
+        value: 'TYPESCRIPT',
+        type: 'FrontEnd',
+        source: 'TECHLIST',
+    },
+    { title: 'REACT', value: 'REACT', type: 'FrontEnd', source: 'TECHLIST' },
+    { title: 'VUE', value: 'VUE', type: 'FrontEnd', source: 'TECHLIST' },
+    { title: 'SVELTE', value: 'SVELTE', type: 'FrontEnd', source: 'TECHLIST' },
+    { title: 'NEXTJS', value: 'NEXTJS', type: 'FrontEnd', source: 'TECHLIST' },
+    { title: 'NODEJS', value: 'NODEJS', type: 'BackEnd', source: 'TECHLIST' },
+    { title: 'SPRING', value: 'SPRING', type: 'BackEnd', source: 'TECHLIST' },
+    { title: 'JAVA', value: 'JAVA', type: 'BackEnd', source: 'TECHLIST' },
+    { title: 'NESTJS', value: 'NESTJS', type: 'BackEnd', source: 'TECHLIST' },
+    { title: 'EXPRESS', value: 'EXPRESS', type: 'BackEnd', source: 'TECHLIST' },
+    { title: 'GO', value: 'GO', type: 'BackEnd', source: 'TECHLIST' },
+    { title: 'PYTHON', value: 'PYTHON', type: 'BackEnd', source: 'TECHLIST' },
+    { title: 'DJANGO', value: 'DJANGO', type: 'BackEnd', source: 'TECHLIST' },
+    { title: 'MYSQL', value: 'MYSQL', type: 'BackEnd', source: 'TECHLIST' },
+    { title: 'MONGODB', value: 'MONGODB', type: 'BackEnd', source: 'TECHLIST' },
+    { title: 'PHP', value: 'PHP', type: 'BackEnd', source: 'TECHLIST' },
+    { title: 'GRAPHQL', value: 'GRAPHQL', type: 'BackEnd', source: 'TECHLIST' },
+    {
+        title: 'FIREBASE',
+        value: 'FIREBASE',
+        type: 'BackEnd',
+        source: 'TECHLIST',
+    },
+    { title: 'KOTLIN', value: 'KOTLIN', type: 'Mobile', source: 'TECHLIST' },
+    { title: 'SWIFT', value: 'SWIFT', type: 'Mobile', source: 'TECHLIST' },
+    {
+        title: 'REACTNATIVE',
+        value: 'REACTNATIVE',
+        type: 'Mobile',
+        source: 'TECHLIST',
+    },
+    { title: 'FLUTTER', value: 'FLUTTER', type: 'Mobile', source: 'TECHLIST' },
+    { title: 'UNITY', value: 'UNITY', type: 'Mobile', source: 'TECHLIST' },
 ]
 
-export const DURATION: ConstantObj[] = [
-    { title: '기간 미정', value: 'UNDEFINED' },
-    { title: '1개월', value: 1 },
-    { title: '2개월', value: 2 },
-    { title: '3개월', value: 3 },
-    { title: '4개월', value: 4 },
-    { title: '5개월', value: 5 },
-    { title: '6개월 이상', value: 6 },
+export const DURATION: ConstantObj<number>[] = [
+    { title: '기간 미정', value: 0, source: 'DURATION' },
+    { title: '1개월', value: 1, source: 'DURATION' },
+    { title: '2개월', value: 2, source: 'DURATION' },
+    { title: '3개월', value: 3, source: 'DURATION' },
+    { title: '4개월', value: 4, source: 'DURATION' },
+    { title: '5개월', value: 5, source: 'DURATION' },
+    { title: '6개월 이상', value: 6, source: 'DURATION' },
 ]
 
-export const PEOPLENUM: ConstantObj[] = [
-    { title: '1명', value: 1 },
-    { title: '2명', value: 2 },
-    { title: '3명', value: 3 },
-    { title: '4명', value: 4 },
-    { title: '5명', value: 5 },
-    { title: '6명', value: 6 },
-    { title: '7명', value: 7 },
-    { title: '8명', value: 8 },
-    { title: '9명', value: 9 },
-    { title: '10명', value: 10 },
+export const PEOPLENUM: ConstantObj<Number>[] = [
+    { title: '1명', value: 1, source: 'PEOPLENUM' },
+    { title: '2명', value: 2, source: 'PEOPLENUM' },
+    { title: '3명', value: 3, source: 'PEOPLENUM' },
+    { title: '4명', value: 4, source: 'PEOPLENUM' },
+    { title: '5명', value: 5, source: 'PEOPLENUM' },
+    { title: '6명', value: 6, source: 'PEOPLENUM' },
+    { title: '7명', value: 7, source: 'PEOPLENUM' },
+    { title: '8명', value: 8, source: 'PEOPLENUM' },
+    { title: '9명', value: 9, source: 'PEOPLENUM' },
+    { title: '10명', value: 10, source: 'PEOPLENUM' },
 ]
 
 export const RESPONSE_TYPE = {
