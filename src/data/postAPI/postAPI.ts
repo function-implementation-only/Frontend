@@ -17,7 +17,9 @@ export interface PostAPIInterface {
     createPost: (
         payload: FormData
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
-    getPosts: () => Promise<AxiosResponse<APIResponse<PostResponse>>>
+    getPosts: (
+        pageNum: number
+    ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
     getPostById: (
         id: string
     ) => Promise<AxiosResponse<APIResponse<ContentResponse>>>
@@ -27,7 +29,8 @@ export interface PostAPIInterface {
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
     // FIXME : 수정 API 백엔드 쪽에서 확인되면 수정해야함.
     deletePost: (id?: string) => Promise<AxiosResponse<APIResponse<string>>>
-    getPostsByCategories: (
+    getFilteredPosts: (
+        pageNum: number,
         categories: Tag[]
     ) => Promise<AxiosResponse<APIResponse<PostResponse>>>
     checkIsFilterAll: (
@@ -68,8 +71,12 @@ export class PostAPI implements PostAPIInterface {
      * getPosts
      * 공고 가져오기
      */
-    getPosts(): Promise<AxiosResponse<APIResponse<PostResponse>>> {
-        return setInterceptors.get(`posts/v7/all?page=0&size=${this.postSize}`)
+    getPosts(
+        pageNum: number
+    ): Promise<AxiosResponse<APIResponse<PostResponse>>> {
+        return setInterceptors.get(
+            `posts/v7/all?page=${pageNum}&size=${this.postSize}`
+        )
     }
 
     /**
@@ -105,10 +112,11 @@ export class PostAPI implements PostAPIInterface {
     }
 
     /**
-     * getPostsByCategories
+     * getFilteredPosts
      * 카테고리별 공고 가져오기
      */
-    getPostsByCategories(
+    getFilteredPosts(
+        pageNum: number,
         tags: Tag[]
     ): Promise<AxiosResponse<APIResponse<PostResponse>>> {
         this.queryStringArray = []
@@ -137,9 +145,9 @@ export class PostAPI implements PostAPIInterface {
         this.makeQueryString(place, 'place', PLACE)
 
         return setInterceptors.get(
-            `posts/v7/all?size=${this.postSize}&${this.queryStringArray.join(
-                '&'
-            )}`
+            `posts/v7/all?page=${pageNum}&size=${
+                this.postSize
+            }&${this.queryStringArray.join('&')}`
         )
     }
 
