@@ -15,7 +15,6 @@ import { useState, useEffect } from 'react'
 import useServiceManager from 'hooks/useServiceManager'
 import useLogger from 'hooks/useLogger'
 import { useAppSelector } from 'src/store/hooks'
-import { Tag } from 'src/store/features/tag/tagSlice'
 
 const MainPageLayout = styled.div``
 
@@ -44,13 +43,24 @@ function MainPage() {
     const serviceManager = useServiceManager()
     const logger = useLogger('MainPage')
     const [posts, setPosts] = useState([])
+    const [pageNum, setPageNum] = useState(0)
     const tags = useAppSelector((state) => state.tagReducer.tags)
 
-    async function init() {
-        logger.log('init()')
+    function handleScroll() {
+        const entireHeight = document.documentElement.scrollHeight
+        const screenHeight = document.documentElement.clientHeight
+        const scrollTop = window.scrollY
+
+        if (screenHeight + scrollTop >= entireHeight) {
+            logger.log('floor detected')
+            setPageNum((prev) => prev + 1)
+        }
+    }
+
+    async function getPosts() {
+        logger.log('getPosts()')
         try {
-            const { data } =
-                await serviceManager.dataService.postAPI.getAllPost()
+            const { data } = await serviceManager.dataService.postAPI.getPosts()
             const dataParsed = serviceManager.dataService.parserAPI.parse(
                 RESPONSE_TYPE.POST.GET_ALL,
                 data.data.content
@@ -62,12 +72,18 @@ function MainPage() {
         }
     }
 
-    async function filterByCategories(categories: Tag[]) {
+    async function init() {
+        logger.log('init()')
+        window.addEventListener('scroll', handleScroll)
+        getPosts()
+    }
+
+    async function filterByCategories() {
         logger.log('filterByCategories()')
         try {
             const { data } =
                 await serviceManager.dataService.postAPI.getPostsByCategories(
-                    categories
+                    tags
                 )
             const dataParsed = serviceManager.dataService.parserAPI.parse(
                 RESPONSE_TYPE.POST.GET_ALL,
@@ -89,8 +105,12 @@ function MainPage() {
             init()
             return
         }
-        filterByCategories(tags)
+        filterByCategories()
     }, [tags])
+
+    useEffect(() => {
+        logger.log(pageNum)
+    }, [pageNum])
 
     return (
         <MainPageLayout>
