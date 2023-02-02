@@ -152,7 +152,7 @@ export const DURATION: ConstantObj<number>[] = [
     { title: '6개월 이상', value: 6, source: 'DURATION' },
 ]
 
-export const PEOPLENUM: ConstantObj<Number>[] = [
+export const PEOPLENUM: ConstantObj<number>[] = [
     { title: '1명', value: 1, source: 'PEOPLENUM' },
     { title: '2명', value: 2, source: 'PEOPLENUM' },
     { title: '3명', value: 3, source: 'PEOPLENUM' },
