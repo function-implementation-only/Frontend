@@ -13,6 +13,7 @@ function useEditAccountInfo() {
         {
             onSuccess: () => {
                 navigate('/')
+                window.location.reload()
             },
             onError: (err) => {
                 alert(err)

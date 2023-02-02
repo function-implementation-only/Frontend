@@ -18,8 +18,12 @@ function usePostLogIn() {
                     window.location.reload()
                 }
             },
-            onError: (err) => {
-                alert(err)
+            onError: (err: any) => {
+                if (err.response.data.status === 400) {
+                    alert(err.response.data.message)
+                } else if (err.response.data.status === 500) {
+                    alert('아이디 및 비밀번호가 일치하지 않습니다.')
+                }
             },
         }
     )
