@@ -22,13 +22,12 @@ function BannerComponent() {
             navigation
             pagination={{ clickable: true }}
             onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log('slide change')}
         >
             <SwiperSlide>
                 <BannerBox imgSrc="/assets/images/banner/banner_1.svg" />
             </SwiperSlide>
             <SwiperSlide>
-                <BannerBox>배너2</BannerBox>
+                <BannerBox imgSrc="/assets/images/banner/banner_2.svg" />
             </SwiperSlide>
         </Swiper>
     )
