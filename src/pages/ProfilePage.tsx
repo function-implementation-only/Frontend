@@ -112,6 +112,7 @@ const Button = styled.button`
     border: 1px solid #ff9c30;
     border-radius: 10px;
     color: #ff9c30;
+    cursor: pointer;
     &:disabled {
         color: #cbcbcb;
         background: #f8f9fa;
