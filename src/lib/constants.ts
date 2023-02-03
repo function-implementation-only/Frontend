@@ -9,6 +9,10 @@ type ParseConstantObj = {
     [key: string]: string
 }
 
+export const TEXT = {
+    PLACEHOLDER_CHOICE: '선택',
+}
+
 export const POST_TYPE = {
     FILTERED: 'filtered',
     NON_FILTERED: 'nonFiltered',
@@ -86,7 +90,7 @@ export const PARSE_CONSTANT: ParseConstantObj = {
     STUDY: '스터디',
     ONLINE: '온라인',
     OFFLINE: '오프라인',
-    UNDEFINED: '기간 미정',
+    0: '기간 미정',
     1: '1개월',
     2: '2개월',
     3: '3개월',

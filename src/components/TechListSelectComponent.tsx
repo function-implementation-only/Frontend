@@ -2,7 +2,7 @@ import { FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import useCheckIsLastIdx from 'hooks/state/post/techList/useCheckIsLastIdx'
 import useCheckIsMax from 'hooks/state/post/techList/useCheckIsMax'
 import useCheckPart from 'hooks/state/post/techList/useCheckPart'
-import { TECHLIST, TECH_PART } from 'lib/constants'
+import { TECHLIST, TECH_PART, TEXT } from 'lib/constants'
 import { useState } from 'react'
 import {
     pushTechObj,
@@ -11,12 +11,19 @@ import {
     spliceTechObj,
 } from 'src/store/features/post/postCreateSlice'
 import { useAppDispatch, useAppSelector } from 'src/store/hooks'
+import {
+    muiMenuItemStyleObj,
+    muiSelectMenuPropsObj,
+    muiSelectStyleObj,
+} from 'src/styles/mui/custom'
 import styled from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
+import PlaceHolderComponent from './common/PlaceHolderComponent'
 
 const TechListSelectComponentLayout = styled.div`
     display: flex;
     align-items: center;
+    padding-top: 16px;
 `
 
 const OperatorButton = styled.button`
@@ -24,6 +31,7 @@ const OperatorButton = styled.button`
     cursor: pointer;
     width: 20px;
     height: 20px;
+    margin-right: 10px;
 `
 const PlusButton = styled(OperatorButton)`
     background: center / cover no-repeat url('/assets/images/plus.svg');
@@ -79,23 +87,26 @@ function TechListSelectComponent({ id }: TechListSelectComponentProps) {
     return (
         <TechListSelectComponentLayout>
             <FormControl
-                sx={{ m: 0.5, minWidth: 120 }}
+                sx={{ m: 0, marginRight: '10px', minWidth: 100 }}
                 size="small"
                 id="techListRecruitPart-label"
             >
                 <Select
                     id="techListRecruitPartSelect"
+                    sx={muiSelectStyleObj}
+                    MenuProps={muiSelectMenuPropsObj}
                     displayEmpty
                     defaultValue=""
                     aria-labelledby="techListRecruitPart-label"
                     onChange={handleTechPartChange}
                 >
                     <MenuItem value="" disabled>
-                        선택해주세요.
+                        <PlaceHolderComponent text={TEXT.PLACEHOLDER_CHOICE} />
                     </MenuItem>
                     {TECH_PART.map((item) => {
                         return (
                             <MenuItem
+                                sx={muiMenuItemStyleObj}
                                 value={item.value}
                                 key={item.title}
                                 disabled={
@@ -113,30 +124,42 @@ function TechListSelectComponent({ id }: TechListSelectComponentProps) {
                 </Select>
             </FormControl>
             <FormControl
-                sx={{ m: 0.5, minWidth: 120, maxWidth: 300 }}
+                sx={{ m: 0, marginRight: '10px', minWidth: 150, maxWidth: 300 }}
                 size="small"
                 id="techList-label"
             >
                 <Select
                     id="techListSelect"
+                    sx={muiSelectStyleObj}
+                    MenuProps={muiSelectMenuPropsObj}
                     displayEmpty
                     aria-labelledby="techList-label"
                     multiple
                     defaultValue={[]}
                     renderValue={(selected: string[]) => {
                         if (selected.length === 0) {
-                            return <em>파트를 먼저 선택해주세요.</em>
+                            return (
+                                <PlaceHolderComponent
+                                    text={TEXT.PLACEHOLDER_CHOICE}
+                                />
+                            )
                         }
 
                         return selected.join(', ')
                     }}
                     onChange={handleTechListChange}
                 >
-                    <MenuItem disabled>파트를 먼저 선택해주세요.</MenuItem>
+                    <MenuItem disabled>
+                        <PlaceHolderComponent text={TEXT.PLACEHOLDER_CHOICE} />
+                    </MenuItem>
                     {TECHLIST.filter((item) => item.type === techPart).map(
                         (item) => {
                             return (
-                                <MenuItem value={item.value} key={item.title}>
+                                <MenuItem
+                                    sx={muiMenuItemStyleObj}
+                                    value={item.value}
+                                    key={item.title}
+                                >
                                     {item.title}
                                 </MenuItem>
                             )

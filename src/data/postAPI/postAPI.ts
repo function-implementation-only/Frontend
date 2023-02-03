@@ -100,7 +100,7 @@ export class PostAPI implements PostAPIInterface {
         setInterceptors.defaults.headers.post['Content-Type'] =
             'multipart/form-data'
 
-        return setInterceptors.patch(`/posts/${id}`, payload)
+        return setInterceptors.patch(`/posts/v2/${id}`, payload)
     }
 
     /**
