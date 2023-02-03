@@ -1,11 +1,21 @@
 import styled from 'styled-components'
-import useAllPost from 'src/hooks/useAllPost'
 import TagBarComponent from 'components/TagBarComponent'
 import { ContentResponse } from 'types/response'
 import PostCardComponent from 'components/PostCardComponent'
 import AccordianComponent from 'components/AccordianComponent'
-import { CATEGORY, TECHLIST } from 'lib/constants'
+import {
+    CATEGORY,
+    COLLABORATION_TOOL,
+    PLACE,
+    RESPONSE_TYPE,
+    TECHLIST,
+} from 'lib/constants'
 import BannerComponent from 'components/BannerComponent'
+import { useState, useEffect } from 'react'
+import useServiceManager from 'hooks/useServiceManager'
+import useLogger from 'hooks/useLogger'
+import { useAppSelector } from 'src/store/hooks'
+import { Tag } from 'src/store/features/tag/tagSlice'
 
 const MainPageLayout = styled.div``
 
@@ -31,7 +41,57 @@ const PostCardBox = styled.div`
 `
 
 function MainPage() {
-    const { status, error, data: apiResponse } = useAllPost()
+    const serviceManager = useServiceManager()
+    const logger = useLogger('MainPage')
+    const [posts, setPosts] = useState([])
+    const tags = useAppSelector((state) => state.tagReducer.tags)
+
+    async function init() {
+        logger.log('init()')
+        try {
+            const { data } =
+                await serviceManager.dataService.postAPI.getAllPost()
+            const dataParsed = serviceManager.dataService.parserAPI.parse(
+                RESPONSE_TYPE.POST.GET_ALL,
+                data.data.content
+            )
+            data.data.content = dataParsed
+            setPosts(dataParsed)
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    async function filterByCategories(categories: Tag[]) {
+        logger.log('filterByCategories()')
+        try {
+            const { data } =
+                await serviceManager.dataService.postAPI.getPostsByCategories(
+                    categories
+                )
+            const dataParsed = serviceManager.dataService.parserAPI.parse(
+                RESPONSE_TYPE.POST.GET_ALL,
+                data.data.content
+            )
+            data.data.content = dataParsed
+            setPosts(dataParsed)
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    useEffect(() => {
+        init()
+    }, [])
+
+    useEffect(() => {
+        if (tags.length === 0) {
+            init()
+            return
+        }
+        filterByCategories(tags)
+    }, [tags])
+
     return (
         <MainPageLayout>
             <MainPageRow>
@@ -45,27 +105,43 @@ function MainPage() {
                             constantsArray={CATEGORY}
                         />
                         <AccordianComponent
-                            title="사용 기술 / 툴"
-                            constantsArray={TECHLIST}
+                            title="진행 방식"
+                            constantsArray={PLACE}
+                        />
+                        <AccordianComponent
+                            title="협업 프로그램"
+                            constantsArray={COLLABORATION_TOOL}
+                        />
+                        <AccordianComponent
+                            title="프론트엔드"
+                            constantsArray={TECHLIST.filter((item) => {
+                                return item.type === 'FrontEnd'
+                            })}
+                        />
+                        <AccordianComponent
+                            title="백엔드"
+                            constantsArray={TECHLIST.filter((item) => {
+                                return item.type === 'BackEnd'
+                            })}
+                        />
+                        <AccordianComponent
+                            title="모바일"
+                            constantsArray={TECHLIST.filter((item) => {
+                                return item.type === 'Mobile'
+                            })}
                         />
                     </ContentsBoxLeftSection>
                     <ContentsBoxRightSection>
                         <TagBarComponent />
                         <PostCardBox>
-                            {status === 'loading'
-                                ? 'Loading...'
-                                : error instanceof Error
-                                ? error.message
-                                : apiResponse?.data.content.map(
-                                      (post: ContentResponse) => {
-                                          return (
-                                              <PostCardComponent
-                                                  key={post.postId}
-                                                  post={post}
-                                              />
-                                          )
-                                      }
-                                  )}
+                            {posts?.map((post: ContentResponse) => {
+                                return (
+                                    <PostCardComponent
+                                        key={post.postId}
+                                        post={post}
+                                    />
+                                )
+                            })}
                         </PostCardBox>
                     </ContentsBoxRightSection>
                 </ContentsBox>

@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type Tag = {
     title: string
+    source: string
+    value: string
     backgroundColor: string
 }
 
@@ -28,10 +30,15 @@ export const tagSlice = createSlice({
             )
             state.tags.splice(idx, 1)
         },
+        filterTagByCategory: (state, action: PayloadAction<string>) => {
+            state.tags = state.tags.filter(
+                (item) => item.source !== action.payload
+            )
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { pushTag, spliceTag } = tagSlice.actions
+export const { pushTag, spliceTag, filterTagByCategory } = tagSlice.actions
 
 export default tagSlice.reducer
