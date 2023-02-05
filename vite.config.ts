@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
                 hooks: path.resolve(__dirname, './src/hooks'),
                 utils: path.resolve(__dirname, './src/utils'),
                 types: path.resolve(__dirname, './src/types'),
+                img: path.resolve(__dirname, './src/assets/images'),
             },
         },
         plugins: [

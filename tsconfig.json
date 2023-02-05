@@ -1,32 +1,33 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "strictNullChecks": false,
-    "baseUrl": ".",
-    "paths": {
-      "data/*": ["src/data/*"],
-      "pages/*": ["src/pages/*"],
-      "components/*": ["src/components/*"],
-      "lib/*": ["src/lib/*"],
-      "hooks/*": ["src/hooks/*"],
-      "utils/*": ["src/utils/*"],
-      "types/*": ["src/types/*"]
-    }
-  },
-  "include": ["src", "./.eslintrc.cjs", "./vite.config.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+    "compilerOptions": {
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "allowJs": false,
+        "skipLibCheck": true,
+        "esModuleInterop": false,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "strictNullChecks": false,
+        "baseUrl": ".",
+        "paths": {
+            "data/*": ["src/data/*"],
+            "pages/*": ["src/pages/*"],
+            "components/*": ["src/components/*"],
+            "lib/*": ["src/lib/*"],
+            "hooks/*": ["src/hooks/*"],
+            "utils/*": ["src/utils/*"],
+            "types/*": ["src/types/*"],
+            "img/*": ["src/assets/images/*"]
+        }
+    },
+    "include": ["src", "./.eslintrc.cjs", "./vite.config.ts"],
+    "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import useStomp from 'hooks/useStomp'
 
 const ChatMessageBox = styled.div`
     .div {
@@ -45,41 +44,15 @@ const ChatMessageBox = styled.div`
 
 export default function ChatMessageView() {
     const token = window.localStorage.getItem('token') || ''
-    const config = {
-        brokerURL: 'ws://127.0.0.1:8080/api/ws',
-        connectHeaders: { Access_Token: token },
-    }
-    const { send } = useStomp(config)
-
-    const user = 'troublesome.dev@gmail.com'
     return (
         <ChatMessageBox>
-            {[].map((e) =>
-                e.email === user ? (
-                    <div className="you">
-                        <span className="class">Hello</span>
-                    </div>
-                ) : (
-                    <div className="me">
-                        <span className="class">너냐</span>
-                    </div>
-                )
-            )}
-            <button
-                type="button"
-                onClick={() =>
-                    send(
-                        '/sub/chat/message',
-                        {
-                            sender: '신규',
-                            message: '하이로',
-                        },
-                        config
-                    )
-                }
-            >
-                하이
-            </button>
+            <div className="you">
+                <span className="class">Hello</span>
+            </div>
+            <div className="me">
+                <span className="class">{token}</span>
+            </div>
+            <button type="button">하이</button>
         </ChatMessageBox>
     )
 }

@@ -1,8 +1,7 @@
 import styled, { css } from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 import { ChatRoomWithUser } from 'types/chat'
-import useChatRoomInfo from 'hooks/useChatInfo'
-import defaultUserAvatar from 'img/default-user-avatar.svg'
+import React from 'react'
 
 interface ChatItemWrapperProps {
     active?: boolean
@@ -78,23 +77,23 @@ export const SkeletonWrapper = styled.li`
 `
 
 export default function ChatItemComponent(props: ChatRoomWithUser) {
-    const { roomId, postUserImg } = props
+    const { id } = props
 
-    const { date, lastMessage, name } = useChatRoomInfo(props)
+    // const { date, lastMessage, name } = useChatRoomInfo(props)
     const location = useLocation()
     const params = new URLSearchParams(location.search)
     const queryRoomId = Number(params.get('roomId'))
 
     return (
-        <Link to={`/auth/messenger?roomId=${roomId}`}>
-            <ChatItemWrapper active={roomId === queryRoomId}>
-                <BorderAvatar src={postUserImg ?? defaultUserAvatar} />
+        <Link to={`/auth/messenger?roomId=${id}`}>
+            <ChatItemWrapper active={id === queryRoomId}>
+                {/* <BorderAvatar src={postUserImg ?? defaultUserAvatar} />
                 <MessageInfo>
                     <Name>{name}</Name>
                     {date && <Time>{date}</Time>}
                     <br />
                     {lastMessage ?? '채팅 내역이 존재하지 않습니다.'}
-                </MessageInfo>
+                </MessageInfo> */}
             </ChatItemWrapper>
         </Link>
     )

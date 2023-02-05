@@ -24,7 +24,6 @@ export default function ChatMessageBar() {
     return (
         <ChatMessageBer>
             <div className="broadcaster">
-                {/* TODO: 작성 엑션 */}
                 <form>
                     <input type="text" />
                     <button type="submit">하이</button>

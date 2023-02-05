@@ -1,19 +1,15 @@
+import axios from 'axios'
 import { useQuery } from 'react-query'
-import { ChatRoomsRespone } from 'types/response'
-import useServiceManager from './useServiceManager'
 
 const useChatRooms = () => {
-    const serviceManager = useServiceManager()
-
+    const result = axios.get('http://localhost:7777/api/rooms', {
+        headers: {
+            Access_Token: window.localStorage.getItem('token') || '',
+        },
+    })
     return useQuery(['chat/roomList'], async () => {
-        const { data } =
-            (await serviceManager.dataService.chatAPI.getChatRooms()) as unknown as {
-                data: {
-                    data: ChatRoomsRespone[]
-                }
-            }
-
-        return data?.data || []
+        const data = await result
+        return data.data.data || []
     })
 }
 

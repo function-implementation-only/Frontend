@@ -30,15 +30,6 @@ const CoffeeChatTab = styled.div`
 
 export default function ChatCommonRoomsSection() {
     const [choiceTab, setChoiceTab] = useState(0)
-    // const [chatList, setChatList] = useState([])
-
-    // choiceTab !== 1 초기화
-    // if (choiceTab === 1) {
-    //     const chatSorting = chatList.filter(
-    //         (chat: any) => chat.unreadCount === 0
-    //     )
-    //     setChatList(chatSorting)
-    // }
 
     return (
         <ChatCommonRoomsSectionWrapper>

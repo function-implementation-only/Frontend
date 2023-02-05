@@ -23,6 +23,6 @@ export class DataService implements DataServiceInterface {
         this.postAPI = new PostAPI()
         this.accountAPI = new AccountAPI()
         this.parserAPI = new ParserAPI()
-        this.chatAPI = new ChatAPI(axiosInstance)
+        this.chatAPI = new ChatAPI()
     }
 }

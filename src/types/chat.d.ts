@@ -1,14 +1,10 @@
 export type ChatRoom = {
-    chatList: ChatList
-    joinUserId: number
-    joinUserImg: string | null
-    joinUserNickname: string
-    postId: number
-    postUserId: number
-    postUserImg: string | null
-    postUserNickname: string
-    roomId: number
+    created_at: string
+    from_user_id: number
+    id: number
     title: string
+    to_user_id: number
+    updated_at: string
 }
 
 export type ChatList = {
@@ -38,6 +34,6 @@ export type Chat = {
 
 // TODO: 수정해야함
 export interface ChatRoomWithUser extends ChatRoom {
-    users: User[]
-    chats: Chat[]
+    // users: User[]
+    // chats: Chat[]
 }

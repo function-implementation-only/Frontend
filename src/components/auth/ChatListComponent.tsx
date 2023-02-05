@@ -28,9 +28,8 @@ export default function ChatListComponent() {
                 ? Array.from({ length: 3 }).map((_, i) => (
                       <ChatItemSkeleton key={(i + 1).toString()} />
                   ))
-                : data?.map((item) => {
-                      const aaa = item as unknown as ChatRoomWithUser
-                      return <ChatItemComponent key={item.roomId} {...aaa} />
+                : data?.map((item: ChatRoomWithUser) => {
+                      return <ChatItemComponent key={item.id} {...item} />
                   })}
         </ChatListWrapper>
     )

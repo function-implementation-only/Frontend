@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import { ChatRoomsRespone } from 'types/response'
 import setInterceptors from '../interceptor'
 
@@ -9,12 +9,6 @@ export interface ChatAPIInterface {
 }
 
 export default class ChatAPI implements ChatAPIInterface {
-    axiosInstance: AxiosInstance
-
-    constructor(axiosInstance: AxiosInstance) {
-        this.axiosInstance = axiosInstance
-    }
-
     getChatRooms(): GatChatRoomsType {
         return setInterceptors.get('/chat/roomList')
     }
