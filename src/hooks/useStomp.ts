@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable @typescript-eslint/no-shadow */
 import { Client, StompConfig, StompSubscription } from '@stomp/stompjs'
 import { useCallback, useEffect } from 'react'
 
@@ -11,7 +9,7 @@ let stompClient: Client
 let isConnected = false
 const subscriptions: { [key: string]: StompSubscription } = {}
 
-export default function useStomp(config: StompConfig, callback?: () => void) {
+export default function useStomp(config: StompConfig) {
     const connect = useCallback(() => {
         if (!stompClient) {
             stompClient = new Client(config)
@@ -20,7 +18,6 @@ export default function useStomp(config: StompConfig, callback?: () => void) {
 
         stompClient.onConnect = () => {
             isConnected = true
-            callback && callback()
         }
     }, [])
 

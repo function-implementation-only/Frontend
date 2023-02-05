@@ -1,12 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
 import styled from 'styled-components'
-import { IFrame } from '@stomp/stompjs'
-// import useChatById from 'hooks/useChatById'
-import { useCallback, useState } from 'react'
 import useStomp from 'hooks/useStomp'
-
-// import { Client } from '@stomp/stompjs'
 
 const ChatMessageBox = styled.div`
     .div {
@@ -51,29 +44,12 @@ const ChatMessageBox = styled.div`
 `
 
 export default function ChatMessageView() {
+    const token = window.localStorage.getItem('token') || ''
     const config = {
-        brokerURL: '/api/ws',
-        connectHeaders: {
-            Access_Token: window.localStorage.getItem('token'),
-        },
+        brokerURL: 'ws://127.0.0.1:8080/api/ws',
+        connectHeaders: { Access_Token: token },
     }
-    const {
-        disconnect,
-        subscribe,
-        unsubscribe,
-        subscriptions,
-        send,
-        isConnected,
-    } = useStomp(config)
-
-    subscribe('/pub/chat/message', (body) => {
-        console.log(body, 'body')
-
-        // Body is Object Changed to JSON
-    })
-
-    console.log('isConnected', isConnected)
-    console.log('subscriptions', subscriptions)
+    const { send } = useStomp(config)
 
     const user = 'troublesome.dev@gmail.com'
     return (
@@ -93,7 +69,7 @@ export default function ChatMessageView() {
                 type="button"
                 onClick={() =>
                     send(
-                        '/sub/1',
+                        '/sub/chat/message',
                         {
                             sender: '신규',
                             message: '하이로',

@@ -38,15 +38,13 @@ const ChatNotFoundSection = styled.div`
 `
 
 function Messenger() {
-    const { data } = useChatRooms()
+    const { data, isLoading } = useChatRooms()
     // TODO: 메세지를 선택하면 Props 로 전달
 
     return (
         <ChatViewLayout>
             <ChatCommonRoomsSection />
-            {data?.data?.length > 0 ? (
-                <ChatFoundSection />
-            ) : (
+            {isLoading ? (
                 <ChatNotFoundSection>
                     <img src={CoffeeChatSvg} alt="" />
                     <p className="coffee-top">메세지 선택하기</p>
@@ -54,6 +52,17 @@ function Messenger() {
                         기존 대화에서 선택하거나 새로운 대화를 시작해보세요
                     </p>
                 </ChatNotFoundSection>
+            ) : data.length > 0 ? (
+                <ChatFoundSection />
+            ) : (
+                <ChatFoundSection />
+                // <ChatNotFoundSection>
+                //     <img src={CoffeeChatSvg} alt="" />
+                //     <p className="coffee-top">메세지 선택하기</p>
+                //     <p className="coffee-bottom">
+                //         기존 대화에서 선택하거나 새로운 대화를 시작해보세요
+                //     </p>
+                // </ChatNotFoundSection>
             )}
         </ChatViewLayout>
     )
