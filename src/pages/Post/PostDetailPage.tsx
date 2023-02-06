@@ -8,6 +8,7 @@ import InformationComponent from 'components/InformationComponent'
 import DefaultButton from 'components/common/DefaultButton'
 import { Viewer } from '@toast-ui/react-editor'
 import TableComponent from 'components/TableComponent'
+import useServiceManager from 'hooks/useServiceManager'
 
 const PostDetailLayout = styled.div`
     width: 1440px;
@@ -127,6 +128,8 @@ function PostDetailPage() {
     const navigate = useNavigate()
     const deletePost = useDeletePost()
 
+    const serviceManager = useServiceManager()
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [isAuthor, setIsAuthor] = useState(true)
 
@@ -146,6 +149,20 @@ function PostDetailPage() {
 
     function handleChat() {
         console.log('Start chatting')
+    }
+
+    async function handleBookMark() {
+        try {
+            const { data } =
+                await serviceManager.dataService.likesAPI.postLikes(paramId)
+            if (data.data) {
+                alert('해당 공고가 북마크되었습니다.')
+            } else {
+                alert('북마크를 취소했습니다.')
+            }
+        } catch (e) {
+            alert(e)
+        }
     }
 
     if (isLoading) return <PostDetailLayout>loading</PostDetailLayout>
@@ -223,7 +240,14 @@ function PostDetailPage() {
                             <Divider />
                             <DateBox>{apiResponse.data.startDate}</DateBox>
                         </InfoBox>
-                        {isAuthor ? <BookMarkButton isAuthor={isAuthor} /> : ''}
+                        {isAuthor ? (
+                            <BookMarkButton
+                                isAuthor={isAuthor}
+                                onClick={handleBookMark}
+                            />
+                        ) : (
+                            ''
+                        )}
                     </HeaderDetailBox>
                     <DividerRow marginTopBottom="30px" />
                     <HeaderDetailBox>
