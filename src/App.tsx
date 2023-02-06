@@ -9,6 +9,7 @@ import HeaderComponent from 'components/HeaderComponent'
 import MyPage from 'pages/MyPage'
 import ProfilePage from 'pages/ProfilePage'
 import ChatPage from 'pages/ChatPage'
+import ChatDetailPage from 'pages/ChatDetailPage'
 import Kakao from './components/account/Kakao'
 import Google from './components/account/Google'
 import SignUpPage from './pages/SignUpPage'
@@ -42,6 +43,10 @@ function App() {
                             element={<AuthMessengerPage />}
                         />
                         <Route path="/chat" element={<ChatPage />} />
+                        <Route
+                            path="/chat/room/enter/:id"
+                            element={<ChatDetailPage />}
+                        />
                     </Routes>
                 </BrowserRouter>
                 <ReactQueryDevtools
