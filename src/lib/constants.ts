@@ -9,6 +9,11 @@ type ParseConstantObj = {
     [key: string]: string
 }
 
+export const POST_TYPE = {
+    FILTERED: 'filtered',
+    NON_FILTERED: 'nonFiltered',
+}
+
 export const COLLABORATION_TOOL: ConstantObj<string>[] = [
     { title: 'FIGMA', value: 'FIGMA', source: 'COLLABORATION_TOOL' },
     { title: 'SLACK', value: 'SLACK', source: 'COLLABORATION_TOOL' },

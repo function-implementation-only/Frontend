@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import styled from 'styled-components'
 import TagBarComponent from 'components/TagBarComponent'
 import { ContentResponse } from 'types/response'
@@ -7,15 +8,15 @@ import {
     CATEGORY,
     COLLABORATION_TOOL,
     PLACE,
-    RESPONSE_TYPE,
+    POST_TYPE,
     TECHLIST,
 } from 'lib/constants'
 import BannerComponent from 'components/BannerComponent'
-import { useState, useEffect } from 'react'
-import useServiceManager from 'hooks/useServiceManager'
+import { useState, useEffect, useCallback } from 'react'
 import useLogger from 'hooks/useLogger'
 import { useAppSelector } from 'src/store/hooks'
-import { Tag } from 'src/store/features/tag/tagSlice'
+import useGetPosts from 'hooks/useGetPosts'
+import useGetFilteredPosts from 'hooks/useGetFilteredPosts'
 
 const MainPageLayout = styled.div``
 
@@ -41,56 +42,100 @@ const PostCardBox = styled.div`
 `
 
 function MainPage() {
-    const serviceManager = useServiceManager()
     const logger = useLogger('MainPage')
+
     const [posts, setPosts] = useState([])
+    const [pageNum, setPageNum] = useState(0)
+    const [isEnd, setIsEnd] = useState(false)
+
     const tags = useAppSelector((state) => state.tagReducer.tags)
 
-    async function init() {
-        logger.log('init()')
-        try {
-            const { data } =
-                await serviceManager.dataService.postAPI.getAllPost()
-            const dataParsed = serviceManager.dataService.parserAPI.parse(
-                RESPONSE_TYPE.POST.GET_ALL,
-                data.data.content
-            )
-            data.data.content = dataParsed
-            setPosts(dataParsed)
-        } catch (error) {
-            alert(error)
+    const onScroll = useCallback(() => {
+        const entireHeight = document.documentElement.scrollHeight
+        const screenHeight = document.documentElement.clientHeight
+        const scrollTop = window.scrollY
+
+        if (screenHeight + scrollTop >= entireHeight) {
+            logger.log('floor detected')
+            setPageNum((prev) => prev + 1)
         }
+    }, [])
+
+    async function setPostsState(type: string): Promise<void> {
+        logger.log('setPostsState()')
+
+        let result
+
+        if (type === POST_TYPE.NON_FILTERED) {
+            result = await useGetPosts(pageNum)
+        } else if (type === POST_TYPE.FILTERED) {
+            result = await useGetFilteredPosts(pageNum, tags)
+        }
+
+        setPosts(result)
     }
 
-    async function filterByCategories(categories: Tag[]) {
-        logger.log('filterByCategories()')
-        try {
-            const { data } =
-                await serviceManager.dataService.postAPI.getPostsByCategories(
-                    categories
-                )
-            const dataParsed = serviceManager.dataService.parserAPI.parse(
-                RESPONSE_TYPE.POST.GET_ALL,
-                data.data.content
-            )
-            data.data.content = dataParsed
-            setPosts(dataParsed)
-        } catch (error) {
-            alert(error)
+    async function addPostsState(type: string): Promise<void> {
+        logger.log('addPostsState()')
+
+        let result
+
+        if (type === POST_TYPE.NON_FILTERED) {
+            const nonFilteredPosts = await useGetPosts(pageNum)
+            if (nonFilteredPosts.length === 0) setIsEnd(true)
+            result = posts.concat(nonFilteredPosts)
+        } else if (type === POST_TYPE.FILTERED) {
+            const filteredPosts = await useGetFilteredPosts(pageNum, tags)
+            if (filteredPosts.length === 0) setIsEnd(true)
+            result = posts.concat(filteredPosts)
         }
+
+        setPosts(result)
+    }
+
+    function reset() {
+        logger.log('reset()')
+        setPosts([])
+        setPageNum(0)
+        setIsEnd(false)
     }
 
     useEffect(() => {
-        init()
+        setPostsState(POST_TYPE.NON_FILTERED)
+        // 최초 마운트시 공고 가져오기
     }, [])
 
     useEffect(() => {
+        logger.log(`tags changed : ${JSON.stringify(tags)}`)
+        reset()
         if (tags.length === 0) {
-            init()
+            setPostsState(POST_TYPE.NON_FILTERED)
             return
         }
-        filterByCategories(tags)
+        setPostsState(POST_TYPE.FILTERED)
     }, [tags])
+
+    useEffect(() => {
+        logger.log(`pageNum changed : ${pageNum}`)
+        if (tags.length === 0) {
+            addPostsState(POST_TYPE.NON_FILTERED)
+            return
+        }
+        addPostsState(POST_TYPE.FILTERED)
+    }, [pageNum])
+
+    useEffect(() => {
+        logger.log(`isEnd changed : ${isEnd}`)
+        if (isEnd) {
+            window.removeEventListener('scroll', onScroll)
+        } else {
+            window.addEventListener('scroll', onScroll)
+        }
+        return () => {
+            window.removeEventListener('scroll', onScroll)
+            // 언마운트시 이벤트 제거
+        }
+    }, [isEnd])
 
     return (
         <MainPageLayout>
