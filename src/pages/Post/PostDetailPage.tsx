@@ -162,6 +162,11 @@ function PostDetailPage() {
                         marginBottom="38px"
                     >
                         <TitleBox fontSize="32px">
+                            {`[${
+                                apiResponse.data.postState === 'ON'
+                                    ? '모집중'
+                                    : '모집완료'
+                            }]`}
                             {apiResponse.data.title}
                         </TitleBox>
                         <ButtonBox>
