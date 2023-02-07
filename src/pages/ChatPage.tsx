@@ -8,7 +8,7 @@ const ChatPage = () => {
     const navigate = useNavigate()
 
     const findAllRoom = async () => {
-        const result = await axios.get('http://127.0.0.1:8081/api/chat/rooms')
+        const result = await axios.get('http://127.0.0.1:8081/chat/rooms')
         setChatRooms(result.data)
     }
 
@@ -20,7 +20,7 @@ const ChatPage = () => {
             params.append('name', roomName)
             try {
                 const result = await axios.post(
-                    'http://127.0.0.1:8081/api/chat/room',
+                    'http://127.0.0.1:8081/chat/room',
                     params
                 )
                 console.log(result.data.roomName)

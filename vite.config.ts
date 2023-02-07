@@ -39,10 +39,10 @@ export default defineConfig(({ mode }) => {
         server: {
             proxy: {
                 // Proxying websockets or socket.io
-                // '/api/ws': {
-                //     target: 'ws://127.0.0.1:8080',
-                //     ws: true,
-                // },
+                '/ws/chat': {
+                    target: 'ws://127.0.0.1:8081',
+                    ws: true,
+                },
                 // with options
                 '/api': {
                     target: 'https://joinus.p-e.kr',
