@@ -21,6 +21,11 @@ const Box = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    @media (max-width: 720px) {
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+    }
 `
 
 const Dim = styled.div`
@@ -42,6 +47,10 @@ const Container = styled.div`
     border-radius: 20px;
     display: flex;
     align-items: center;
+    @media (max-width: 720px) {
+        max-width: 100%;
+        max-height: 100%;
+    }
 `
 
 const Modal: React.FC<ModalProps> = ({

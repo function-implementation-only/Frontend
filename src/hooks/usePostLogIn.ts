@@ -12,9 +12,11 @@ function usePostLogIn() {
             serviceManager.dataService.accountAPI.postLogIn(data),
         {
             onSuccess: (res: AxiosResponse) => {
-                const token = res?.headers?.access_token
-                if (token) {
+                const token = res?.data.data.accessToken
+                const accountId = res?.data.data.accountId
+                if (token && accountId) {
                     localStorage.setItem('token', token)
+                    localStorage.setItem('accountId', accountId)
                     window.location.reload()
                 }
             },
