@@ -22,8 +22,6 @@ const Box = styled.div`
     align-items: center;
     justify-content: center;
     @media (max-width: 720px) {
-        width: 100%;
-        height: 100%;
         background-color: #fff;
     }
 `
@@ -36,6 +34,9 @@ const Dim = styled.div`
     left: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 99;
+    @media (max-width: 720px) {
+        height: 100%;
+    }
 `
 const Container = styled.div`
     max-width: 476px;
@@ -48,8 +49,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     @media (max-width: 720px) {
-        max-width: 100%;
-        max-height: 100%;
+        width: 90%;
     }
 `
 

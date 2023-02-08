@@ -25,6 +25,13 @@ const SignUpPageLayout = styled.div`
     form {
         width: 638px;
     }
+    @media (max-width: 720px) {
+        form {
+            width: 100vw;
+            margin-bottom: 40px;
+            margin-left: 18px;
+        }
+    }
 `
 
 const ThemeItem = styled.span`
@@ -36,6 +43,11 @@ const ThemeItem = styled.span`
     font-size: 24px;
     color: #3e4145;
     margin: 100px 0 60px;
+    @media (max-width: 720px) {
+        font-size: 18px;
+        margin: 36px 0;
+        justify-content: start;
+    }
 `
 
 const ItemBox = styled.div``
@@ -47,6 +59,18 @@ const InputItem = styled.div`
     margin-bottom: 32px;
     #emailAuth {
         margin-left: 142px;
+    }
+    @media (max-width: 720px) {
+        #email,
+        #emailAuth {
+            margin: 0 6px 0 0;
+            width: calc((480 / 720) * 100vw);
+        }
+        #email {
+            margin-top: 8px;
+        }
+        flex-direction: column;
+        align-items: start;
     }
 `
 
@@ -77,12 +101,21 @@ const Input = styled.input`
         background: #f8f9fa;
         color: #838485;
     }
+    @media (max-width: 720px) {
+        width: calc((680 / 720) * 100vw);
+        height: 46px;
+        margin-top: 8px;
+        padding: 14px;
+    }
 `
 
 const ErrorItem = styled.div``
 
 const ButtonBox = styled.div`
     margin-left: 142px;
+    @media (max-width: 720px) {
+        margin-left: 0px;
+    }
 `
 
 const Button = styled.button`
@@ -100,6 +133,10 @@ const Button = styled.button`
         color: #cbcbcb;
         background: #f8f9fa;
         border: 1px solid #cbcbcb;
+    }
+    @media (max-width: 720px) {
+        width: 100px;
+        font-size: 14px;
     }
 `
 
@@ -184,34 +221,36 @@ function SignUpPage() {
                         <Label htmlFor="email">
                             이메일 <span>*</span>
                         </Label>
-                        <Input
-                            id="email"
-                            type="text"
-                            disabled={!!auth}
-                            placeholder="이메일을 입력해 주세요."
-                            {...register('email', {
-                                required: true,
-                                pattern: /\S+@\S+\.\S+/,
-                                onBlur: () => onSubmitEmailCheck(),
-                            })}
-                        />
-                        {!sendingMail ? (
-                            <Button
-                                type="button"
-                                onClick={onSubmitEmailAuth}
-                                disabled={!emailCheck}
-                            >
-                                인증번호 받기
-                            </Button>
-                        ) : (
-                            <Button
-                                type="button"
-                                onClick={onResubmitEmailAuth}
+                        <div>
+                            <Input
+                                id="email"
+                                type="text"
                                 disabled={!!auth}
-                            >
-                                재전송
-                            </Button>
-                        )}
+                                placeholder="이메일을 입력해 주세요."
+                                {...register('email', {
+                                    required: true,
+                                    pattern: /\S+@\S+\.\S+/,
+                                    onBlur: () => onSubmitEmailCheck(),
+                                })}
+                            />
+                            {!sendingMail ? (
+                                <Button
+                                    type="button"
+                                    onClick={onSubmitEmailAuth}
+                                    disabled={!emailCheck}
+                                >
+                                    인증번호 받기
+                                </Button>
+                            ) : (
+                                <Button
+                                    type="button"
+                                    onClick={onResubmitEmailAuth}
+                                    disabled={!!auth}
+                                >
+                                    재전송
+                                </Button>
+                            )}
+                        </div>
                     </InputItem>
                     <ErrorItem>
                         <ErrorEmail
@@ -226,40 +265,42 @@ function SignUpPage() {
                     {sendingMail && (
                         <>
                             <InputItem>
-                                <Input
-                                    id="emailAuth"
-                                    type="text"
-                                    placeholder="인증번호를 입력해 주세요."
-                                    disabled={
-                                        auth &&
-                                        errors.emailAuth?.type === undefined
-                                    }
-                                    {...register('emailAuth', {
-                                        required: true,
-                                        validate: (value) =>
-                                            value === emailAuth,
-                                        onChange: () => handleAuthCheck(),
-                                    })}
-                                />
-                                {auth &&
-                                errors.emailAuth?.type === undefined ? (
-                                    <Button type="button" disabled>
-                                        인증완료
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        type="button"
-                                        onClick={() => {
-                                            onSubmitEmailAuthCheck()
-                                        }}
+                                <div>
+                                    <Input
+                                        id="emailAuth"
+                                        type="text"
+                                        placeholder="인증번호를 입력해 주세요."
                                         disabled={
-                                            errors.emailAuth?.type !==
-                                                undefined || !authCheck
+                                            auth &&
+                                            errors.emailAuth?.type === undefined
                                         }
-                                    >
-                                        인증하기
-                                    </Button>
-                                )}
+                                        {...register('emailAuth', {
+                                            required: true,
+                                            validate: (value) =>
+                                                value === emailAuth,
+                                            onChange: () => handleAuthCheck(),
+                                        })}
+                                    />
+                                    {auth &&
+                                    errors.emailAuth?.type === undefined ? (
+                                        <Button type="button" disabled>
+                                            인증완료
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            type="button"
+                                            onClick={() => {
+                                                onSubmitEmailAuthCheck()
+                                            }}
+                                            disabled={
+                                                errors.emailAuth?.type !==
+                                                    undefined || !authCheck
+                                            }
+                                        >
+                                            인증하기
+                                        </Button>
+                                    )}
+                                </div>
                             </InputItem>
                             <ErrorItem>
                                 <ErrorEmailAuth
@@ -287,6 +328,7 @@ function SignUpPage() {
                         <ShowPWButton
                             showingPW={showingPW}
                             setShowingPW={setShowingPW}
+                            mobileTop="50%"
                         />
                     </InputItem>
                     <ErrorItem>
@@ -311,6 +353,7 @@ function SignUpPage() {
                         <ShowPWButton
                             showingPW={showingPWcheck}
                             setShowingPW={setShowingPWcheck}
+                            mobileTop="50%"
                         />
                     </InputItem>
                     <ErrorItem>
@@ -348,6 +391,7 @@ function SignUpPage() {
                         type="submit"
                         disabled={isSubmitting}
                         fontWeight={700}
+                        mobileWidth={680}
                     >
                         가입하기
                     </AccountButtonItem>

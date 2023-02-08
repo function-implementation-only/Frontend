@@ -7,6 +7,7 @@ const ButtonLayout = styled.button<{
     color?: string
     fontWeight: number
     marginBottom?: number
+    mobileWidth?: number
 }>`
     width: 368px;
     height: 48px;
@@ -28,6 +29,14 @@ const ButtonLayout = styled.button<{
     :hover {
         cursor: pointer;
     }
+    @media (max-width: 720px) {
+        width: ${(props) =>
+            `calc((${props.mobileWidth || 600} / 720) * 100vw)`};
+        height: 51px;
+        a {
+            width: 250px;
+        }
+    }
 `
 
 interface Props {
@@ -40,6 +49,7 @@ interface Props {
     img?: string
     url?: string
     children: React.ReactNode
+    mobileWidth?: number
 }
 
 function AccountButton({
@@ -52,6 +62,7 @@ function AccountButton({
     img,
     url,
     children,
+    mobileWidth,
 }: Props) {
     return (
         <ButtonLayout
@@ -61,6 +72,7 @@ function AccountButton({
             color={color}
             fontWeight={fontWeight}
             marginBottom={marginBottom}
+            mobileWidth={mobileWidth}
         >
             <img src={img} alt={img} />
             <a href={url}>{children}</a>
