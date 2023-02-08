@@ -15,8 +15,6 @@ const ThemeBox = styled.div`
     width: 1440px;
     margin: 0 auto;
     padding: 36px 24px 24px;
-    // display: flex;
-    // align-items: center;
 `
 
 const ThemeItem = styled.span`

@@ -97,6 +97,8 @@ export const PARSE_CONSTANT: ParseConstantObj = {
     4: '4개월',
     5: '5개월',
     6: '6개월 이상',
+    ON: '모집중',
+    OFF: '모집완료',
 }
 
 export const PLACE: ConstantObj<string>[] = [

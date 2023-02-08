@@ -2,7 +2,7 @@
 import styled from 'styled-components'
 import TagBarComponent from 'components/TagBarComponent'
 import { ContentResponse } from 'types/response'
-import PostCardComponent from 'components/PostCardComponent'
+import PostCardComponent from 'components/postcard/PostCardComponent'
 import AccordianComponent from 'components/AccordianComponent'
 import {
     CATEGORY,

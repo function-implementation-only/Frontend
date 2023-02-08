@@ -2,13 +2,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import useDeletePost from 'src/hooks/useDeletePost'
 import usePostById from 'src/hooks/usePostById'
 import styled from 'styled-components'
-import { useState } from 'react'
 import { POST_DETAIL_INFORMATION } from 'lib/constants'
 import InformationComponent from 'components/InformationComponent'
 import DefaultButton from 'components/common/DefaultButton'
 import { Viewer } from '@toast-ui/react-editor'
 import TableComponent from 'components/TableComponent'
-import useServiceManager from 'hooks/useServiceManager'
+import { Avatar } from '@mui/material'
+import useBookmark from 'hooks/useBookmark'
 
 const PostDetailLayout = styled.div`
     width: 1440px;
@@ -106,13 +106,20 @@ const ChatButton = styled.button`
 
 const BookMarkButton = styled.button<{
     isAuthor: boolean
+    isBookmarked: boolean
+    isLogin: boolean
 }>`
-    background: center / cover no-repeat url('/assets/images/bookmark.svg');
+    background: center / cover no-repeat
+        ${(props) =>
+            props.isBookmarked
+                ? `url('/assets/images/bookmark_on.svg')`
+                : `url('/assets/images/bookmark.svg')`};
     width: ${(props) => (props.isAuthor ? '42px' : '32px')};
     height: ${(props) => (props.isAuthor ? '40px' : '30px')};
     border: none;
     cursor: pointer;
     margin-left: auto;
+    opacity: ${(props) => (props.isLogin ? 1 : 0.5)};
 `
 
 const ContentsBox = styled.div``
@@ -128,10 +135,8 @@ function PostDetailPage() {
     const navigate = useNavigate()
     const deletePost = useDeletePost()
 
-    const serviceManager = useServiceManager()
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [isAuthor, setIsAuthor] = useState(true)
+    const accountId = JSON.parse(localStorage.getItem('accountId')) || null
+    const isLogin = !!localStorage.getItem('token')
 
     const { isLoading, error, data: apiResponse } = usePostById(paramId)
 
@@ -152,16 +157,10 @@ function PostDetailPage() {
     }
 
     async function handleBookMark() {
-        try {
-            const { data } =
-                await serviceManager.dataService.likesAPI.postLikes(paramId)
-            if (data.data) {
-                alert('해당 공고가 북마크되었습니다.')
-            } else {
-                alert('북마크를 취소했습니다.')
-            }
-        } catch (e) {
-            alert(e)
+        if (isLogin) {
+            await useBookmark(paramId)
+        } else {
+            alert('로그인이 필요합니다.')
         }
     }
 
@@ -183,11 +182,11 @@ function PostDetailPage() {
                                 apiResponse.data.postState === 'ON'
                                     ? '모집중'
                                     : '모집완료'
-                            }]`}
+                            }] `}
                             {apiResponse.data.title}
                         </TitleBox>
                         <ButtonBox>
-                            {isAuthor ? (
+                            {accountId === apiResponse.data.accountId ? (
                                 <>
                                     <ErrorButton
                                         type="button"
@@ -210,7 +209,17 @@ function PostDetailPage() {
                                     >
                                         지원하기
                                     </DefaultButton>
-                                    <BookMarkButton isAuthor={isAuthor} />
+                                    <BookMarkButton
+                                        isAuthor={
+                                            accountId ===
+                                            apiResponse.data.accountId
+                                        }
+                                        isLogin={isLogin}
+                                        isBookmarked={
+                                            apiResponse.data.likeCheck
+                                        }
+                                        onClick={handleBookMark}
+                                    />
                                 </>
                             )}
                         </ButtonBox>
@@ -219,16 +228,25 @@ function PostDetailPage() {
                         <InfoBox>
                             <ProfileBox>
                                 <ProfileImageBox>
-                                    <img
-                                        src="https://source.unsplash.com/random/32×32"
-                                        // FIXME : 나중에 프로필 이미지 src로 교체 필요
-                                        alt="profileImage"
-                                    />
+                                    {apiResponse.data.profileImg ? (
+                                        <img
+                                            src={apiResponse.data.profileImg}
+                                            alt="profileImage"
+                                        />
+                                    ) : (
+                                        <Avatar
+                                            src="/broken-image.jpg"
+                                            sx={{
+                                                width: 32,
+                                                height: 32,
+                                            }}
+                                        />
+                                    )}
                                 </ProfileImageBox>
                                 <NicknameSpan>
                                     {apiResponse.data.nickname}
                                 </NicknameSpan>
-                                {isAuthor ? (
+                                {accountId === apiResponse.data.accountId ? (
                                     ''
                                 ) : (
                                     <ChatButton
@@ -238,11 +256,15 @@ function PostDetailPage() {
                                 )}
                             </ProfileBox>
                             <Divider />
-                            <DateBox>{apiResponse.data.startDate}</DateBox>
+                            <DateBox>{apiResponse.data.createdAt}</DateBox>
                         </InfoBox>
-                        {isAuthor ? (
+                        {accountId === apiResponse.data.accountId ? (
                             <BookMarkButton
-                                isAuthor={isAuthor}
+                                isAuthor={
+                                    accountId === apiResponse.data.accountId
+                                }
+                                isLogin={isLogin}
+                                isBookmarked={apiResponse.data.likeCheck}
                                 onClick={handleBookMark}
                             />
                         ) : (

@@ -18,7 +18,7 @@ class GetPostResponseParser implements ParserInterface {
             response.category = PARSE_CONSTANT[response.category]
             response.place = PARSE_CONSTANT[response.place]
             response.duration = PARSE_CONSTANT[response.duration]
-            response.startDate = dayjs(response.startDate).format('YYYY.MM.DD')
+            response.createdAt = dayjs(response.createdAt).format('YYYY.MM.DD')
 
             const { data } = await axios.get(response.contentUrl)
             response.contentsParsed = data
