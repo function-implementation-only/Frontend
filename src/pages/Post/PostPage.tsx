@@ -10,7 +10,7 @@ import {
     PLACE,
     POST_STATE,
     COLLABORATION_TOOL,
-    RESPONSE_TYPE,
+    TEXT,
 } from 'lib/constants'
 import { ContentResponse } from 'types/response'
 import { Inputs, PostObj } from 'types/post'
@@ -29,7 +29,15 @@ import {
 import PeopleNumSelectComponent from 'components/PeopleNumSelectComponent'
 import { useAppSelector } from 'src/store/hooks'
 import TechListSelectComponent from 'components/TechListSelectComponent'
-import useServiceManager from 'hooks/useServiceManager'
+import useGetPostForUpdate from 'hooks/useGetPostForUpdate'
+import useLogger from 'hooks/useLogger'
+import {
+    muiLabelStyleObj,
+    muiMenuItemStyleObj,
+    muiSelectMenuPropsObj,
+    muiSelectStyleObj,
+} from 'src/styles/mui/custom'
+import PlaceHolderComponent from 'components/common/PlaceHolderComponent'
 
 const PostPageLayout = styled.div`
     width: 1440px;
@@ -48,7 +56,18 @@ const PostPageTitle = styled.h1`
 
 const FormLayout = styled.form``
 
-const FormRow = styled.div``
+const Multiple = css`
+    display: flex;
+    column-gap: 56px;
+`
+
+const FormRow = styled.div<{
+    multiple?: boolean
+    marginBottom?: string
+}>`
+    ${(props) => (props.multiple ? Multiple : '')}
+    margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : '')}
+`
 
 const TextCss = css`
     border: 1px solid #e9ecef;
@@ -59,11 +78,21 @@ const TextCss = css`
 const TitleBox = styled.div`
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: max-content 1fr;
+    grid-template-columns: min-content 1fr;
 `
 
 const Title = styled.input`
     ${TextCss}
+    height: 56px;
+    border-radius: 5px;
+    outline: 1px solid var(--gray-250);
+    border: none;
+    &:focus {
+        outline: 1px solid var(--primary-color);
+    }
+    &::placeholder {
+        color: var(--gray-400);
+    }
 `
 
 const FormCol = styled.div`
@@ -85,15 +114,11 @@ const CancelButton = styled(DefaultButton)`
     color: var(--primary-color);
 `
 
-const PeopleNumComponentLayout = styled.div``
-
 const PeopleNumSelectBox = styled.div`
     display: flex;
     width: 100%;
     flex-wrap: wrap;
 `
-
-const TechListComponentLayout = styled.div``
 
 const TechListSelectBox = styled.div`
     display: flex;
@@ -110,17 +135,16 @@ function PostPage() {
     const createPost = useCreatePost()
     const updatePost = useUpdatePost()
 
-    const serviceManager = useServiceManager()
+    const logger = useLogger('PostPage')
 
     const isUpdate = /update/.test(location.pathname)
     // 페이지 url로 수정 페이지인지 판단
     const { id: paramId } = useParams()
     const [serverData, setServerData] = useState<ContentResponse>(null)
+    const [isInitializedForUpdate, setIsInitializedForUpdate] = useState(false)
+    // 수정시 초기값 세팅 여부
 
     const { register, handleSubmit, setValue, control } = useForm<Inputs>()
-
-    const [isInitialized, setIsInitialized] = useState(false)
-    // 수정시 초기값 세팅 여부
 
     const peopleNumArr = useAppSelector(
         (state) => state.postCreateReducer.peopleNumArr
@@ -133,7 +157,7 @@ function PostPage() {
         navigate('/')
     }
 
-    function initializeForUpdate() {
+    function setValueForUpdate() {
         setValue('category', serverData.category)
         setValue('duration', serverData.duration)
         setValue('place', serverData.place)
@@ -141,38 +165,25 @@ function PostPage() {
         setValue('postState', serverData.postState)
         setValue('collaborationTool', serverData.collaborationTool)
         editorRef.current.getInstance().setHTML(serverData.contentsParsed)
-        setIsInitialized(true)
+        setIsInitializedForUpdate(true)
+    }
+
+    async function initializeServerData(): Promise<void> {
+        logger.log('initializeServerData()')
+        setServerData(await useGetPostForUpdate(paramId))
     }
 
     useEffect(() => {
-        if (isUpdate && isInitialized === false) {
-            ;(async () => {
-                try {
-                    const { data } =
-                        await serviceManager.dataService.postAPI.getPostById(
-                            paramId
-                        )
-                    const dataParsed =
-                        await serviceManager.dataService.parserAPI.parse(
-                            RESPONSE_TYPE.POST.GET_UPDATE,
-                            data.data
-                        )
-                    setServerData(dataParsed)
-                } catch (error) {
-                    console.error(error)
-                }
-            })()
-            // FIX ME: hook으로 정의해보기
+        if (isUpdate && isInitializedForUpdate === false) {
+            initializeServerData()
         }
     }, [])
 
     useEffect(() => {
-        if (isUpdate && serverData && isInitialized === false) {
-            initializeForUpdate()
+        if (isUpdate && serverData && isInitializedForUpdate === false) {
+            setValueForUpdate()
         }
-    }, [serverData])
-
-    // 수정 페이지로 진입시 초기값 세팅
+    }, [isInitializedForUpdate])
 
     const onSubmit: SubmitHandler<Inputs> = async (inputData) => {
         const formData = new FormData()
@@ -247,9 +258,12 @@ function PostPage() {
             </PostPageRow>
             <PostPageRow>
                 <FormLayout onSubmit={handleSubmit(onSubmit)}>
-                    <FormRow>
+                    <FormRow multiple marginBottom="24px">
                         <FormControl>
-                            <FormLabel id="categoryRadioGroup-label">
+                            <FormLabel
+                                id="categoryRadioGroup-label"
+                                sx={muiLabelStyleObj}
+                            >
                                 모집 구분
                             </FormLabel>
                             <Controller
@@ -268,7 +282,17 @@ function PostPage() {
                                                 <FormControlLabel
                                                     key={item.title}
                                                     value={item.value}
-                                                    control={<Radio />}
+                                                    control={
+                                                        <Radio
+                                                            sx={{
+                                                                color: 'var(--primary-color)',
+                                                                '&.Mui-checked':
+                                                                    {
+                                                                        color: 'var(--primary-color)',
+                                                                    },
+                                                            }}
+                                                        />
+                                                    }
                                                     label={item.title}
                                                 />
                                             )
@@ -278,7 +302,10 @@ function PostPage() {
                             />
                         </FormControl>
                         <FormControl>
-                            <FormLabel id="placeRadioGroup-label">
+                            <FormLabel
+                                id="placeRadioGroup-label"
+                                sx={muiLabelStyleObj}
+                            >
                                 진행 방식
                             </FormLabel>
                             <Controller
@@ -297,7 +324,17 @@ function PostPage() {
                                                 <FormControlLabel
                                                     key={item.title}
                                                     value={item.value}
-                                                    control={<Radio />}
+                                                    control={
+                                                        <Radio
+                                                            sx={{
+                                                                color: 'var(--primary-color)',
+                                                                '&.Mui-checked':
+                                                                    {
+                                                                        color: 'var(--primary-color)',
+                                                                    },
+                                                            }}
+                                                        />
+                                                    }
                                                     label={item.title}
                                                 />
                                             )
@@ -306,11 +343,11 @@ function PostPage() {
                                 )}
                             />
                         </FormControl>
-                        <FormControl
-                            sx={{ m: 0.5, minWidth: 120 }}
-                            size="small"
-                        >
-                            <FormLabel id="durationSelect-label">
+                        <FormControl sx={{ m: 0, minWidth: 100 }} size="small">
+                            <FormLabel
+                                id="durationSelect-label"
+                                sx={muiLabelStyleObj}
+                            >
                                 예상 기간
                             </FormLabel>
                             <Controller
@@ -320,16 +357,21 @@ function PostPage() {
                                 render={({ field }) => (
                                     <Select
                                         {...field}
+                                        sx={muiSelectStyleObj}
+                                        MenuProps={muiSelectMenuPropsObj}
                                         displayEmpty
                                         defaultValue=""
                                         aria-labelledby="durationSelect-label"
                                     >
                                         <MenuItem value="" disabled>
-                                            선택해주세요.
+                                            <PlaceHolderComponent
+                                                text={TEXT.PLACEHOLDER_CHOICE}
+                                            />
                                         </MenuItem>
                                         {DURATION.map((item) => {
                                             return (
                                                 <MenuItem
+                                                    sx={muiMenuItemStyleObj}
                                                     value={item.value}
                                                     key={item.title}
                                                 >
@@ -342,10 +384,13 @@ function PostPage() {
                             />
                         </FormControl>
                         <FormControl
-                            sx={{ m: 0.5, minWidth: 120, maxWidth: 200 }}
+                            sx={{ m: 0, minWidth: 150, maxWidth: 200 }}
                             size="small"
                         >
-                            <FormLabel id="collaborationToolSelect-label">
+                            <FormLabel
+                                id="collaborationToolSelect-label"
+                                sx={muiLabelStyleObj}
+                            >
                                 협업 프로그램
                             </FormLabel>
                             <Controller
@@ -358,21 +403,32 @@ function PostPage() {
                                         displayEmpty
                                         multiple
                                         name="collaborationTool"
+                                        sx={muiSelectStyleObj}
+                                        MenuProps={muiSelectMenuPropsObj}
                                         {...field}
                                         renderValue={(selected: string[]) => {
                                             if (selected.length === 0) {
-                                                return <em>선택해주세요.</em>
+                                                return (
+                                                    <PlaceHolderComponent
+                                                        text={
+                                                            TEXT.PLACEHOLDER_CHOICE
+                                                        }
+                                                    />
+                                                )
                                             }
 
                                             return selected.join(', ')
                                         }}
                                     >
-                                        <MenuItem disabled>
-                                            선택해주세요.
+                                        <MenuItem value="" disabled>
+                                            <PlaceHolderComponent
+                                                text={TEXT.PLACEHOLDER_CHOICE}
+                                            />
                                         </MenuItem>
                                         {COLLABORATION_TOOL.map((item) => {
                                             return (
                                                 <MenuItem
+                                                    sx={muiMenuItemStyleObj}
                                                     value={item.value}
                                                     key={item.title}
                                                 >
@@ -384,51 +440,70 @@ function PostPage() {
                                 )}
                             />
                         </FormControl>
-
-                        <PeopleNumComponentLayout>
-                            <FormLabel id="PeopleNum-label">
-                                모집 인원
-                            </FormLabel>
-                            <PeopleNumSelectBox>
-                                {peopleNumArr?.map((item) => (
-                                    <PeopleNumSelectComponent
-                                        key={item.id}
-                                        id={item.id}
-                                    />
-                                ))}
-                            </PeopleNumSelectBox>
-                        </PeopleNumComponentLayout>
-
-                        <TechListComponentLayout>
-                            <FormLabel id="techList-label">기술 스택</FormLabel>
-                            <TechListSelectBox>
-                                {techListFromStore?.map((item) => (
-                                    <TechListSelectComponent
-                                        key={item.id}
-                                        id={item.id}
-                                    />
-                                ))}
-                            </TechListSelectBox>
-                        </TechListComponentLayout>
                     </FormRow>
+
+                    <FormRow marginBottom="24px">
+                        <FormLabel id="PeopleNum-label" sx={muiLabelStyleObj}>
+                            모집 인원
+                        </FormLabel>
+                        <PeopleNumSelectBox>
+                            {peopleNumArr?.map((item) => (
+                                <PeopleNumSelectComponent
+                                    key={item.id}
+                                    id={item.id}
+                                />
+                            ))}
+                        </PeopleNumSelectBox>
+                    </FormRow>
+
+                    <FormRow marginBottom="36px">
+                        <FormLabel id="techList-label" sx={muiLabelStyleObj}>
+                            기술 스택
+                        </FormLabel>
+                        <TechListSelectBox>
+                            {techListFromStore?.map((item) => (
+                                <TechListSelectComponent
+                                    key={item.id}
+                                    id={item.id}
+                                />
+                            ))}
+                        </TechListSelectBox>
+                    </FormRow>
+
                     <FormCol>
                         <TitleBox>
                             <FormControl
-                                sx={{ m: 0.5, minWidth: 110 }}
-                                size="small"
+                                sx={{
+                                    minWidth: 110,
+                                    m: 0,
+                                    marginRight: '10px',
+                                }}
+                                size="medium"
                             >
                                 <Controller
                                     control={control}
                                     name="postState"
                                     defaultValue=""
                                     render={({ field }) => (
-                                        <Select displayEmpty {...field}>
+                                        <Select
+                                            displayEmpty
+                                            {...field}
+                                            sx={muiSelectStyleObj}
+                                            MenuProps={muiSelectMenuPropsObj}
+                                        >
                                             <MenuItem value="" disabled>
-                                                선택해주세요.
+                                                <PlaceHolderComponent
+                                                    text={
+                                                        TEXT.PLACEHOLDER_CHOICE
+                                                    }
+                                                />
                                             </MenuItem>
                                             {POST_STATE.map((item) => {
                                                 return (
                                                     <MenuItem
+                                                        sx={{
+                                                            ...muiMenuItemStyleObj,
+                                                        }}
                                                         value={item.value}
                                                         key={item.title}
                                                         disabled={
