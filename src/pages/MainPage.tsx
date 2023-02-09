@@ -28,6 +28,9 @@ const ContentsBox = styled.div`
     grid-template-columns: 3fr 7fr;
     margin: 0 auto;
     margin-top: 24px;
+    @media (max-width: 720px) {
+        display: none;
+    }
 `
 
 const ContentsBoxLeftSection = styled.section``

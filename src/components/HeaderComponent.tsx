@@ -25,6 +25,9 @@ const HeaderComponentRow = styled.div`
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
+    @media (max-width: 720px) {
+        max-width: 100%;
+    }
 `
 
 const LogoBox = styled.div`

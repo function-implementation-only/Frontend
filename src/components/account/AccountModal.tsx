@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 import Login from 'components/account/Login'
 import Signup from 'components/account/Signup'
+import CloseIcon from '@mui/icons-material/Close'
 import Modal from '../Modal'
 
 const LoginLayout = styled.div`
@@ -12,16 +13,25 @@ const LoginLayout = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-`
-
-const CloseButton = styled.img`
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    top: 29px;
-    right: -25px;
-    :hover {
-        cursor: pointer;
+    svg {
+        position: absolute;
+        font-size: 24px;
+        top: 29px;
+        right: -25px;
+        color: #212529;
+        :hover {
+            cursor: pointer;
+        }
+    }
+    @media (max-width: 720px) {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        overflow: scroll;
+        svg {
+            top: 45px;
+            right: 6px;
+            font-size: 28px;
+        }
     }
 `
 
@@ -33,6 +43,21 @@ const Logo = styled.img`
     left: 0;
     right: 0;
     margin: auto;
+    @media (max-width: 720px) {
+        display: none;
+    }
+`
+
+const Title = styled.p<{ marginTop?: string }>`
+    display: none;
+    @media (max-width: 720px) {
+        display: inline-block;
+        font-family: 'Pretendard';
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+        margin-top: ${(props) => props.marginTop || '32px'};
+    }
 `
 
 interface Props {
@@ -55,22 +80,28 @@ const AccountModal: React.FC<Props> = ({
     return (
         <Modal isOpen={isShowing} onClose={handleShowing}>
             <LoginLayout>
-                <CloseButton
-                    src="/assets/images/closeBtn.svg"
+                <CloseIcon
                     onClick={() => {
                         handleShowing()
                     }}
-                    alt="closeButton"
                 />
                 <Logo src="/assets/images/Logo.svg" alt="logo" />
                 {login && (
-                    <Login
-                        handleShowing={handleShowing}
-                        setLogin={setLogin}
-                        setSignup={setSignup}
-                    />
+                    <>
+                        <Title>로그인</Title>
+                        <Login
+                            handleShowing={handleShowing}
+                            setLogin={setLogin}
+                            setSignup={setSignup}
+                        />
+                    </>
                 )}
-                {signup && <Signup setLogin={setLogin} setSignup={setSignup} />}
+                {signup && (
+                    <>
+                        <Title marginTop="50px">회원가입</Title>
+                        <Signup setLogin={setLogin} setSignup={setSignup} />
+                    </>
+                )}
             </LoginLayout>
         </Modal>
     )

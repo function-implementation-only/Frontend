@@ -44,6 +44,10 @@ const PostPageLayout = styled.div`
     margin: 0 auto;
     padding-top: 24px;
     padding-bottom: 88px;
+    @media (max-width: 720px) {
+        max-width: 100vw;
+        min-height: 100%;
+    }
 `
 
 const PostPageRow = styled.div``
