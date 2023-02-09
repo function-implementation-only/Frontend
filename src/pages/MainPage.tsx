@@ -81,7 +81,7 @@ function MainPage() {
 
         if (isRecruiting)
             result = result.filter(
-                (item: ContentResponse) => item.postState === 'ON'
+                (item: ContentResponse) => item.postState === '모집중'
             )
 
         setPosts(result)
@@ -104,9 +104,8 @@ function MainPage() {
 
         if (isRecruiting)
             result = result.filter(
-                (item: ContentResponse) => item.postState === 'ON'
+                (item: ContentResponse) => item.postState === '모집중'
             )
-
         setPosts(result)
     }
 
@@ -158,7 +157,9 @@ function MainPage() {
         if (isRecruiting) {
             setTmpPosts(posts)
             setPosts((prev) =>
-                prev.filter((item: ContentResponse) => item.postState === 'ON')
+                prev.filter(
+                    (item: ContentResponse) => item.postState === '모집중'
+                )
             )
         } else {
             setPosts(tmpPosts)
