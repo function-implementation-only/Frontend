@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { PARSE_CONSTANT, RESPONSE_TYPE } from '../../../lib/constants'
 import { ParserInterface } from '../../../types/parser'
 import { ContentResponse } from '../../../types/response'
@@ -14,6 +15,10 @@ class GetAllPostResponseParser implements ParserInterface {
                 response.category = PARSE_CONSTANT[response.category]
                 response.place = PARSE_CONSTANT[response.place]
                 response.duration = PARSE_CONSTANT[response.duration]
+                response.createdAt = dayjs(response.createdAt).format(
+                    'YYYY.MM.DD'
+                )
+                response.postState = PARSE_CONSTANT[response.postState]
                 return response
             })
         }

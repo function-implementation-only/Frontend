@@ -25,7 +25,7 @@ export interface PostObj {
     category: string
     duration: string
     place: string
-    startDate: string
+    createdAt: string
     title: string
     postId: number
     techs: techObj[]
@@ -36,4 +36,7 @@ export interface PostObj {
     mobileReqNum: number
     postState: string
     collaborationTool?: string[]
+    likeCheck: null | boolean
+    profileImg: null | string
+    accountId: number
 }

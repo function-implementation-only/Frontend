@@ -2,7 +2,7 @@
 import styled from 'styled-components'
 import TagBarComponent from 'components/TagBarComponent'
 import { ContentResponse } from 'types/response'
-import PostCardComponent from 'components/PostCardComponent'
+import PostCardComponent from 'components/postcard/PostCardComponent'
 import AccordianComponent from 'components/AccordianComponent'
 import {
     CATEGORY,
@@ -50,8 +50,12 @@ function MainPage() {
     const [posts, setPosts] = useState([])
     const [pageNum, setPageNum] = useState(0)
     const [isEnd, setIsEnd] = useState(false)
+    const [tmpPosts, setTmpPosts] = useState([])
 
     const tags = useAppSelector((state) => state.tagReducer.tags)
+    const isRecruiting = useAppSelector(
+        (state) => state.isRecruitingReducer.isRecruiting
+    )
 
     const onScroll = useCallback(() => {
         const entireHeight = document.documentElement.scrollHeight
@@ -65,7 +69,7 @@ function MainPage() {
     }, [])
 
     async function setPostsState(type: string): Promise<void> {
-        logger.log('setPostsState()')
+        logger.log(`setPostsState() ${isRecruiting}`)
 
         let result
 
@@ -74,6 +78,11 @@ function MainPage() {
         } else if (type === POST_TYPE.FILTERED) {
             result = await useGetFilteredPosts(pageNum, tags)
         }
+
+        if (isRecruiting)
+            result = result.filter(
+                (item: ContentResponse) => item.postState === 'ON'
+            )
 
         setPosts(result)
     }
@@ -92,6 +101,11 @@ function MainPage() {
             if (filteredPosts.length === 0) setIsEnd(true)
             result = posts.concat(filteredPosts)
         }
+
+        if (isRecruiting)
+            result = result.filter(
+                (item: ContentResponse) => item.postState === 'ON'
+            )
 
         setPosts(result)
     }
@@ -139,6 +153,18 @@ function MainPage() {
             // 언마운트시 이벤트 제거
         }
     }, [isEnd])
+
+    useEffect(() => {
+        if (isRecruiting) {
+            setTmpPosts(posts)
+            setPosts((prev) =>
+                prev.filter((item: ContentResponse) => item.postState === 'ON')
+            )
+        } else {
+            setPosts(tmpPosts)
+            setTmpPosts([])
+        }
+    }, [isRecruiting])
 
     return (
         <MainPageLayout>
