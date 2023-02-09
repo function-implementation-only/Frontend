@@ -15,7 +15,6 @@ const {
 
 const SignupLayout = styled.div`
     position: relative;
-    min-height: 684px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,7 +22,11 @@ const SignupLayout = styled.div`
 `
 
 const ButtonBox = styled.div`
-    margin-top: 207px;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     a {
         text-decoration: none;
     }
@@ -37,6 +40,9 @@ const DividerBox = styled.div`
 const DividerItem = styled.hr`
     width: 167.5px;
     border: 0.6px solid #f0f0f0;
+    @media (max-width: 720px) {
+        width: calc((280 / 720) * 100vw);
+    }
 `
 
 const DividerText = styled.span`
@@ -87,7 +93,7 @@ const Signup: React.FC<Props> = ({ setLogin, setSignup }) => {
                     type="button"
                     fontWeight={700}
                     color="#fff"
-                    marginBottom={12}
+                    marginBottom={8}
                     img="/assets/images/signupLogo.svg"
                     url="/signup"
                 >
@@ -104,7 +110,7 @@ const Signup: React.FC<Props> = ({ setLogin, setSignup }) => {
                     color="#3E201E"
                     fontWeight={500}
                     marginBottom={12}
-                    img="assets/images/kakaoLogo.svg"
+                    img="/assets/images/kakaoLogo.svg"
                     url={KAKAO_AUTH_URL}
                 >
                     카카오 계정으로 시작하기
@@ -114,7 +120,7 @@ const Signup: React.FC<Props> = ({ setLogin, setSignup }) => {
                     background="#F4F4F4"
                     color="#3E4145"
                     fontWeight={500}
-                    img="assets/images/googleLogo.svg"
+                    img="/assets/images/googleLogo.svg"
                     url={GOOGLE_URL}
                 >
                     구글 계정으로 시작하기

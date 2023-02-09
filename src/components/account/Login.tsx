@@ -22,10 +22,20 @@ const LoginLayout = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    @media (max-width: 720px) {
+        min-height: 0px;
+    }
 `
 
 const InputBox = styled.div`
     margin-top: 133px;
+    @media (max-width: 720px) {
+        margin-top: 36px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 `
 
 const InputItem = styled.div`
@@ -55,9 +65,19 @@ const Input = styled.input`
     &::placeholder {
         color: #b0b0b0;
     }
+    @media (max-width: 720px) {
+        width: calc((600 / 720) * 100vw);
+        height: 46px;
+        margin: 16px 0 35px 0;
+        padding: 14px;
+    }
 `
 
 const ButtonBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     a {
         text-decoration: none;
     }
@@ -71,6 +91,9 @@ const DividerBox = styled.div`
 const DividerItem = styled.hr`
     width: 167.5px;
     border: 0.6px solid #f0f0f0;
+    @media (max-width: 720px) {
+        width: calc((280 / 720) * 100vw);
+    }
 `
 
 const DividerText = styled.span`
@@ -186,7 +209,7 @@ const Login: React.FC<Props> = ({ handleShowing, setLogin, setSignup }) => {
                         color="#3E201E"
                         fontWeight={500}
                         marginBottom={12}
-                        img="assets/images/kakaoLogo.svg"
+                        img="/assets/images/kakaoLogo.svg"
                         url={KAKAO_AUTH_URL}
                     >
                         카카오 계정으로 시작하기
@@ -196,7 +219,7 @@ const Login: React.FC<Props> = ({ handleShowing, setLogin, setSignup }) => {
                         background="#F4F4F4"
                         color="#3E4145"
                         fontWeight={500}
-                        img="assets/images/googleLogo.svg"
+                        img="/assets/images/googleLogo.svg"
                         url={GOOGLE_URL}
                     >
                         구글 계정으로 시작하기

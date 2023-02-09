@@ -25,6 +25,9 @@ const HeaderComponentRow = styled.div`
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
+    @media (max-width: 720px) {
+        max-width: 100%;
+    }
 `
 
 const LogoBox = styled.div`
@@ -143,6 +146,11 @@ function HeaderComponent() {
         setLogin(false)
     }
 
+    const handleWrite = () => {
+        navigate('/post/create')
+        handleClose()
+    }
+
     useEffect(() => {
         const token = localStorage.getItem('token')
         if (token) {
@@ -193,7 +201,9 @@ function HeaderComponent() {
                                 </MenuItem>
                             </Menu>
                             <Divider />
-                            <DefaultButton type="button">글쓰기</DefaultButton>
+                            <DefaultButton type="button" onClick={handleWrite}>
+                                글쓰기
+                            </DefaultButton>
                         </LogInList>
                     ) : (
                         <LogOutList>

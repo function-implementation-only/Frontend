@@ -2,8 +2,11 @@ import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import FilterCheckBoxComponent from 'components/checkbox/FilterCheckBoxComponent'
 import { ConstantObj } from 'lib/constants'
+import FilterAllCheckBoxComponent from './checkbox/FilterAllCheckBoxComponent'
 
-const AccordianBox = styled.div``
+const AccordianBox = styled.div`
+    border-bottom: 1px solid #f0f0f0;
+`
 
 const AccordianItem = styled.div``
 
@@ -18,6 +21,10 @@ const AccordianTitle = styled.div<{
     justify-content: space-between;
     align-items: center;
     padding: 0 22px 0 26px;
+
+    div:nth-child(1) {
+        font-weight: 700;
+    }
 
     div:nth-child(2) {
         display: flex;
@@ -36,12 +43,11 @@ const AccordianContents = styled.div`
     transition: all var(--animation-delay) ease-in-out;
     display: flex;
     flex-direction: column;
-    row-gap: 16px;
 `
 
 interface AccordianComponentProps {
     title: string
-    constantsArray: ConstantObj[]
+    constantsArray: ConstantObj<string>[]
 }
 
 function AccordianComponent({
@@ -86,11 +92,17 @@ function AccordianComponent({
                     </div>
                 </AccordianTitle>
                 <AccordianContents ref={accordian}>
+                    <FilterAllCheckBoxComponent
+                        constantsArray={constantsArray}
+                        parentHandler={ownHandler}
+                    />
                     {constantsArray.map((item) => {
                         return (
                             <FilterCheckBoxComponent
                                 key={item.value}
                                 title={item.title}
+                                source={item.source}
+                                value={item.value}
                                 parentHandler={ownHandler}
                             />
                         )

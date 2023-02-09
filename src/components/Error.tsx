@@ -13,6 +13,10 @@ const Text = styled.p<{ margin?: string }>`
         display: inline;
         content: '⚠ ';
     }
+     @media (max-width: 720px) {
+        margin-left:2px;
+        margin-top:-20px;
+    }
 `
 
 interface Errors {

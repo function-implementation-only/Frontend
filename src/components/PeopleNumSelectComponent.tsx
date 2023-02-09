@@ -2,7 +2,7 @@ import { FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import useCheckIsLastIdx from 'hooks/state/post/peopleNumArr/useCheckIsLastIdx'
 import useCheckIsMax from 'hooks/state/post/peopleNumArr/useCheckIsMax'
 import useCheckPart from 'hooks/state/post/peopleNumArr/useCheckPart'
-import { PEOPLENUM, RECRUITMENT_PART } from 'lib/constants'
+import { PEOPLENUM, RECRUITMENT_PART, TEXT } from 'lib/constants'
 import {
     pushPeopleNumObj,
     setPeopleNum,
@@ -10,12 +10,19 @@ import {
     splicePeopleNumObj,
 } from 'src/store/features/post/postCreateSlice'
 import { useAppDispatch, useAppSelector } from 'src/store/hooks'
+import {
+    muiMenuItemStyleObj,
+    muiSelectMenuPropsObj,
+    muiSelectStyleObj,
+} from 'src/styles/mui/custom'
 import styled from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
+import PlaceHolderComponent from './common/PlaceHolderComponent'
 
 const PeopleNumSelectComponentLayout = styled.div`
     display: flex;
     align-items: center;
+    padding-top: 16px;
 `
 
 const OperatorButton = styled.button`
@@ -23,6 +30,7 @@ const OperatorButton = styled.button`
     cursor: pointer;
     width: 20px;
     height: 20px;
+    margin-right: 10px;
 `
 const PlusButton = styled(OperatorButton)`
     background: center / cover no-repeat url('/assets/images/plus.svg');
@@ -75,11 +83,13 @@ function PeopleNumSelectComponent({ id }: PeopleNumSelectComponentProps) {
     return (
         <PeopleNumSelectComponentLayout>
             <FormControl
-                sx={{ m: 0.5, minWidth: 120 }}
+                sx={{ m: '0', marginRight: '10px', minWidth: 100 }}
                 size="small"
                 id="peopleNumRecruitPart-label"
             >
                 <Select
+                    sx={muiSelectStyleObj}
+                    MenuProps={muiSelectMenuPropsObj}
                     id="peopleNumRecruitPartSelect"
                     displayEmpty
                     defaultValue=""
@@ -87,11 +97,12 @@ function PeopleNumSelectComponent({ id }: PeopleNumSelectComponentProps) {
                     onChange={handleRecruitPartChange}
                 >
                     <MenuItem value="" disabled>
-                        선택해주세요.
+                        <PlaceHolderComponent text={TEXT.PLACEHOLDER_CHOICE} />
                     </MenuItem>
                     {RECRUITMENT_PART.map((item) => {
                         return (
                             <MenuItem
+                                sx={muiMenuItemStyleObj}
                                 value={item.value}
                                 key={item.title}
                                 disabled={
@@ -111,23 +122,29 @@ function PeopleNumSelectComponent({ id }: PeopleNumSelectComponentProps) {
                 </Select>
             </FormControl>
             <FormControl
-                sx={{ m: 0.5, minWidth: 120 }}
+                sx={{ m: 0, marginRight: '10px', minWidth: 100 }}
                 size="small"
                 id="PeopleNum-label"
             >
                 <Select
                     id="peopleNumSelect"
+                    sx={muiSelectStyleObj}
+                    MenuProps={muiSelectMenuPropsObj}
                     displayEmpty
                     defaultValue=""
                     aria-labelledby="PeopleNum-label"
                     onChange={handlePeopleNumChange}
                 >
                     <MenuItem value="" disabled>
-                        선택해주세요.
+                        <PlaceHolderComponent text={TEXT.PLACEHOLDER_CHOICE} />
                     </MenuItem>
                     {PEOPLENUM.map((item) => {
                         return (
-                            <MenuItem value={item.value} key={item.title}>
+                            <MenuItem
+                                sx={muiMenuItemStyleObj}
+                                value={item.value}
+                                key={item.title}
+                            >
                                 {item.title}
                             </MenuItem>
                         )

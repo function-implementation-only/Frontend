@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import AccountButtonItem from 'components/AccountButton'
 import useModal from 'hooks/useModal'
-import { Avatar, FormControl, MenuItem, Select } from '@mui/material'
+import { Avatar } from '@mui/material'
 import useGetAccountInfo from 'hooks/useGetAccountInfo'
 import ShowPWButton from 'components/ShowPWButton'
 import PasswordChangeModal from 'components/account/PasswordChangeModal'
@@ -112,6 +112,7 @@ const Button = styled.button`
     border: 1px solid #ff9c30;
     border-radius: 10px;
     color: #ff9c30;
+    cursor: pointer;
     &:disabled {
         color: #cbcbcb;
         background: #f8f9fa;
@@ -162,27 +163,9 @@ function ProfilePage() {
     const [showingPW, setShowingPW] = useState(false)
     const [showingPwChange, setShowingPwChange] = useState(false)
     const [showingPWcheck, setShowingPWcheck] = useState(false)
-    const [authCheck, setAuthCheck] = useState(false)
     const [imgFiles, setImgFiles] = useState(null)
     const [previewImage, setPreviewImage] = useState('')
     const imgRef = useRef<HTMLInputElement>(null)
-    const [amPmStart, setAmPmStart] = useState('')
-    const [amPmEnd, setAmPmEnd] = useState('')
-    const [startTime, setStartTime] = useState('')
-    const [endTime, setEndTime] = useState('')
-    const timeArray = [
-        '2시',
-        '3시',
-        '4시',
-        '5시',
-        '6시',
-        '7시',
-        '8시',
-        '9시',
-        '10시',
-        '11시',
-        '12시',
-    ]
 
     // 사용자 패스워드 확인 API
     const postPasswordCheck = usePostPasswordCheck(setPwCheck, email, password)
@@ -195,30 +178,6 @@ function ProfilePage() {
 
     // 사용자 기본정보 API
     const { data: accountData } = useGetAccountInfo()
-
-    const handleAmPmStart = (event: {
-        target: { value: React.SetStateAction<string> }
-    }) => {
-        setAmPmStart(event.target.value)
-    }
-
-    const handleAmPmEnd = (event: {
-        target: { value: React.SetStateAction<string> }
-    }) => {
-        setAmPmEnd(event.target.value)
-    }
-
-    const handleStartTime = (event: {
-        target: { value: React.SetStateAction<string> }
-    }) => {
-        setStartTime(event.target.value)
-    }
-
-    const handleEndTime = (event: {
-        target: { value: React.SetStateAction<string> }
-    }) => {
-        setEndTime(event.target.value)
-    }
 
     const handlePwChange = () => {
         setPwChange(true)
@@ -479,76 +438,6 @@ function ProfilePage() {
                             placeholder={accountData?.data.availableTime}
                             {...register('availableTime')}
                         />
-                        {/* 시간을 하나로 묶어서 제출하는데 이슈 */}
-                        {/* <FormControl sx={{ mr: '4px', width: 115 }}>
-                            <Select
-                                value={amPmStart}
-                                onChange={handleAmPmStart}
-                                displayEmpty
-                                inputProps={{ 'aria-label': 'Without label' }}
-                                style={{ height: 48 }}
-                            >
-                                <MenuItem value="오전">
-                                    <em>오전</em>
-                                </MenuItem>
-                                <MenuItem value="오후">오후</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <FormControl sx={{ mr: '8px', width: 115 }}>
-                            <Select
-                                value={startTime}
-                                onChange={handleStartTime}
-                                displayEmpty
-                                inputProps={{ 'aria-label': 'Without label' }}
-                                style={{ height: 48 }}
-                            >
-                                <MenuItem value="1시">
-                                    <em>1시</em>
-                                </MenuItem>
-                                {timeArray.map((li, idx) => {
-                                    return (
-                                        <MenuItem key={idx} value={li}>
-                                            {li}
-                                        </MenuItem>
-                                    )
-                                })}
-                            </Select>
-                        </FormControl>
-                        <em>~</em>
-                        <FormControl sx={{ ml: '8px', width: 115 }}>
-                            <Select
-                                value={amPmEnd}
-                                onChange={handleAmPmEnd}
-                                displayEmpty
-                                inputProps={{ 'aria-label': 'Without label' }}
-                                style={{ height: 48 }}
-                            >
-                                <MenuItem value="오전">
-                                    <em>오전</em>
-                                </MenuItem>
-                                <MenuItem value="오후">오후</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <FormControl sx={{ ml: '4px', width: 115 }}>
-                            <Select
-                                value={endTime}
-                                onChange={handleEndTime}
-                                displayEmpty
-                                inputProps={{ 'aria-label': 'Without label' }}
-                                style={{ height: 48 }}
-                            >
-                                <MenuItem value="1시">
-                                    <em>1시</em>
-                                </MenuItem>
-                                {timeArray.map((li, idx) => {
-                                    return (
-                                        <MenuItem key={idx} value={li}>
-                                            {li}
-                                        </MenuItem>
-                                    )
-                                })}
-                            </Select>
-                        </FormControl> */}
                     </InputItem>
                 </ItemBox>
                 <ButtonBox>

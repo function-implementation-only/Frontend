@@ -11,6 +11,7 @@ const TagBarComponentLayout = styled.div`
 
 const TagsBox = styled.div`
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
     width: 800px;
     gap: 8px;
