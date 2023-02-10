@@ -39,7 +39,7 @@ const Dim = styled.div`
     }
 `
 const Container = styled.div`
-    max-width: 476px;
+    max-width: 500px;
     position: relative;
     width: 100%;
     z-index: 100;

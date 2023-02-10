@@ -22,7 +22,7 @@ const SignupLayout = styled.div`
 `
 
 const ButtonBox = styled.div`
-    margin-top: 40px;
+    margin-top: 245px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -34,7 +34,7 @@ const ButtonBox = styled.div`
 
 const DividerBox = styled.div`
     display: flex;
-    margin: 40px 0;
+    margin: 24px 0;
 `
 
 const DividerItem = styled.hr`
@@ -52,7 +52,7 @@ const DividerText = styled.span`
 `
 
 const LoginBox = styled.div`
-    margin: 153px 0 48px;
+    margin: 17px 0 185px;
     text-align: center;
     font-family: 'Pretendard';
     font-size: 14px;
@@ -61,6 +61,7 @@ const LoginBox = styled.div`
         color: #838485;
     }
     button {
+        padding: 0;
         color: #ff9c30;
         text-decoration: underline;
         border: none;
@@ -93,7 +94,6 @@ const Signup: React.FC<Props> = ({ setLogin, setSignup }) => {
                     type="button"
                     fontWeight={700}
                     color="#fff"
-                    marginBottom={8}
                     img="/assets/images/signupLogo.svg"
                     url="/signup"
                 >
@@ -109,7 +109,7 @@ const Signup: React.FC<Props> = ({ setLogin, setSignup }) => {
                     background="#F7E317"
                     color="#3E201E"
                     fontWeight={500}
-                    marginBottom={12}
+                    marginBottom={16}
                     img="/assets/images/kakaoLogo.svg"
                     url={KAKAO_AUTH_URL}
                 >

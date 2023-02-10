@@ -16,8 +16,8 @@ const LoginLayout = styled.div`
     svg {
         position: absolute;
         font-size: 24px;
-        top: 29px;
-        right: -25px;
+        top: 26px;
+        right: -44px;
         color: #212529;
         :hover {
             cursor: pointer;
@@ -39,7 +39,7 @@ const Logo = styled.img`
     position: absolute;
     width: 142px;
     height: 28px;
-    top: 71px;
+    top: 102px;
     left: 0;
     right: 0;
     margin: auto;
