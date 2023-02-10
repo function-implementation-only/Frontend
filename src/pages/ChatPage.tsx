@@ -1,5 +1,6 @@
 import MessageItem from 'components/chat/MessageItem'
 import { MouseEvent, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 type CategoryProps = {
@@ -7,15 +8,23 @@ type CategoryProps = {
 }
 
 const ChatPageLayout = styled.div`
+    display: flex;
     width: 1440px;
+    height: calc(100vh - 80px);
     margin: 0 auto;
     padding: 0 24px;
 `
 
-const ChatPageRow = styled.div`
-    width: 316px;
-    height: 100vh;
+const ChatListRow = styled.div`
+    height: 100%;
     border-right: 2px solid rgba(51, 51, 51, 0.1);
+`
+
+const MessageRow = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 
 const CategoryColumn = styled.div`
@@ -40,9 +49,37 @@ const CategoryButton = styled.button<CategoryProps>`
         props.selected && '3px solid var(--primary-color)'};
 `
 
-const MessageColumn = styled.div``
+const MessageList = styled.ul`
+    padding-right: 10px;
+`
 
-const MessageList = styled.ul``
+const ChatListBox = styled.div`
+    width: 340px;
+    height: 150px;
+`
+
+const ChatListColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
+const ChatListIcon = styled.img`
+    border-radius: 50%;
+    margin-bottom: 12px;
+`
+
+const ChatListParagraph = styled.p`
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28.8px;
+    margin-bottom: 8px;
+`
+
+const ChatListContentParagraph = styled.p`
+    line-height: 23px;
+    color: var(--gray-700);
+`
 
 const DUMMMY_DATA = [
     {
@@ -77,6 +114,8 @@ const DUMMMY_DATA = [
 
 function ChatPage() {
     const [AllMessage, setAllMessage] = useState(true)
+    const [searchParams] = useSearchParams()
+    console.log(searchParams.get('id'))
 
     // const changeCategoryHandler = () => setAllCategory()
     function setMessageState(e: MouseEvent<HTMLButtonElement>) {
@@ -88,7 +127,7 @@ function ChatPage() {
 
     return (
         <ChatPageLayout>
-            <ChatPageRow>
+            <ChatListRow>
                 <CategoryColumn>
                     <CategoryButton
                         onClick={setMessageState}
@@ -103,14 +142,28 @@ function ChatPage() {
                         안 읽음
                     </CategoryButton>
                 </CategoryColumn>
-                <MessageColumn>
-                    <MessageList>
-                        {DUMMMY_DATA.map((data) => (
-                            <MessageItem key={data.id} data={data} />
-                        ))}
-                    </MessageList>
-                </MessageColumn>
-            </ChatPageRow>
+                <MessageList>
+                    {DUMMMY_DATA.map((data) => (
+                        <MessageItem key={data.id} data={data} />
+                    ))}
+                </MessageList>
+            </ChatListRow>
+            {!searchParams.get('id') && (
+                <MessageRow>
+                    <ChatListBox>
+                        <ChatListColumn>
+                            <ChatListIcon src="https://via.placeholder.com/78" />
+                            <ChatListParagraph>
+                                메세지 선택하기
+                            </ChatListParagraph>
+                            <ChatListContentParagraph>
+                                기존 대화에서 선택하거나 새로운 대화를
+                                시작해보세요
+                            </ChatListContentParagraph>
+                        </ChatListColumn>
+                    </ChatListBox>
+                </MessageRow>
+            )}
         </ChatPageLayout>
     )
 }
