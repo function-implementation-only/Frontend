@@ -1,19 +1,28 @@
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 type MessageItemProps = {
+    id: string
     name: string
     content: string
     time: string
     avatar: string
 }
 
-const MessageItemLayout = styled.li`
+type SelectedProps = {
+    selected: boolean
+}
+
+const MessageItemLayout = styled.li<SelectedProps>`
     display: flex;
     height: 76px;
-    min-width: 300px;
+    width: 300px;
     padding: 10px;
     margin: 4px 0;
     cursor: pointer;
+    border-radius: 10px;
+    background-color: ${(props) =>
+        props.selected && 'var(--primary-color-100)'};
 `
 
 const AvatarRow = styled.div`
@@ -58,10 +67,20 @@ const TimeText = styled.span`
 `
 
 function MessageItem({ data }: { data: MessageItemProps }) {
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+
+    function selectMessage() {
+        navigate(`/chat?id=${data.id}`)
+    }
+
     return (
-        <MessageItemLayout>
+        <MessageItemLayout
+            onClick={selectMessage}
+            selected={searchParams.get('id') === data.id}
+        >
             <AvatarRow>
-                <AvatarImage src="https://via.placeholder.com/56 " />
+                <AvatarImage src="https://via.placeholder.com/56" />
             </AvatarRow>
             <MessageInfoBox>
                 <NameColumn>

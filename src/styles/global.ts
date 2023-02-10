@@ -4,7 +4,7 @@ import reset from 'styled-reset'
 const GlobalStyle = createGlobalStyle`
   ${reset}
   /* other styles */
-  *{
+  * {
     box-sizing: border-box;
   }
   :root {
@@ -26,6 +26,7 @@ const GlobalStyle = createGlobalStyle`
     // max-width: 1920px;
     margin: 0 auto;
   }
+
 `
 
 export default GlobalStyle
