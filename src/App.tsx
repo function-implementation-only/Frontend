@@ -8,6 +8,7 @@ import MyPage from 'pages/MyPage'
 import ProfilePage from 'pages/ProfilePage'
 import GooglePrivacy from 'components/account/GooglePrivacy'
 import GooglePolicy from 'components/account/GooglePolicy'
+import ChatPage from 'pages/ChatPage'
 import Kakao from './components/account/Kakao'
 import Google from './components/account/Google'
 import SignUpPage from './pages/SignUpPage'
@@ -38,6 +39,7 @@ function App() {
                         <Route path="/api/google/test" element={<Google />} />
                         <Route path="/privacy" element={<GooglePrivacy />} />
                         <Route path="/policy" element={<GooglePolicy />} />
+                        <Route path="/chat" element={<ChatPage />} />
                     </Routes>
                 </BrowserRouter>
             </div>
