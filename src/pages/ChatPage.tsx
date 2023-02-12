@@ -1,4 +1,5 @@
 import MessageItem from 'components/chat/MessageItem'
+import MessageRoom from 'components/chat/MessageRoom'
 import { MouseEvent, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -88,6 +89,7 @@ const DUMMMY_DATA = [
         name: '김해피',
         content: '네~ 하겠습니다.',
         time: '00시간',
+        email: 'test@test.com',
     },
     {
         id: '2',
@@ -95,6 +97,7 @@ const DUMMMY_DATA = [
         name: '김조인',
         content: 'asdfagsdjdsgj.',
         time: '00시간',
+        email: 'test2@test.com',
     },
     {
         id: '3',
@@ -102,6 +105,7 @@ const DUMMMY_DATA = [
         name: 'Happy',
         content: '네~ afkjsdngdsjkdsgdsgfddsfdsfdsfsdfdfas.',
         time: '00시간',
+        email: 'tes3t@test.com',
     },
     {
         id: '4',
@@ -109,13 +113,13 @@ const DUMMMY_DATA = [
         avatar: '',
         content: 'dgkhbsdgkjnsjlgknsdlkgjndjl',
         time: '00시간',
+        email: 'test4@test.com',
     },
 ]
 
 function ChatPage() {
     const [AllMessage, setAllMessage] = useState(true)
     const [searchParams] = useSearchParams()
-    console.log(searchParams.get('id'))
 
     // const changeCategoryHandler = () => setAllCategory()
     function setMessageState(e: MouseEvent<HTMLButtonElement>) {
@@ -148,7 +152,7 @@ function ChatPage() {
                     ))}
                 </MessageList>
             </ChatListRow>
-            {!searchParams.get('id') && (
+            {!searchParams.get('id') ? (
                 <MessageRow>
                     <ChatListBox>
                         <ChatListColumn>
@@ -163,6 +167,8 @@ function ChatPage() {
                         </ChatListColumn>
                     </ChatListBox>
                 </MessageRow>
+            ) : (
+                <MessageRoom />
             )}
         </ChatPageLayout>
     )
