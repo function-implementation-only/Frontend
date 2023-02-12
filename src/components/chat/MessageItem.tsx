@@ -7,6 +7,7 @@ type MessageItemProps = {
     content: string
     time: string
     avatar: string
+    email: string
 }
 
 type SelectedProps = {
@@ -66,12 +67,32 @@ const TimeText = styled.span`
     color: var(--gray-600);
 `
 
+const token =
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bkBnbWFpbC5jb20iLCJleHAiOjE2NzYxMTQ3MjAsImlhdCI6MTY3NjAyODMyMH0.ZnooR-Ik_idvRNhXEoZJrMr3CYag-Zsz5t2toItg5ds'
+
 function MessageItem({ data }: { data: MessageItemProps }) {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
 
-    function selectMessage() {
-        navigate(`/chat?id=${data.id}`)
+    async function selectMessage() {
+        const response = await fetch(
+            'http://121.190.6.208:8000/chat-service/chat',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Access_Token: token,
+                },
+                body: JSON.stringify({
+                    roomName: 'test',
+                    targetEmail: data.email,
+                }),
+            }
+        )
+
+        const RoomData = await response.json()
+
+        navigate(`/chat?id=${RoomData}`)
     }
 
     return (
