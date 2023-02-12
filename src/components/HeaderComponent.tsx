@@ -26,7 +26,7 @@ const HeaderComponentRow = styled.div`
     align-items: center;
     margin: 0 auto;
     @media (max-width: 720px) {
-        max-width: 100%;
+        max-width: 100vw;
     }
 `
 
@@ -46,6 +46,11 @@ const LogInList = styled.div`
     grid-column-gap: 16px;
     svg {
         color: #b0b0b0;
+    }
+    @media (max-width: 720px) {
+        #postBtn {
+            display: none;
+        }
     }
 `
 
@@ -201,7 +206,11 @@ function HeaderComponent() {
                                 </MenuItem>
                             </Menu>
                             <Divider />
-                            <DefaultButton type="button" onClick={handleWrite}>
+                            <DefaultButton
+                                id="postBtn"
+                                type="button"
+                                onClick={handleWrite}
+                            >
                                 글쓰기
                             </DefaultButton>
                         </LogInList>
