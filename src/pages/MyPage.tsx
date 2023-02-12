@@ -4,17 +4,28 @@ import { DefaultButton } from 'components/HeaderComponent'
 import Avatar from '@mui/material/Avatar'
 import useGetAccountInfo from 'hooks/useGetAccountInfo'
 import { useNavigate } from 'react-router-dom'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 
 const MyPageLayout = styled.div`
-    form {
-        width: 638px;
+    width: 1440px;
+    margin: 0 auto;
+    @media (max-width: 720px) {
+        width: 100vw;
     }
 `
 
 const ThemeBox = styled.div`
-    width: 1440px;
-    margin: 0 auto;
     padding: 36px 24px 24px;
+    svg {
+        display: none;
+    }
+    @media (max-width: 720px) {
+        padding: 21px 24px 45px;
+        svg {
+            display: inline-block;
+            vertical-align: bottom;
+        }
+    }
 `
 
 const ThemeItem = styled.span`
@@ -23,20 +34,51 @@ const ThemeItem = styled.span`
     font-weight: 600;
     font-size: 32px;
     margin: 36px 0 60px;
+    @media (max-width: 720px) {
+        font-size: 18px;
+    }
 `
 
 const AccountInfoBox = styled.div`
-    width: 1440px;
     display: flex;
-    justify-content: space-between;
-    margin: 0 auto;
-    padding: 0 24px;
 `
 
 const AccountInfoList = styled.div`
+    width: 1440px;
+    margin: 0 auto;
+    padding: 0 24px;
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    align-items: start;
+    button {
+        margin-left: 598px;
+    }
+    #avatar {
+        width: 150px;
+        height: 150px;
+        margin-right: 36px;
+    }
+    @media (max-width: 720px) {
+        justify-content: start;
+        align-items: center;
+        button {
+            margin: 16px 0px 0px;
+        }
+        #avatar {
+            width: 80px;
+            height: 80px;
+            margin-right: 24px;
+        }
+    }
 `
+const AccountDetailBox = styled.div`
+    display: flex;
+    @media (max-width: 720px) {
+        flex-direction: column;
+    }
+`
+
+const AccountDetailList = styled.div``
 
 const AccountNameItem = styled.span`
     font-family: 'Pretendard';
@@ -44,6 +86,10 @@ const AccountNameItem = styled.span`
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
+    margin-top: 11.5px;
+    @media (max-width: 720px) {
+        font-size: 16px;
+    }
 `
 
 const AccountFieldItem = styled.span`
@@ -52,11 +98,17 @@ const AccountFieldItem = styled.span`
     font-weight: 400;
     font-size: 16px;
     line-height: 23px;
+    @media (max-width: 720px) {
+        font-size: 12px;
+    }
 `
 
 const AccountDividerItem = styled.span`
     color: #ced4da;
     margin: 0 8px;
+    @media (max-width: 720px) {
+        margin: 0 4px;
+    }
 `
 
 const AccountTimeItem = styled.span`
@@ -65,6 +117,9 @@ const AccountTimeItem = styled.span`
     font-weight: 400;
     font-size: 16px;
     color: #b0b0b0;
+    @media (max-width: 720px) {
+        font-size: 12px;
+    }
 `
 
 const AccountIntroductionItem = styled.p`
@@ -78,6 +133,9 @@ const AccountIntroductionItem = styled.p`
     gap: 10px;
     border: 1px solid #ff9c30;
     border-radius: 5px;
+    @media (max-width: 720px) {
+        display: none;
+    }
 `
 
 const AvatarImage = styled.img`
@@ -85,6 +143,11 @@ const AvatarImage = styled.img`
     height: 150px;
     border-radius: 50%;
     margin-right: 36px;
+    @media (max-width: 720px) {
+        width: 80px;
+        height: 80px;
+        margin-right: 24px;
+    }
 `
 
 function MyPage() {
@@ -98,6 +161,10 @@ function MyPage() {
     return (
         <MyPageLayout>
             <ThemeBox>
+                <a href="/">
+                    <ArrowBackIosIcon fontSize="small" />
+                </a>
+
                 <ThemeItem>마이페이지</ThemeItem>
             </ThemeBox>
             <AccountInfoBox>
@@ -108,32 +175,31 @@ function MyPage() {
                             alt="프로필 이미지"
                         />
                     ) : (
-                        <Avatar
-                            src="/broken-image.jpg"
-                            sx={{ width: 150, height: 150, mr: '36px' }}
-                        />
+                        <Avatar id="avatar" src="/broken-image.jpg" />
                     )}
-                    <div>
-                        <AccountNameItem>
-                            {accountData?.data.nickname}
-                        </AccountNameItem>
-                        <br />
-                        <AccountFieldItem>
-                            {accountData?.data.field}
-                        </AccountFieldItem>
-                        <AccountDividerItem>|</AccountDividerItem>
-                        <AccountTimeItem>
-                            {accountData?.data.availableTime}
-                        </AccountTimeItem>
-                        <br />
-                        <AccountIntroductionItem>
-                            {accountData?.data.introduction}
-                        </AccountIntroductionItem>
-                    </div>
+                    <AccountDetailBox>
+                        <AccountDetailList>
+                            <AccountNameItem>
+                                {accountData?.data.nickname}
+                            </AccountNameItem>
+                            <br />
+                            <AccountFieldItem>
+                                {accountData?.data.field}
+                            </AccountFieldItem>
+                            <AccountDividerItem>|</AccountDividerItem>
+                            <AccountTimeItem>
+                                {accountData?.data.availableTime}
+                            </AccountTimeItem>
+                            <br />
+                            <AccountIntroductionItem>
+                                {accountData?.data.introduction}
+                            </AccountIntroductionItem>
+                        </AccountDetailList>
+                        <DefaultButton onClick={handleProfilePage}>
+                            프로필 수정
+                        </DefaultButton>
+                    </AccountDetailBox>
                 </AccountInfoList>
-                <DefaultButton onClick={handleProfilePage}>
-                    프로필 수정
-                </DefaultButton>
             </AccountInfoBox>
         </MyPageLayout>
     )

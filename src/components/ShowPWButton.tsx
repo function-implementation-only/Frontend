@@ -7,6 +7,7 @@ const ShowPwButton = styled.button<{
     top?: string
     right?: string
     mobileTop?: string
+    mobileRight?: string
 }>`
     position: absolute;
     top: ${({ top }) => top || '27%'};
@@ -21,7 +22,7 @@ const ShowPwButton = styled.button<{
         vertical-align: middle;
     }
     @media (max-width: 720px) {
-        right: 24px !important;
+        right: ${({ mobileRight }) => mobileRight || '24px'};
         top: ${({ mobileTop }) => mobileTop || '37%'};
     }
 `
@@ -31,6 +32,7 @@ interface Props {
     top?: string
     mobileTop?: string
     right?: string
+    mobileRight?: string
 }
 
 const ShowPWButton: React.FC<Props> = ({
@@ -39,6 +41,7 @@ const ShowPWButton: React.FC<Props> = ({
     top,
     right,
     mobileTop,
+    mobileRight,
 }) => {
     return (
         <ShowPwButton
@@ -49,6 +52,7 @@ const ShowPWButton: React.FC<Props> = ({
             top={top}
             right={right}
             mobileTop={mobileTop}
+            mobileRight={mobileRight}
         >
             {showingPW ? (
                 <img src="/assets/images/hidePW.svg" alt="hidePW" />
