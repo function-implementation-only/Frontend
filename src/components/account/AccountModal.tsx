@@ -56,7 +56,7 @@ const Title = styled.p<{ marginTop?: string }>`
         font-size: 18px;
         font-weight: 700;
         color: #333;
-        margin-top: ${(props) => props.marginTop || '32px'};
+        margin-top: ${(props) => props.marginTop ?? '32px'};
     }
 `
 

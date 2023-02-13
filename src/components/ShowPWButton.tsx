@@ -10,8 +10,8 @@ const ShowPwButton = styled.button<{
     mobileRight?: string
 }>`
     position: absolute;
-    top: ${({ top }) => top || '27%'};
-    right: ${({ right }) => right || '137px'};
+    top: ${({ top }) => top ?? '27%'};
+    right: ${({ right }) => right ?? '137px'};
     width: auto;
     border: none;
     background-color: transparent;
@@ -22,8 +22,8 @@ const ShowPwButton = styled.button<{
         vertical-align: middle;
     }
     @media (max-width: 720px) {
-        right: ${({ mobileRight }) => mobileRight || '24px'};
-        top: ${({ mobileTop }) => mobileTop || '37%'};
+        right: ${({ mobileRight }) => mobileRight ?? '24px'};
+        top: ${({ mobileTop }) => mobileTop ?? '37%'};
     }
 `
 interface Props {
