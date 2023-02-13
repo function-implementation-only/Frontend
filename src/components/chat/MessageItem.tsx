@@ -68,11 +68,12 @@ const TimeText = styled.span`
 `
 
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bkBnbWFpbC5jb20iLCJleHAiOjE2NzYxMTQ3MjAsImlhdCI6MTY3NjAyODMyMH0.ZnooR-Ik_idvRNhXEoZJrMr3CYag-Zsz5t2toItg5ds'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bjRAZ21haWwuY29tIiwiZXhwIjoxNjc2Mjg5ODE1LCJpYXQiOjE2NzYyMDM0MTV9.zJciUB2PE814L6frlBqWZD_rmba_iThLSqqtRorjZdw'
 
 function MessageItem({ data }: { data: MessageItemProps }) {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
+    const targetEmail = { targetEmail: data.email }
 
     async function selectMessage() {
         const response = await fetch(
@@ -83,15 +84,14 @@ function MessageItem({ data }: { data: MessageItemProps }) {
                     'Content-Type': 'application/json',
                     Access_Token: token,
                 },
-                body: JSON.stringify({
-                    roomName: 'test',
-                    targetEmail: data.email,
-                }),
+                body: JSON.stringify(targetEmail),
             }
         )
+        // .then((res) => res.json())
+        // .then((json) => console.log(json))
 
         const RoomData = await response.json()
-
+        // console.log(RoomData)
         navigate(`/chat?id=${RoomData}`)
     }
 
