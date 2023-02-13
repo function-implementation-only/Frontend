@@ -13,6 +13,7 @@ import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined'
 import usePostPasswordCheck from 'hooks/usePostPasswordCheck'
 import useEditPassword from 'hooks/useEditPassword'
 import useEditAccountInfo from 'hooks/useEditAccountInfo'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import {
     ErrorNickname,
     ErrorPassword,
@@ -25,7 +26,11 @@ const ProfilePageLayout = styled.div`
     flex-direction: column;
     align-items: center;
     form {
-        width: 638px;
+        // width: 638px;
+    }
+    @media (max-width: 720px) {
+        form {
+        }
     }
 `
 const AvatarBox = styled.div`
@@ -33,12 +38,27 @@ const AvatarBox = styled.div`
     display: flex;
     justify-content: center;
     margin: 36px 0;
+    .avatar {
+        width: 130px;
+        height: 130px;
+    }
+    @media (max-width: 720px) {
+        margin: 0 0 14px;
+        .avatar {
+            width: 94px;
+            height: 94px;
+        }
+    }
 `
 
 const AvatarImage = styled.img`
     width: 130px;
     height: 130px;
     border-radius: 50%;
+    @media (max-width: 720px) {
+        width: 94px;
+        height: 94px;
+    }
 `
 
 const ThemeBox = styled.span`
@@ -50,9 +70,19 @@ const ThemeBox = styled.span`
     font-size: 24px;
     color: #3e4145;
     margin: 36px 0;
+    @media (max-width: 720px) {
+        font-size: 18px;
+        margin: 24px 0;
+    }
 `
 
-const ItemBox = styled.div``
+const ItemBox = styled.div`
+    @media (max-width: 720px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+`
 
 const InputItem = styled.div`
     position: relative;
@@ -62,14 +92,21 @@ const InputItem = styled.div`
     &:last-child {
         margin-bottom: 42px;
     }
-    #emailAuth {
-        margin-left: 142px;
-    }
     #passwordCheck {
         margin-left: 142px;
     }
     em {
         color: #212529;
+    }
+    @media (max-width: 720px) {
+        #password,
+        #passwordCheck {
+            width: 258px;
+            margin-left: 0;
+        }
+        flex-direction: column;
+        align-items: start;
+        margin-bottom: 35px;
     }
 `
 
@@ -100,6 +137,12 @@ const Input = styled.input`
         background: #f8f9fa;
         color: #838485;
     }
+    @media (max-width: 720px) {
+        width: 343px;
+        height: 46px;
+        margin: 4px 0 0;
+        font-size: 14px;
+    }
 `
 
 const Button = styled.button`
@@ -117,6 +160,11 @@ const Button = styled.button`
         color: #cbcbcb;
         background: #f8f9fa;
         border: 1px solid #cbcbcb;
+    }
+    @media (max-width: 720px) {
+        width: 77px;
+        height: 46px;
+        margin-left: 8px;
     }
 `
 
@@ -136,12 +184,34 @@ const AddButton = styled.button`
     svg {
         vertical-align: middle;
     }
+    @media (max-width: 720px) {
+        width: 26px;
+        height: 26px;
+        left: 54%;
+        svg {
+            position: absolute;
+            font-size: 19px;
+            top: 15%;
+            left: 12%;
+        }
+    }
 `
 
-const ErrorItem = styled.div``
+const ErrorItem = styled.div`
+    @media (max-width: 720px) {
+        p {
+            margin-left: -166px;
+        }
+    }
+`
 
 const ButtonBox = styled.div`
     margin-left: 142px;
+    @media (max-width: 720px) {
+        display: flex;
+        justify-content: center;
+        margin: 0 0 24px;
+    }
 `
 
 function ProfilePage() {
@@ -264,10 +334,7 @@ function ProfilePage() {
                             alt="프로필 이미지"
                         />
                     ) : (
-                        <Avatar
-                            src="/broken-image.jpg"
-                            sx={{ width: 130, height: 130 }}
-                        />
+                        <Avatar className="avatar" src="/broken-image.jpg" />
                     )}
                 </AvatarBox>
                 <ItemBox>
@@ -283,40 +350,45 @@ function ProfilePage() {
                     </InputItem>
                     <InputItem>
                         <Label htmlFor="password">비밀번호</Label>
-                        <Input
-                            id="password"
-                            disabled={pwChange || changedPw}
-                            type={showingPW ? 'text' : 'password'}
-                            placeholder="영문, 숫자 조합 6~12자"
-                            {...register('password', {
-                                maxLength: 12,
-                                minLength: 6,
-                                pattern: /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,12}$/,
-                                onBlur: () => onSubmitPasswordCheck(),
-                                onChange: () => onSubmitPasswordCheck(),
-                            })}
-                        />
-                        <ShowPWButton
-                            showingPW={showingPW}
-                            setShowingPW={setShowingPW}
-                        />
-                        {!pwChange ? (
-                            <Button
-                                type="button"
-                                onClick={handlePwChange}
-                                disabled={!pwCheck || changedPw}
-                            >
-                                변경
-                            </Button>
-                        ) : (
-                            <Button
-                                type="button"
-                                onClick={() => setPwChange(false)}
-                                disabled={changedPw}
-                            >
-                                취소
-                            </Button>
-                        )}
+                        <div>
+                            <Input
+                                id="password"
+                                disabled={pwChange || changedPw}
+                                type={showingPW ? 'text' : 'password'}
+                                placeholder="영문, 숫자 조합 6~12자"
+                                {...register('password', {
+                                    maxLength: 12,
+                                    minLength: 6,
+                                    pattern:
+                                        /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,12}$/,
+                                    onBlur: () => onSubmitPasswordCheck(),
+                                    onChange: () => onSubmitPasswordCheck(),
+                                })}
+                            />
+                            <ShowPWButton
+                                showingPW={showingPW}
+                                setShowingPW={setShowingPW}
+                                mobileRight="90px"
+                                mobileTop="48%"
+                            />
+                            {!pwChange ? (
+                                <Button
+                                    type="button"
+                                    onClick={handlePwChange}
+                                    disabled={!pwCheck || changedPw}
+                                >
+                                    변경
+                                </Button>
+                            ) : (
+                                <Button
+                                    type="button"
+                                    onClick={() => setPwChange(false)}
+                                    disabled={changedPw}
+                                >
+                                    취소
+                                </Button>
+                            )}
+                        </div>
                     </InputItem>
                     <ErrorItem>
                         <ErrorPassword
@@ -346,6 +418,8 @@ function ProfilePage() {
                                 <ShowPWButton
                                     showingPW={showingPwChange}
                                     setShowingPW={setShowingPwChange}
+                                    mobileRight="5px"
+                                    mobileTop="47%"
                                 />
                             </InputItem>
                             <ErrorItem>
@@ -355,28 +429,34 @@ function ProfilePage() {
                                 />
                             </ErrorItem>
                             <InputItem>
-                                <Input
-                                    id="passwordCheck"
-                                    type={showingPWcheck ? 'text' : 'password'}
-                                    disabled={changedPw}
-                                    placeholder="비밀번호를 한번 더 입력해 주세요."
-                                    {...register('passwordCheck', {
-                                        required: true,
-                                        validate: (value) =>
-                                            value === changePassword,
-                                    })}
-                                />
-                                <ShowPWButton
-                                    showingPW={showingPWcheck}
-                                    setShowingPW={setShowingPWcheck}
-                                />
-                                <Button
-                                    type="button"
-                                    onClick={onSubmitPasswordChange}
-                                    disabled={changedPw}
-                                >
-                                    변경
-                                </Button>
+                                <div>
+                                    <Input
+                                        id="passwordCheck"
+                                        type={
+                                            showingPWcheck ? 'text' : 'password'
+                                        }
+                                        disabled={changedPw}
+                                        placeholder="비밀번호를 한번 더 입력해 주세요."
+                                        {...register('passwordCheck', {
+                                            required: true,
+                                            validate: (value) =>
+                                                value === changePassword,
+                                        })}
+                                    />
+                                    <ShowPWButton
+                                        showingPW={showingPWcheck}
+                                        setShowingPW={setShowingPWcheck}
+                                        mobileRight="90px"
+                                        mobileTop="34%"
+                                    />
+                                    <Button
+                                        type="button"
+                                        onClick={onSubmitPasswordChange}
+                                        disabled={changedPw}
+                                    >
+                                        변경
+                                    </Button>
+                                </div>
                             </InputItem>
                             <ErrorItem>
                                 <ErrorPasswordCheck
@@ -445,6 +525,7 @@ function ProfilePage() {
                         type="submit"
                         disabled={isSubmitting}
                         fontWeight={700}
+                        mobileWidth={660}
                     >
                         수정 완료
                     </AccountButtonItem>
