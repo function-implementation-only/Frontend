@@ -87,11 +87,7 @@ function MessageItem({ data }: { data: MessageItemProps }) {
                 body: JSON.stringify(targetEmail),
             }
         )
-        // .then((res) => res.json())
-        // .then((json) => console.log(json))
-
         const RoomData = await response.json()
-        // console.log(RoomData)
         navigate(`/chat?id=${RoomData}`)
     }
 
