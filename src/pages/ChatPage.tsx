@@ -57,17 +57,39 @@ const MessageList = styled.ul`
 const ChatListBox = styled.div`
     width: 340px;
     height: 150px;
-`
-
-const ChatListColumn = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
 `
 
-const ChatListIcon = styled.img`
-    border-radius: 50%;
+// const ChatListColumn = styled.div`
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+// `
+
+const ChatListIconBox = styled.div`
+    height: 78px;
+    width: 340px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 12px;
+`
+
+const ChatListCircle = styled.div`
+    border: 2px solid #ff9c30;
+    border-radius: 50%;
+    width: 78px;
+    height: 78px;
+`
+
+const ChatListIcon = styled.svg`
+    transform: rotateZ(-45deg);
+    position: absolute;
+    margin-bottom: 5px;
+    margin-left: 4px;
 `
 
 const ChatListParagraph = styled.p`
@@ -89,7 +111,7 @@ const DUMMMY_DATA = [
         name: '김해피',
         content: '네~ 하겠습니다.',
         time: '00시간',
-        email: 'test@test.com',
+        email: 'te31e3123com',
     },
     {
         id: '2',
@@ -97,15 +119,15 @@ const DUMMMY_DATA = [
         name: '김조인',
         content: 'asdfagsdjdsgj.',
         time: '00시간',
-        email: 'test2@test.com',
+        email: 't23123t3123c312om',
     },
     {
         id: '3',
         avatar: '',
         name: 'Happy',
-        content: '네~ afkjsdngdsjkdsgdsgfddsfdsfdsfsdfdfas.',
+        content: '네~ afkjsdngdsjkgdsgfddsfdsfdsfsdfdfas.',
         time: '00시간',
-        email: 'tes3t@test.com',
+        email: 't33325244m',
     },
     {
         id: '4',
@@ -113,7 +135,7 @@ const DUMMMY_DATA = [
         avatar: '',
         content: 'dgkhbsdgkjnsjlgknsdlkgjndjl',
         time: '00시간',
-        email: 'test4@test.com',
+        email: 't32571est41com',
     },
 ]
 
@@ -155,16 +177,34 @@ function ChatPage() {
             {!searchParams.get('id') ? (
                 <MessageRow>
                     <ChatListBox>
-                        <ChatListColumn>
-                            <ChatListIcon src="https://via.placeholder.com/78" />
-                            <ChatListParagraph>
-                                메세지 선택하기
-                            </ChatListParagraph>
-                            <ChatListContentParagraph>
-                                기존 대화에서 선택하거나 새로운 대화를
-                                시작해보세요
-                            </ChatListContentParagraph>
-                        </ChatListColumn>
+                        {/* <ChatListColumn> */}
+                        <ChatListIconBox>
+                            <ChatListCircle />
+                            <ChatListIcon
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1"
+                                stroke="currentColor"
+                                preserveAspectRatio="xMidYmid meet"
+                                width={50}
+                                height={50}
+                                color="#ff9c30"
+                                transform="rotateZ(45deg)"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                                />
+                            </ChatListIcon>
+                        </ChatListIconBox>
+
+                        <ChatListParagraph>메세지 선택하기</ChatListParagraph>
+                        <ChatListContentParagraph>
+                            기존 대화에서 선택하거나 새로운 대화를 시작해보세요
+                        </ChatListContentParagraph>
+                        {/* </ChatListColumn> */}
                     </ChatListBox>
                 </MessageRow>
             ) : (
