@@ -11,7 +11,7 @@ const ButtonLayout = styled.button<{
 }>`
     width: 368px;
     height: 48px;
-    background-color: ${(props) => props.background || '#ff9c30'};
+    background-color: ${(props) => props.background ?? '#ff9c30'};
     border: none;
     border-radius: 10px;
     font-family: 'Pretendard';
@@ -31,7 +31,7 @@ const ButtonLayout = styled.button<{
     }
     @media (max-width: 720px) {
         width: ${(props) =>
-            `calc((${props.mobileWidth || 600} / 720) * 100vw)`};
+            `calc((${props.mobileWidth ?? 600} / 720) * 100vw)`};
         height: 51px;
         a {
             width: 250px;
