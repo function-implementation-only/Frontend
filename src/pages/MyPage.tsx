@@ -78,7 +78,10 @@ const AccountDetailBox = styled.div`
     }
 `
 
-const AccountDetailList = styled.div``
+const AccountDetailList = styled.div`
+    display: flex;
+    flex-direction: column;
+`
 
 const AccountNameItem = styled.span`
     font-family: 'Pretendard';
@@ -86,7 +89,7 @@ const AccountNameItem = styled.span`
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
-    margin-top: 11.5px;
+    margin: 11.5px 0 4px;
     @media (max-width: 720px) {
         font-size: 16px;
     }
@@ -133,6 +136,9 @@ const AccountIntroductionItem = styled.p`
     gap: 10px;
     border: 1px solid #ff9c30;
     border-radius: 5px;
+    span {
+        color: #b0b0b0;
+    }
     @media (max-width: 720px) {
         display: none;
     }
@@ -182,17 +188,21 @@ function MyPage() {
                             <AccountNameItem>
                                 {accountData?.data.nickname}
                             </AccountNameItem>
-                            <br />
-                            <AccountFieldItem>
-                                {accountData?.data.field}
-                            </AccountFieldItem>
-                            <AccountDividerItem>|</AccountDividerItem>
-                            <AccountTimeItem>
-                                {accountData?.data.availableTime}
-                            </AccountTimeItem>
-                            <br />
+                            <div>
+                                <AccountFieldItem>
+                                    {accountData?.data.field}
+                                </AccountFieldItem>
+                                <AccountDividerItem>|</AccountDividerItem>
+                                <AccountTimeItem>
+                                    {accountData?.data.availableTime}
+                                </AccountTimeItem>
+                            </div>
                             <AccountIntroductionItem>
-                                {accountData?.data.introduction}
+                                {accountData?.data.introduction === '' ? (
+                                    <span>자기 소개가 없습니다</span>
+                                ) : (
+                                    accountData?.data.introduction
+                                )}
                             </AccountIntroductionItem>
                         </AccountDetailList>
                         <DefaultButton onClick={handleProfilePage}>
