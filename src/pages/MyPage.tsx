@@ -53,7 +53,7 @@ const AccountInfoList = styled.div`
     button {
         margin-left: 598px;
     }
-    #avatar {
+    .avatar {
         width: 150px;
         height: 150px;
         margin-right: 36px;
@@ -64,7 +64,7 @@ const AccountInfoList = styled.div`
         button {
             margin: 16px 0px 0px;
         }
-        #avatar {
+        .avatar {
             width: 80px;
             height: 80px;
             margin-right: 24px;
@@ -175,7 +175,7 @@ function MyPage() {
                             alt="프로필 이미지"
                         />
                     ) : (
-                        <Avatar id="avatar" src="/broken-image.jpg" />
+                        <Avatar className="avatar" src="/broken-image.jpg" />
                     )}
                     <AccountDetailBox>
                         <AccountDetailList>
