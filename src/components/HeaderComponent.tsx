@@ -48,7 +48,7 @@ const LogInList = styled.div`
         color: #b0b0b0;
     }
     @media (max-width: 720px) {
-        #postBtn {
+        .postBtn {
             display: none;
         }
     }
@@ -207,7 +207,7 @@ function HeaderComponent() {
                             </Menu>
                             <Divider />
                             <DefaultButton
-                                id="postBtn"
+                                className="postBtn"
                                 type="button"
                                 onClick={handleWrite}
                             >

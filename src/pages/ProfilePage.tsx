@@ -38,13 +38,13 @@ const AvatarBox = styled.div`
     display: flex;
     justify-content: center;
     margin: 36px 0;
-    #avatar {
+    .avatar {
         width: 130px;
         height: 130px;
     }
     @media (max-width: 720px) {
         margin: 0 0 14px;
-        #avatar {
+        .avatar {
             width: 94px;
             height: 94px;
         }
@@ -334,7 +334,7 @@ function ProfilePage() {
                             alt="프로필 이미지"
                         />
                     ) : (
-                        <Avatar id="avatar" src="/broken-image.jpg" />
+                        <Avatar className="avatar" src="/broken-image.jpg" />
                     )}
                 </AvatarBox>
                 <ItemBox>
