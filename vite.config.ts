@@ -35,19 +35,5 @@ export default defineConfig(({ mode }) => {
                 },
             }),
         ],
-        server: {
-            proxy: {
-                // Proxying websockets or socket.io
-                '/api/ws': {
-                    target: 'wss://joinus.p-e.kr',
-                    ws: true,
-                },
-                // with options
-                '/api': {
-                    target: 'https://joinus.p-e.kr',
-                    changeOrigin: true,
-                },
-            },
-        },
     }
 })
