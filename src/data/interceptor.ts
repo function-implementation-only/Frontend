@@ -15,11 +15,7 @@ export interface ClientInstance extends AxiosInstance {
     interceptors: {
         request: AxiosInterceptorManager<
             | AxiosRequestConfig
-            | { headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  }
-              }
+            | { headers: RawAxiosRequestHeaders | AxiosHeaders | any }
         >
         response: AxiosInterceptorManager<AxiosResponse<CustomResponseFormat>>
     }
