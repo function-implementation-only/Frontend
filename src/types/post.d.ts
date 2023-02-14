@@ -39,4 +39,5 @@ export interface PostObj {
     likeCheck: null | boolean
     profileImg: null | string
     accountId: number
+    viewCount: number
 }

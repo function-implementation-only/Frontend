@@ -6,10 +6,15 @@ const LookupLayout = styled.div`
     right: 0;
     bottom: 0;
 `
-function Lookup() {
+
+interface LookupInterface {
+    viewCount: number
+}
+
+function Lookup({ viewCount }: LookupInterface) {
     return (
         <LookupLayout>
-            <img src="/assets/images/lookup.svg" alt="lookupImg" /> 0
+            <img src="/assets/images/lookup.svg" alt="lookupImg" /> {viewCount}
         </LookupLayout>
     )
 }
