@@ -23,10 +23,10 @@ const TextBox = styled.div`
     display: flex;
     flex-direction: column;
 `
-const Name = styled.span<{ display: boolean | string }>`
+const Name = styled.span<{ see: boolean | string }>`
     font-weight: 400;
 
-    display: ${(props) => (props.display ? 'show' : 'none')};
+    display: ${(props) => (props.see ? 'show' : 'none')};
 `
 const TextBallroon = styled.span<{ gap: boolean | string }>`
     display: flex;
@@ -45,7 +45,7 @@ function ChatText({ avatar }: ChatTextProp) {
         <ChatTextLayout>
             <Avatar src="https://via.placeholder.com/28" avatar={avatar} />
             <TextBox>
-                <Name display={avatar}>ChatText</Name>
+                <Name see={avatar}>ChatText</Name>
                 <TextBallroon gap={avatar}>asdfas</TextBallroon>
             </TextBox>
         </ChatTextLayout>

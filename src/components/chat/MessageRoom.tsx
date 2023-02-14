@@ -1,7 +1,12 @@
 import ChatText from 'components/ChatText'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import SockJS from 'sockjs-client'
+import { over } from 'stompjs'
+import { useSearchParams } from 'react-router-dom'
 
+let stompClient = null
+const errorCount = 0
 // TODO: 아래 타입 데이터는 중복데이터임 한곳에서 관리하면 좋을듯.
 type MessageItemProps = {
     id: string
@@ -114,18 +119,73 @@ const NoReadContentText = styled.p`
     font-size: 18px;
 `
 
+const token =
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bjVAZ21haWwuY29tIiwiZXhwIjoxNjc2NDQyNjI4LCJpYXQiOjE2NzYzNTYyMjh9.7ZMtGbLj1XdY8NNNa8XbKQ3J43VqFvB8n0QJU8sZK44'
+
 function MessageRoom({ list }: { list: MessageItemProps[] }) {
     const inputRef = useRef<HTMLInputElement>(null)
+    // const [chatList, setChatList] = useState([])
+    const [searchParams] = useSearchParams()
+
     const submitHandler = (e: React.FormEvent) => {
         e.preventDefault()
 
         // console.log('sdsds')
     }
 
+    useEffect(() => {
+        console.log(searchParams.get('id'))
+
+        fetch(
+            `http://61.77.108.167:8000/chat-service/chat/${searchParams.get(
+                'id'
+            )}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Access_Token: token,
+                },
+            }
+        )
+            .then((res) => res.json())
+            .then((json) => {
+                console.log(json)
+            })
+    }, [])
+
+    const onConnectedCallback = () => {
+        console.log('연결 콜백 실행')
+        // stompClient.subscribe(`/sub/chatroom/${searchParams.get('id')}`)
+    }
+
+    const onErrorCallback = (e ) => {
+        console.log('에러', e)
+    }
+    
+    // useEffect(() => {
+    //     const Sock = new SockJs(`http://61.77.108.167:8000/chat-service/ws`)
+    //     stompClient = over(Sock)
+    //     stompClient.connect({}, onConnectedCallback, onErrorCallback)
+
+    //     stompClient.subscribe(`/pub/chatroom/${searchParams.get('id')}`)
+
+    //     console.log(stompClient)
+    // }, [])
+
+    const subsc = () => { 
+        const Sock = new SockJS(`http://61.77.108.167:8000/chat-service/ws`)
+        stompClient = over(Sock)
+        console.log(stompClient)
+        stompClient.connect({}, onConnectedCallback, onErrorCallback)
+    }
     return (
         <MessageRoomLayOut>
             {list.length ? (
                 <>
+                    <button onClick={subsc} type="button">
+                        dd
+                    </button>
                     <UserInfoRow>
                         <Avatar src="https://via.placeholder.com/40" />
                         <UserBox>
