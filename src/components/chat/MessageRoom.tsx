@@ -1,4 +1,4 @@
-import ChatText from 'components/common/ChatText'
+import ChatText from 'components/ChatText'
 import { useRef } from 'react'
 import styled from 'styled-components'
 
@@ -127,7 +127,7 @@ function MessageRoom({ list }: { list: MessageItemProps[] }) {
             {list.length ? (
                 <>
                     <UserInfoRow>
-                        <Avatar src="https://via.placeholder.com/56" />
+                        <Avatar src="https://via.placeholder.com/40" />
                         <UserBox>
                             <UserInfoText>
                                 <h2>이름</h2>
@@ -155,7 +155,7 @@ function MessageRoom({ list }: { list: MessageItemProps[] }) {
                             />
                         </TrashCanIcon>
                     </UserInfoRow>
-                    <ChatText />
+                    <ChatText avatar />
                     <ChatInputRow onSubmit={submitHandler}>
                         <AddPictureIcon
                             xmlns="http://www.w3.org/2000/svg"
