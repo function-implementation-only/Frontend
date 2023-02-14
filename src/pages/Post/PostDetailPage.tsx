@@ -144,8 +144,26 @@ function PostDetailPage() {
         console.log('Apply for this post')
     }
 
-    function handleChat() {
-        console.log('Start chatting')
+    // Todo: 로직 바꿔야함.
+    const token =
+        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bjVAZ21haWwuY29tIiwiZXhwIjoxNjc2NDQyNjI4LCJpYXQiOjE2NzYzNTYyMjh9.7ZMtGbLj1XdY8NNNa8XbKQ3J43VqFvB8n0QJU8sZK44'
+    async function handleChat() {
+        console.log(apiResponse.data.email)
+
+        const response = await fetch(
+            'http://61.77.108.167:8000/chat-service/chat',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Access_Token: token,
+                },
+                body: JSON.stringify({ targetEmail: apiResponse.data.email }),
+            }
+        )
+        const roomData = await response.json()
+        console.log(roomData.roomName)
+        navigate(`/chat?id=${roomData.roomName}`)
     }
 
     if (isLoading) return <PostDetailLayout>loading</PostDetailLayout>
@@ -207,7 +225,11 @@ function PostDetailPage() {
                                     {apiResponse.data.nickname}
                                 </NicknameSpan>
                                 {isAuthor ? (
-                                    ''
+                                    // Fixme: 나중에 챗버튼 지우기
+                                    <ChatButton
+                                        type="button"
+                                        onClick={handleChat}
+                                    />
                                 ) : (
                                     <ChatButton
                                         type="button"

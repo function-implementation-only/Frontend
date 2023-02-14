@@ -11,6 +11,7 @@ import ChatPage from 'pages/ChatPage'
 import Kakao from './components/account/Kakao'
 import Google from './components/account/Google'
 import SignUpPage from './pages/SignUpPage'
+import ChatPageTest from 'pages/ChatPageTest'
 
 const queryClient = new QueryClient()
 
@@ -37,6 +38,7 @@ function App() {
                         />
                         <Route path="/api/google/test" element={<Google />} />
                         <Route path="/chat" element={<ChatPage />} />
+                        <Route path="/chatTest" element={<ChatPageTest />} />
                     </Routes>
                 </BrowserRouter>
                 <ReactQueryDevtools

@@ -194,22 +194,6 @@ function ChatPage() {
         else setAllMessage(false)
     }
 
-    // const onConnectedCallback = () => {
-    //     console.log('하이야')
-    // }
-
-    // useEffect(() => {
-    //     const Sock = new SockJs(`http://172.30.1.26/chat-service`)
-    //     stompClient = over(Sock)
-    //     stompClient.connect(
-    //         {
-    //             'Content-Type': 'application/json',
-    //             Access_Token: token,
-    //         },
-    //         onConnectedCallback
-    //     )
-    // }, [])
-
     const getChatRooms = async () => {
         const response = await fetch(
             'http://172.30.1.26/chat-service/chat/list',
@@ -227,9 +211,9 @@ function ChatPage() {
     }
 
     // 페이지 도착시 채팅방 리스트 갱신
-    useEffect(() => {
-        getChatRooms()
-    }, [])
+    // useEffect(() => {
+    //     getChatRooms()
+    // }, [])
 
     return (
         <ChatPageLayout>
