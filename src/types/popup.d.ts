@@ -1,4 +1,5 @@
 export type PopupProps = {
+    type?: string
     content: string
     buttons?: PopupButton[]
 }

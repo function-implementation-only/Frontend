@@ -70,7 +70,7 @@ const FormRow = styled.div<{
     marginBottom?: string
 }>`
     ${(props) => (props.multiple ? Multiple : '')}
-    margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : '')}
+    margin-bottom: ${(props) => (props.marginBottom ? props.marginBottom : '')};
 `
 
 const TextCss = css`
@@ -88,7 +88,7 @@ const TitleBox = styled.div`
 const Title = styled.input`
     ${TextCss}
     height: 56px;
-    border-radius: 5px;
+    border-radius: 10px;
     outline: 1px solid var(--gray-250);
     border: none;
     &:focus {

@@ -1,7 +1,10 @@
-import React from 'react'
 import styled from 'styled-components'
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import { PopupProps } from 'types/popup'
+import { useAppDispatch } from 'src/store/hooks'
+import { useEffect } from 'react'
+import { setpopupIsShowing } from 'src/store/features/popup/PopupSlice'
 
 const Overlay = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
@@ -31,7 +34,7 @@ const ContentBox = styled.div`
     border-bottom: 1px solid #ced4da;
     svg {
         font-size: 50px;
-        color: #ff9c30;
+        color: #ff3257;
         margin-top: 56px;
     }
     span {
@@ -59,27 +62,51 @@ const Button = styled.button<{
     border: none;
     color: #ff9c30;
     cursor: pointer;
+    border-radius: 0 0 20px 20px;
     ${(props) =>
         props.buttonsLen >= 2 && props.buttonIdx !== 0
             ? 'border-left: 1px solid #ced4da;'
             : ''}
-    ${(props) => (props.buttonIdx === 0 ? 'border-radius: 0 0 0 20px;' : '')}
     ${(props) =>
-        props.buttonIdx === props.buttonsLen - 1
+        props.buttonsLen >= 2 && props.buttonIdx === 0
+            ? 'border-radius: 0 0 0 20px;'
+            : ''}
+    ${(props) =>
+        props.buttonsLen >= 2 && props.buttonIdx === props.buttonsLen - 1
             ? 'border-radius: 0 0 20px 0;'
             : ''}
 `
-const DefaultPopup: React.FC<PopupProps> = ({ content, buttons }) => {
-    function stopScrolling() {
-        const bodyEl = window.document.body
-        bodyEl.classList.add('noScroll')
-    }
-    stopScrolling()
+const DefaultPopup: React.FC<PopupProps> = ({
+    content,
+    buttons,
+    type,
+}: PopupProps) => {
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(
+            setpopupIsShowing({
+                popupIsShowing: true,
+            })
+        )
+        return () => {
+            dispatch(
+                setpopupIsShowing({
+                    popupIsShowing: false,
+                })
+            )
+        }
+    }, [])
+
     return (
         <Overlay>
             <PopupLayout>
                 <ContentBox>
-                    <CheckCircleOutlineIcon />
+                    {type === 'check' ? (
+                        <CheckCircleOutlineIcon />
+                    ) : (
+                        <ErrorOutlineOutlinedIcon />
+                    )}
                     <span>{content}</span>
                 </ContentBox>
                 <ButtonBox>

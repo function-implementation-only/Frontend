@@ -17,7 +17,6 @@ import useLogger from 'hooks/useLogger'
 import { useAppSelector } from 'src/store/hooks'
 import useGetPosts from 'hooks/useGetPosts'
 import useGetFilteredPosts from 'hooks/useGetFilteredPosts'
-// import useServiceManager from 'hooks/useServiceManager'
 
 const MainPageLayout = styled.div``
 
@@ -120,26 +119,6 @@ function MainPage() {
     useEffect(() => {
         setPostsState(POST_TYPE.NON_FILTERED)
         // 최초 마운트시 공고 가져오기
-
-        // 팝업 테스트 코드
-        // const serviceManager = useServiceManager()
-        // serviceManager.domainService.popupAPI.show({
-        //     content: '비밀번호가 변경되었습니다.',
-        //     buttons: [
-        //         {
-        //             label: '확인',
-        //             clickHandler: () => {
-        //                 console.log('확인')
-        //             },
-        //         },
-        //         {
-        //             label: '닫기',
-        //             clickHandler: () => {
-        //                 serviceManager.domainService.popupAPI.closeTopPopup()
-        //             },
-        //         },
-        //     ],
-        // })
     }, [])
 
     useEffect(() => {
