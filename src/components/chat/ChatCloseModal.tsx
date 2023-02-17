@@ -1,10 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 import Modal from '../Modal'
 
 interface Props {
     isShowing: boolean
     handleShowing: () => void
+    deleteRequest: () => Promise<void>
     // login: boolean
     // signup: boolean
     // setLogin: Dispatch<SetStateAction<boolean>>
@@ -26,7 +28,32 @@ const CloseMesssageBox = styled.div`
     gap: 8px;
 `
 const CloseButtonBox = styled.div`
+    display: flex;
     height: 70px;
+
+    & :nth-child(1) {
+        color: #ff3257;
+        border-bottom-left-radius: 20px;
+        border: none;
+        border-right: 1px solid RGB(206, 212, 218);
+        border-top: 1px solid RGB(206, 212, 218);
+    }
+    & :nth-child(2) {
+        color: #ff9c30;
+        border-bottom-right-radius: 20px;
+        border: none;
+        border-top: 1px solid RGB(206, 212, 218);
+    }
+`
+const DeleteButton = styled.button`
+    width: 100%;
+    background: transparent;
+    font-weight: 700;
+    font-size: 16px;
+    &:hover {
+        cursor: pointer;
+        background #F8F9FA; 
+    }
 `
 const WarningIcon = styled.svg`
     width: 44px;
@@ -43,7 +70,18 @@ const P = styled.p`
     font-size: 14px;
 `
 
-const ChatCloseModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
+const ChatCloseModal: React.FC<Props> = ({
+    isShowing,
+    handleShowing,
+    deleteRequest,
+}) => {
+    const navigate = useNavigate()
+
+    const deleteSequence = async () => {
+        await deleteRequest()
+        navigate('/chat')
+    }
+
     return (
         <Modal isOpen={isShowing} onClose={handleShowing}>
             <CloseChatLayout>
@@ -66,7 +104,14 @@ const ChatCloseModal: React.FC<Props> = ({ isShowing, handleShowing }) => {
                     <P>나가기를 하면 대화내용이 모두 삭제되고</P>
                     <P>채팅목록애서도 삭제됩니다.</P>
                 </CloseMesssageBox>
-                <CloseButtonBox />
+                <CloseButtonBox>
+                    <DeleteButton type="button" onClick={deleteSequence}>
+                        나가기
+                    </DeleteButton>
+                    <DeleteButton type="button" onClick={handleShowing}>
+                        취소
+                    </DeleteButton>
+                </CloseButtonBox>
             </CloseChatLayout>
         </Modal>
     )

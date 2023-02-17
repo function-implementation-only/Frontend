@@ -38,7 +38,6 @@ export default defineConfig(({ mode }) => {
         ],
         server: {
             proxy: {
-                // Proxying websockets or socket.io
                 '/chat-service/ws': {
                     target: 'http://61.77.108.167:8000',
                     ws: true,

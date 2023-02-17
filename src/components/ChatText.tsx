@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 interface ChatTextProp {
     avatar: boolean | string
+    side: boolean
     content: string
     name: string
 }
@@ -10,7 +11,7 @@ interface ChatTextProp {
 const ChatTextLayout = styled.div`
     display: flex;
     flex-direction: row;
-    width: 1124px;
+    max-width: 1124px;
     padding-left: 16px;
     padding-right: 16px;
 `
@@ -20,38 +21,50 @@ const Avatar = styled.img<{ avatar: boolean | string }>`
     height: 28px;
     display: ${(props) => (props.avatar ? 'show' : 'none')};
 `
-const TextBox = styled.div<{ align: boolean }>`
+const TextBox = styled.div<{ isMine: boolean }>`
     margin-left: 8px;
     max-width: 450px;
     display: flex;
     flex-direction: column;
+    font-family: 'Pretendard';
 
-    margin-left: ${(props) => (props.align ? '8px' : 'auto')};
+    margin-left: ${(props) => (props.isMine ? 'auto' : '8px')};
 `
 const Name = styled.span<{ see: boolean | string }>`
+    margin-top: 8px;
     font-weight: 400;
-
-    display: ${(props) => (props.see ? 'show' : 'none')};
+    font-family: 'Pretendard';
+    display: ${(props) => (props.see ? 'box' : 'none')};
 `
-const TextBallroon = styled.span<{ gap: boolean | string }>`
+type TextBoxType = {
+    gap: boolean | string
+    boxColor: boolean
+}
+const TextBallroon = styled.span<TextBoxType>`
+    background: ${(props) => (props.boxColor ? '#FF9C30;' : '#F8F9FA;')}
+    color: ${(props) => (props.boxColor ? 'white;' : '')}
     display: flex;
     flex-direction: row;
     justify-content: start;
     align-items: center;
     padding: 9px 14px;
-    background: #f8f9fa;
     border-radius: 10px;
+    margin-bottom: 2px;
+    font-family: 'Pretendard';
 
     margin-top: ${(props) => (props.gap ? '8px' : '4px')};
+    margin-left: ${(props) => (props.gap ? '' : '28px')};
 `
 // Fixme: 프롭스 변수명 바꾸기.
-function ChatText({ avatar, content, name }: ChatTextProp) {
+function ChatText({ avatar, content, name, side }: ChatTextProp) {
     return (
         <ChatTextLayout>
             <Avatar src="https://via.placeholder.com/28" avatar={avatar} />
-            <TextBox align={avatar}>
+            <TextBox isMine={side}>
                 <Name see={avatar}>{name}</Name>
-                <TextBallroon gap={avatar}>{content}</TextBallroon>
+                <TextBallroon gap={avatar} boxColor={side}>
+                    {content}
+                </TextBallroon>
             </TextBox>
         </ChatTextLayout>
     )

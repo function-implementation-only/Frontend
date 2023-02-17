@@ -1,6 +1,12 @@
 import MessageItem from 'components/chat/MessageItem'
 import MessageRoom from 'components/chat/MessageRoom'
-import { MouseEvent, useEffect, useState } from 'react'
+import {
+    Dispatch,
+    MouseEvent,
+    SetStateAction,
+    useEffect,
+    useState,
+} from 'react'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -30,6 +36,24 @@ const MessageRow = styled.div`
 
 const CategoryColumn = styled.div`
     display: flex;
+`
+const NoReadContentBox = styled.div`
+    width: 252px;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
+`
+const NoReadContentIcon = styled.svg`
+    width: 78px;
+    height: 78px;
+    margin-bottom: 12px;
+`
+const NoReadContentText = styled.p`
+    font-weight: bold;
+    font-size: 18px;
 `
 
 const CategoryButton = styled.button<CategoryProps>`
@@ -111,6 +135,7 @@ export type ChatRoomType = {
     unReadMessageCount: number
     latestChatMessage: null | string
     nickname: string
+    partnerSet: Dispatch<SetStateAction<ChatPartnerType>>
 }
 
 type ChatRoomResponse = {
@@ -120,17 +145,23 @@ type ChatRoomResponse = {
     totalPages: number
 }
 
+export type ChatPartnerType = {
+    name: string
+    time: string
+    power: string
+}
+
 const token =
     'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bkBnbWFpbC5jb20iLCJleHAiOjE2NzY3MDg5OTMsImlhdCI6MTY3NjYyMjU5M30.5h07nCZagQUfb4SvVssnOd6Ey7xQzuqEQNPdNt74VHg'
 
 function ChatPage() {
     const [AllMessage, setAllMessage] = useState(true)
     const [chatRoom, setChatRoom] = useState<ChatRoomType[]>([])
+    const [chatPartner, setChatParter] = useState<ChatPartnerType>()
     const [searchParams] = useSearchParams()
     const currentChatRoom = searchParams.get('id')
     const DOMAIN = `http://61.77.108.167:8000`
 
-    // const changeCategoryHandler = () => setAllCategory()
     function setMessageState(e: MouseEvent<HTMLButtonElement>) {
         const text = (e.target as HTMLElement).textContent
 
@@ -147,8 +178,7 @@ function ChatPage() {
             },
         })
         const roomdata: ChatRoomResponse = await response.json()
-        console.log(roomdata)
-        // Todo: 아래리턴값 리턴 없애고 채팅방 이동으로 바꾸어야 함.
+        // console.log(roomdata)  lastmessage, nickname, roomid, content[]
         setChatRoom(roomdata.content)
     }
 
@@ -175,7 +205,11 @@ function ChatPage() {
                 </CategoryColumn>
                 <MessageList>
                     {chatRoom?.map((room) => (
-                        <MessageItem key={room.roomName} data={room} />
+                        <MessageItem
+                            key={room.roomName}
+                            data={room}
+                            partnerSet={setChatParter}
+                        />
                     ))}
                 </MessageList>
             </ChatListRow>
@@ -210,8 +244,28 @@ function ChatPage() {
                         </ChatListContentParagraph>
                     </ChatListBox>
                 </MessageRow>
+            ) : AllMessage ? (
+                <MessageRoom talkWith={chatPartner} />
             ) : (
-                <MessageRoom />
+                <NoReadContentBox>
+                    <NoReadContentIcon
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        color="#ff9c30"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                    </NoReadContentIcon>
+                    <NoReadContentText>
+                        안 읽은 메세지가 없습니다.
+                    </NoReadContentText>
+                </NoReadContentBox>
             )}
         </ChatPageLayout>
     )

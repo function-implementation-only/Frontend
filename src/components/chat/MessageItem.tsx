@@ -65,7 +65,7 @@ const token =
 function MessageItem({ data }: { data: ChatRoomType }) {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
-    const { roomName } = data
+    const { roomName, partnerSet } = data
 
     async function selectMessage() {
         // const response = await fetch(
