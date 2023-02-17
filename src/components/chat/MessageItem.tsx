@@ -1,14 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
-
-type MessageItemProps = {
-    id: string
-    name: string
-    content: string
-    time: string
-    avatar: string
-    email: string
-}
+import { ChatRoomType } from 'pages/ChatPage'
 
 type SelectedProps = {
     selected: boolean
@@ -17,7 +9,7 @@ type SelectedProps = {
 const MessageItemLayout = styled.li<SelectedProps>`
     display: flex;
     height: 76px;
-    width: 300px;
+    max-width: 300px;
     padding: 10px;
     margin: 4px 0;
     cursor: pointer;
@@ -68,44 +60,46 @@ const TimeText = styled.span`
 `
 
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bjRAZ21haWwuY29tIiwiZXhwIjoxNjc2Mjg5ODE1LCJpYXQiOjE2NzYyMDM0MTV9.zJciUB2PE814L6frlBqWZD_rmba_iThLSqqtRorjZdw'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bkBnbWFpbC5jb20iLCJleHAiOjE2NzY3MDg5OTMsImlhdCI6MTY3NjYyMjU5M30.5h07nCZagQUfb4SvVssnOd6Ey7xQzuqEQNPdNt74VHg'
 
-function MessageItem({ data }: { data: MessageItemProps }) {
+function MessageItem({ data }: { data: ChatRoomType }) {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
-    const targetEmail = { targetEmail: data.email }
+    const { roomName } = data
 
     async function selectMessage() {
-        const response = await fetch(
-            'http://121.190.6.208:8000/chat-service/chat',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Access_Token: token,
-                },
-                body: JSON.stringify(targetEmail),
-            }
-        )
-        const RoomData = await response.json()
-        navigate(`/chat?id=${RoomData}`)
+        // const response = await fetch(
+        //     'http://121.190.6.208:8000/chat-service/chat',
+        //     {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             Access_Token: token,
+        //         },
+        //         body: JSON.stringify(roomName),
+        //     }
+        // )
+        // const RoomData = await response.json()
+        navigate(`/chat?id=${roomName}`)
     }
 
     return (
         <MessageItemLayout
             onClick={selectMessage}
-            selected={searchParams.get('id') === data.id}
+            selected={searchParams.get('id') === roomName}
         >
             <AvatarRow>
                 <AvatarImage src="https://via.placeholder.com/56" />
             </AvatarRow>
             <MessageInfoBox>
                 <NameColumn>
-                    <NameParagraph>{data.name}</NameParagraph>
+                    <NameParagraph>{data.nickname}</NameParagraph>
                 </NameColumn>
                 <ContentTimeColumn>
-                    <ContentParagraph>{data.content}</ContentParagraph>
-                    <TimeText>{data.time}</TimeText>
+                    <ContentParagraph>
+                        {data.latestChatMessage}
+                    </ContentParagraph>
+                    <TimeText>시간</TimeText>
                 </ContentTimeColumn>
             </MessageInfoBox>
         </MessageItemLayout>

@@ -40,13 +40,13 @@ export default defineConfig(({ mode }) => {
             proxy: {
                 // Proxying websockets or socket.io
                 '/chat-service/ws': {
-                    target: 'ws://61.77.108.167:8000',
+                    target: 'http://61.77.108.167:8000',
                     ws: true,
                 },
             },
-            define: {
-                global: {},
-            },
+        },
+        define: {
+            global: 'window',
         },
     }
 })

@@ -3,10 +3,13 @@ import styled from 'styled-components'
 
 interface ChatTextProp {
     avatar: boolean | string
+    content: string
+    name: string
 }
 
 const ChatTextLayout = styled.div`
     display: flex;
+    flex-direction: row;
     width: 1124px;
     padding-left: 16px;
     padding-right: 16px;
@@ -17,11 +20,13 @@ const Avatar = styled.img<{ avatar: boolean | string }>`
     height: 28px;
     display: ${(props) => (props.avatar ? 'show' : 'none')};
 `
-const TextBox = styled.div`
+const TextBox = styled.div<{ align: boolean }>`
     margin-left: 8px;
-    width: 450px;
+    max-width: 450px;
     display: flex;
     flex-direction: column;
+
+    margin-left: ${(props) => (props.align ? '8px' : 'auto')};
 `
 const Name = styled.span<{ see: boolean | string }>`
     font-weight: 400;
@@ -40,13 +45,13 @@ const TextBallroon = styled.span<{ gap: boolean | string }>`
     margin-top: ${(props) => (props.gap ? '8px' : '4px')};
 `
 // Fixme: 프롭스 변수명 바꾸기.
-function ChatText({ avatar }: ChatTextProp) {
+function ChatText({ avatar, content, name }: ChatTextProp) {
     return (
         <ChatTextLayout>
             <Avatar src="https://via.placeholder.com/28" avatar={avatar} />
-            <TextBox>
-                <Name see={avatar}>ChatText</Name>
-                <TextBallroon gap={avatar}>asdfas</TextBallroon>
+            <TextBox align={avatar}>
+                <Name see={avatar}>{name}</Name>
+                <TextBallroon gap={avatar}>{content}</TextBallroon>
             </TextBox>
         </ChatTextLayout>
     )

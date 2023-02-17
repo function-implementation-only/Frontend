@@ -1,13 +1,8 @@
 import MessageItem from 'components/chat/MessageItem'
 import MessageRoom from 'components/chat/MessageRoom'
-import { MouseEvent, useState, useEffect } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
-
-// import SockJs from 'sockjs-client'
-// import { over } from 'stompjs'
-
-// let stompClient = null
 
 type CategoryProps = {
     selected: boolean
@@ -109,82 +104,31 @@ const ChatListContentParagraph = styled.p`
     color: var(--gray-700);
 `
 
-const DUMMMY_DATA = [
-    {
-        id: '1',
-        avatar: '',
-        name: '김해피',
-        content: '네~ 하겠습니다.',
-        time: '00시간',
-        email: 'te31e3123com',
-    },
-    {
-        id: '2',
-        avatar: '',
-        name: '김조인',
-        content: 'asdfagsdjdsgj.',
-        time: '00시간',
-        email: 't23123t3123c312om',
-    },
-    {
-        id: '3',
-        avatar: '',
-        name: 'Happy',
-        content: '네~ afkjsdngdsjkgdsgfddsfdsfdsfsdfdfas.',
-        time: '00시간',
-        email: 't33325244m',
-    },
-    {
-        id: '4',
-        name: '이연말',
-        avatar: '',
-        content: 'dgkhbsdgkjnsjlgknsdlkgjndjl',
-        time: '00시간',
-        email: 't32571est41com',
-    },
-]
+export type ChatRoomType = {
+    roomId: number
+    roomName: string
+    chatList: null | object[]
+    unReadMessageCount: number
+    latestChatMessage: null | string
+    nickname: string
+}
 
-const NO_DUMMMY_DATA = [
-    {
-        id: '1',
-        avatar: '',
-        name: '김해피',
-        content: '네~ 하겠습니다.',
-        time: '00시간',
-        email: 'te31e3123com',
-    },
-    {
-        id: '2',
-        avatar: '',
-        name: '김조인',
-        content: 'asdfagsdjdsgj.',
-        time: '00시간',
-        email: 't23123t3123c312om',
-    },
-    {
-        id: '3',
-        avatar: '',
-        name: 'Happy',
-        content: '네~ afkjsdngdsjkgdsgfddsfdsfdsfsdfdfas.',
-        time: '00시간',
-        email: 't33325244m',
-    },
-    {
-        id: '4',
-        name: '이연말',
-        avatar: '',
-        content: 'dgkhbsdgkjnsjlgknsdlkgjndjl',
-        time: '00시간',
-        email: 't32571est41com',
-    },
-]
+type ChatRoomResponse = {
+    content: ChatRoomType[]
+    first: boolean
+    last: boolean
+    totalPages: number
+}
 
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bjRAZ21haWwuY29tIiwiZXhwIjoxNjc2Mjg5ODE1LCJpYXQiOjE2NzYyMDM0MTV9.zJciUB2PE814L6frlBqWZD_rmba_iThLSqqtRorjZdw'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bkBnbWFpbC5jb20iLCJleHAiOjE2NzY3MDg5OTMsImlhdCI6MTY3NjYyMjU5M30.5h07nCZagQUfb4SvVssnOd6Ey7xQzuqEQNPdNt74VHg'
 
 function ChatPage() {
     const [AllMessage, setAllMessage] = useState(true)
+    const [chatRoom, setChatRoom] = useState<ChatRoomType[]>([])
     const [searchParams] = useSearchParams()
+    const currentChatRoom = searchParams.get('id')
+    const DOMAIN = `http://61.77.108.167:8000`
 
     // const changeCategoryHandler = () => setAllCategory()
     function setMessageState(e: MouseEvent<HTMLButtonElement>) {
@@ -195,25 +139,22 @@ function ChatPage() {
     }
 
     const getChatRooms = async () => {
-        const response = await fetch(
-            'http://172.30.1.26/chat-service/chat/list',
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Access_Token: token,
-                },
-            }
-        )
-        const RoomData = await response.json()
+        const response = await fetch(`${DOMAIN}/chat-service/chat/list`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Access_Token: token,
+            },
+        })
+        const roomdata: ChatRoomResponse = await response.json()
+        console.log(roomdata)
         // Todo: 아래리턴값 리턴 없애고 채팅방 이동으로 바꾸어야 함.
-        return RoomData
+        setChatRoom(roomdata.content)
     }
 
-    // 페이지 도착시 채팅방 리스트 갱신
-    // useEffect(() => {
-    //     getChatRooms()
-    // }, [])
+    useEffect(() => {
+        getChatRooms()
+    }, [])
 
     return (
         <ChatPageLayout>
@@ -233,15 +174,14 @@ function ChatPage() {
                     </CategoryButton>
                 </CategoryColumn>
                 <MessageList>
-                    {DUMMMY_DATA.map((data) => (
-                        <MessageItem key={data.id} data={data} />
+                    {chatRoom?.map((room) => (
+                        <MessageItem key={room.roomName} data={room} />
                     ))}
                 </MessageList>
             </ChatListRow>
-            {!searchParams.get('id') ? (
+            {!currentChatRoom ? (
                 <MessageRow>
                     <ChatListBox>
-                        {/* <ChatListColumn> */}
                         <ChatListIconBox>
                             <ChatListCircle />
                             <ChatListIcon
@@ -250,11 +190,11 @@ function ChatPage() {
                                 viewBox="0 0 24 24"
                                 strokeWidth="1"
                                 stroke="currentColor"
-                                preserveAspectRatio="xMidYmid meet"
+                                preserveAspectRatio="xMidYMid meet"
                                 width={50}
                                 height={50}
                                 color="#ff9c30"
-                                transform="rotateZ(45deg)"
+                                style={{ rotate: '45deg' }}
                             >
                                 <path
                                     strokeLinecap="round"
@@ -268,11 +208,10 @@ function ChatPage() {
                         <ChatListContentParagraph>
                             기존 대화에서 선택하거나 새로운 대화를 시작해보세요
                         </ChatListContentParagraph>
-                        {/* </ChatListColumn> */}
                     </ChatListBox>
                 </MessageRow>
             ) : (
-                <MessageRoom list={NO_DUMMMY_DATA} />
+                <MessageRoom />
             )}
         </ChatPageLayout>
     )

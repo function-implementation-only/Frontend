@@ -1,20 +1,26 @@
-import ChatText from 'components/ChatText'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import SockJS from 'sockjs-client'
-import { over } from 'stompjs'
 import { useSearchParams } from 'react-router-dom'
+import ChatText from 'components/ChatText'
+import useModal from 'hooks/useModal'
+import SockJS from 'sockjs-client'
+import { Client, over } from 'stompjs'
+import ChatCloseModal from './ChatCloseModal'
 
-let stompClient = null
-const errorCount = 0
 // TODO: 아래 타입 데이터는 중복데이터임 한곳에서 관리하면 좋을듯.
 type MessageItemProps = {
-    id: string
-    name: string
-    content: string
-    time: string
-    avatar: string
-    email: string
+    chatList: [
+        {
+            id: string
+            sender: string
+            message: string
+            time: string
+            avatar: string
+            email: string
+        }
+    ]
+
+    roomId: string
 }
 
 const UserInfoRow = styled.div`
@@ -120,72 +126,62 @@ const NoReadContentText = styled.p`
 `
 
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bjVAZ21haWwuY29tIiwiZXhwIjoxNjc2NDQyNjI4LCJpYXQiOjE2NzYzNTYyMjh9.7ZMtGbLj1XdY8NNNa8XbKQ3J43VqFvB8n0QJU8sZK44'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bkBnbWFpbC5jb20iLCJleHAiOjE2NzY3MDg5OTMsImlhdCI6MTY3NjYyMjU5M30.5h07nCZagQUfb4SvVssnOd6Ey7xQzuqEQNPdNt74VHg'
 
-function MessageRoom({ list }: { list: MessageItemProps[] }) {
+let client: Client
+function MessageRoom() {
+    const [chatList, setChatList] = useState<MessageItemProps>()
     const inputRef = useRef<HTMLInputElement>(null)
-    // const [chatList, setChatList] = useState([])
+    const { isShowing, handleShowing } = useModal()
     const [searchParams] = useSearchParams()
+
+    const DOMAIN = 'http://61.77.108.167:8000'
+    const PARAM = searchParams.get('id')
 
     const submitHandler = (e: React.FormEvent) => {
         e.preventDefault()
 
-        // console.log('sdsds')
+        console.log(client)
+
+        client.send('/pub/chat', {
+            roomId: chatList.roomId,
+            sender: '이상돈',
+            message: '오와',
+        })
     }
 
     useEffect(() => {
-        console.log(searchParams.get('id'))
-
-        fetch(
-            `http://61.77.108.167:8000/chat-service/chat/${searchParams.get(
-                'id'
-            )}`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Access_Token: token,
-                },
-            }
-        )
+        fetch(`${DOMAIN}/chat-service/chat/${PARAM}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Access_Token: token,
+            },
+        })
             .then((res) => res.json())
             .then((json) => {
-                console.log(json)
+                console.log(json, '채팅리스트')
+                setChatList(() => json)
             })
-    }, [])
+    }, [searchParams])
 
-    const onConnectedCallback = () => {
-        console.log('연결 콜백 실행')
-        // stompClient.subscribe(`/sub/chatroom/${searchParams.get('id')}`)
-    }
+    useEffect(() => {
+        const endPoint = new SockJS('chat-service/ws')
+        client = over(endPoint)
+        const connectCallback = () => {
+            console.log('WebSocket connected')
+            client.subscribe(`/sub/chatroom/${PARAM}`, () => {
+                console.log('dd')
+            })
+        }
 
-    const onErrorCallback = (e ) => {
-        console.log('에러', e)
-    }
-    
-    // useEffect(() => {
-    //     const Sock = new SockJs(`http://61.77.108.167:8000/chat-service/ws`)
-    //     stompClient = over(Sock)
-    //     stompClient.connect({}, onConnectedCallback, onErrorCallback)
+        client.connect({ Access_Token: token }, connectCallback)
+    }, [searchParams])
 
-    //     stompClient.subscribe(`/pub/chatroom/${searchParams.get('id')}`)
-
-    //     console.log(stompClient)
-    // }, [])
-
-    const subsc = () => { 
-        const Sock = new SockJS(`http://61.77.108.167:8000/chat-service/ws`)
-        stompClient = over(Sock)
-        console.log(stompClient)
-        stompClient.connect({}, onConnectedCallback, onErrorCallback)
-    }
     return (
         <MessageRoomLayOut>
-            {list.length ? (
+            {chatList?.chatList.length ? (
                 <>
-                    <button onClick={subsc} type="button">
-                        dd
-                    </button>
                     <UserInfoRow>
                         <Avatar src="https://via.placeholder.com/40" />
                         <UserBox>
@@ -202,6 +198,7 @@ function MessageRoom({ list }: { list: MessageItemProps[] }) {
                             </UserInfoText>
                         </UserBox>
                         <TrashCanIcon
+                            onClick={handleShowing}
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -215,7 +212,21 @@ function MessageRoom({ list }: { list: MessageItemProps[] }) {
                             />
                         </TrashCanIcon>
                     </UserInfoRow>
-                    <ChatText avatar />
+                    {chatList?.chatList.map((chat, index, arr) => {
+                        return (
+                            <ChatText
+                                key={chat.id}
+                                avatar={
+                                    arr[index - 1]?.id === chat?.id
+                                        ? false
+                                        : `${'ㅕㄱㄴ'}`
+                                }
+                                content={chat.message}
+                                name={chat.sender}
+                            />
+                        )
+                    })}
+
                     <ChatInputRow onSubmit={submitHandler}>
                         <AddPictureIcon
                             xmlns="http://www.w3.org/2000/svg"
@@ -261,11 +272,11 @@ function MessageRoom({ list }: { list: MessageItemProps[] }) {
                                 viewBox="0 0 24 24"
                                 strokeWidth="1"
                                 stroke="currentColor"
-                                preserveAspectRatio="xMidYmid meet"
+                                // preserveAspectRatio="xMidYmid meet"
                                 width={20}
                                 height={20}
                                 color="#ff9c30"
-                                transform="rotateZ(45deg)"
+                                // transform="rotateZ(45deg)"
                             >
                                 <path
                                     strokeLinecap="round"
@@ -297,6 +308,10 @@ function MessageRoom({ list }: { list: MessageItemProps[] }) {
                     </NoReadContentText>
                 </NoReadContentBox>
             )}
+            <ChatCloseModal
+                isShowing={isShowing}
+                handleShowing={handleShowing}
+            />
         </MessageRoomLayOut>
     )
 }

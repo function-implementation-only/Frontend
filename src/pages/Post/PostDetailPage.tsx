@@ -12,6 +12,7 @@ import useBookmark from 'hooks/useBookmark'
 import ApplyModal from 'components/ApplyModal'
 import useModal from 'hooks/useModal'
 import useServiceManager from 'hooks/useServiceManager'
+import { useState } from 'react'
 
 const PostDetailLayout = styled.div`
     width: 1440px;
@@ -143,6 +144,10 @@ function PostDetailPage() {
     const accountId = JSON.parse(localStorage.getItem('accountId')) || null
     const isLogin = !!localStorage.getItem('token')
 
+    const token = `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bjVAZ21haWwuY29tIiwiZXhwIjoxNjc2NTIzNDMxLCJpYXQiOjE2NzY0MzcwMzF9.6XVNQpWKByh1XnlzaOFOaxPbxnYlvTMXLIsuIlk-taQ`
+    const DOMAIN = 'http://61.77.108.167:8000'
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [isAuthor, setIsAuthor] = useState(true)
     const { isLoading, error, data: apiResponse } = usePostById(paramId)
 
     function handleUpdatePost() {
@@ -172,24 +177,17 @@ function PostDetailPage() {
     }
 
     // Todo: 로직 바꿔야함.
-    const token =
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bjVAZ21haWwuY29tIiwiZXhwIjoxNjc2NDQyNjI4LCJpYXQiOjE2NzYzNTYyMjh9.7ZMtGbLj1XdY8NNNa8XbKQ3J43VqFvB8n0QJU8sZK44'
     async function handleChat() {
-        console.log(apiResponse.data.email)
-
-        const response = await fetch(
-            'http://61.77.108.167:8000/chat-service/chat',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Access_Token: token,
-                },
-                body: JSON.stringify({ targetEmail: apiResponse.data.email }),
-            }
-        )
+        const response = await fetch(`${DOMAIN}/chat-service/chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Access_Token: token,
+            },
+            body: JSON.stringify({ targetEmail: apiResponse.data.email }),
+        })
         const roomData = await response.json()
-        console.log(roomData.roomName)
+        console.log(roomData, '룸데')
         navigate(`/chat?id=${roomData.roomName}`)
     }
 
