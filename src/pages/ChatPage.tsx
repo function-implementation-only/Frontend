@@ -1,12 +1,6 @@
 import MessageItem from 'components/chat/MessageItem'
 import MessageRoom from 'components/chat/MessageRoom'
-import {
-    Dispatch,
-    MouseEvent,
-    SetStateAction,
-    useEffect,
-    useState,
-} from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -103,17 +97,17 @@ const ChatListIconBox = styled.div`
 `
 
 const ChatListCircle = styled.div`
-    border: 2px solid #ff9c30;
+    border: 5px solid #ff9c30;
     border-radius: 50%;
     width: 78px;
     height: 78px;
 `
 
 const ChatListIcon = styled.svg`
-    transform: rotateZ(-45deg);
     position: absolute;
     margin-bottom: 5px;
     margin-left: 4px;
+    rotate: -45deg;
 `
 
 const ChatListParagraph = styled.p`
@@ -135,8 +129,18 @@ export type ChatRoomType = {
     unReadMessageCount: number
     latestChatMessage: null | string
     nickname: string
-    partnerSet: Dispatch<SetStateAction<ChatPartnerType>>
 }
+
+const chats = [
+    {
+        roomId: 113,
+        roomName: 'string',
+        chatList: [{}],
+        unReadMessageCount: 0,
+        latestChatMessage: 'dfsa',
+        nickname: 'string',
+    },
+]
 
 type ChatRoomResponse = {
     content: ChatRoomType[]
@@ -151,6 +155,10 @@ export type ChatPartnerType = {
     power: string
 }
 
+const UnsetButton = styled.button`
+    all: unset;
+`
+
 const token =
     'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bkBnbWFpbC5jb20iLCJleHAiOjE2NzY3MDg5OTMsImlhdCI6MTY3NjYyMjU5M30.5h07nCZagQUfb4SvVssnOd6Ey7xQzuqEQNPdNt74VHg'
 
@@ -162,11 +170,21 @@ function ChatPage() {
     const currentChatRoom = searchParams.get('id')
     const DOMAIN = `http://61.77.108.167:8000`
 
+    console.log(AllMessage)
+
     function setMessageState(e: MouseEvent<HTMLButtonElement>) {
         const text = (e.target as HTMLElement).textContent
 
         if (text === '전체') setAllMessage(true)
         else setAllMessage(false)
+    }
+
+    function setChatPerson(room: ChatRoomType) {
+        setChatParter({
+            name: room.nickname,
+            time: room.nickname,
+            power: room.nickname,
+        })
     }
 
     const getChatRooms = async () => {
@@ -204,16 +222,18 @@ function ChatPage() {
                     </CategoryButton>
                 </CategoryColumn>
                 <MessageList>
-                    {chatRoom?.map((room) => (
-                        <MessageItem
+                    {/* //Todo: 아래 chats? 를 chatRoom 으로 바꾸어야합니다. chats 는 더미데이터 */}
+                    {chats?.map((room: any) => (
+                        <UnsetButton
                             key={room.roomName}
-                            data={room}
-                            partnerSet={setChatParter}
-                        />
+                            onClick={() => setChatPerson(room)}
+                        >
+                            <MessageItem data={room} />
+                        </UnsetButton>
                     ))}
                 </MessageList>
             </ChatListRow>
-            {!currentChatRoom ? (
+            {!currentChatRoom && AllMessage ? (
                 <MessageRow>
                     <ChatListBox>
                         <ChatListIconBox>
@@ -222,13 +242,12 @@ function ChatPage() {
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
-                                strokeWidth="1"
+                                strokeWidth="1.5"
                                 stroke="currentColor"
                                 preserveAspectRatio="xMidYMid meet"
                                 width={50}
                                 height={50}
                                 color="#ff9c30"
-                                style={{ rotate: '45deg' }}
                             >
                                 <path
                                     strokeLinecap="round"
@@ -247,25 +266,27 @@ function ChatPage() {
             ) : AllMessage ? (
                 <MessageRoom talkWith={chatPartner} />
             ) : (
-                <NoReadContentBox>
-                    <NoReadContentIcon
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        color="#ff9c30"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                    </NoReadContentIcon>
-                    <NoReadContentText>
-                        안 읽은 메세지가 없습니다.
-                    </NoReadContentText>
-                </NoReadContentBox>
+                <MessageRow>
+                    <NoReadContentBox>
+                        <NoReadContentIcon
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            color="#ff9c30"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </NoReadContentIcon>
+                        <NoReadContentText>
+                            안 읽은 메세지가 없습니다.
+                        </NoReadContentText>
+                    </NoReadContentBox>
+                </MessageRow>
             )}
         </ChatPageLayout>
     )
