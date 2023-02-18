@@ -54,7 +54,7 @@ export default class AccountAPI implements AccountAPIInterface {
     }
 
     getGoogleLogin(code: string | null): Promise<AxiosResponse> {
-        return setInterceptors.get(`/google/test?code=${code}`)
+        return setInterceptors.get(`/auth/google?code=${code}`)
     }
 
     getAccountInfo(): Promise<AxiosResponse> {
