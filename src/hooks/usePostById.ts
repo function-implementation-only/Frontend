@@ -6,7 +6,7 @@ import useServiceManager from './useServiceManager'
 function usePostById(id: string) {
     const serviceManager = useServiceManager()
 
-    return useQuery('getPost', async () => {
+    return useQuery(`getPost-${id}`, async () => {
         const { data } = await serviceManager.dataService.postAPI.getPostById(
             id
         )
