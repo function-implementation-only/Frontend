@@ -9,7 +9,7 @@ type SelectedProps = {
 const MessageItemLayout = styled.li<SelectedProps>`
     display: flex;
     height: 76px;
-    max-width: 300px;
+    width: 300px;
     padding: 10px;
     margin: 4px 0;
     cursor: pointer;
@@ -31,6 +31,8 @@ const MessageInfoBox = styled.div`
     flex-direction: column;
     justify-content: center;
     gap: 8px;
+    position: relative;
+    width: 212px;
 `
 
 const NameColumn = styled.div``
@@ -58,9 +60,19 @@ const TimeText = styled.span`
     font-size: 12px;
     color: var(--gray-600);
 `
+const RedDot = styled.div`
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #ff9c30;
+    border-radius: 50%;
+    right: 0;
+`
 
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bkBnbWFpbC5jb20iLCJleHAiOjE2NzY3MDg5OTMsImlhdCI6MTY3NjYyMjU5M30.5h07nCZagQUfb4SvVssnOd6Ey7xQzuqEQNPdNt74VHg'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3Njg4ODE0OSwiaWF0IjoxNjc2ODAxNzQ5fQ.GGLogzGnouBOjo4OHcwOPzQ_AvQzJpfDL6u24QBNAFM'
+
+console.log(token)
 
 function MessageItem({ data }: { data: ChatRoomType }) {
     const navigate = useNavigate()
@@ -101,6 +113,7 @@ function MessageItem({ data }: { data: ChatRoomType }) {
                     </ContentParagraph>
                     <TimeText>시간</TimeText>
                 </ContentTimeColumn>
+                {data.unReadMessageCount ? <RedDot /> : null}
             </MessageInfoBox>
         </MessageItemLayout>
     )

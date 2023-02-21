@@ -1,5 +1,7 @@
 import MessageItem from 'components/chat/MessageItem'
 import MessageRoom from 'components/chat/MessageRoom'
+import ThereIsContent from 'components/chat/ThereIsContent'
+import ThereIsNoContent from 'components/chat/ThereIsNoContent'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -19,35 +21,11 @@ const ChatPageLayout = styled.div`
 const ChatListRow = styled.div`
     height: 100%;
     border-right: 2px solid rgba(51, 51, 51, 0.1);
-`
-
-const MessageRow = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding-right: 10px;
 `
 
 const CategoryColumn = styled.div`
     display: flex;
-`
-const NoReadContentBox = styled.div`
-    width: 252px;
-    display: flex;
-    flex-direction: column;
-    align-self: center;
-    align-items: center;
-    margin-top: auto;
-    margin-bottom: auto;
-`
-const NoReadContentIcon = styled.svg`
-    width: 78px;
-    height: 78px;
-    margin-bottom: 12px;
-`
-const NoReadContentText = styled.p`
-    font-weight: bold;
-    font-size: 18px;
 `
 
 const CategoryButton = styled.button<CategoryProps>`
@@ -68,65 +46,13 @@ const CategoryButton = styled.button<CategoryProps>`
         props.selected && '3px solid var(--primary-color)'};
 `
 
-const MessageList = styled.ul`
-    padding-right: 10px;
-`
-
-const ChatListBox = styled.div`
-    width: 340px;
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`
-
-// const ChatListColumn = styled.div`
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-// `
-
-const ChatListIconBox = styled.div`
-    height: 78px;
-    width: 340px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
-`
-
-const ChatListCircle = styled.div`
-    border: 5px solid #ff9c30;
-    border-radius: 50%;
-    width: 78px;
-    height: 78px;
-`
-
-const ChatListIcon = styled.svg`
-    position: absolute;
-    margin-bottom: 5px;
-    margin-left: 4px;
-    rotate: -45deg;
-`
-
-const ChatListParagraph = styled.p`
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 28.8px;
-    margin-bottom: 8px;
-`
-
-const ChatListContentParagraph = styled.p`
-    line-height: 23px;
-    color: var(--gray-700);
-`
+const MessageList = styled.ul``
 
 export type ChatRoomType = {
     roomId: number
     roomName: string
     chatList: null | object[]
-    unReadMessageCount: number
+    unReadMessageCount: number | boolean
     latestChatMessage: null | string
     nickname: string
 }
@@ -136,9 +62,25 @@ const chats = [
         roomId: 113,
         roomName: 'string',
         chatList: [{}],
-        unReadMessageCount: 0,
-        latestChatMessage: 'dfsa',
+        unReadMessageCount: false,
+        latestChatMessage: 'fadsadfsfsadfsdafasfsfsadfasfasdfasfasdf',
         nickname: 'string',
+    },
+    {
+        roomId: 114,
+        roomName: 'string',
+        chatList: [{}],
+        unReadMessageCount: true,
+        latestChatMessage: 'fadsadfsfsadfsdafasfsfsadfasfasdfasfasdf',
+        nickname: '감자',
+    },
+    {
+        roomId: 115,
+        roomName: 'string',
+        chatList: [{}],
+        unReadMessageCount: true,
+        latestChatMessage: 'fadsadfsfsadfsdafasfsfsadfasfasdfasfasdf',
+        nickname: '솜사탕',
     },
 ]
 
@@ -155,36 +97,33 @@ export type ChatPartnerType = {
     power: string
 }
 
-const UnsetButton = styled.button`
-    all: unset;
-`
-
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bkBnbWFpbC5jb20iLCJleHAiOjE2NzY3MDg5OTMsImlhdCI6MTY3NjYyMjU5M30.5h07nCZagQUfb4SvVssnOd6Ey7xQzuqEQNPdNt74VHg'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3Njg4ODE0OSwiaWF0IjoxNjc2ODAxNzQ5fQ.GGLogzGnouBOjo4OHcwOPzQ_AvQzJpfDL6u24QBNAFM'
 
+// todo: 챗 룸에 들어오면 방정보 (채팅내역)을 불러 오는데 여기에 더하여 유저의 정보도 필요하다.
+// 클릭으로 데이터를 넘기다 보면 url 입력이나 링크 이동시에 필요한 정보가 없을 수 있으므로
+// 채팅에 참여하는 유저는 채팅 페이지에서 받아온 데이터를 사용해야 한다. (는게 내 생각)
+// 이러기 위해서는 채팅방을 생성할 당시에 참여자 모두에 대한 정보를 서버로 보내주어야 한다.(는게 내생각)
 function ChatPage() {
     const [AllMessage, setAllMessage] = useState(true)
     const [chatRoom, setChatRoom] = useState<ChatRoomType[]>([])
-    const [chatPartner, setChatParter] = useState<ChatPartnerType>()
     const [searchParams] = useSearchParams()
     const currentChatRoom = searchParams.get('id')
     const DOMAIN = `http://61.77.108.167:8000`
 
-    console.log(AllMessage)
+    // Todo: 아래 콘솔 로그 지워야합니다. 빨간줄 없애기용
+    console.log(chatRoom)
+
+    // Fixme: 아래 chats 를 chatRoom 으로 바꾸어야 함니다.
+    const currentChatMessage =
+        (AllMessage && chats.length >= 1 && chats) ||
+        chats.filter((chat) => chat.unReadMessageCount === true)
 
     function setMessageState(e: MouseEvent<HTMLButtonElement>) {
         const text = (e.target as HTMLElement).textContent
 
-        if (text === '전체') setAllMessage(true)
-        else setAllMessage(false)
-    }
-
-    function setChatPerson(room: ChatRoomType) {
-        setChatParter({
-            name: room.nickname,
-            time: room.nickname,
-            power: room.nickname,
-        })
+        if (text === '전체') setAllMessage(() => true)
+        else setAllMessage(() => false)
     }
 
     const getChatRooms = async () => {
@@ -222,71 +161,18 @@ function ChatPage() {
                     </CategoryButton>
                 </CategoryColumn>
                 <MessageList>
-                    {/* //Todo: 아래 chats? 를 chatRoom 으로 바꾸어야합니다. chats 는 더미데이터 */}
-                    {chats?.map((room: any) => (
-                        <UnsetButton
-                            key={room.roomName}
-                            onClick={() => setChatPerson(room)}
-                        >
-                            <MessageItem data={room} />
-                        </UnsetButton>
+                    {/* //Todo: 아래 currentChatMessage? 를 chatRoom 으로 바꾸어야합니다. chats 는 더미데이터 */}
+                    {currentChatMessage?.map((room: any) => (
+                        <MessageItem data={room} key={room.roomName} />
                     ))}
                 </MessageList>
             </ChatListRow>
-            {!currentChatRoom && AllMessage ? (
-                <MessageRow>
-                    <ChatListBox>
-                        <ChatListIconBox>
-                            <ChatListCircle />
-                            <ChatListIcon
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                preserveAspectRatio="xMidYMid meet"
-                                width={50}
-                                height={50}
-                                color="#ff9c30"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                                />
-                            </ChatListIcon>
-                        </ChatListIconBox>
-
-                        <ChatListParagraph>메세지 선택하기</ChatListParagraph>
-                        <ChatListContentParagraph>
-                            기존 대화에서 선택하거나 새로운 대화를 시작해보세요
-                        </ChatListContentParagraph>
-                    </ChatListBox>
-                </MessageRow>
-            ) : AllMessage ? (
-                <MessageRoom talkWith={chatPartner} />
+            {currentChatRoom ? (
+                <MessageRoom />
+            ) : !currentChatRoom && currentChatMessage.length ? (
+                <ThereIsContent />
             ) : (
-                <MessageRow>
-                    <NoReadContentBox>
-                        <NoReadContentIcon
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            color="#ff9c30"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                        </NoReadContentIcon>
-                        <NoReadContentText>
-                            안 읽은 메세지가 없습니다.
-                        </NoReadContentText>
-                    </NoReadContentBox>
-                </MessageRow>
+                <ThereIsNoContent />
             )}
         </ChatPageLayout>
     )

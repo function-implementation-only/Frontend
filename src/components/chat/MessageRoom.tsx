@@ -5,7 +5,6 @@ import ChatText from 'components/ChatText'
 import useModal from 'hooks/useModal'
 import SockJS from 'sockjs-client'
 import { Client, Message, over } from 'stompjs'
-import { ChatPartnerType } from 'pages/ChatPage'
 import ChatCloseModal from './ChatCloseModal'
 import Imoji from './Imoji'
 
@@ -119,10 +118,10 @@ const SubmitButtonIcon = styled.label`
 `
 
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bkBnbWFpbC5jb20iLCJleHAiOjE2NzY3MDg5OTMsImlhdCI6MTY3NjYyMjU5M30.5h07nCZagQUfb4SvVssnOd6Ey7xQzuqEQNPdNt74VHg'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3Njg4ODE0OSwiaWF0IjoxNjc2ODAxNzQ5fQ.GGLogzGnouBOjo4OHcwOPzQ_AvQzJpfDL6u24QBNAFM'
 
 let client: Client
-function MessageRoom({ talkWith }: { talkWith: ChatPartnerType }) {
+function MessageRoom() {
     const [chatList, setChatList] = useState<MessageItemProps>()
     const { isShowing: imojiShowing, handleShowing: imojiHandle } = useModal()
     const textContentRef = useRef<HTMLDivElement>(null)
@@ -184,6 +183,7 @@ function MessageRoom({ talkWith }: { talkWith: ChatPartnerType }) {
             .then((res) => res.json())
             .then((json) => {
                 setChatList(() => json)
+                console.log(json)
                 scrollControll()
             })
     }, [searchParams])
@@ -208,15 +208,15 @@ function MessageRoom({ talkWith }: { talkWith: ChatPartnerType }) {
                 <Avatar src="https://via.placeholder.com/40" />
                 <UserBox>
                     <UserInfoText>
-                        <h2>{talkWith?.name}</h2>
+                        <h2>이름</h2>
                     </UserInfoText>
                     |
                     <UserInfoText>
-                        <p>{talkWith?.power}</p>
+                        <p>백엔드</p>
                     </UserInfoText>
                     |
                     <UserInfoText>
-                        <p>{talkWith?.time} </p>
+                        <p>시간 </p>
                     </UserInfoText>
                 </UserBox>
                 <TrashCanIcon
