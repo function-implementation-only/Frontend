@@ -6,11 +6,13 @@ interface ChatTextProp {
     side: boolean
     content: string
     name: string
+    time: string
 }
 
-const ChatTextLayout = styled.div`
+const ChatTextLayout = styled.div<{ isMine: boolean }>`
     display: flex;
-    flex-direction: row;
+    flex-direction: ${(props) => (props.isMine ? 'row-reverse;' : 'row;')}
+    /* flex-direction: row; */
     max-width: 1124px;
     padding-left: 16px;
     padding-right: 16px;
@@ -27,6 +29,7 @@ const TextBox = styled.div<{ isMine: boolean }>`
     display: flex;
     flex-direction: column;
     font-family: 'Pretendard';
+    position: relative;
 
     margin-left: ${(props) => (props.isMine ? 'auto' : '8px')};
 `
@@ -36,10 +39,19 @@ const Name = styled.span<{ see: boolean | string }>`
     font-family: 'Pretendard';
     display: ${(props) => (props.see ? 'box' : 'none')};
 `
+const Time = styled.span<{ isMine: boolean }>`
+    position: absolute;
+    right: ${(props) => (props.isMine ? '' : '-45px;')};
+    left: ${(props) => (props.isMine ? '-15px;' : '')};
+    bottom: 10px;
+    font-size: 12px;
+    color: #b0b0b0;
+`
 type TextBoxType = {
     gap: boolean | string
     boxColor: boolean
 }
+
 const TextBallroon = styled.span<TextBoxType>`
     background: ${(props) => (props.boxColor ? '#FF9C30;' : '#F8F9FA;')}
     color: ${(props) => (props.boxColor ? 'white;' : '')}
@@ -56,19 +68,22 @@ const TextBallroon = styled.span<TextBoxType>`
     margin-left: ${(props) => (props.gap ? '' : '28px')};
 `
 // Fixme: 프롭스 변수명 바꾸기.
-function ChatText({ avatar, content, name, side }: ChatTextProp) {
+function ChatText({ avatar, content, name, side, time }: ChatTextProp) {
+    const hour = new Date(time).getHours()
+    const min = new Date(time).getMinutes()
+
     return (
-        <ChatTextLayout>
+        <ChatTextLayout isMine={side}>
             <Avatar src="https://via.placeholder.com/28" avatar={avatar} />
             <TextBox isMine={side}>
                 <Name see={avatar}>{name}</Name>
                 <TextBallroon gap={avatar} boxColor={side}>
                     {content}
                 </TextBallroon>
+                <Time isMine={side}>{`${hour}:${min}`}</Time>
             </TextBox>
         </ChatTextLayout>
     )
 }
 
 export default ChatText
-// todo: 해당 채팅메세지 이전메세지와 해당 메세지를 비교해서 아이디가 같으면 아바타 X  지금 메세지가 나의 메시지면 아바타 X 리버스O.

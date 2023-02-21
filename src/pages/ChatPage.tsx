@@ -105,6 +105,7 @@ function ChatPage() {
             },
         })
         const roomdata: ChatRoomResponse = await response.json()
+        console.log(roomdata, '쳇페이지 룸데이터 조회')
         setChatRoom(roomdata.content)
     }
 
@@ -130,9 +131,12 @@ function ChatPage() {
                     </CategoryButton>
                 </CategoryColumn>
                 <MessageList>
-                    {/* //Todo: 아래 currentChatMessage? 를 chatRoom 으로 바꾸어야합니다. chats 는 더미데이터 */}
                     {currentChatMessage?.map((room: any) => (
-                        <MessageItem data={room} key={room.roomName} />
+                        <MessageItem
+                            data={room}
+                            key={room.roomName}
+                            time="tempTime"
+                        />
                     ))}
                 </MessageList>
             </ChatListRow>

@@ -1,9 +1,29 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { ChatRoomType } from 'pages/ChatPage'
+import { useEffect, useState } from 'react'
 
 type SelectedProps = {
     selected: boolean
+}
+
+type MessageItemProps = {
+    id?: string
+    sender: string
+    message: string
+    time?: string
+    avatar?: string
+    email?: string
+    createAt: string
+}
+
+type TempType = {
+    chatList: MessageItemProps[]
+    latestChatMessage: string | null
+    nickname: string | null
+    roomId: number
+    roomName: string
+    unreadMessageCount: number | null
 }
 
 const MessageItemLayout = styled.li<SelectedProps>`
@@ -68,16 +88,34 @@ const RedDot = styled.div`
     border-radius: 50%;
     right: 0;
 `
-
 const token =
     'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzA3Mzg1NSwiaWF0IjoxNjc2OTg3NDU1fQ.wkR57szvXeVet8-juSmGtiL2MFCYgWAtjs56MZWCBQg'
 
-console.log(token)
-
 function MessageItem({ data }: { data: ChatRoomType }) {
+    const [roomInfo, setRoomInfo] = useState<TempType>()
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const { roomName } = data
+    const DOMAIN = 'http://121.180.179.245:8000'
+
+    const lastTime = roomInfo?.chatList[roomInfo.chatList.length - 1].createAt
+
+    const messageTime = new Date(lastTime)
+
+    const hour = new Date().getHours() - messageTime.getHours()
+    const minute = new Date().getMinutes() - messageTime.getMinutes()
+
+    useEffect(() => {
+        fetch(`${DOMAIN}/chat-service/chat/${data.roomName}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Access_Token: token,
+            },
+        })
+            .then((res) => res.json())
+            .then((json) => setRoomInfo(json))
+    }, [])
 
     async function selectMessage() {
         navigate(`/chat?id=${roomName}`)
@@ -99,7 +137,13 @@ function MessageItem({ data }: { data: ChatRoomType }) {
                     <ContentParagraph>
                         {data.latestChatMessage}
                     </ContentParagraph>
-                    <TimeText>시간</TimeText>
+                    <TimeText>
+                        {hour && minute
+                            ? `${hour} 시간${minute}분 전`
+                            : minute
+                            ? `${minute}분 전`
+                            : null}
+                    </TimeText>
                 </ContentTimeColumn>
                 {data.unReadMessageCount ? <RedDot /> : null}
             </MessageInfoBox>

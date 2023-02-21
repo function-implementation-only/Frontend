@@ -16,6 +16,7 @@ type MessageItemProps = {
     time?: string
     avatar?: string
     email?: string
+    createAt: string
 }
 
 type TempType = {
@@ -124,6 +125,7 @@ const token =
     'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzA3Mzg1NSwiaWF0IjoxNjc2OTg3NDU1fQ.wkR57szvXeVet8-juSmGtiL2MFCYgWAtjs56MZWCBQg'
 
 let client: Client
+// todo: 아래 애니타입 고치기
 function MessageRoom() {
     const [chatList, setChatList] = useState<TempType>()
     const { isShowing: imojiShowing, handleShowing: imojiHandle } = useModal()
@@ -133,14 +135,14 @@ function MessageRoom() {
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
 
+    console.log(chatList)
+
     const DOMAIN = 'http://121.180.179.245:8000'
     const PARAM = searchParams.get('id')
     // Todo:아래정보 지우기
     const user = {
         sender: 'chem.en9273@knu.ac.kr',
     }
-
-    // Todo: 채팅방 제거 리턴값 뭔지 물어보기
 
     // 채팅방 삭제
     const deleteChatRoom = async () => {
@@ -193,8 +195,6 @@ function MessageRoom() {
     const onSubscrib = (messages: Message) => {
         const body: MessageItemProps = JSON.parse(messages.body)
 
-        console.log(messages.toString(), '받은메세지')
-
         setChatList((prev) => {
             return {
                 ...prev,
@@ -204,6 +204,8 @@ function MessageRoom() {
                         message: body.message,
                         sender: body.sender,
                         id: `${Math.random()}`,
+                        createAt: `${new Date().toISOString()}`,
+                        // Todo: 위 아이디 값은 map() 의 키값 때문에 넣은것.
                     },
                 ],
             }
@@ -267,6 +269,7 @@ function MessageRoom() {
                             avatar={!isMine && (isStart || !isRepeat)}
                             content={chat.message}
                             name={chat.sender}
+                            time={chat.createAt}
                             side={isMine}
                         />
                     )
