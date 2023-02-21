@@ -57,33 +57,6 @@ export type ChatRoomType = {
     nickname: string
 }
 
-const chats = [
-    {
-        roomId: 113,
-        roomName: 'string',
-        chatList: [{}],
-        unReadMessageCount: false,
-        latestChatMessage: 'fadsadfsfsadfsdafasfsfsadfasfasdfasfasdf',
-        nickname: 'string',
-    },
-    {
-        roomId: 114,
-        roomName: 'string',
-        chatList: [{}],
-        unReadMessageCount: true,
-        latestChatMessage: 'fadsadfsfsadfsdafasfsfsadfasfasdfasfasdf',
-        nickname: '감자',
-    },
-    {
-        roomId: 115,
-        roomName: 'string',
-        chatList: [{}],
-        unReadMessageCount: true,
-        latestChatMessage: 'fadsadfsfsadfsdafasfsfsadfasfasdfasfasdf',
-        nickname: '솜사탕',
-    },
-]
-
 type ChatRoomResponse = {
     content: ChatRoomType[]
     first: boolean
@@ -98,7 +71,7 @@ export type ChatPartnerType = {
 }
 
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3Njg4ODE0OSwiaWF0IjoxNjc2ODAxNzQ5fQ.GGLogzGnouBOjo4OHcwOPzQ_AvQzJpfDL6u24QBNAFM'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzA3Mzg1NSwiaWF0IjoxNjc2OTg3NDU1fQ.wkR57szvXeVet8-juSmGtiL2MFCYgWAtjs56MZWCBQg'
 
 // todo: 챗 룸에 들어오면 방정보 (채팅내역)을 불러 오는데 여기에 더하여 유저의 정보도 필요하다.
 // 클릭으로 데이터를 넘기다 보면 url 입력이나 링크 이동시에 필요한 정보가 없을 수 있으므로
@@ -109,15 +82,12 @@ function ChatPage() {
     const [chatRoom, setChatRoom] = useState<ChatRoomType[]>([])
     const [searchParams] = useSearchParams()
     const currentChatRoom = searchParams.get('id')
-    const DOMAIN = `http://61.77.108.167:8000`
-
-    // Todo: 아래 콘솔 로그 지워야합니다. 빨간줄 없애기용
-    console.log(chatRoom)
+    const DOMAIN = `http://121.180.179.245:8000`
 
     // Fixme: 아래 chats 를 chatRoom 으로 바꾸어야 함니다.
     const currentChatMessage =
-        (AllMessage && chats.length >= 1 && chats) ||
-        chats.filter((chat) => chat.unReadMessageCount === true)
+        (AllMessage && chatRoom.length >= 1 && chatRoom) ||
+        chatRoom.filter((chat) => chat.unReadMessageCount === true)
 
     function setMessageState(e: MouseEvent<HTMLButtonElement>) {
         const text = (e.target as HTMLElement).textContent
@@ -135,7 +105,6 @@ function ChatPage() {
             },
         })
         const roomdata: ChatRoomResponse = await response.json()
-        // console.log(roomdata)  lastmessage, nickname, roomid, content[]
         setChatRoom(roomdata.content)
     }
 

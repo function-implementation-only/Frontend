@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
         server: {
             proxy: {
                 '/chat-service/ws': {
-                    target: 'http://61.77.108.167:8000',
+                    target: 'http://121.180.179.245:8000',
                     ws: true,
                 },
             },

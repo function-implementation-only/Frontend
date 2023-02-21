@@ -187,7 +187,6 @@ function PostDetailPage() {
             body: JSON.stringify({ targetEmail: apiResponse.data.email }),
         })
         const roomData = await response.json()
-        console.log(roomData, '룸데')
         navigate(`/chat?id=${roomData.roomName}`)
     }
 

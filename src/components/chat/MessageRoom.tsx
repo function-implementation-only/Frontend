@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import ChatText from 'components/ChatText'
 import useModal from 'hooks/useModal'
 import SockJS from 'sockjs-client'
@@ -10,18 +10,21 @@ import Imoji from './Imoji'
 
 // TODO: 아래 타입 데이터는 중복데이터임 한곳에서 관리하면 좋을듯.
 type MessageItemProps = {
-    chatList: [
-        {
-            id: string
-            sender: string
-            message: string
-            time: string
-            avatar: string
-            email: string
-        }
-    ]
+    id?: string
+    sender: string
+    message: string
+    time?: string
+    avatar?: string
+    email?: string
+}
 
-    roomId: string
+type TempType = {
+    chatList: MessageItemProps[]
+    latestChatMessage: string | null
+    nickname: string | null
+    roomId: number
+    roomName: string
+    unreadMessageCount: number | null
 }
 
 const UserInfoRow = styled.div`
@@ -118,40 +121,41 @@ const SubmitButtonIcon = styled.label`
 `
 
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3Njg4ODE0OSwiaWF0IjoxNjc2ODAxNzQ5fQ.GGLogzGnouBOjo4OHcwOPzQ_AvQzJpfDL6u24QBNAFM'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzA3Mzg1NSwiaWF0IjoxNjc2OTg3NDU1fQ.wkR57szvXeVet8-juSmGtiL2MFCYgWAtjs56MZWCBQg'
 
 let client: Client
 function MessageRoom() {
-    const [chatList, setChatList] = useState<MessageItemProps>()
+    const [chatList, setChatList] = useState<TempType>()
     const { isShowing: imojiShowing, handleShowing: imojiHandle } = useModal()
     const textContentRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const { isShowing, handleShowing } = useModal()
     const [searchParams] = useSearchParams()
+    const navigate = useNavigate()
 
-    const DOMAIN = 'http://61.77.108.167:8000'
+    const DOMAIN = 'http://121.180.179.245:8000'
     const PARAM = searchParams.get('id')
     // Todo:아래정보 지우기
     const user = {
-        sender: '상돈',
+        sender: 'chem.en9273@knu.ac.kr',
     }
 
     // Todo: 채팅방 제거 리턴값 뭔지 물어보기
+
+    // 채팅방 삭제
     const deleteChatRoom = async () => {
-        const deleted = await fetch(`${DOMAIN}/chat-service/chat/${PARAM}`, {
+        await fetch(`${DOMAIN}/chat-service/chat/${PARAM}`, {
             method: 'POST',
             headers: {
                 Access_Token: token,
             },
         })
-
-        const result = await deleted.json()
-        console.log(result)
+        navigate('/chat')
     }
 
+    // 채팅 발송
     const submitHandler = (e: React.FormEvent) => {
         e.preventDefault()
-
         client.send(
             '/pub/chat',
             {
@@ -159,11 +163,10 @@ function MessageRoom() {
             },
             JSON.stringify({
                 roomId: chatList.roomId,
-                sender: '중구', // email.
+                sender: 'chem.en9273@knu.ac.kr',
                 message: inputRef.current.value,
             })
         )
-
         inputRef.current.value = ''
     }
 
@@ -183,13 +186,30 @@ function MessageRoom() {
             .then((res) => res.json())
             .then((json) => {
                 setChatList(() => json)
-                console.log(json)
                 scrollControll()
             })
     }, [searchParams])
 
-    const onSubscrib = (message: Message) => {
-        console.log(message, '메세지징지징')
+    const onSubscrib = (messages: Message) => {
+        const body: MessageItemProps = JSON.parse(messages.body)
+
+        console.log(messages.toString(), '받은메세지')
+
+        setChatList((prev) => {
+            return {
+                ...prev,
+                chatList: [
+                    ...prev.chatList,
+                    {
+                        message: body.message,
+                        sender: body.sender,
+                        id: `${Math.random()}`,
+                    },
+                ],
+            }
+        })
+
+        scrollControll()
     }
 
     useEffect(() => {
@@ -235,7 +255,7 @@ function MessageRoom() {
                 </TrashCanIcon>
             </UserInfoRow>
             <TextContentRow ref={textContentRef}>
-                {chatList?.chatList.map((chat, index, arr) => {
+                {chatList?.chatList?.map((chat, index, arr) => {
                     const isMine = chat.sender === user.sender
                     const isStart = index === 0 && index > -1
                     const isRepeat =

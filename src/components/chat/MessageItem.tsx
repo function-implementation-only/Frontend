@@ -70,7 +70,7 @@ const RedDot = styled.div`
 `
 
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3Njg4ODE0OSwiaWF0IjoxNjc2ODAxNzQ5fQ.GGLogzGnouBOjo4OHcwOPzQ_AvQzJpfDL6u24QBNAFM'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzA3Mzg1NSwiaWF0IjoxNjc2OTg3NDU1fQ.wkR57szvXeVet8-juSmGtiL2MFCYgWAtjs56MZWCBQg'
 
 console.log(token)
 
@@ -80,18 +80,6 @@ function MessageItem({ data }: { data: ChatRoomType }) {
     const { roomName } = data
 
     async function selectMessage() {
-        // const response = await fetch(
-        //     'http://121.190.6.208:8000/chat-service/chat',
-        //     {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Access_Token: token,
-        //         },
-        //         body: JSON.stringify(roomName),
-        //     }
-        // )
-        // const RoomData = await response.json()
         navigate(`/chat?id=${roomName}`)
     }
 
