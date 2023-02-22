@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import ChatText from 'components/ChatText'
+import ChatText from 'components/chat/ChatText'
 import useModal from 'hooks/useModal'
 import SockJS from 'sockjs-client'
 import { Client, Message, Subscription, over } from 'stompjs'
