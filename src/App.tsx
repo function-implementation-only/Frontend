@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import MainPage from 'pages/MainPage'
 import PostDetailPage from 'pages/Post/PostDetailPage'
 import PostPage from 'pages/Post/PostPage'
@@ -37,10 +36,6 @@ function App() {
                         <Route path="/api/google/test" element={<Google />} />
                     </Routes>
                 </BrowserRouter>
-                <ReactQueryDevtools
-                    initialIsOpen={false}
-                    position="bottom-right"
-                />
             </div>
         </QueryClientProvider>
     )

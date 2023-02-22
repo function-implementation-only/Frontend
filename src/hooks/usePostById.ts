@@ -1,12 +1,12 @@
 import { RESPONSE_TYPE } from 'lib/constants'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import useLogger from './useLogger'
 import useServiceManager from './useServiceManager'
 
 function usePostById(id: string) {
     const serviceManager = useServiceManager()
 
-    return useQuery(`getPost-${id}`, async () => {
+    return useQuery([`getPost-${id}`], async () => {
         const { data } = await serviceManager.dataService.postAPI.getPostById(
             id
         )

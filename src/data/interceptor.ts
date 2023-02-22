@@ -11,7 +11,7 @@ type CustomResponseFormat<T = any> = {
     response: T
     refreshedToken?: string
 }
-export interface ClientInstance extends AxiosInstance {
+export interface ClientInstance {
     interceptors: {
         request: AxiosInterceptorManager<
             | AxiosRequestConfig
@@ -30,7 +30,7 @@ export interface ClientInstance extends AxiosInstance {
     patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T>
 }
 
-const client: ClientInstance = axios.create({
+const client: ClientInstance & AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_END_POINT,
 })
 

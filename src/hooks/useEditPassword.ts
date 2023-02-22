@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import useServiceManager from './useServiceManager'
 
 function useEditPassword(
@@ -9,7 +9,7 @@ function useEditPassword(
     const serviceManager = useServiceManager()
 
     return useMutation(
-        'editPassword',
+        ['editPassword'],
         () =>
             serviceManager.dataService.accountAPI.editPassword(
                 email,

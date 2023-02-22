@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { SignUpInfo } from 'types/account'
 import useServiceManager from './useServiceManager'
@@ -8,7 +8,7 @@ function usePostSignUp() {
     const navigate = useNavigate()
 
     return useMutation(
-        'signUpInfo',
+        ['signUpInfo'],
         (data: SignUpInfo) =>
             serviceManager.dataService.accountAPI.postSignUp(data),
         {

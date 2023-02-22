@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { AccountInfo } from 'types/account'
 import useServiceManager from './useServiceManager'
 
@@ -7,7 +7,7 @@ function usePostLogIn() {
     const serviceManager = useServiceManager()
 
     return useMutation(
-        'loginInfo',
+        ['loginInfo'],
         (data: AccountInfo) =>
             serviceManager.dataService.accountAPI.postLogIn(data),
         {
