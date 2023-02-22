@@ -1,5 +1,5 @@
 import Loading from 'components/Loading'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import useServiceManager from 'src/hooks/useServiceManager'
 
 function Kakao() {
