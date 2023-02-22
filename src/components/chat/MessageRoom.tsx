@@ -139,10 +139,6 @@ function MessageRoom({ deleteFn }: { deleteFn: (arg0: number) => void }) {
 
     const DOMAIN = 'http://121.180.179.245:8000'
     const PARAM = searchParams.get('id')
-    // Todo:아래정보 지우기
-    const user = {
-        sender: 'chem.en9273@knu.ac.kr',
-    }
 
     // 채팅방 삭제
     const deleteChatRoom = async () => {
@@ -268,7 +264,7 @@ function MessageRoom({ deleteFn }: { deleteFn: (arg0: number) => void }) {
             </UserInfoRow>
             <TextContentRow ref={textContentRef}>
                 {chatList?.chatList?.map((chat, index, arr) => {
-                    const isMine = chat.sender === user.sender
+                    const isMine = chat.sender === accountData.data.nickname
                     const isStart = index === 0 && index > -1
                     const isRepeat =
                         index > 0 && arr[index - 1].sender === chat.sender
