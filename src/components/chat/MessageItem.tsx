@@ -91,19 +91,32 @@ const RedDot = styled.div`
 const token =
     'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzA3Mzg1NSwiaWF0IjoxNjc2OTg3NDU1fQ.wkR57szvXeVet8-juSmGtiL2MFCYgWAtjs56MZWCBQg'
 
+let hour: number | null | undefined
+let minute: number | null | undefined
 function MessageItem({ data }: { data: ChatRoomType }) {
     const [roomInfo, setRoomInfo] = useState<TempType>()
+    const [unReadMessage, setUnReasMessage] = useState<boolean>(false)
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const { roomName } = data
     const DOMAIN = 'http://121.180.179.245:8000'
 
-    const lastTime = roomInfo?.chatList[roomInfo.chatList.length - 1].createAt
+    const lastTime =
+        roomInfo &&
+        roomInfo.chatList[roomInfo.chatList.length - 1] &&
+        roomInfo.chatList[roomInfo.chatList.length - 1].createAt
 
-    const messageTime = new Date(lastTime)
+    if (lastTime) {
+        const messageTime = new Date(lastTime)
+        hour = new Date().getHours() - messageTime.getHours()
+        minute = new Date().getMinutes() - messageTime.getMinutes()
+    }
 
-    const hour = new Date().getHours() - messageTime.getHours()
-    const minute = new Date().getMinutes() - messageTime.getMinutes()
+    function setUnReadMessageState() {
+        if (data.unReadMessageCount) {
+            setUnReasMessage(true)
+        }
+    }
 
     useEffect(() => {
         fetch(`${DOMAIN}/chat-service/chat/${data.roomName}`, {
@@ -115,10 +128,16 @@ function MessageItem({ data }: { data: ChatRoomType }) {
         })
             .then((res) => res.json())
             .then((json) => setRoomInfo(json))
+        setUnReadMessageState()
     }, [])
+
+    function unReadMessageStateChange() {
+        setUnReasMessage(false)
+    }
 
     async function selectMessage() {
         navigate(`/chat?id=${roomName}`)
+        unReadMessageStateChange()
     }
 
     return (
@@ -145,7 +164,7 @@ function MessageItem({ data }: { data: ChatRoomType }) {
                             : null}
                     </TimeText>
                 </ContentTimeColumn>
-                {data.unReadMessageCount ? <RedDot /> : null}
+                {unReadMessage ? <RedDot /> : null}
             </MessageInfoBox>
         </MessageItemLayout>
     )

@@ -4,7 +4,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import ChatText from 'components/ChatText'
 import useModal from 'hooks/useModal'
 import SockJS from 'sockjs-client'
-import { Client, Message, over } from 'stompjs'
+import { Client, Message, Subscription, over } from 'stompjs'
 import ChatCloseModal from './ChatCloseModal'
 import Imoji from './Imoji'
 
@@ -128,14 +128,13 @@ let client: Client
 // todo: 아래 애니타입 고치기
 function MessageRoom() {
     const [chatList, setChatList] = useState<TempType>()
+    const [subscribtion, setSubscribtion] = useState<Subscription>(null)
     const { isShowing: imojiShowing, handleShowing: imojiHandle } = useModal()
+    const { isShowing, handleShowing } = useModal()
     const textContentRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
-    const { isShowing, handleShowing } = useModal()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
-
-    console.log(chatList)
 
     const DOMAIN = 'http://121.180.179.245:8000'
     const PARAM = searchParams.get('id')
@@ -204,8 +203,8 @@ function MessageRoom() {
                         message: body.message,
                         sender: body.sender,
                         id: `${Math.random()}`,
+                        // FixMe: 위 아이디 값은 map() 의 키값 때문에 넣은것.
                         createAt: `${new Date().toISOString()}`,
-                        // Todo: 위 아이디 값은 map() 의 키값 때문에 넣은것.
                     },
                 ],
             }
@@ -214,14 +213,20 @@ function MessageRoom() {
         scrollControll()
     }
 
+    const connectCallback = () => {
+        const sub: Subscription = client.subscribe(
+            `/sub/chatroom/${PARAM}`,
+            onSubscrib
+        )
+        setSubscribtion(sub)
+    }
+
     useEffect(() => {
         const endPoint = new SockJS(`${DOMAIN}/chat-service/ws`)
         client = over(endPoint)
-        const connectCallback = () => {
-            client.subscribe(`/sub/chatroom/${PARAM}`, onSubscrib)
-        }
-
         client.connect({ Access_Token: token }, connectCallback)
+
+        return subscribtion?.unsubscribe()
     }, [searchParams])
 
     return (

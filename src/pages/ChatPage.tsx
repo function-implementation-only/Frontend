@@ -48,11 +48,38 @@ const CategoryButton = styled.button<CategoryProps>`
 
 const MessageList = styled.ul``
 
+// const dummydata = [
+//     {
+//         roomId: '상돈',
+//         roomName: '나나나',
+//         chatList: [{}],
+//         unReadMessageCount: 3,
+//         latestChatMessage: '상돈',
+//         nickname: '배그',
+//     },
+//     {
+//         roomId: '상돈',
+//         roomName: '바바바',
+//         chatList: [{}],
+//         unReadMessageCount: 0,
+//         latestChatMessage: '상돈',
+//         nickname: '복승',
+//     },
+//     {
+//         roomId: '상돈',
+//         roomName: '두두두',
+//         chatList: [{}],
+//         unReadMessageCount: 4,
+//         latestChatMessage: '상돈',
+//         nickname: '두릅',
+//     },
+// ]
+
 export type ChatRoomType = {
     roomId: number
     roomName: string
     chatList: null | object[]
-    unReadMessageCount: number | boolean
+    unReadMessageCount: number
     latestChatMessage: null | string
     nickname: string
 }
@@ -64,19 +91,10 @@ type ChatRoomResponse = {
     totalPages: number
 }
 
-export type ChatPartnerType = {
-    name: string
-    time: string
-    power: string
-}
-
 const token =
     'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzA3Mzg1NSwiaWF0IjoxNjc2OTg3NDU1fQ.wkR57szvXeVet8-juSmGtiL2MFCYgWAtjs56MZWCBQg'
 
 // todo: 챗 룸에 들어오면 방정보 (채팅내역)을 불러 오는데 여기에 더하여 유저의 정보도 필요하다.
-// 클릭으로 데이터를 넘기다 보면 url 입력이나 링크 이동시에 필요한 정보가 없을 수 있으므로
-// 채팅에 참여하는 유저는 채팅 페이지에서 받아온 데이터를 사용해야 한다. (는게 내 생각)
-// 이러기 위해서는 채팅방을 생성할 당시에 참여자 모두에 대한 정보를 서버로 보내주어야 한다.(는게 내생각)
 function ChatPage() {
     const [AllMessage, setAllMessage] = useState(true)
     const [chatRoom, setChatRoom] = useState<ChatRoomType[]>([])
@@ -84,10 +102,9 @@ function ChatPage() {
     const currentChatRoom = searchParams.get('id')
     const DOMAIN = `http://121.180.179.245:8000`
 
-    // Fixme: 아래 chats 를 chatRoom 으로 바꾸어야 함니다.
     const currentChatMessage =
         (AllMessage && chatRoom.length >= 1 && chatRoom) ||
-        chatRoom.filter((chat) => chat.unReadMessageCount === true)
+        chatRoom.filter((chat) => chat.unReadMessageCount >= 1)
 
     function setMessageState(e: MouseEvent<HTMLButtonElement>) {
         const text = (e.target as HTMLElement).textContent
@@ -105,7 +122,6 @@ function ChatPage() {
             },
         })
         const roomdata: ChatRoomResponse = await response.json()
-        console.log(roomdata, '쳇페이지 룸데이터 조회')
         setChatRoom(roomdata.content)
     }
 
@@ -132,11 +148,7 @@ function ChatPage() {
                 </CategoryColumn>
                 <MessageList>
                     {currentChatMessage?.map((room: any) => (
-                        <MessageItem
-                            data={room}
-                            key={room.roomName}
-                            time="tempTime"
-                        />
+                        <MessageItem data={room} key={room.roomName} />
                     ))}
                 </MessageList>
             </ChatListRow>
