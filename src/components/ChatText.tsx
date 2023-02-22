@@ -41,7 +41,7 @@ const Name = styled.span<{ see: boolean | string }>`
 `
 const Time = styled.span<{ isMine: boolean }>`
     position: absolute;
-    right: ${(props) => (props.isMine ? '' : '-45px;')};
+    right: ${(props) => (props.isMine ? '' : '-30px;')};
     left: ${(props) => (props.isMine ? '-15px;' : '')};
     bottom: 10px;
     font-size: 12px;
