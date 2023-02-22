@@ -4,18 +4,18 @@ import styled from 'styled-components'
 interface ChatTextProp {
     avatar: boolean | string
     side: boolean
-    content: string
-    name: string
-    time: string
+    data: {
+        message: string
+        sender: string
+        createAt: string
+    }
+    avatarAddr: string
 }
-
 const ChatTextLayout = styled.div<{ isMine: boolean }>`
     display: flex;
-    flex-direction: ${(props) => (props.isMine ? 'row-reverse;' : 'row;')}
-    /* flex-direction: row; */
-    max-width: 1124px;
     padding-left: 16px;
     padding-right: 16px;
+    margin-left: ${(props) => (props.isMine ? 'auto;' : '')};
 `
 const Avatar = styled.img<{ avatar: boolean | string }>`
     border-radius: 50%;
@@ -23,16 +23,21 @@ const Avatar = styled.img<{ avatar: boolean | string }>`
     height: 28px;
     display: ${(props) => (props.avatar ? 'show' : 'none')};
 `
-const TextBox = styled.div<{ isMine: boolean }>`
-    margin-left: 8px;
+const TextBox = styled.div<{ avatar: boolean | string }>`
     max-width: 450px;
     display: flex;
     flex-direction: column;
     font-family: 'Pretendard';
     position: relative;
-
-    margin-left: ${(props) => (props.isMine ? 'auto' : '8px')};
+    margin-left: ${(props) => (props.avatar ? '8px;' : '36px;')}
+    margin-right: 8px;
 `
+const TextAndTimeBox = styled.div<{ isMine: boolean }>`
+    display: flex;
+    flex-direction: ${(props) => (props.isMine ? 'row-reverse;' : 'row;')};
+    align-items: end;
+`
+
 const Name = styled.span<{ see: boolean | string }>`
     margin-top: 8px;
     font-weight: 400;
@@ -40,12 +45,10 @@ const Name = styled.span<{ see: boolean | string }>`
     display: ${(props) => (props.see ? 'box' : 'none')};
 `
 const Time = styled.span<{ isMine: boolean }>`
-    position: absolute;
-    right: ${(props) => (props.isMine ? '' : '-30px;')};
-    left: ${(props) => (props.isMine ? '-15px;' : '')};
     bottom: 10px;
     font-size: 12px;
     color: #b0b0b0;
+    translate: ${(props) => (props.isMine ? '28px -6px;' : '0px -6px;')};
 `
 type TextBoxType = {
     gap: boolean | string
@@ -63,25 +66,29 @@ const TextBallroon = styled.span<TextBoxType>`
     border-radius: 10px;
     margin-bottom: 2px;
     font-family: 'Pretendard';
-
     margin-top: ${(props) => (props.gap ? '8px' : '4px')};
-    margin-left: ${(props) => (props.gap ? '' : '28px')};
+   
+
+    
 `
 // Fixme: 프롭스 변수명 바꾸기.
-function ChatText({ avatar, content, name, side, time }: ChatTextProp) {
-    const hour = new Date(time).getHours()
-    const min = new Date(time).getMinutes()
+function ChatText({ avatar, side, avatarAddr, data }: ChatTextProp) {
+    const { message, sender, createAt } = data
+    const hour = new Date(createAt).getHours()
+    const min = new Date(createAt).getMinutes()
 
     return (
         <ChatTextLayout isMine={side}>
-            <Avatar src="https://via.placeholder.com/28" avatar={avatar} />
-            <TextBox isMine={side}>
-                <Name see={avatar}>{name}</Name>
-                <TextBallroon gap={avatar} boxColor={side}>
-                    {content}
-                </TextBallroon>
+            <Avatar src={avatarAddr} avatar={avatar} />
+            <TextAndTimeBox isMine={side}>
+                <TextBox avatar={avatar}>
+                    <Name see={avatar}>{sender}</Name>
+                    <TextBallroon gap={avatar} boxColor={side}>
+                        {message}
+                    </TextBallroon>
+                </TextBox>
                 <Time isMine={side}>{`${hour}:${min}`}</Time>
-            </TextBox>
+            </TextAndTimeBox>
         </ChatTextLayout>
     )
 }

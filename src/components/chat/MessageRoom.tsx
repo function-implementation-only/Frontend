@@ -20,13 +20,20 @@ type MessageItemProps = {
     createAt: string
 }
 
-type TempType = {
-    chatList: MessageItemProps[]
-    latestChatMessage: string | null
-    nickname: string | null
+type ChatFriendsData = {
+    accountId: number
+    availableTime: string
+    email: string
+    field: string
+    imgUrl: string
+    introduction: string
+    nickname: string
+}
+
+type RoomState = {
     roomId: number
     roomName: string
-    unreadMessageCount: number | null
+    userData: ChatFriendsData
 }
 
 const UserInfoRow = styled.div`
@@ -62,6 +69,8 @@ const UserInfoText = styled.span`
     }
 `
 const TextContentRow = styled.div`
+    display: flex;
+    flex-direction: column;
     padding-top: 12px;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -122,12 +131,26 @@ const SubmitButtonIcon = styled.label`
     cursor: pointer;
 `
 
-const token = localStorage.getItem('token')
+const ChatInitMessage = styled.span`
+    background: #f8f9fa;
+    align-items: center;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-family: 'Pretendard';
+    margin-bottom: 16px;
+    align-self: center;
+`
 
+type PropTypes = {
+    deleteFn: (roomId: number) => void
+    lastChatModifie: (roomName: string, msg: string) => void
+}
+
+const token = localStorage.getItem('token')
 let client: Client
-// todo: 아래 애니타입 고치기
-function MessageRoom({ deleteFn }: { deleteFn: (arg0: number) => void }) {
-    const [chatList, setChatList] = useState<TempType>()
+function MessageRoom({ deleteFn, lastChatModifie }: PropTypes) {
+    const [chatList, setChatList] = useState<MessageItemProps[]>()
+    const [roomState, setRoomState] = useState<RoomState>()
     const [subscribtion, setSubscribtion] = useState<Subscription>(null)
     const { isShowing: imojiShowing, handleShowing: imojiHandle } = useModal()
     const { isShowing, handleShowing } = useModal()
@@ -149,7 +172,7 @@ function MessageRoom({ deleteFn }: { deleteFn: (arg0: number) => void }) {
             },
         })
 
-        deleteFn(chatList.roomId)
+        deleteFn(roomState.roomId)
         navigate('/chat')
     }
 
@@ -162,19 +185,22 @@ function MessageRoom({ deleteFn }: { deleteFn: (arg0: number) => void }) {
                 Access_Token: token,
             },
             JSON.stringify({
-                roomId: chatList.roomId,
+                roomId: roomState.roomId,
                 sender: accountData.data.nickname,
                 message: inputRef.current.value,
             })
         )
+        lastChatModifie(roomState.roomName, inputRef.current.value)
         inputRef.current.value = ''
     }
 
+    // 채팅방 스크롤 최하단 이동
     const scrollControll = () => {
         const textContent = textContentRef.current
         textContent.scrollTop = textContent.scrollHeight
     }
 
+    // 컴포넌트 호출시 최초 채팅방 정보 설정
     useEffect(() => {
         fetch(`${DOMAIN}/chat-service/chat/${PARAM}`, {
             method: 'GET',
@@ -185,33 +211,37 @@ function MessageRoom({ deleteFn }: { deleteFn: (arg0: number) => void }) {
         })
             .then((res) => res.json())
             .then((json) => {
-                setChatList(() => json)
+                setChatList(() => json.chatList)
+                setRoomState(() => {
+                    return {
+                        roomId: json.roomId,
+                        roomName: json.roomName,
+                        userData: json.userData,
+                    }
+                })
                 scrollControll()
             })
     }, [searchParams])
 
+    // 메세지 수신시
     const onSubscrib = (messages: Message) => {
         const body: MessageItemProps = JSON.parse(messages.body)
 
         setChatList((prev) => {
-            return {
+            return [
                 ...prev,
-                chatList: [
-                    ...prev.chatList,
-                    {
-                        message: body.message,
-                        sender: body.sender,
-                        id: `${Math.random()}`,
-                        createAt: `${new Date().toISOString()}`,
-                        // Fixme: 위의 두 스트링템플릿은 임시 값임,
-                    },
-                ],
-            }
+                {
+                    message: body.message,
+                    sender: body.sender,
+                    id: `${Math.random()}`,
+                    createAt: `${new Date().toISOString()}`,
+                },
+            ]
         })
-
         scrollControll()
     }
 
+    // 웹소켓 구독
     const connectCallback = () => {
         const sub: Subscription = client.subscribe(
             `/sub/chatroom/${PARAM}`,
@@ -220,6 +250,7 @@ function MessageRoom({ deleteFn }: { deleteFn: (arg0: number) => void }) {
         setSubscribtion(sub)
     }
 
+    // 웹소켓 연결
     useEffect(() => {
         const endPoint = new SockJS(`${DOMAIN}/chat-service/ws`)
         client = over(endPoint)
@@ -233,18 +264,18 @@ function MessageRoom({ deleteFn }: { deleteFn: (arg0: number) => void }) {
     return (
         <MessageRoomLayOut>
             <UserInfoRow>
-                <Avatar src="https://via.placeholder.com/40" />
+                <Avatar src={roomState?.userData?.imgUrl} />
                 <UserBox>
                     <UserInfoText>
-                        <h2>이름</h2>
+                        <h2>{roomState?.userData?.nickname}</h2>
                     </UserInfoText>
                     |
                     <UserInfoText>
-                        <p>백엔드</p>
+                        <p>{roomState?.userData?.field}</p>
                     </UserInfoText>
                     |
                     <UserInfoText>
-                        <p>시간 </p>
+                        <p>{roomState?.userData?.availableTime}</p>
                     </UserInfoText>
                 </UserBox>
                 <TrashCanIcon
@@ -263,8 +294,11 @@ function MessageRoom({ deleteFn }: { deleteFn: (arg0: number) => void }) {
                 </TrashCanIcon>
             </UserInfoRow>
             <TextContentRow ref={textContentRef}>
-                {chatList?.chatList?.map((chat, index, arr) => {
-                    const isMine = chat.sender === accountData.data.nickname
+                <ChatInitMessage>
+                    {roomState?.userData.nickname}님 과의 대화를 시작합니다.
+                </ChatInitMessage>
+                {chatList?.map((chat, index, arr) => {
+                    const isMine = chat.sender === accountData?.data?.nickname
                     const isStart = index === 0 && index > -1
                     const isRepeat =
                         index > 0 && arr[index - 1].sender === chat.sender
@@ -272,10 +306,9 @@ function MessageRoom({ deleteFn }: { deleteFn: (arg0: number) => void }) {
                     return (
                         <ChatText
                             key={chat.id}
+                            avatarAddr={roomState?.userData?.imgUrl}
                             avatar={!isMine && (isStart || !isRepeat)}
-                            content={chat.message}
-                            name={chat.sender}
-                            time={chat.createAt}
+                            data={chat}
                             side={isMine}
                         />
                     )

@@ -17,13 +17,20 @@ type MessageItemProps = {
     createAt: string
 }
 
-type TempType = {
-    chatList: MessageItemProps[]
-    latestChatMessage: string | null
-    nickname: string | null
+type ChatFriendsData = {
+    accountId: number
+    availableTime: string
+    email: string
+    field: string
+    imgUrl: string
+    introduction: string
+    nickname: string
+}
+
+type RoomState = {
     roomId: number
     roomName: string
-    unreadMessageCount: number | null
+    userData: ChatFriendsData
 }
 
 const MessageItemLayout = styled.li<SelectedProps>`
@@ -44,6 +51,8 @@ const AvatarRow = styled.div`
 
 const AvatarImage = styled.img`
     border-radius: 50%;
+    width: 56px;
+    height: 56px;
 `
 
 const MessageInfoBox = styled.div`
@@ -92,22 +101,29 @@ const RedDot = styled.div`
 `
 const token = localStorage.getItem('token')
 
-let hour: number | null | undefined | Date
-let minute: number | null | undefined | Date
-function MessageItem({ data }: { data: ChatRoomType }) {
-    const [roomInfo, setRoomInfo] = useState<TempType>()
+type PropTypes = {
+    data: ChatRoomType
+}
+
+function MessageItem({ data }: PropTypes) {
+    const [loading, setLoading] = useState<boolean>(true)
+    const [chatList, setChatList] = useState<MessageItemProps[]>()
+    const [roomState, setRoomState] = useState<RoomState>()
     const [unReadMessage, setUnReasMessage] = useState<boolean>(false)
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const { roomName } = data
     const DOMAIN = 'http://121.180.179.245:8000'
 
-    const lastTime =
-        roomInfo &&
-        roomInfo?.chatList[roomInfo.chatList.length - 1] &&
-        roomInfo?.chatList[roomInfo.chatList.length - 1].createAt
+    let hour: number | null | undefined | Date = null
+    let minute: number | null | undefined | Date = null
 
-    if (lastTime) {
+    const lastTime =
+        chatList &&
+        chatList[chatList.length - 1] &&
+        chatList[chatList.length - 1].createAt
+
+    if (lastTime && chatList?.length) {
         const messageTime = new Date(lastTime).getTime()
         hour = Math.floor((Date.now() - messageTime) / 60 / 60 / 1000)
         minute = Math.floor(((Date.now() - messageTime) / 1000 / 60) % 60)
@@ -128,12 +144,22 @@ function MessageItem({ data }: { data: ChatRoomType }) {
             },
         })
             .then((res) => res.json())
-            .then((json) => setRoomInfo(json))
+            .then((json) => {
+                setChatList(() => json.chatList)
+                setRoomState(() => {
+                    return {
+                        roomId: json.roomId,
+                        roomName: json.roomName,
+                        userData: json.userData,
+                    }
+                })
+            })
         setUnReadMessageState()
+        setLoading(() => false)
     }, [])
 
     function unReadMessageStateChange() {
-        setUnReasMessage(false)
+        setUnReasMessage(() => false)
     }
 
     async function selectMessage() {
@@ -147,21 +173,25 @@ function MessageItem({ data }: { data: ChatRoomType }) {
             selected={searchParams.get('id') === roomName}
         >
             <AvatarRow>
-                <AvatarImage src="https://via.placeholder.com/56" />
+                <AvatarImage src={roomState?.userData.imgUrl} />
             </AvatarRow>
             <MessageInfoBox>
                 <NameColumn>
-                    <NameParagraph>{data.nickname}</NameParagraph>
+                    <NameParagraph>
+                        {roomState?.userData.nickname}
+                    </NameParagraph>
                 </NameColumn>
                 <ContentTimeColumn>
                     <ContentParagraph>
                         {data.latestChatMessage}
                     </ContentParagraph>
                     <TimeText>
-                        {hour && minute
+                        {hour && minute && !loading
                             ? `${hour} 시간 ${minute}분`
-                            : minute
+                            : minute && !loading
                             ? `${minute}분`
+                            : !loading
+                            ? '방금전'
                             : null}
                     </TimeText>
                 </ContentTimeColumn>
