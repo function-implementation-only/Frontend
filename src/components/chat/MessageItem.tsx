@@ -90,8 +90,7 @@ const RedDot = styled.div`
     border-radius: 50%;
     right: 0;
 `
-const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzE2MDYxNywiaWF0IjoxNjc3MDc0MjE3fQ.GiXKd5CaUEXQiH7fJWzg8iycmJQOMHZh0loEu4ZM7gM'
+const token = localStorage.getItem('token')
 
 let hour: number | null | undefined | Date
 let minute: number | null | undefined | Date

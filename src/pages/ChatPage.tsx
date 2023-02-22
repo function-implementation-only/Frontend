@@ -94,8 +94,7 @@ type ChatRoomResponse = {
     totalPages: number
 }
 
-const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzE2MDYxNywiaWF0IjoxNjc3MDc0MjE3fQ.GiXKd5CaUEXQiH7fJWzg8iycmJQOMHZh0loEu4ZM7gM'
+const token = localStorage.getItem('token')
 
 // todo: 챗 룸에 들어오면 방정보 (채팅내역)을 불러 오는데 여기에 더하여 유저의 정보도 필요하다.
 function ChatPage() {
@@ -103,6 +102,7 @@ function ChatPage() {
     const [chatRoom, setChatRoom] = useState<ChatRoomType[]>([])
     const [searchParams] = useSearchParams()
     const currentChatRoom = searchParams.get('id')
+
     const DOMAIN = `http://121.180.179.245:8000`
 
     // const currentChatMessage =
@@ -122,10 +122,16 @@ function ChatPage() {
     //         setAllMessage(() => true)
     //     }
     // }
-
     const currentChatMessage =
         (AllMessage && chatRoom?.length >= 1 && chatRoom) ||
-        chatRoom.filter((chat) => chat.unReadMessageCount >= 1)
+        chatRoom?.filter((chat) => chat.unReadMessageCount >= 1)
+
+    const deleteChatRoomRequest = (roomId: number) => {
+        const index = chatRoom.findIndex((room) => room.roomId === roomId)
+
+        chatRoom.splice(index, 1)
+        setChatRoom(() => chatRoom)
+    }
 
     const hadleUnReadChat = (roomName: string) => {
         const index = chatRoom.findIndex((room) => room.roomName === roomName)
@@ -136,7 +142,7 @@ function ChatPage() {
         if (target.unReadMessageCount >= 1) {
             target.unReadMessageCount = 0
             dummydata.splice(index, 1, target)
-            setChatRoom(chatRoom)
+            setChatRoom(() => chatRoom)
             setAllMessage(() => true)
         }
     }
@@ -193,8 +199,8 @@ function ChatPage() {
                 </MessageList>
             </ChatListRow>
             {currentChatRoom ? (
-                <MessageRoom />
-            ) : !currentChatRoom && currentChatMessage.length ? (
+                <MessageRoom deleteFn={deleteChatRoomRequest} />
+            ) : !currentChatRoom && currentChatMessage?.length ? (
                 <ThereIsContent />
             ) : (
                 <ThereIsNoContent />

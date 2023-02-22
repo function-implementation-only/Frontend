@@ -5,6 +5,7 @@ import ChatText from 'components/ChatText'
 import useModal from 'hooks/useModal'
 import SockJS from 'sockjs-client'
 import { Client, Message, Subscription, over } from 'stompjs'
+import useGetAccountInfo from 'hooks/useGetAccountInfo'
 import ChatCloseModal from './ChatCloseModal'
 import Imoji from './Imoji'
 
@@ -121,21 +122,20 @@ const SubmitButtonIcon = styled.label`
     cursor: pointer;
 `
 
-const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzE2MDYxNywiaWF0IjoxNjc3MDc0MjE3fQ.GiXKd5CaUEXQiH7fJWzg8iycmJQOMHZh0loEu4ZM7gM'
+const token = localStorage.getItem('token')
 
 let client: Client
 // todo: 아래 애니타입 고치기
-function MessageRoom() {
+function MessageRoom({ deleteFn }: { deleteFn: (arg0: number) => void }) {
     const [chatList, setChatList] = useState<TempType>()
     const [subscribtion, setSubscribtion] = useState<Subscription>(null)
     const { isShowing: imojiShowing, handleShowing: imojiHandle } = useModal()
     const { isShowing, handleShowing } = useModal()
-    const textContentRef = useRef<HTMLDivElement>(null)
-    const inputRef = useRef<HTMLInputElement>(null)
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
-    console.log(chatList)
+    const inputRef = useRef<HTMLInputElement>(null)
+    const textContentRef = useRef<HTMLDivElement>(null)
+    const { data: accountData } = useGetAccountInfo()
 
     const DOMAIN = 'http://121.180.179.245:8000'
     const PARAM = searchParams.get('id')
@@ -149,9 +149,11 @@ function MessageRoom() {
         await fetch(`${DOMAIN}/chat-service/chat/${PARAM}`, {
             method: 'POST',
             headers: {
-                Access_Token: token,
+                Access_Token: localStorage.getItem('token'),
             },
         })
+
+        deleteFn(chatList.roomId)
         navigate('/chat')
     }
 
@@ -165,7 +167,7 @@ function MessageRoom() {
             },
             JSON.stringify({
                 roomId: chatList.roomId,
-                sender: 'chem.en9273@knu.ac.kr',
+                sender: accountData.data.nickname,
                 message: inputRef.current.value,
             })
         )
@@ -204,8 +206,8 @@ function MessageRoom() {
                         message: body.message,
                         sender: body.sender,
                         id: `${Math.random()}`,
-                        // FixMe: 위 아이디 값은 map() 의 키값 때문에 넣은것.
                         createAt: `${new Date().toISOString()}`,
+                        // Fixme: 위의 두 스트링템플릿은 임시 값임,
                     },
                 ],
             }
@@ -227,7 +229,9 @@ function MessageRoom() {
         client = over(endPoint)
         client.connect({ Access_Token: token }, connectCallback)
 
-        return subscribtion?.unsubscribe()
+        return () => {
+            subscribtion?.unsubscribe()
+        }
     }, [searchParams])
 
     return (
