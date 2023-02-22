@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction } from 'react'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import useServiceManager from './useServiceManager'
 
 function usePostLogOut(setIsLogin: Dispatch<SetStateAction<boolean>>) {
     const serviceManager = useServiceManager()
 
     return useMutation(
-        'logout',
+        ['logout'],
         () => serviceManager.dataService.accountAPI.postLogOut(),
         {
             onSuccess: () => {

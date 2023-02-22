@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import useServiceManager from './useServiceManager'
 
 function usePostPasswordCheck(
@@ -10,7 +10,7 @@ function usePostPasswordCheck(
     const serviceManager = useServiceManager()
 
     return useMutation(
-        'editAccountInfo',
+        ['editAccountInfo'],
         () =>
             serviceManager.dataService.accountAPI.postPasswordCheck(
                 email,

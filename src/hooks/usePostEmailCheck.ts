@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { Dispatch, SetStateAction } from 'react'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import useServiceManager from './useServiceManager'
 
 function usePostEmailCheck(
@@ -11,7 +11,7 @@ function usePostEmailCheck(
     const serviceManager = useServiceManager()
 
     return useMutation(
-        'emailCheck',
+        ['emailCheck'],
         () =>
             serviceManager.dataService.accountAPI.postEmailCheck(
                 email as string

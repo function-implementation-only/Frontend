@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import useServiceManager from './useServiceManager'
 
 function useGetAccountInfo() {
@@ -6,7 +6,7 @@ function useGetAccountInfo() {
     const token = localStorage.getItem('token')
 
     return useQuery(
-        'accountInfo',
+        ['accountInfo'],
         async () => {
             const { data } =
                 await serviceManager.dataService.accountAPI.getAccountInfo()
