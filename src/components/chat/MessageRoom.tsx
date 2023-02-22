@@ -122,7 +122,7 @@ const SubmitButtonIcon = styled.label`
 `
 
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzA3Mzg1NSwiaWF0IjoxNjc2OTg3NDU1fQ.wkR57szvXeVet8-juSmGtiL2MFCYgWAtjs56MZWCBQg'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzE2MDYxNywiaWF0IjoxNjc3MDc0MjE3fQ.GiXKd5CaUEXQiH7fJWzg8iycmJQOMHZh0loEu4ZM7gM'
 
 let client: Client
 // todo: 아래 애니타입 고치기
@@ -135,6 +135,7 @@ function MessageRoom() {
     const inputRef = useRef<HTMLInputElement>(null)
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
+    console.log(chatList)
 
     const DOMAIN = 'http://121.180.179.245:8000'
     const PARAM = searchParams.get('id')

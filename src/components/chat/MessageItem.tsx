@@ -77,8 +77,10 @@ const ContentParagraph = styled.p`
 `
 
 const TimeText = styled.span`
+    text-align: right;
     font-size: 12px;
     color: var(--gray-600);
+    width: 80px;
 `
 const RedDot = styled.div`
     position: absolute;
@@ -89,10 +91,10 @@ const RedDot = styled.div`
     right: 0;
 `
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzA3Mzg1NSwiaWF0IjoxNjc2OTg3NDU1fQ.wkR57szvXeVet8-juSmGtiL2MFCYgWAtjs56MZWCBQg'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzE2MDYxNywiaWF0IjoxNjc3MDc0MjE3fQ.GiXKd5CaUEXQiH7fJWzg8iycmJQOMHZh0loEu4ZM7gM'
 
-let hour: number | null | undefined
-let minute: number | null | undefined
+let hour: number | null | undefined | Date
+let minute: number | null | undefined | Date
 function MessageItem({ data }: { data: ChatRoomType }) {
     const [roomInfo, setRoomInfo] = useState<TempType>()
     const [unReadMessage, setUnReasMessage] = useState<boolean>(false)
@@ -103,13 +105,13 @@ function MessageItem({ data }: { data: ChatRoomType }) {
 
     const lastTime =
         roomInfo &&
-        roomInfo.chatList[roomInfo.chatList.length - 1] &&
-        roomInfo.chatList[roomInfo.chatList.length - 1].createAt
+        roomInfo?.chatList[roomInfo.chatList.length - 1] &&
+        roomInfo?.chatList[roomInfo.chatList.length - 1].createAt
 
     if (lastTime) {
-        const messageTime = new Date(lastTime)
-        hour = new Date().getHours() - messageTime.getHours()
-        minute = new Date().getMinutes() - messageTime.getMinutes()
+        const messageTime = new Date(lastTime).getTime()
+        hour = Math.floor((Date.now() - messageTime) / 60 / 60 / 1000)
+        minute = Math.floor(((Date.now() - messageTime) / 1000 / 60) % 60)
     }
 
     function setUnReadMessageState() {
@@ -158,9 +160,9 @@ function MessageItem({ data }: { data: ChatRoomType }) {
                     </ContentParagraph>
                     <TimeText>
                         {hour && minute
-                            ? `${hour} 시간${minute}분 전`
+                            ? `${hour} 시간 ${minute}분`
                             : minute
-                            ? `${minute}분 전`
+                            ? `${minute}분`
                             : null}
                     </TimeText>
                 </ContentTimeColumn>

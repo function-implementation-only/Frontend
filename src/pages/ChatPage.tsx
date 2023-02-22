@@ -45,35 +45,38 @@ const CategoryButton = styled.button<CategoryProps>`
     border-bottom: ${(props) =>
         props.selected && '3px solid var(--primary-color)'};
 `
+const UnSetButton = styled.div`
+    all: unset;
+`
 
 const MessageList = styled.ul``
 
-// const dummydata = [
-//     {
-//         roomId: '상돈',
-//         roomName: '나나나',
-//         chatList: [{}],
-//         unReadMessageCount: 3,
-//         latestChatMessage: '상돈',
-//         nickname: '배그',
-//     },
-//     {
-//         roomId: '상돈',
-//         roomName: '바바바',
-//         chatList: [{}],
-//         unReadMessageCount: 0,
-//         latestChatMessage: '상돈',
-//         nickname: '복승',
-//     },
-//     {
-//         roomId: '상돈',
-//         roomName: '두두두',
-//         chatList: [{}],
-//         unReadMessageCount: 4,
-//         latestChatMessage: '상돈',
-//         nickname: '두릅',
-//     },
-// ]
+const dummydata = [
+    {
+        roomId: 1,
+        roomName: '나나나',
+        chatList: [{}],
+        unReadMessageCount: 3,
+        latestChatMessage: '상돈',
+        nickname: '배그',
+    },
+    {
+        roomId: 2,
+        roomName: '바바바',
+        chatList: [{}],
+        unReadMessageCount: 0,
+        latestChatMessage: '상돈',
+        nickname: '복승',
+    },
+    {
+        roomId: 3,
+        roomName: '두두두',
+        chatList: [{}],
+        unReadMessageCount: 4,
+        latestChatMessage: '상돈',
+        nickname: '두릅',
+    },
+]
 
 export type ChatRoomType = {
     roomId: number
@@ -92,7 +95,7 @@ type ChatRoomResponse = {
 }
 
 const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzA3Mzg1NSwiaWF0IjoxNjc2OTg3NDU1fQ.wkR57szvXeVet8-juSmGtiL2MFCYgWAtjs56MZWCBQg'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxcTJ3M2U0ciIsImV4cCI6MTY3NzE2MDYxNywiaWF0IjoxNjc3MDc0MjE3fQ.GiXKd5CaUEXQiH7fJWzg8iycmJQOMHZh0loEu4ZM7gM'
 
 // todo: 챗 룸에 들어오면 방정보 (채팅내역)을 불러 오는데 여기에 더하여 유저의 정보도 필요하다.
 function ChatPage() {
@@ -102,9 +105,41 @@ function ChatPage() {
     const currentChatRoom = searchParams.get('id')
     const DOMAIN = `http://121.180.179.245:8000`
 
+    // const currentChatMessage =
+    //     (AllMessage && dummydata?.length >= 1 && dummydata) ||
+    //     dummydata.filter((chat) => chat.unReadMessageCount >= 1)
+
+    // const hadleUnReadChat = (roomName: string) => {
+    //     const index = dummydata.findIndex((room) => room.roomName === roomName)
+    //     const target = dummydata.find((room) => {
+    //         return room.roomName === roomName
+    //     })
+
+    //     if (target.unReadMessageCount >= 1) {
+    //         target.unReadMessageCount = 0
+    //         dummydata.splice(index, 1, target)
+    //         // setChatRoom(chatRoom)
+    //         setAllMessage(() => true)
+    //     }
+    // }
+
     const currentChatMessage =
-        (AllMessage && chatRoom.length >= 1 && chatRoom) ||
+        (AllMessage && chatRoom?.length >= 1 && chatRoom) ||
         chatRoom.filter((chat) => chat.unReadMessageCount >= 1)
+
+    const hadleUnReadChat = (roomName: string) => {
+        const index = chatRoom.findIndex((room) => room.roomName === roomName)
+        const target = chatRoom.find((room) => {
+            return room.roomName === roomName
+        })
+
+        if (target.unReadMessageCount >= 1) {
+            target.unReadMessageCount = 0
+            dummydata.splice(index, 1, target)
+            setChatRoom(chatRoom)
+            setAllMessage(() => true)
+        }
+    }
 
     function setMessageState(e: MouseEvent<HTMLButtonElement>) {
         const text = (e.target as HTMLElement).textContent
@@ -147,8 +182,13 @@ function ChatPage() {
                     </CategoryButton>
                 </CategoryColumn>
                 <MessageList>
-                    {currentChatMessage?.map((room: any) => (
-                        <MessageItem data={room} key={room.roomName} />
+                    {currentChatMessage?.map((room) => (
+                        <UnSetButton
+                            key={room.roomId}
+                            onClick={() => hadleUnReadChat(room.roomName)}
+                        >
+                            <MessageItem data={room} />
+                        </UnSetButton>
                     ))}
                 </MessageList>
             </ChatListRow>
