@@ -6,6 +6,8 @@ import PostPage from 'pages/Post/PostPage'
 import HeaderComponent from 'components/HeaderComponent'
 import MyPage from 'pages/MyPage'
 import ProfilePage from 'pages/ProfilePage'
+import GooglePrivacy from 'components/account/GooglePrivacy'
+import GooglePolicy from 'components/account/GooglePolicy'
 import Kakao from './components/account/Kakao'
 import Google from './components/account/Google'
 import SignUpPage from './pages/SignUpPage'
@@ -34,6 +36,8 @@ function App() {
                             element={<Kakao />}
                         />
                         <Route path="/api/google/test" element={<Google />} />
+                        <Route path="/privacy" element={<GooglePrivacy />} />
+                        <Route path="/policy" element={<GooglePolicy />} />
                     </Routes>
                 </BrowserRouter>
             </div>
