@@ -1,7 +1,9 @@
 import { DataService } from 'src/service/dataService'
+import { DomainService } from 'src/service/domainService'
 
 export interface ServiceManagerInterface {
     dataService: DataService
+    domainService: DomainService
 }
 
 export class ServiceManager implements ServiceManagerInterface {
@@ -9,8 +11,11 @@ export class ServiceManager implements ServiceManagerInterface {
 
     dataService
 
+    domainService
+
     constructor() {
         this.dataService = new DataService()
+        this.domainService = new DomainService()
     }
 
     public static getInstance() {

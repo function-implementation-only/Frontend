@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ContentResponse } from 'types/response'
 import Hashtag from './Hashtag'
 import TechList from './TechList'
-import BookmarkButton from './BookmarkButton'
+import BookmarkIcon from './BookmarkIcon'
 import Lookup from './Lookup'
 import PostCardInfo from './PostCardInfo'
 
@@ -54,12 +54,12 @@ function PostCardComponent({ post }: PostCardComponentProps) {
                     postState={post.postState}
                 />
                 <Hashtag place={post.place} duration={post.duration} />
-                <BookmarkButton isBookmarked={post.likeCheck} />
+                <BookmarkIcon isBookmarked={post.likeCheck} />
             </PostCardComponentRow>
             <PostCardComponentRow>
                 <TechList techs={post.techs.slice(0, 6)} />
                 <p>{post.nickname}</p>
-                <Lookup />
+                <Lookup viewCount={post.viewCount} />
             </PostCardComponentRow>
         </PostCardComponentLayout>
     )

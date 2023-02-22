@@ -9,6 +9,7 @@ export const muiLabelStyleObj = {
     },
 }
 export const muiSelectStyleObj = {
+    borderRadius: '10px',
     '.MuiOutlinedInput-notchedOutline': {
         border: '1px solid var(--gray-250)',
     },
@@ -20,6 +21,7 @@ export const muiSelectStyleObj = {
 export const muiSelectMenuPropsObj = {
     PaperProps: {
         sx: {
+            borderRadius: '10px',
             border: '1px solid var(--primary-color)',
             boxShadow: 'none',
             marginTop: '9.5px',

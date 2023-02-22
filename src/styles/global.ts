@@ -26,6 +26,17 @@ const GlobalStyle = createGlobalStyle`
     // max-width: 1920px;
     margin: 0 auto;
   }
+  .noScroll {
+    height: 100%;
+    overflow: hidden;
+  }
+  .popup {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+  }
 `
 
 export default GlobalStyle

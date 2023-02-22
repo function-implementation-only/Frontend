@@ -44,3 +44,13 @@ export interface SortResponse {
     unsorted: boolean
     sorted: boolean
 }
+
+export interface ApplyResponse {
+    accountId: number
+    applymentId: number
+    comment: string
+    introduction: string
+    nickname: string
+    position: string
+    postId: number
+}
