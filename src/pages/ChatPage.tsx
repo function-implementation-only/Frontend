@@ -9,7 +9,29 @@ import styled from 'styled-components'
 type CategoryProps = {
     selected: boolean
 }
-
+type ChatFriendsData = {
+    accountId: number
+    availableTime: string
+    email: string
+    field: string
+    imgUrl: string
+    introduction: string
+    nickname: string
+}
+type MessageItemProps = {
+    id?: string
+    sender: string
+    message: string
+    time?: string
+    avatar?: string
+    email?: string
+    createAt: string
+}
+type RoomState = {
+    roomId: number
+    roomName: string
+    userData: ChatFriendsData
+}
 const ChatPageLayout = styled.div`
     display: flex;
     width: 1440px;
@@ -58,6 +80,7 @@ export type ChatRoomType = {
     unReadMessageCount: number
     latestChatMessage: null | string
     nickname: string
+    lastSendMessageTime?: number | null
 }
 
 type ChatRoomResponse = {
@@ -70,6 +93,8 @@ const token = localStorage.getItem('token')
 function ChatPage() {
     const [AllMessage, setAllMessage] = useState(true)
     const [chatRoom, setChatRoom] = useState<ChatRoomType[]>([])
+    const [roomState, setRoomState] = useState<RoomState>()
+    const [chatList, setChatList] = useState<MessageItemProps[]>()
     const [searchParams] = useSearchParams()
     const currentChatRoom = searchParams.get('id')
 
@@ -93,6 +118,19 @@ function ChatPage() {
                 index = -1
         }
         return index
+    }
+
+    const lastMessageTimeModifie = (
+        roomName: string | number,
+        time: number
+    ) => {
+        const index = getRoomIndex(roomName)
+
+        if (index !== -1) {
+            const chatRoomCopy = [...chatRoom]
+            chatRoomCopy[index].lastSendMessageTime = time
+            setChatRoom(() => chatRoomCopy)
+        }
     }
 
     const lastMessageModifie = (roomName: string, msg: string) => {
@@ -132,6 +170,10 @@ function ChatPage() {
             setChatRoom(() => chatRoomCopy)
             setAllMessage(() => true)
         }
+        lastMessageTimeModifie(
+            roomName,
+            chatRoomCopy[index].lastSendMessageTime
+        )
     }
 
     function setMessageState(e: MouseEvent<HTMLButtonElement>) {
@@ -156,6 +198,29 @@ function ChatPage() {
     useEffect(() => {
         getChatRooms()
     }, [])
+
+    useEffect(() => {
+        if (currentChatRoom) {
+            fetch(`${DOMAIN}/chat-service/chat/${currentChatRoom}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Access_Token: token,
+                },
+            })
+                .then((res) => res.json())
+                .then((json) => {
+                    setChatList(() => json.chatList)
+                    setRoomState(() => {
+                        return {
+                            roomId: json.roomId,
+                            roomName: json.roomName,
+                            userData: json.userData,
+                        }
+                    })
+                })
+        }
+    }, [searchParams])
 
     return (
         <ChatPageLayout>
@@ -189,6 +254,10 @@ function ChatPage() {
                 <MessageRoom
                     deleteFn={deleteChatRoomRequest}
                     lastChatModifie={lastMessageModifie}
+                    roomState={roomState}
+                    conversationList={chatList}
+                    setRoomState={setChatList}
+                    timeModifie={lastMessageTimeModifie}
                 />
             ) : !currentChatRoom && currentChatMessage?.length ? (
                 <ThereIsContent />

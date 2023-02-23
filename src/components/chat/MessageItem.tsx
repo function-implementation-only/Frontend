@@ -89,7 +89,7 @@ const TimeText = styled.span`
     text-align: right;
     font-size: 12px;
     color: var(--gray-600);
-    width: 80px;
+    width: 90px;
 `
 const RedDot = styled.div`
     position: absolute;
@@ -119,14 +119,32 @@ function MessageItem({ data }: PropTypes) {
     let minute: number | null | undefined | Date = null
 
     const lastTime =
-        chatList &&
-        chatList[chatList.length - 1] &&
-        chatList[chatList.length - 1].createAt
+        data?.lastSendMessageTime ||
+        (chatList &&
+            chatList[chatList.length - 1] &&
+            chatList[chatList.length - 1].createAt)
 
     if (lastTime && chatList?.length) {
-        const messageTime = new Date(lastTime).getTime()
-        hour = Math.floor((Date.now() - messageTime) / 60 / 60 / 1000)
-        minute = Math.floor(((Date.now() - messageTime) / 1000 / 60) % 60)
+        switch (typeof lastTime) {
+            case 'string':
+                hour = Math.floor(
+                    (Date.now() - new Date(lastTime).getTime()) / 60 / 60 / 1000
+                )
+                minute = Math.floor(
+                    ((Date.now() - new Date(lastTime).getTime()) / 1000 / 60) %
+                        60
+                )
+                break
+            case 'number':
+                hour = Math.floor(
+                    (Date.now() - data.lastSendMessageTime) / 60 / 60 / 1000
+                )
+                minute = Math.floor(
+                    ((Date.now() - data.lastSendMessageTime) / 1000 / 60) % 60
+                )
+                break
+            default:
+        }
     }
 
     function setUnReadMessageState() {
@@ -147,6 +165,8 @@ function MessageItem({ data }: PropTypes) {
             .then((json) => {
                 setChatList(() => json.chatList)
                 setRoomState(() => {
+                    console.log(json)
+                    // 라스트 챗 메세지 있음.
                     return {
                         roomId: json.roomId,
                         roomName: json.roomName,
@@ -168,36 +188,40 @@ function MessageItem({ data }: PropTypes) {
     }
 
     return (
-        <MessageItemLayout
-            onClick={selectMessage}
-            selected={searchParams.get('id') === roomName}
-        >
-            <AvatarRow>
-                <AvatarImage src={roomState?.userData.imgUrl} />
-            </AvatarRow>
-            <MessageInfoBox>
-                <NameColumn>
-                    <NameParagraph>
-                        {roomState?.userData.nickname}
-                    </NameParagraph>
-                </NameColumn>
-                <ContentTimeColumn>
-                    <ContentParagraph>
-                        {data.latestChatMessage}
-                    </ContentParagraph>
-                    <TimeText>
-                        {hour && minute && !loading
-                            ? `${hour} 시간 ${minute}분`
-                            : minute && !loading
-                            ? `${minute}분`
-                            : !loading
-                            ? '방금전'
-                            : null}
-                    </TimeText>
-                </ContentTimeColumn>
-                {unReadMessage ? <RedDot /> : null}
-            </MessageInfoBox>
-        </MessageItemLayout>
+        <div>
+            {loading ? (
+                'null'
+            ) : (
+                <MessageItemLayout
+                    onClick={selectMessage}
+                    selected={searchParams.get('id') === roomName}
+                >
+                    <AvatarRow>
+                        <AvatarImage src={roomState?.userData.imgUrl} />
+                    </AvatarRow>
+                    <MessageInfoBox>
+                        <NameColumn>
+                            <NameParagraph>
+                                {roomState?.userData.nickname}
+                            </NameParagraph>
+                        </NameColumn>
+                        <ContentTimeColumn>
+                            <ContentParagraph>
+                                {data.latestChatMessage}
+                            </ContentParagraph>
+                            <TimeText>
+                                {hour && minute
+                                    ? `${hour} 시간 ${minute}분`
+                                    : minute
+                                    ? `${minute}분`
+                                    : '방금전'}
+                            </TimeText>
+                        </ContentTimeColumn>
+                        {unReadMessage ? <RedDot /> : null}
+                    </MessageInfoBox>
+                </MessageItemLayout>
+            )}
+        </div>
     )
 }
 

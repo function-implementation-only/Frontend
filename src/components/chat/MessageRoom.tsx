@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import ChatText from 'components/chat/ChatText'
@@ -10,15 +10,6 @@ import ChatCloseModal from './ChatCloseModal'
 import Imoji from './Imoji'
 
 // TODO: 아래 타입 데이터는 중복데이터임 한곳에서 관리하면 좋을듯.
-type MessageItemProps = {
-    id?: string
-    sender: string
-    message: string
-    time?: string
-    avatar?: string
-    email?: string
-    createAt: string
-}
 
 type ChatFriendsData = {
     accountId: number
@@ -28,6 +19,15 @@ type ChatFriendsData = {
     imgUrl: string
     introduction: string
     nickname: string
+}
+type MessageItemProps = {
+    id?: string
+    sender: string
+    message: string
+    time?: string
+    avatar?: string
+    email?: string
+    createAt: string
 }
 
 type RoomState = {
@@ -142,15 +142,24 @@ const ChatInitMessage = styled.span`
 `
 
 type PropTypes = {
+    roomState: RoomState
+    conversationList: MessageItemProps[]
+    setRoomState: Dispatch<SetStateAction<MessageItemProps[]>>
     deleteFn: (roomId: number) => void
     lastChatModifie: (roomName: string, msg: string) => void
+    timeModifie: (roomName: string | number, time: number) => void
 }
 
 const token = localStorage.getItem('token')
 let client: Client
-function MessageRoom({ deleteFn, lastChatModifie }: PropTypes) {
-    const [chatList, setChatList] = useState<MessageItemProps[]>()
-    const [roomState, setRoomState] = useState<RoomState>()
+function MessageRoom({
+    deleteFn,
+    lastChatModifie,
+    roomState,
+    conversationList,
+    setRoomState,
+    timeModifie,
+}: PropTypes) {
     const [subscribtion, setSubscribtion] = useState<Subscription>(null)
     const { isShowing: imojiShowing, handleShowing: imojiHandle } = useModal()
     const { isShowing, handleShowing } = useModal()
@@ -190,7 +199,8 @@ function MessageRoom({ deleteFn, lastChatModifie }: PropTypes) {
                 message: inputRef.current.value,
             })
         )
-        lastChatModifie(roomState.roomName, inputRef.current.value)
+        lastChatModifie(roomState?.roomName, inputRef.current.value)
+        timeModifie(roomState?.roomId, new Date().getTime())
         inputRef.current.value = ''
     }
 
@@ -199,35 +209,15 @@ function MessageRoom({ deleteFn, lastChatModifie }: PropTypes) {
         const textContent = textContentRef.current
         textContent.scrollTop = textContent.scrollHeight
     }
-
-    // 컴포넌트 호출시 최초 채팅방 정보 설정
     useEffect(() => {
-        fetch(`${DOMAIN}/chat-service/chat/${PARAM}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Access_Token: token,
-            },
-        })
-            .then((res) => res.json())
-            .then((json) => {
-                setChatList(() => json.chatList)
-                setRoomState(() => {
-                    return {
-                        roomId: json.roomId,
-                        roomName: json.roomName,
-                        userData: json.userData,
-                    }
-                })
-                scrollControll()
-            })
-    }, [searchParams])
+        scrollControll()
+    }, [conversationList])
 
     // 메세지 수신시
     const onSubscrib = (messages: Message) => {
         const body: MessageItemProps = JSON.parse(messages.body)
 
-        setChatList((prev) => {
+        setRoomState((prev) => {
             return [
                 ...prev,
                 {
@@ -297,7 +287,7 @@ function MessageRoom({ deleteFn, lastChatModifie }: PropTypes) {
                 <ChatInitMessage>
                     {roomState?.userData.nickname}님 과의 대화를 시작합니다.
                 </ChatInitMessage>
-                {chatList?.map((chat, index, arr) => {
+                {conversationList?.map((chat, index, arr) => {
                     const isMine = chat.sender === accountData?.data?.nickname
                     const isStart = index === 0 && index > -1
                     const isRepeat =
