@@ -113,7 +113,7 @@ function MessageItem({ data }: PropTypes) {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const { roomName } = data
-    const DOMAIN = 'http://121.180.179.245:8000'
+    const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
 
     let hour: number | null | undefined | Date = null
     let minute: number | null | undefined | Date = null
