@@ -7,10 +7,6 @@ interface Props {
     isShowing: boolean
     handleShowing: () => void
     deleteRequest: () => Promise<void>
-    // login: boolean
-    // signup: boolean
-    // setLogin: Dispatch<SetStateAction<boolean>>
-    // setSignup: Dispatch<SetStateAction<boolean>>
 }
 
 const CloseChatLayout = styled.div`

@@ -98,7 +98,7 @@ function ChatPage() {
     const [searchParams] = useSearchParams()
     const currentChatRoom = searchParams.get('id')
 
-    const DOMAIN = `http://121.180.179.245:8000`
+    const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
 
     const currentChatMessage =
         (AllMessage && chatRoom?.length >= 1 && chatRoom) ||
