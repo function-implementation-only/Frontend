@@ -156,12 +156,17 @@ function HeaderComponent() {
         handleClose()
     }
 
+    const handleChatIconClick = () => {
+        navigate('/chat')
+    }
+
     useEffect(() => {
         const token = localStorage.getItem('token')
         if (token) {
             setIsLogin(true)
         }
     }, [])
+
     return (
         <HeaderComponentLayout>
             <HeaderComponentRow>
@@ -173,7 +178,10 @@ function HeaderComponent() {
                 <UtilityBox>
                     {isLogin ? (
                         <LogInList>
-                            <ChatItem type="button">
+                            <ChatItem
+                                type="button"
+                                onClick={handleChatIconClick}
+                            >
                                 <ChatOutlinedIcon />
                             </ChatItem>
                             <AlertItem type="button">
