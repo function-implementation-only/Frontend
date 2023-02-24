@@ -165,8 +165,6 @@ function MessageItem({ data }: PropTypes) {
             .then((json) => {
                 setChatList(() => json.chatList)
                 setRoomState(() => {
-                    console.log(json)
-                    // 라스트 챗 메세지 있음.
                     return {
                         roomId: json.roomId,
                         roomName: json.roomName,
