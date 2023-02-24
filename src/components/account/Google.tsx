@@ -5,7 +5,7 @@ import useServiceManager from 'src/hooks/useServiceManager'
 function Google() {
     const code = new URL(window.location.href).searchParams.get('code')
     const serviceManager = useServiceManager()
-
+console.log(code)
     useQuery(
         ['GoogleLogin', code],
         () => serviceManager.dataService.accountAPI.getGoogleLogin(code),
