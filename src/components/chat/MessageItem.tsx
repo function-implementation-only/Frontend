@@ -195,12 +195,12 @@ function MessageItem({ data }: PropTypes) {
                     selected={searchParams.get('id') === roomName}
                 >
                     <AvatarRow>
-                        <AvatarImage src={roomState?.userData.imgUrl} />
+                        <AvatarImage src={roomState?.userData?.imgUrl} />
                     </AvatarRow>
                     <MessageInfoBox>
                         <NameColumn>
                             <NameParagraph>
-                                {roomState?.userData.nickname}
+                                {roomState?.userData?.nickname}
                             </NameParagraph>
                         </NameColumn>
                         <ContentTimeColumn>

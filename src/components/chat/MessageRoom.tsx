@@ -195,7 +195,7 @@ function MessageRoom({
             },
             JSON.stringify({
                 roomId: roomState.roomId,
-                sender: accountData.data.nickname,
+                sender: accountData?.data.nickname,
                 message: inputRef.current.value,
             })
         )
@@ -285,7 +285,7 @@ function MessageRoom({
             </UserInfoRow>
             <TextContentRow ref={textContentRef}>
                 <ChatInitMessage>
-                    {roomState?.userData.nickname}님 과의 대화를 시작합니다.
+                    {roomState?.userData?.nickname}님 과의 대화를 시작합니다.
                 </ChatInitMessage>
                 {conversationList?.map((chat, index, arr) => {
                     const isMine = chat.sender === accountData?.data?.nickname
