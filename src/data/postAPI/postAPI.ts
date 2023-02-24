@@ -145,7 +145,7 @@ export class PostAPI implements PostAPIInterface {
         this.makeQueryString(place, 'place', PLACE)
 
         return setInterceptors.get(
-            `posts/v7/all?page=${pageNum}&size=${
+            `posts/v8/all?page=${pageNum}&size=${
                 this.postSize
             }&${this.queryStringArray.join('&')}`
         )

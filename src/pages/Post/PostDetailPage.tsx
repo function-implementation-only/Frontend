@@ -9,6 +9,10 @@ import { Viewer } from '@toast-ui/react-editor'
 import TableComponent from 'components/TableComponent'
 import { Avatar } from '@mui/material'
 import useBookmark from 'hooks/useBookmark'
+import ApplyModal from 'components/ApplyModal'
+import useModal from 'hooks/useModal'
+import useServiceManager from 'hooks/useServiceManager'
+import { useState } from 'react'
 
 const PostDetailLayout = styled.div`
     width: 1440px;
@@ -134,10 +138,16 @@ function PostDetailPage() {
     const { id: paramId } = useParams()
     const navigate = useNavigate()
     const deletePost = useDeletePost()
+    const serviceManager = useServiceManager()
+    const { isShowing, handleShowing } = useModal()
 
     const accountId = JSON.parse(localStorage.getItem('accountId')) || null
     const isLogin = !!localStorage.getItem('token')
 
+    const token = `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bjVAZ21haWwuY29tIiwiZXhwIjoxNjc2NTIzNDMxLCJpYXQiOjE2NzY0MzcwMzF9.6XVNQpWKByh1XnlzaOFOaxPbxnYlvTMXLIsuIlk-taQ`
+    const DOMAIN = 'http://61.77.108.167:8000'
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [isAuthor, setIsAuthor] = useState(true)
     const { isLoading, error, data: apiResponse } = usePostById(paramId)
 
     function handleUpdatePost() {
@@ -149,11 +159,35 @@ function PostDetailPage() {
     }
 
     function handleApply() {
-        console.log('Apply for this post')
+        if (isLogin) {
+            handleShowing()
+        } else {
+            serviceManager.domainService.popupAPI.show({
+                content: '로그인 후에 이용가능합니다.',
+                buttons: [
+                    {
+                        label: '확인',
+                        clickHandler: () => {
+                            serviceManager.domainService.popupAPI.closeTopPopup()
+                        },
+                    },
+                ],
+            })
+        }
     }
 
-    function handleChat() {
-        console.log('Start chatting')
+    // Todo: 로직 바꿔야함.
+    async function handleChat() {
+        const response = await fetch(`${DOMAIN}/chat-service/chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Access_Token: token,
+            },
+            body: JSON.stringify({ targetEmail: apiResponse.data.email }),
+        })
+        const roomData = await response.json()
+        navigate(`/chat?id=${roomData.roomName}`)
     }
 
     async function handleBookMark() {
@@ -307,6 +341,11 @@ function PostDetailPage() {
                     <Viewer initialValue={apiResponse.data.contentsParsed} />
                 </ContentsBox>
             </PostDetailRow>
+            <ApplyModal
+                isShowing={isShowing}
+                handleShowing={handleShowing}
+                post={apiResponse.data}
+            />
         </PostDetailLayout>
     )
 }

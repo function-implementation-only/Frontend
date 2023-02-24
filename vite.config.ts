@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
                 hooks: path.resolve(__dirname, './src/hooks'),
                 utils: path.resolve(__dirname, './src/utils'),
                 types: path.resolve(__dirname, './src/types'),
+                img: path.resolve(__dirname, './src/assets/images'),
             },
         },
         plugins: [
@@ -35,5 +36,13 @@ export default defineConfig(({ mode }) => {
                 },
             }),
         ],
+        server: {
+            proxy: {
+                '/chat-service/ws': {
+                    target: 'http://121.180.179.245:8000',
+                    ws: true,
+                },
+            },
+        },
     }
 })

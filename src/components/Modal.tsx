@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react'
 import { CSSTransition } from 'react-transition-group'
+import { useAppSelector } from 'src/store/hooks'
+
 import styled from 'styled-components'
 import Portal from './Portal'
 
@@ -26,13 +28,18 @@ const Box = styled.div`
     }
 `
 
-const Dim = styled.div`
+const Dim = styled.div<{
+    popupIsShowing: boolean
+}>`
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    ${(props) =>
+        props.popupIsShowing
+            ? 'background-color: transparent;'
+            : 'background-color: rgba(0, 0, 0, 0.5);'};
     z-index: 99;
     @media (max-width: 720px) {
         height: 100%;
@@ -60,6 +67,9 @@ const Modal: React.FC<ModalProps> = ({
     selector = '#modal-root',
 }) => {
     const nodeRef = React.useRef(null)
+    const popupIsShowing = useAppSelector(
+        (state) => state.popupReducer.popupIsShowing
+    )
 
     return (
         <CSSTransition
@@ -71,7 +81,7 @@ const Modal: React.FC<ModalProps> = ({
         >
             <Portal selector={selector}>
                 <Box>
-                    <Dim onClick={onClose} />
+                    <Dim onClick={onClose} popupIsShowing={popupIsShowing} />
                     <Container> {children}</Container>
                 </Box>
             </Portal>

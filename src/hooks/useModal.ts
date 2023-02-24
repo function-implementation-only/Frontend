@@ -6,6 +6,7 @@ function useModal() {
     function handleShowing() {
         setIsShowing(!isShowing)
     }
+
     return { isShowing, handleShowing, setIsShowing }
 }
 

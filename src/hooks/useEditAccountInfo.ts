@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import useServiceManager from './useServiceManager'
 
@@ -7,7 +7,7 @@ function useEditAccountInfo() {
     const navigate = useNavigate()
 
     return useMutation(
-        'editAccountInfo',
+        ['editAccountInfo'],
         (formData: FormData) =>
             serviceManager.dataService.accountAPI.editAccountInfo(formData),
         {
