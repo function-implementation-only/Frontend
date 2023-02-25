@@ -169,7 +169,7 @@ function MessageRoom({
     const textContentRef = useRef<HTMLDivElement>(null)
     const { data: accountData } = useGetAccountInfo()
 
-    const DOMAIN = 'http://121.180.179.245:8000'
+    const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
     const PARAM = searchParams.get('id')
 
     // 채팅방 삭제
@@ -195,7 +195,7 @@ function MessageRoom({
             },
             JSON.stringify({
                 roomId: roomState.roomId,
-                sender: accountData.data.nickname,
+                sender: accountData?.data.nickname,
                 message: inputRef.current.value,
             })
         )
@@ -285,7 +285,7 @@ function MessageRoom({
             </UserInfoRow>
             <TextContentRow ref={textContentRef}>
                 <ChatInitMessage>
-                    {roomState?.userData.nickname}님 과의 대화를 시작합니다.
+                    {roomState?.userData?.nickname}님 과의 대화를 시작합니다.
                 </ChatInitMessage>
                 {conversationList?.map((chat, index, arr) => {
                     const isMine = chat.sender === accountData?.data?.nickname

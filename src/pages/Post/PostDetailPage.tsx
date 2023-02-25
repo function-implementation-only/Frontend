@@ -144,8 +144,8 @@ function PostDetailPage() {
     const accountId = JSON.parse(localStorage.getItem('accountId')) || null
     const isLogin = !!localStorage.getItem('token')
 
-    const token = `eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJha3NrZmx3bjVAZ21haWwuY29tIiwiZXhwIjoxNjc2NTIzNDMxLCJpYXQiOjE2NzY0MzcwMzF9.6XVNQpWKByh1XnlzaOFOaxPbxnYlvTMXLIsuIlk-taQ`
-    const DOMAIN = 'http://61.77.108.167:8000'
+    const token = localStorage.getItem('token')
+    const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [isAuthor, setIsAuthor] = useState(true)
     const { isLoading, error, data: apiResponse } = usePostById(paramId)
