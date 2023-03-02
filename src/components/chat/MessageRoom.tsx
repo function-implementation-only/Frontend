@@ -5,7 +5,7 @@ import ChatText from 'components/chat/ChatText'
 import useModal from 'hooks/useModal'
 import SockJS from 'sockjs-client'
 import { Client, Message, Subscription, over } from 'stompjs'
-import useGetAccountInfo from 'hooks/useGetAccountInfo'
+import { MyAccount } from 'pages/ChatPage'
 import ChatCloseModal from './ChatCloseModal'
 import Imoji from './Imoji'
 
@@ -142,23 +142,25 @@ const ChatInitMessage = styled.span`
 `
 
 type PropTypes = {
+    myAccount: MyAccount
     roomState: RoomState
     conversationList: MessageItemProps[]
     setRoomState: Dispatch<SetStateAction<MessageItemProps[]>>
-    deleteFn: (roomId: number) => void
-    lastChatModifie: (roomName: string, msg: string) => void
-    timeModifie: (roomName: string | number, time: number) => void
+    handleChatRoomDelete: (roomId: number) => void
+    handleLastChat: (roomName: string, msg: string) => void
+    handleChatTime: (roomName: string | number, time: number) => void
 }
 
 const token = localStorage.getItem('token')
 let client: Client
 function MessageRoom({
-    deleteFn,
-    lastChatModifie,
+    myAccount,
     roomState,
     conversationList,
+    handleChatRoomDelete,
+    handleLastChat,
+    handleChatTime,
     setRoomState,
-    timeModifie,
 }: PropTypes) {
     const [subscribtion, setSubscribtion] = useState<Subscription>(null)
     const { isShowing: imojiShowing, handleShowing: imojiHandle } = useModal()
@@ -167,9 +169,9 @@ function MessageRoom({
     const navigate = useNavigate()
     const inputRef = useRef<HTMLInputElement>(null)
     const textContentRef = useRef<HTMLDivElement>(null)
-    const { data: accountData } = useGetAccountInfo()
 
     const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
+    const accountData = myAccount
     const PARAM = searchParams.get('id')
 
     // 채팅방 삭제
@@ -181,13 +183,14 @@ function MessageRoom({
             },
         })
 
-        deleteFn(roomState.roomId)
+        handleChatRoomDelete(roomState.roomId)
         navigate('/chat')
     }
 
     // 채팅 발송
     const submitHandler = (e: React.FormEvent) => {
         e.preventDefault()
+        if (inputRef.current.value === '') return
         client.send(
             '/pub/chat',
             {
@@ -195,12 +198,12 @@ function MessageRoom({
             },
             JSON.stringify({
                 roomId: roomState.roomId,
-                sender: accountData?.data.nickname,
+                sender: accountData?.data.email,
                 message: inputRef.current.value,
             })
         )
-        lastChatModifie(roomState?.roomName, inputRef.current.value)
-        timeModifie(roomState?.roomId, new Date().getTime())
+        handleLastChat(roomState?.roomName, inputRef.current.value)
+        handleChatTime(roomState?.roomId, new Date().getTime())
         inputRef.current.value = ''
     }
 
@@ -209,9 +212,11 @@ function MessageRoom({
         const textContent = textContentRef.current
         textContent.scrollTop = textContent.scrollHeight
     }
-    useEffect(() => {
-        scrollControll()
-    }, [conversationList])
+
+    const handleAfterMessageSend = (message: string) => {
+        handleLastChat(roomState?.roomName, message)
+        handleChatTime(roomState?.roomId, new Date().getTime())
+    }
 
     // 메세지 수신시
     const onSubscrib = (messages: Message) => {
@@ -229,7 +234,12 @@ function MessageRoom({
             ]
         })
         scrollControll()
+        handleAfterMessageSend(body.message)
     }
+
+    useEffect(() => {
+        scrollControll()
+    }, [conversationList])
 
     // 웹소켓 구독
     const connectCallback = () => {
@@ -288,7 +298,7 @@ function MessageRoom({
                     {roomState?.userData?.nickname}님 과의 대화를 시작합니다.
                 </ChatInitMessage>
                 {conversationList?.map((chat, index, arr) => {
-                    const isMine = chat.sender === accountData?.data?.nickname
+                    const isMine = chat.sender === accountData?.data?.email
                     const isStart = index === 0 && index > -1
                     const isRepeat =
                         index > 0 && arr[index - 1].sender === chat.sender
@@ -298,7 +308,13 @@ function MessageRoom({
                             key={chat.id}
                             avatarAddr={roomState?.userData?.imgUrl}
                             avatar={!isMine && (isStart || !isRepeat)}
-                            data={chat}
+                            message={chat.message}
+                            sender={
+                                isMine
+                                    ? accountData?.data?.nickname
+                                    : roomState?.userData?.nickname
+                            }
+                            createAt={chat.createAt}
                             side={isMine}
                         />
                     )

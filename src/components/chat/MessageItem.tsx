@@ -106,7 +106,7 @@ type PropTypes = {
 }
 
 function MessageItem({ data }: PropTypes) {
-    const [loading, setLoading] = useState<boolean>(true)
+    const [loading, setLoading] = useState<boolean>(false)
     const [chatList, setChatList] = useState<MessageItemProps[]>()
     const [roomState, setRoomState] = useState<RoomState>()
     const [unReadMessage, setUnReasMessage] = useState<boolean>(false)
@@ -148,33 +148,37 @@ function MessageItem({ data }: PropTypes) {
     }
 
     function setUnReadMessageState() {
-        if (data.unReadMessageCount) {
+        if (data.unreadMessageCount) {
             setUnReasMessage(true)
         }
     }
-
     useEffect(() => {
-        fetch(`${DOMAIN}/chat-service/chat/${data.roomName}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Access_Token: token,
-            },
-        })
-            .then((res) => res.json())
-            .then((json) => {
-                setChatList(() => json.chatList)
-                setRoomState(() => {
-                    return {
-                        roomId: json.roomId,
-                        roomName: json.roomName,
-                        userData: json.userData,
-                    }
-                })
-            })
         setUnReadMessageState()
-        setLoading(() => false)
     }, [])
+
+    // useEffect(() => {
+    //     fetch(`${DOMAIN}/chat-service/chat/${data.roomName}`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             Access_Token: token,
+    //         },
+    //     })
+    //         .then((res) => res.json())
+    //         .then((json) => {
+    //             console.log(json, ' messageItem')
+    //             setChatList(() => json.chatList)
+    //             setRoomState(() => {
+    //                 return {
+    //                     roomId: json.roomId,
+    //                     roomName: json.roomName,
+    //                     userData: json.userData,
+    //                 }
+    //             })
+    //         })
+    //     setUnReadMessageState()
+    //     setLoading(() => false)
+    // }, [])
 
     function unReadMessageStateChange() {
         setUnReasMessage(() => false)

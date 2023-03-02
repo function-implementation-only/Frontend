@@ -2,6 +2,7 @@ import MessageItem from 'components/chat/MessageItem'
 import MessageRoom from 'components/chat/MessageRoom'
 import ThereIsContent from 'components/chat/ThereIsContent'
 import ThereIsNoContent from 'components/chat/ThereIsNoContent'
+import useGetAccountInfo from 'hooks/useGetAccountInfo'
 import { MouseEvent, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -9,7 +10,10 @@ import styled from 'styled-components'
 type CategoryProps = {
     selected: boolean
 }
-type ChatFriendsData = {
+export type MyAccount = {
+    data: AccountData
+}
+type AccountData = {
     accountId: number
     availableTime: string
     email: string
@@ -30,14 +34,13 @@ type MessageItemProps = {
 type RoomState = {
     roomId: number
     roomName: string
-    userData: ChatFriendsData
+    userData: AccountData
 }
 const ChatPageLayout = styled.div`
     display: flex;
     width: 1440px;
     height: calc(100vh - 80px);
     margin: 0 auto;
-    /* padding: 0 24px; */
 `
 
 const ChatListRow = styled.div`
@@ -77,7 +80,8 @@ export type ChatRoomType = {
     roomId: number
     roomName: string
     chatList: null | object[]
-    unReadMessageCount: number
+    unReadMessageCount?: number
+    unreadMessageCount?: number
     latestChatMessage: null | string
     nickname: string
     lastSendMessageTime?: number | null
@@ -95,6 +99,7 @@ function ChatPage() {
     const [chatRoom, setChatRoom] = useState<ChatRoomType[]>([])
     const [roomState, setRoomState] = useState<RoomState>()
     const [chatList, setChatList] = useState<MessageItemProps[]>()
+    const { data: accountData }: { data: MyAccount } = useGetAccountInfo()
     const [searchParams] = useSearchParams()
     const currentChatRoom = searchParams.get('id')
 
@@ -120,10 +125,7 @@ function ChatPage() {
         return index
     }
 
-    const lastMessageTimeModifie = (
-        roomName: string | number,
-        time: number
-    ) => {
+    const handleChatTime = (roomName: string | number, time: number) => {
         const index = getRoomIndex(roomName)
 
         if (index !== -1) {
@@ -133,17 +135,17 @@ function ChatPage() {
         }
     }
 
-    const lastMessageModifie = (roomName: string, msg: string) => {
+    const handleLastChat = (roomName: string, msg: string) => {
         const index = getRoomIndex(roomName)
 
         if (index !== -1) {
             const chatRoomCopy = [...chatRoom]
             chatRoomCopy[index].latestChatMessage = msg
-            setChatRoom(() => chatRoomCopy)
+            setChatRoom(chatRoomCopy)
         }
     }
 
-    const deleteChatRoomRequest = (roomId: number) => {
+    const handleChatRoomDelete = (roomId: number) => {
         const index = getRoomIndex(roomId)
 
         if (index !== -1) {
@@ -170,10 +172,7 @@ function ChatPage() {
             setChatRoom(() => chatRoomCopy)
             setAllMessage(() => true)
         }
-        lastMessageTimeModifie(
-            roomName,
-            chatRoomCopy[index].lastSendMessageTime
-        )
+        handleChatTime(roomName, chatRoomCopy[index].lastSendMessageTime)
     }
 
     function setMessageState(e: MouseEvent<HTMLButtonElement>) {
@@ -194,6 +193,7 @@ function ChatPage() {
         const roomdata: ChatRoomResponse = await response.json()
         setChatRoom(roomdata.content)
     }
+    console.log(chatRoom, '챗룸')
 
     useEffect(() => {
         getChatRooms()
@@ -252,12 +252,13 @@ function ChatPage() {
             </ChatListRow>
             {currentChatRoom ? (
                 <MessageRoom
-                    deleteFn={deleteChatRoomRequest}
-                    lastChatModifie={lastMessageModifie}
+                    myAccount={accountData}
                     roomState={roomState}
                     conversationList={chatList}
+                    handleChatRoomDelete={handleChatRoomDelete}
+                    handleLastChat={handleLastChat}
+                    handleChatTime={handleChatTime}
                     setRoomState={setChatList}
-                    timeModifie={lastMessageTimeModifie}
                 />
             ) : !currentChatRoom && currentChatMessage?.length ? (
                 <ThereIsContent />
