@@ -7,32 +7,6 @@ type SelectedProps = {
     selected: boolean
 }
 
-type MessageItemProps = {
-    id?: string
-    sender: string
-    message: string
-    time?: string
-    avatar?: string
-    email?: string
-    createAt: string
-}
-
-type ChatFriendsData = {
-    accountId: number
-    availableTime: string
-    email: string
-    field: string
-    imgUrl: string
-    introduction: string
-    nickname: string
-}
-
-type RoomState = {
-    roomId: number
-    roomName: string
-    userData: ChatFriendsData
-}
-
 const MessageItemLayout = styled.li<SelectedProps>`
     display: flex;
     height: 76px;
@@ -99,7 +73,6 @@ const RedDot = styled.div`
     border-radius: 50%;
     right: 0;
 `
-const token = localStorage.getItem('token')
 
 type PropTypes = {
     data: ChatRoomType
@@ -107,82 +80,58 @@ type PropTypes = {
 
 function MessageItem({ data }: PropTypes) {
     const [loading, setLoading] = useState<boolean>(false)
-    const [chatList, setChatList] = useState<MessageItemProps[]>()
-    const [roomState, setRoomState] = useState<RoomState>()
     const [unReadMessage, setUnReasMessage] = useState<boolean>(false)
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const { roomName } = data
-    const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
+    // const [chatList, setChatList] = useState<MessageItemProps[]>()
+    // const [roomState, setRoomState] = useState<RoomState>()
 
-    let hour: number | null | undefined | Date = null
-    let minute: number | null | undefined | Date = null
+    // let hour: number | null | undefined | Date = null
+    // let minute: number | null | undefined | Date = null
 
-    const lastTime =
-        data?.lastSendMessageTime ||
-        (chatList &&
-            chatList[chatList.length - 1] &&
-            chatList[chatList.length - 1].createAt)
+    // const lastTime =
+    //     data?.lastSendMessageTime ||
+    //     (chatList &&
+    //         chatList[chatList.length - 1] &&
+    //         chatList[chatList.length - 1].createAt)
 
-    if (lastTime && chatList?.length) {
-        switch (typeof lastTime) {
-            case 'string':
-                hour = Math.floor(
-                    (Date.now() - new Date(lastTime).getTime()) / 60 / 60 / 1000
-                )
-                minute = Math.floor(
-                    ((Date.now() - new Date(lastTime).getTime()) / 1000 / 60) %
-                        60
-                )
-                break
-            case 'number':
-                hour = Math.floor(
-                    (Date.now() - data.lastSendMessageTime) / 60 / 60 / 1000
-                )
-                minute = Math.floor(
-                    ((Date.now() - data.lastSendMessageTime) / 1000 / 60) % 60
-                )
-                break
-            default:
-        }
-    }
+    // if (lastTime && chatList?.length) {
+    //     switch (typeof lastTime) {
+    //         case 'string':
+    //             hour = Math.floor(
+    //                 (Date.now() - new Date(lastTime).getTime()) / 60 / 60 / 1000
+    //             )
+    //             minute = Math.floor(
+    //                 ((Date.now() - new Date(lastTime).getTime()) / 1000 / 60) %
+    //                     60
+    //             )
+    //             break
+    //         case 'number':
+    //             hour = Math.floor(
+    //                 (Date.now() - data.lastSendMessageTime) / 60 / 60 / 1000
+    //             )
+    //             minute = Math.floor(
+    //                 ((Date.now() - data.lastSendMessageTime) / 1000 / 60) % 60
+    //             )
+    //             break
+    //         default:
+    //     }
+    // }
 
     function setUnReadMessageState() {
         if (data.unreadMessageCount) {
             setUnReasMessage(true)
         }
     }
-    useEffect(() => {
-        setUnReadMessageState()
-    }, [])
-
-    // useEffect(() => {
-    //     fetch(`${DOMAIN}/chat-service/chat/${data.roomName}`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             Access_Token: token,
-    //         },
-    //     })
-    //         .then((res) => res.json())
-    //         .then((json) => {
-    //             console.log(json, ' messageItem')
-    //             setChatList(() => json.chatList)
-    //             setRoomState(() => {
-    //                 return {
-    //                     roomId: json.roomId,
-    //                     roomName: json.roomName,
-    //                     userData: json.userData,
-    //                 }
-    //             })
-    //         })
-    //     setUnReadMessageState()
-    //     setLoading(() => false)
-    // }, [])
 
     function unReadMessageStateChange() {
         setUnReasMessage(() => false)
     }
+
+    useEffect(() => {
+        setUnReadMessageState()
+    }, [])
 
     async function selectMessage() {
         navigate(`/chat?id=${roomName}`)
@@ -199,12 +148,12 @@ function MessageItem({ data }: PropTypes) {
                     selected={searchParams.get('id') === roomName}
                 >
                     <AvatarRow>
-                        <AvatarImage src={roomState?.userData?.imgUrl} />
+                        <AvatarImage src={data?.userData?.imgUrl} />
                     </AvatarRow>
                     <MessageInfoBox>
                         <NameColumn>
                             <NameParagraph>
-                                {roomState?.userData?.nickname}
+                                {data?.userData?.nickname}
                             </NameParagraph>
                         </NameColumn>
                         <ContentTimeColumn>
@@ -212,11 +161,11 @@ function MessageItem({ data }: PropTypes) {
                                 {data.latestChatMessage}
                             </ContentParagraph>
                             <TimeText>
-                                {hour && minute
+                                {/* {hour && minute
                                     ? `${hour} 시간 ${minute}분`
                                     : minute
                                     ? `${minute}분`
-                                    : '방금전'}
+                                    : '방금전'} */}
                             </TimeText>
                         </ContentTimeColumn>
                         {unReadMessage ? <RedDot /> : null}

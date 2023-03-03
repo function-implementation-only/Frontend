@@ -187,10 +187,23 @@ function MessageRoom({
         navigate('/chat')
     }
 
+    const handleAfterMessageSend = (message: string) => {
+        console.log(roomState?.roomName, ' 함수안쪽 룸네임')
+        handleLastChat(roomState?.roomName, message)
+        handleChatTime(roomState?.roomId, new Date().getTime())
+    }
+
+    // 채팅방 스크롤 최하단 이동
+    const scrollControll = () => {
+        const textContent = textContentRef.current
+        textContent.scrollTop = textContent.scrollHeight
+    }
+
     // 채팅 발송
     const submitHandler = (e: React.FormEvent) => {
         e.preventDefault()
         if (inputRef.current.value === '') return
+
         client.send(
             '/pub/chat',
             {
@@ -202,39 +215,32 @@ function MessageRoom({
                 message: inputRef.current.value,
             })
         )
-        handleLastChat(roomState?.roomName, inputRef.current.value)
-        handleChatTime(roomState?.roomId, new Date().getTime())
+        // handleAfterMessageSend(inputRef.current.value)
         inputRef.current.value = ''
     }
 
-    // 채팅방 스크롤 최하단 이동
-    const scrollControll = () => {
-        const textContent = textContentRef.current
-        textContent.scrollTop = textContent.scrollHeight
-    }
-
-    const handleAfterMessageSend = (message: string) => {
-        handleLastChat(roomState?.roomName, message)
-        handleChatTime(roomState?.roomId, new Date().getTime())
+    const hadleLastMessage = (message: string) => {
+        handleAfterMessageSend(message)
     }
 
     // 메세지 수신시
-    const onSubscrib = (messages: Message) => {
+    function onSubscrib(messages: Message) {
         const body: MessageItemProps = JSON.parse(messages.body)
-
-        setRoomState((prev) => {
-            return [
-                ...prev,
-                {
-                    message: body.message,
-                    sender: body.sender,
-                    id: `${Math.random()}`,
-                    createAt: `${new Date().toISOString()}`,
-                },
-            ]
-        })
+        // setRoomState((prev) => {
+        //     return [
+        //         ...prev,
+        //         {
+        //             message: body.message,
+        //             sender: body.sender,
+        //             id: `${Math.random()}`,
+        //             createAt: `${new Date().toISOString()}`,
+        //         },
+        //     ]
+        // })
+        // handleAfterMessageSend(body.message)
+        console.log(roomState?.roomName, '메세지 수신시 룸네임')
+        hadleLastMessage(body.message)
         scrollControll()
-        handleAfterMessageSend(body.message)
     }
 
     useEffect(() => {
@@ -243,6 +249,7 @@ function MessageRoom({
 
     // 웹소켓 구독
     const connectCallback = () => {
+        console.log(roomState, '커넥션 콜백')
         const sub: Subscription = client.subscribe(
             `/sub/chatroom/${PARAM}`,
             onSubscrib

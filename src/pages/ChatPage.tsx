@@ -85,6 +85,7 @@ export type ChatRoomType = {
     latestChatMessage: null | string
     nickname: string
     lastSendMessageTime?: number | null
+    userData?: AccountData
 }
 
 type ChatRoomResponse = {
@@ -96,7 +97,7 @@ type ChatRoomResponse = {
 const token = localStorage.getItem('token')
 function ChatPage() {
     const [AllMessage, setAllMessage] = useState(true)
-    const [chatRoom, setChatRoom] = useState<ChatRoomType[]>([])
+    const [chatRoom, setChatRoom] = useState<ChatRoomType[]>()
     const [roomState, setRoomState] = useState<RoomState>()
     const [chatList, setChatList] = useState<MessageItemProps[]>()
     const { data: accountData }: { data: MyAccount } = useGetAccountInfo()
@@ -112,12 +113,14 @@ function ChatPage() {
     const getRoomIndex = (data: number | string) => {
         let index: number
 
+        console.log(chatRoom, '123')
+        console.log(data, '456')
         switch (typeof data) {
             case 'number':
-                index = chatRoom.findIndex((room) => room.roomId === data)
+                index = chatRoom?.findIndex((room) => room.roomId === data)
                 break
             case 'string':
-                index = chatRoom.findIndex((room) => room.roomName === data)
+                index = chatRoom?.findIndex((room) => room.roomName === data)
                 break
             default:
                 index = -1
@@ -125,6 +128,7 @@ function ChatPage() {
         return index
     }
 
+    // Todo: 챗타임은 당분간 보류된 상태
     const handleChatTime = (roomName: string | number, time: number) => {
         const index = getRoomIndex(roomName)
 
@@ -137,11 +141,12 @@ function ChatPage() {
 
     const handleLastChat = (roomName: string, msg: string) => {
         const index = getRoomIndex(roomName)
-
+        console.log('룸네임', roomName)
+        console.log(msg, '메세지')
         if (index !== -1) {
             const chatRoomCopy = [...chatRoom]
             chatRoomCopy[index].latestChatMessage = msg
-            setChatRoom(chatRoomCopy)
+            setChatRoom(() => chatRoomCopy)
         }
     }
 
@@ -193,7 +198,6 @@ function ChatPage() {
         const roomdata: ChatRoomResponse = await response.json()
         setChatRoom(roomdata.content)
     }
-    console.log(chatRoom, '챗룸')
 
     useEffect(() => {
         getChatRooms()
