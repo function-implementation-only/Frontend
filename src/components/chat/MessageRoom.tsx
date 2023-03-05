@@ -215,31 +215,26 @@ function MessageRoom({
                 message: inputRef.current.value,
             })
         )
-        // handleAfterMessageSend(inputRef.current.value)
+        handleAfterMessageSend(inputRef.current.value)
         inputRef.current.value = ''
-    }
-
-    const hadleLastMessage = (message: string) => {
-        handleAfterMessageSend(message)
     }
 
     // 메세지 수신시
     function onSubscrib(messages: Message) {
         const body: MessageItemProps = JSON.parse(messages.body)
-        // setRoomState((prev) => {
-        //     return [
-        //         ...prev,
-        //         {
-        //             message: body.message,
-        //             sender: body.sender,
-        //             id: `${Math.random()}`,
-        //             createAt: `${new Date().toISOString()}`,
-        //         },
-        //     ]
-        // })
-        // handleAfterMessageSend(body.message)
+        setRoomState((prev) => {
+            return [
+                ...prev,
+                {
+                    message: body.message,
+                    sender: body.sender,
+                    id: `${Math.random()}`,
+                    createAt: `${new Date().toISOString()}`,
+                },
+            ]
+        })
+        handleAfterMessageSend(body.message)
         console.log(roomState?.roomName, '메세지 수신시 룸네임')
-        hadleLastMessage(body.message)
         scrollControll()
     }
 
