@@ -168,6 +168,7 @@ const ApplimentModal: React.FC<Props> = ({
     const navigate = useNavigate()
     const handleCoffeChat = () => {
         navigate('/chat')
+        handleShowing()
     }
 
     return (

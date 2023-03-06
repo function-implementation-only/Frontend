@@ -10,6 +10,7 @@ type ItemDetail = {
 }
 type PropType = {
     setDetail: (prev: any) => any
+    handleListShow: () => void
     detail: ItemDetail[]
 }
 
@@ -26,6 +27,7 @@ const Container = styled.div`
     cursor: pointer;
     padding: 15px 20px;
     gap: 10px;
+    background-color: #ffffff;
 `
 const AlramTitle = styled.h3`
     font-family: 'Pretendard';
@@ -45,7 +47,7 @@ const ApplicationText = styled.p`
     margin-left: auto;
 `
 
-function Alram({ detail, setDetail }: PropType) {
+function Alram({ detail, setDetail, handleListShow }: PropType) {
     const removeAlram = () => {
         setTimeout(() => {
             setDetail((prev: ItemDetail[]) => prev.slice(1))
@@ -60,10 +62,8 @@ function Alram({ detail, setDetail }: PropType) {
 
     if (detail?.length) {
         return (
-            <Container>
-                <AlramTitle>
-                    {detail[0].sender || 'nickname 님의 신청'}
-                </AlramTitle>
+            <Container onClick={handleListShow}>
+                <AlramTitle>{`${detail[0]?.senderNickname} 님의 신청`}</AlramTitle>
                 <ApplicationText>확인하러 가기</ApplicationText>
             </Container>
         )

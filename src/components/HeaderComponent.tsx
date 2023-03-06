@@ -373,7 +373,11 @@ function HeaderComponent() {
                 handleShowing={setApplymentShowing}
                 detail={applymentDetail}
             />
-            <Alram detail={alram} setDetail={setAlram} />
+            <Alram
+                detail={alram}
+                setDetail={setAlram}
+                handleListShow={handleNotiListShowing}
+            />
         </HeaderComponentLayout>
     )
 }
