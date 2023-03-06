@@ -113,8 +113,6 @@ function ChatPage() {
     const getRoomIndex = (data: number | string) => {
         let index: number
 
-        console.log(chatRoom, '123')
-        console.log(data, '456')
         switch (typeof data) {
             case 'number':
                 index = chatRoom?.findIndex((room) => room.roomId === data)
@@ -141,8 +139,7 @@ function ChatPage() {
 
     const handleLastChat = (roomName: string, msg: string) => {
         const index = getRoomIndex(roomName)
-        console.log('룸네임', roomName)
-        console.log(msg, '메세지')
+
         if (index !== -1) {
             const chatRoomCopy = [...chatRoom]
             chatRoomCopy[index].latestChatMessage = msg

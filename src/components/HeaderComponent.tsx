@@ -11,6 +11,8 @@ import usePostLogOut from 'hooks/usePostLogOut'
 import sseEvent from 'components/sse/eventSource'
 import AccountModal from './account/AccountModal'
 import Applications from './sse/Applications'
+import ApplimentModal from './sse/ApplimentModal'
+import Alram from './sse/Alram'
 
 const HeaderComponentLayout = styled.div`
     z-index: 999;
@@ -122,6 +124,29 @@ const NotificationLayOut = styled.div<{ notiListShowing: boolean }>`
     top: 50px;
     z-index: 40;
 `
+const NoApplyment = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 500px;
+    heigth: 99px;
+    padding: 16px;
+    z-index: 30;
+    background-color: #ffffff;
+    border-radius: 8px;
+    cursor: pointer;
+    &:hover {
+        background-color: #ffecd6;
+    }
+`
+const NotofictaionPoint = styled.div`
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ff9c30;
+    top: 10px;
+    left: 25%;
+    position: absolute;
+`
 const { sseEvent: es } = sseEvent()
 function HeaderComponent() {
     const { isShowing, handleShowing } = useModal()
@@ -130,28 +155,25 @@ function HeaderComponent() {
     const [signup, setSignup] = useState(false)
     const [anchorEl, setAnchorEl] = useState(null)
     const [notification, setNotification] = useState([])
+    const [alram, setAlram] = useState([])
+    const [applymentDetail, setApplymentDetail] = useState()
     const open = Boolean(anchorEl)
     const navigate = useNavigate()
     const [notiListShowing, setNotiListShowing] = useState(false)
-    const {
-        isShowing: notificationShowing,
-        handleShowing: handleNotificationShowing,
-    } = useModal()
+    const { isShowing: applymentShowing, handleShowing: setApplymentShowing } =
+        useModal()
 
-    es.onopen = function (ev) {
-        console.log(ev, '이벤트 연결')
+    es.onopen = (e) => {
+        console.log(e, 'sse 이벤트 연결')
     }
-    es.onmessage = function (ev) {
-        if (typeof ev.data === 'string') {
-            console.log(ev)
-            const data = JSON.parse(ev.data)
-            // 데이터는 객체 리터럴로 온다
-            console.log(data, '이벤트 수신 완료')
-            setNotification((prev) => [...prev, data])
-        }
+    es.onmessage = (ev) => {
+        const data = JSON.parse(ev.data)
+        console.log(data, '이벤트 수신 완료')
+        setNotification((prev) => [data, ...prev])
+        setAlram((prev) => [...prev, data])
     }
-    es.onerror = function (ev) {
-        console.log(ev, '이벤트 에러')
+    es.onerror = () => {
+        console.log('sse connection Error. Trying reconnect')
     }
 
     // 사용자 기본정보 API
@@ -202,24 +224,44 @@ function HeaderComponent() {
         setNotiListShowing((prev) => !prev)
     }
 
+    const handleApplymentShowing = async (id: number) => {
+        const data = await fetch(
+            `http://121.180.179.245:8000/main-service/applyments/${id}`
+        )
+        if (data.ok) {
+            const result = await data.json()
+            console.log(result.data)
+            setApplymentDetail(result.data)
+            handleNotiListShowing()
+            setApplymentShowing()
+        }
+    }
+
     useEffect(() => {
         const token = localStorage.getItem('token')
         if (token) {
             setIsLogin(true)
         }
 
-        fetch('http://121.180.179.245:8000/main-service/notifications/list', {
+        const options = {
             method: 'GET',
             headers: {
                 Access_Token: localStorage.getItem('token'),
             },
-        })
-            .then((res) => res.json())
-            .then((json) => {
-                if (json.success) {
-                    setNotification(json.data)
-                }
-            })
+        }
+
+        async function getData() {
+            const data = await fetch(
+                'http://121.180.179.245:8000/main-service/notifications/list',
+                options
+            )
+            if (data.ok) {
+                const result = await data.json()
+                setNotification(result.data)
+            }
+        }
+
+        getData()
     }, [])
 
     return (
@@ -245,10 +287,28 @@ function HeaderComponent() {
                             >
                                 <NotificationsOutlinedIcon />
                             </AlertItem>
+                            {notification?.length ? (
+                                <NotofictaionPoint />
+                            ) : null}
+
                             <NotificationLayOut
                                 notiListShowing={notiListShowing}
                             >
-                                <Applications text="네" />
+                                {notification?.length ? (
+                                    notification.map((noti) => (
+                                        <Applications
+                                            onClick={(id) =>
+                                                handleApplymentShowing(id)
+                                            }
+                                            detail={noti}
+                                            key={noti.applymentId}
+                                        />
+                                    ))
+                                ) : (
+                                    <NoApplyment>
+                                        <p>알림이 없습니다</p>
+                                    </NoApplyment>
+                                )}
                             </NotificationLayOut>
                             <AccountItem type="button" onClick={handleClick}>
                                 {accountData?.data.imgUrl ? (
@@ -308,6 +368,12 @@ function HeaderComponent() {
                 setLogin={setLogin}
                 setSignup={setSignup}
             />
+            <ApplimentModal
+                isShowing={applymentShowing}
+                handleShowing={setApplymentShowing}
+                detail={applymentDetail}
+            />
+            <Alram detail={alram} setDetail={setAlram} />
         </HeaderComponentLayout>
     )
 }

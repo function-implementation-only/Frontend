@@ -15,6 +15,7 @@ import {
     muiSelectStyleObj,
 } from 'src/styles/mui/custom'
 import usePostApplyment from 'hooks/usePostApplyment'
+import { useNavigate } from 'react-router-dom'
 import Modal from './Modal'
 import PlaceHolderComponent from './common/PlaceHolderComponent'
 
@@ -109,6 +110,8 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
     }
     const { register, handleSubmit, control } = useForm()
     const postApplyment = usePostApplyment()
+    const navigate = useNavigate()
+    const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
 
     const POSSIBLE_RECRUITMENT_PART = RECRUITMENT_PART.filter((item) => {
         switch (item.value) {
@@ -128,6 +131,20 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
     })
     // 모집중인 파트만 선택하도록 필터링
 
+    const handleChatCreate = async () => {
+        await fetch(`${DOMAIN}/chat-service/chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Access_Token: localStorage.getItem('token'),
+            },
+            body: JSON.stringify({ targetEmail: post?.email }),
+        })
+
+        // const createdRoomData = await response.json()
+        // navigate(`/chat?id=${createdRoomData.roomName}`)
+    }
+
     const onSubmit: SubmitHandler<any> = async (inputData) => {
         // FIXME : ApplyObj로 변경 필요
         const serviceManager = useServiceManager()
@@ -137,6 +154,7 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
             postId: post.postId,
         }
         postApplyment.mutate(payload)
+        // handleChatCreate()
     }
     return (
         <Modal isOpen={isShowing} onClose={handleShowing}>

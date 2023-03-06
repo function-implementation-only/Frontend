@@ -1,6 +1,6 @@
 import { EventSourcePolyfill } from 'event-source-polyfill'
 
-// const EventSource = NativeEventSource || EventSourcePolyfill
+// todo: hooks 폴더로 옮길것.
 
 function sseEvent() {
     const es = new EventSourcePolyfill(

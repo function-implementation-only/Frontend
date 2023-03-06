@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 const ApplicationLayout = styled.div`
@@ -10,11 +9,14 @@ const ApplicationLayout = styled.div`
     background-color: #ffffff;
     border-radius: 8px;
     cursor: pointer;
+    &:hover {
+        background-color: #ffecd6;
+    }
 `
 const ApplicationBodyRow = styled.div`
     display: flex;
     flex-direction: column;
-    width: 252px;
+    width: 300px;
     height: 67px;
     gap: 4px;
     padding-left: 24px;
@@ -63,18 +65,36 @@ const NextIcon = styled.svg`
     width: 24px;
     color: black;
 `
+type ItemDetail = {
+    applymentId: number
+    created_at: string
+    receiver: string
+    sender: string
+    senderNickname: string
+}
 
-function Applications({ text }: { text: string }) {
-    const handleApplimentClick = () => {
-        console.log('핸들 어플라이먼트 클릭')
-    }
+type Applictations = {
+    onClick: (id: number) => void
+    detail: ItemDetail
+}
+
+function Applications({ onClick, detail }: Applictations) {
+    const date = new Date(detail.created_at)
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+
     return (
-        <ApplicationLayout onClick={handleApplimentClick}>
+        <ApplicationLayout onClick={() => onClick(detail.applymentId)}>
             <ApplicationBodyRow>
                 <NotofictaionPoint />
-                <ApplicationH3>제목</ApplicationH3>
-                <ApplicationText>{text}</ApplicationText>
-                <ApplicationData>날짜</ApplicationData>
+                <ApplicationH3>
+                    {detail.senderNickname} 님이 내 공고에 지원했어요!
+                </ApplicationH3>
+                <ApplicationText>어떤 사람인지 확인해 볼까요?</ApplicationText>
+                <ApplicationData>
+                    {year}. {month}. {day}
+                </ApplicationData>
             </ApplicationBodyRow>
             <NextButton type="button">
                 <NextIcon
