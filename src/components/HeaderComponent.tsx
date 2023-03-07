@@ -163,8 +163,8 @@ function HeaderComponent() {
     const { isShowing: applymentShowing, handleShowing: setApplymentShowing } =
         useModal()
 
-    es.onopen = (e) => {
-        console.log(e, 'sse 이벤트 연결')
+    es.onopen = () => {
+        console.log('sse 이벤트 연결')
     }
     es.onmessage = (ev) => {
         const data = JSON.parse(ev.data)
@@ -230,7 +230,6 @@ function HeaderComponent() {
         )
         if (data.ok) {
             const result = await data.json()
-            console.log(result.data)
             setApplymentDetail(result.data)
             handleNotiListShowing()
             setApplymentShowing()
