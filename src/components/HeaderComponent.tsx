@@ -147,7 +147,7 @@ const NotofictaionPoint = styled.div`
     left: 25%;
     position: absolute;
 `
-const { sseEvent: es } = sseEvent()
+const es = sseEvent()
 function HeaderComponent() {
     const { isShowing, handleShowing } = useModal()
     const [isLogin, setIsLogin] = useState(false)
@@ -163,6 +163,7 @@ function HeaderComponent() {
     const { isShowing: applymentShowing, handleShowing: setApplymentShowing } =
         useModal()
 
+    // sse 객체 연결콜백 (onopen), 메세지 수신 콜백(onmessage), 에러콜백(onerror)
     es.onopen = () => {
         console.log('sse 이벤트 연결')
     }

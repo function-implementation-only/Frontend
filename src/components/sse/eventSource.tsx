@@ -1,6 +1,6 @@
 import { EventSourcePolyfill } from 'event-source-polyfill'
 
-// todo: hooks 폴더로 옮길것.
+// todo: 여기 있어도 좋은가?
 
 function sseEvent() {
     const es = new EventSourcePolyfill(
@@ -13,7 +13,7 @@ function sseEvent() {
         }
     )
 
-    return { sseEvent: es }
+    return es
 }
 
 export default sseEvent
