@@ -1,4 +1,5 @@
 import { AxiosResponse } from 'axios'
+import { APIResponse, ContentResponse } from 'types/response'
 import { AccountInfo, SignUpInfo } from '../../types/account'
 import setInterceptors from '../interceptor'
 
@@ -17,6 +18,11 @@ export interface AccountAPIInterface {
     getAccountInfo: () => Promise<AxiosResponse>
     editAccountInfo: (payload: FormData) => Promise<AxiosResponse>
     editPassword: (email: string, password: string) => Promise<AxiosResponse>
+    getMyApplyments: () => Promise<
+        AxiosResponse<APIResponse<ContentResponse[]>>
+    >
+    getMyBookmarks: () => Promise<AxiosResponse<APIResponse<ContentResponse[]>>>
+    getMyPosts: () => Promise<AxiosResponse<APIResponse<ContentResponse[]>>>
 }
 
 export default class AccountAPI implements AccountAPIInterface {
@@ -73,5 +79,17 @@ export default class AccountAPI implements AccountAPIInterface {
             email,
             password,
         })
+    }
+
+    getMyApplyments(): Promise<AxiosResponse<APIResponse<ContentResponse[]>>> {
+        return setInterceptors.get('account/mycomment')
+    }
+
+    getMyBookmarks(): Promise<AxiosResponse<APIResponse<ContentResponse[]>>> {
+        return setInterceptors.get('account/mylikes')
+    }
+
+    getMyPosts(): Promise<AxiosResponse<APIResponse<ContentResponse[]>>> {
+        return setInterceptors.get('account/mypost')
     }
 }

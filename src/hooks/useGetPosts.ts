@@ -17,7 +17,6 @@ async function useGetPosts(pageNum: any): Promise<ContentResponse[]> {
             RESPONSE_TYPE.POST.GET_ALL,
             data.data.content
         )
-        console.log(dataParsed)
         return dataParsed
     } catch (error) {
         alert(error)

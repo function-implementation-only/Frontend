@@ -21,6 +21,7 @@ function BannerComponent() {
             slidesPerView={1}
             navigation
             pagination={{ clickable: true }}
+            loop
         >
             <SwiperSlide>
                 <BannerBox imgSrc="/assets/images/banner/banner_1.svg" />

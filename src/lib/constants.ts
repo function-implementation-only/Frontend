@@ -9,6 +9,12 @@ type ParseConstantObj = {
     [key: string]: string
 }
 
+export const POST_TABS = [
+    { title: '북마크', value: 'Bookmark' },
+    { title: '작성 공고', value: 'Write' },
+    { title: '지원 공고', value: 'Apply' },
+]
+
 export const TEXT = {
     PLACEHOLDER_CHOICE: '선택',
 }
