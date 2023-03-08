@@ -123,6 +123,7 @@ const NotificationLayOut = styled.div<{ notiListShowing: boolean }>`
     left: -80%;
     top: 50px;
     z-index: 40;
+    box-shadow: 3px 3px 5px gray;
 `
 const NoApplyment = styled.div`
     display: flex;
@@ -162,6 +163,7 @@ function HeaderComponent() {
     const [notiListShowing, setNotiListShowing] = useState(false)
     const { isShowing: applymentShowing, handleShowing: setApplymentShowing } =
         useModal()
+    const domain = import.meta.env.VITE_API_END_POINT
 
     // sse 객체 연결콜백 (onopen), 메세지 수신 콜백(onmessage), 에러콜백(onerror)
     es.onopen = () => {
@@ -226,9 +228,7 @@ function HeaderComponent() {
     }
 
     const handleApplymentShowing = async (id: number) => {
-        const data = await fetch(
-            `http://121.180.179.245:8000/main-service/applyments/${id}`
-        )
+        const data = await fetch(`${domain}applyments/${id}`)
         if (data.ok) {
             const result = await data.json()
             setApplymentDetail(result.data)
@@ -251,10 +251,7 @@ function HeaderComponent() {
         }
 
         async function getData() {
-            const data = await fetch(
-                'http://121.180.179.245:8000/main-service/notifications/list',
-                options
-            )
+            const data = await fetch(`${domain}notifications/list`, options)
             if (data.ok) {
                 const result = await data.json()
                 setNotification(result.data)

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { useEffect } from 'react'
 
 type ItemDetail = {
@@ -14,9 +14,21 @@ type PropType = {
     detail: ItemDetail[]
 }
 
+const fadeIn = keyframes`
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.2;
+    }
+    
+`
+
 const Container = styled.div`
     display: flex;
-    flex-direction: column;
     position: absolute;
     bottom: calc(-100vh + 100px);
     right: 30px;
@@ -26,8 +38,22 @@ const Container = styled.div`
     border: 1px solid #ff9c30;
     cursor: pointer;
     padding: 15px 20px;
-    gap: 10px;
     background-color: #ffffff;
+    animation: ${fadeIn} 5s infinite;
+    box-shadow: 3px 3px 5px gray;
+`
+const Logo = styled.img`
+    width: 80px;
+    height: 100%;
+    object-fit: fill;
+`
+const TextColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 10px;
 `
 const AlramTitle = styled.h3`
     font-family: 'Pretendard';
@@ -35,7 +61,6 @@ const AlramTitle = styled.h3`
     font-weight: 700;
     font-size: 16px;
     line-height: 19px;
-    margin-left: auto;
 `
 const ApplicationText = styled.p`
     font-family: 'Pretendard';
@@ -44,7 +69,11 @@ const ApplicationText = styled.p`
     font-size: 12px;
     line-height: 14px;
     color: #b0b0b0;
-    margin-left: auto;
+`
+const NextIcon = styled.svg`
+    /* margin-left: auto; */
+    width: 24px;
+    color: black;
 `
 
 function Alram({ detail, setDetail, handleListShow }: PropType) {
@@ -63,8 +92,25 @@ function Alram({ detail, setDetail, handleListShow }: PropType) {
     if (detail?.length) {
         return (
             <Container onClick={handleListShow}>
-                <AlramTitle>{`${detail[0]?.senderNickname} 님의 신청`}</AlramTitle>
-                <ApplicationText>확인하러 가기</ApplicationText>
+                <Logo src="/assets/images/Logo.svg" alt="logoImg" />
+                <TextColumn>
+                    <AlramTitle>{`${detail[0]?.senderNickname} 님의 신청`}</AlramTitle>
+                    <ApplicationText>확인하러 가기</ApplicationText>
+                </TextColumn>
+                <NextIcon
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="black"
+                    className="w-6 h-6"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                    />
+                </NextIcon>
             </Container>
         )
     }
