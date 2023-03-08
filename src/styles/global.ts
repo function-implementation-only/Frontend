@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
+import './swiper.css'
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
