@@ -8,7 +8,11 @@ import { Menu, MenuItem } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import useGetAccountInfo from 'hooks/useGetAccountInfo'
 import usePostLogOut from 'hooks/usePostLogOut'
+import sseEvent from 'components/sse/eventSource'
 import AccountModal from './account/AccountModal'
+import Applications from './sse/Applications'
+import ApplimentModal from './sse/ApplimentModal'
+import Alram from './sse/Alram'
 
 const HeaderComponentLayout = styled.div`
     z-index: 999;
@@ -41,6 +45,7 @@ const UtilityBox = styled.div`
 `
 
 const LogInList = styled.div`
+    position: relative;
     display: grid;
     grid-auto-flow: column;
     grid-column-gap: 16px;
@@ -107,14 +112,72 @@ const DefaultButtonReversed = styled(DefaultButton)`
     color: var(--primary-color);
 `
 
+const NotificationLayOut = styled.div<{ notiListShowing: boolean }>`
+    width: 502px;
+    display: ${(props) => (props.notiListShowing ? 'flex;' : 'none;')};
+    flex-direction: column;
+    border-radius: 5px;
+    border: 1px solid #ff9c30;
+    background: #ffffff;
+    position: absolute;
+    left: -80%;
+    top: 50px;
+    z-index: 40;
+    box-shadow: 3px 3px 5px gray;
+`
+const NoApplyment = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 500px;
+    heigth: 99px;
+    padding: 16px;
+    z-index: 30;
+    background-color: #ffffff;
+    border-radius: 8px;
+    cursor: pointer;
+    &:hover {
+        background-color: #ffecd6;
+    }
+`
+const NotofictaionPoint = styled.div`
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ff9c30;
+    top: 10px;
+    left: 25%;
+    position: absolute;
+`
+const es = sseEvent()
 function HeaderComponent() {
     const { isShowing, handleShowing } = useModal()
     const [isLogin, setIsLogin] = useState(false)
     const [login, setLogin] = useState(false)
     const [signup, setSignup] = useState(false)
     const [anchorEl, setAnchorEl] = useState(null)
+    const [notification, setNotification] = useState([])
+    const [alram, setAlram] = useState([])
+    const [applymentDetail, setApplymentDetail] = useState()
     const open = Boolean(anchorEl)
     const navigate = useNavigate()
+    const [notiListShowing, setNotiListShowing] = useState(false)
+    const { isShowing: applymentShowing, handleShowing: setApplymentShowing } =
+        useModal()
+    const domain = import.meta.env.VITE_API_END_POINT
+
+    // sse 객체 연결콜백 (onopen), 메세지 수신 콜백(onmessage), 에러콜백(onerror)
+    es.onopen = () => {
+        console.log('sse 이벤트 연결')
+    }
+    es.onmessage = (ev) => {
+        const data = JSON.parse(ev.data)
+        console.log(data, '이벤트 수신 완료')
+        setNotification((prev) => [data, ...prev])
+        setAlram((prev) => [...prev, data])
+    }
+    es.onerror = () => {
+        console.log('sse connection Error. Trying reconnect')
+    }
 
     // 사용자 기본정보 API
     const { data: accountData } = useGetAccountInfo()
@@ -160,11 +223,42 @@ function HeaderComponent() {
         navigate('/chat')
     }
 
+    const handleNotiListShowing = () => {
+        setNotiListShowing((prev) => !prev)
+    }
+
+    const handleApplymentShowing = async (id: number) => {
+        const data = await fetch(`${domain}applyments/${id}`)
+        if (data.ok) {
+            const result = await data.json()
+            setApplymentDetail(result.data)
+            handleNotiListShowing()
+            setApplymentShowing()
+        }
+    }
+
     useEffect(() => {
         const token = localStorage.getItem('token')
         if (token) {
             setIsLogin(true)
         }
+
+        const options = {
+            method: 'GET',
+            headers: {
+                Access_Token: localStorage.getItem('token'),
+            },
+        }
+
+        async function getData() {
+            const data = await fetch(`${domain}notifications/list`, options)
+            if (data.ok) {
+                const result = await data.json()
+                setNotification(result.data)
+            }
+        }
+
+        getData()
     }, [])
 
     return (
@@ -184,9 +278,35 @@ function HeaderComponent() {
                             >
                                 <ChatOutlinedIcon />
                             </ChatItem>
-                            <AlertItem type="button">
+                            <AlertItem
+                                type="button"
+                                onClick={handleNotiListShowing}
+                            >
                                 <NotificationsOutlinedIcon />
                             </AlertItem>
+                            {notification?.length ? (
+                                <NotofictaionPoint />
+                            ) : null}
+
+                            <NotificationLayOut
+                                notiListShowing={notiListShowing}
+                            >
+                                {notification?.length ? (
+                                    notification.map((noti) => (
+                                        <Applications
+                                            onClick={(id) =>
+                                                handleApplymentShowing(id)
+                                            }
+                                            detail={noti}
+                                            key={noti.applymentId}
+                                        />
+                                    ))
+                                ) : (
+                                    <NoApplyment>
+                                        <p>알림이 없습니다</p>
+                                    </NoApplyment>
+                                )}
+                            </NotificationLayOut>
                             <AccountItem type="button" onClick={handleClick}>
                                 {accountData?.data.imgUrl ? (
                                     <AvatarImage
@@ -244,6 +364,16 @@ function HeaderComponent() {
                 signup={signup}
                 setLogin={setLogin}
                 setSignup={setSignup}
+            />
+            <ApplimentModal
+                isShowing={applymentShowing}
+                handleShowing={setApplymentShowing}
+                detail={applymentDetail}
+            />
+            <Alram
+                detail={alram}
+                setDetail={setAlram}
+                handleListShow={handleNotiListShowing}
             />
         </HeaderComponentLayout>
     )

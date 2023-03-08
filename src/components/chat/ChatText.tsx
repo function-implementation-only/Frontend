@@ -4,11 +4,9 @@ import styled from 'styled-components'
 interface ChatTextProp {
     avatar: boolean | string
     side: boolean
-    data: {
-        message: string
-        sender: string
-        createAt: string
-    }
+    message: string
+    sender: string
+    createAt: string
     avatarAddr: string
 }
 const ChatTextLayout = styled.div<{ isMine: boolean }>`
@@ -72,8 +70,14 @@ const TextBallroon = styled.span<TextBoxType>`
     
 `
 // Fixme: 프롭스 변수명 바꾸기.
-function ChatText({ avatar, side, avatarAddr, data }: ChatTextProp) {
-    const { message, sender, createAt } = data
+function ChatText({
+    avatar,
+    side,
+    avatarAddr,
+    message,
+    sender,
+    createAt,
+}: ChatTextProp) {
     const hour = new Date(createAt).getHours()
     const min = new Date(createAt).getMinutes()
 
