@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { DefaultButton } from 'components/HeaderComponent'
 import Avatar from '@mui/material/Avatar'
 import useGetAccountInfo from 'hooks/useGetAccountInfo'
 import { useNavigate } from 'react-router-dom'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import { POST_TABS } from 'lib/constants'
+import TabComponent from 'components/TabComponent'
+import PostCardComponent from 'components/postcard/PostCardComponent'
+import { ContentResponse } from 'types/response'
+import useServiceManager from 'hooks/useServiceManager'
 
 const MyPageLayout = styled.div`
     width: 1440px;
@@ -156,13 +161,79 @@ const AvatarImage = styled.img`
     }
 `
 
+const PostBox = styled.div`
+    margin-top: 52px;
+`
+const TabBox = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+`
+const PostCardsBox = styled.div`
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 52px 34px 0 34px;
+    position: relative;
+    grid-gap: 24px;
+
+    span {
+        font-weight: 700;
+        font-size: 24px;
+        position: absolute;
+        left: 50%;
+        top: 266px;
+        transform: translate(-50%, -50%);
+    }
+`
 function MyPage() {
     const { data: accountData } = useGetAccountInfo()
     const navigate = useNavigate()
+    const serviceManger = useServiceManager()
+
+    const [selectedTab, setSelectedTab] = useState('북마크')
+    const [posts, setPosts] = useState([])
 
     const handleProfilePage = () => {
         navigate('/profilepage')
     }
+
+    async function getMyBookmarks() {
+        const { data } =
+            await serviceManger.dataService.accountAPI.getMyBookmarks()
+        return data.data
+    }
+    async function getMyPosts() {
+        const { data } = await serviceManger.dataService.accountAPI.getMyPosts()
+        return data.data
+    }
+    async function getMyApplyments() {
+        const { data } =
+            await serviceManger.dataService.accountAPI.getMyApplyments()
+        return data.data
+    }
+
+    async function setPostsState() {
+        switch (selectedTab) {
+            case '북마크':
+                setPosts(await getMyBookmarks())
+                break
+            case '작성 공고':
+                setPosts(await getMyPosts())
+                break
+            case '지원 공고':
+                setPosts(await getMyApplyments())
+                break
+            default:
+                break
+        }
+    }
+    useEffect(() => {
+        setPostsState()
+    }, [])
+
+    useEffect(() => {
+        setPostsState()
+    }, [selectedTab])
 
     return (
         <MyPageLayout>
@@ -211,6 +282,34 @@ function MyPage() {
                     </AccountDetailBox>
                 </AccountInfoList>
             </AccountInfoBox>
+            <PostBox>
+                <TabBox>
+                    {POST_TABS.map((item) => {
+                        return (
+                            <TabComponent
+                                title={item.title}
+                                selectedTabTitle={selectedTab}
+                                tabHandler={setSelectedTab}
+                                key={item.title}
+                            />
+                        )
+                    })}
+                </TabBox>
+                <PostCardsBox>
+                    {posts.length > 0 ? (
+                        posts.map((item: ContentResponse) => {
+                            return (
+                                <PostCardComponent
+                                    post={item}
+                                    key={item.postId}
+                                />
+                            )
+                        })
+                    ) : (
+                        <span>{`${selectedTab}가 없습니다.`}</span>
+                    )}
+                </PostCardsBox>
+            </PostBox>
         </MyPageLayout>
     )
 }

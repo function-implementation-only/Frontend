@@ -1,4 +1,5 @@
-import { useMutation } from 'react-query'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useMutation } from '@tanstack/react-query'
 import { ApplyObj } from 'types/apply'
 import useServiceManager from './useServiceManager'
 

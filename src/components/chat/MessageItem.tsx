@@ -7,32 +7,6 @@ type SelectedProps = {
     selected: boolean
 }
 
-type MessageItemProps = {
-    id?: string
-    sender: string
-    message: string
-    time?: string
-    avatar?: string
-    email?: string
-    createAt: string
-}
-
-type ChatFriendsData = {
-    accountId: number
-    availableTime: string
-    email: string
-    field: string
-    imgUrl: string
-    introduction: string
-    nickname: string
-}
-
-type RoomState = {
-    roomId: number
-    roomName: string
-    userData: ChatFriendsData
-}
-
 const MessageItemLayout = styled.li<SelectedProps>`
     display: flex;
     height: 76px;
@@ -85,12 +59,12 @@ const ContentParagraph = styled.p`
     margin-right: 4px;
 `
 
-const TimeText = styled.span`
-    text-align: right;
-    font-size: 12px;
-    color: var(--gray-600);
-    width: 90px;
-`
+// const TimeText = styled.span`
+//     text-align: right;
+//     font-size: 12px;
+//     color: var(--gray-600);
+//     width: 90px;
+// `
 const RedDot = styled.div`
     position: absolute;
     width: 8px;
@@ -99,86 +73,30 @@ const RedDot = styled.div`
     border-radius: 50%;
     right: 0;
 `
-const token = localStorage.getItem('token')
 
 type PropTypes = {
     data: ChatRoomType
 }
 
 function MessageItem({ data }: PropTypes) {
-    const [loading, setLoading] = useState<boolean>(true)
-    const [chatList, setChatList] = useState<MessageItemProps[]>()
-    const [roomState, setRoomState] = useState<RoomState>()
     const [unReadMessage, setUnReasMessage] = useState<boolean>(false)
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const { roomName } = data
-    const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
-
-    let hour: number | null | undefined | Date = null
-    let minute: number | null | undefined | Date = null
-
-    const lastTime =
-        data?.lastSendMessageTime ||
-        (chatList &&
-            chatList[chatList.length - 1] &&
-            chatList[chatList.length - 1].createAt)
-
-    if (lastTime && chatList?.length) {
-        switch (typeof lastTime) {
-            case 'string':
-                hour = Math.floor(
-                    (Date.now() - new Date(lastTime).getTime()) / 60 / 60 / 1000
-                )
-                minute = Math.floor(
-                    ((Date.now() - new Date(lastTime).getTime()) / 1000 / 60) %
-                        60
-                )
-                break
-            case 'number':
-                hour = Math.floor(
-                    (Date.now() - data.lastSendMessageTime) / 60 / 60 / 1000
-                )
-                minute = Math.floor(
-                    ((Date.now() - data.lastSendMessageTime) / 1000 / 60) % 60
-                )
-                break
-            default:
-        }
-    }
 
     function setUnReadMessageState() {
-        if (data.unReadMessageCount) {
+        if (data?.unreadMessageCount) {
             setUnReasMessage(true)
         }
     }
 
-    useEffect(() => {
-        fetch(`${DOMAIN}/chat-service/chat/${data.roomName}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Access_Token: token,
-            },
-        })
-            .then((res) => res.json())
-            .then((json) => {
-                setChatList(() => json.chatList)
-                setRoomState(() => {
-                    return {
-                        roomId: json.roomId,
-                        roomName: json.roomName,
-                        userData: json.userData,
-                    }
-                })
-            })
-        setUnReadMessageState()
-        setLoading(() => false)
-    }, [])
-
     function unReadMessageStateChange() {
         setUnReasMessage(() => false)
     }
+
+    useEffect(() => {
+        setUnReadMessageState()
+    }, [])
 
     async function selectMessage() {
         navigate(`/chat?id=${roomName}`)
@@ -187,38 +105,34 @@ function MessageItem({ data }: PropTypes) {
 
     return (
         <div>
-            {loading ? (
-                'null'
-            ) : (
-                <MessageItemLayout
-                    onClick={selectMessage}
-                    selected={searchParams.get('id') === roomName}
-                >
-                    <AvatarRow>
-                        <AvatarImage src={roomState?.userData?.imgUrl} />
-                    </AvatarRow>
-                    <MessageInfoBox>
-                        <NameColumn>
-                            <NameParagraph>
-                                {roomState?.userData?.nickname}
-                            </NameParagraph>
-                        </NameColumn>
-                        <ContentTimeColumn>
-                            <ContentParagraph>
-                                {data.latestChatMessage}
-                            </ContentParagraph>
-                            <TimeText>
+            <MessageItemLayout
+                onClick={selectMessage}
+                selected={searchParams.get('id') === roomName}
+            >
+                <AvatarRow>
+                    <AvatarImage src={data?.userData?.imgUrl} />
+                </AvatarRow>
+                <MessageInfoBox>
+                    <NameColumn>
+                        <NameParagraph>
+                            {data?.userData?.nickname}
+                        </NameParagraph>
+                    </NameColumn>
+                    <ContentTimeColumn>
+                        <ContentParagraph>
+                            {data?.latestChatMessage}
+                        </ContentParagraph>
+                        {/* <TimeText>
                                 {hour && minute
                                     ? `${hour} 시간 ${minute}분`
                                     : minute
                                     ? `${minute}분`
                                     : '방금전'}
-                            </TimeText>
-                        </ContentTimeColumn>
-                        {unReadMessage ? <RedDot /> : null}
-                    </MessageInfoBox>
-                </MessageItemLayout>
-            )}
+                            </TimeText> */}
+                    </ContentTimeColumn>
+                    {unReadMessage ? <RedDot /> : null}
+                </MessageInfoBox>
+            </MessageItemLayout>
         </div>
     )
 }

@@ -75,7 +75,7 @@ export class PostAPI implements PostAPIInterface {
         pageNum: number
     ): Promise<AxiosResponse<APIResponse<PostResponse>>> {
         return setInterceptors.get(
-            `posts/v7/all?page=${pageNum}&size=${this.postSize}`
+            `posts/v8/all?page=${pageNum}&size=${this.postSize}`
         )
     }
 
