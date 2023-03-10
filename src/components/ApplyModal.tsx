@@ -140,12 +140,10 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
             },
             body: JSON.stringify({ targetEmail: post?.email }),
         })
-
-        // const createdRoomData = await response.json()
-        // navigate(`/chat?id=${createdRoomData.roomName}`)
     }
 
     const onSubmit: SubmitHandler<any> = async (inputData) => {
+        await handleChatCreate()
         // FIXME : ApplyObj로 변경 필요
         const serviceManager = useServiceManager()
         const payload = {
@@ -154,7 +152,6 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
             postId: post.postId,
         }
         postApplyment.mutate(payload)
-        // handleChatCreate()
     }
     return (
         <Modal isOpen={isShowing} onClose={handleShowing}>
