@@ -80,7 +80,7 @@ const ChatInputRow = styled.form`
     width: 1124;
     min-height: 88px;
     display: flex;
-    aligin-items: center;
+    align-items: center;
     position: relative;
     display: flex;
     align-items: center;
@@ -102,7 +102,7 @@ const ChatInput = styled.input`
 
 const MessageRoomLayOut = styled.div`
     width: 1124px;
-    heigth: 1000px;
+    height: 10;
     display: flex;
     flex-direction: column;
     /* justify-content: space-between; */
@@ -188,7 +188,6 @@ function MessageRoom({
     }
 
     const handleAfterMessageSend = (message: string) => {
-        console.log(roomState?.roomName, ' 함수안쪽 룸네임')
         handleLastChat(roomState?.roomName, message)
         handleChatTime(roomState?.roomId, new Date().getTime())
     }
@@ -203,7 +202,6 @@ function MessageRoom({
     const submitHandler = (e: React.FormEvent) => {
         e.preventDefault()
         if (inputRef.current.value === '') return
-
         client.send(
             '/pub/chat',
             {
@@ -234,7 +232,7 @@ function MessageRoom({
             ]
         })
         handleAfterMessageSend(body.message)
-        console.log(roomState?.roomName, '메세지 수신시 룸네임')
+    
         scrollControll()
     }
 
