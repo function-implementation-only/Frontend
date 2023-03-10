@@ -162,8 +162,9 @@ function HeaderComponent() {
     const navigate = useNavigate()
     const [notiListShowing, setNotiListShowing] = useState(false)
     const { isShowing: applymentShowing, handleShowing: setApplymentShowing } =
-        useModal()
+    useModal()
     const domain = import.meta.env.VITE_API_END_POINT
+   
 
     // sse 객체 연결콜백 (onopen), 메세지 수신 콜백(onmessage), 에러콜백(onerror)
     if (es) {

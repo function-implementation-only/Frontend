@@ -1,13 +1,12 @@
 import { EventSourcePolyfill } from 'event-source-polyfill'
-import useGetAccountInfo from 'hooks/useGetAccountInfo'
-import { MyAccount } from 'pages/ChatPage'
 
 // todo: 여기 있어도 좋은가?
 
 function sseEvent() {
-    const { data: accountData }: { data: MyAccount } = useGetAccountInfo()
+       
+    const isLogin = localStorage.getItem("token")
 
-    if (accountData.data.accountId) {
+    if (isLogin) {
         const domain = import.meta.env.VITE_API_END_POINT
         const es = new EventSourcePolyfill(`${domain}notifications/subscribe`, {
             headers: {
@@ -15,10 +14,13 @@ function sseEvent() {
                 'Content-Type': 'text/event-stream',
             },
         })
-
         return es
     }
+    
     return null
 }
 
 export default sseEvent
+
+  
+
