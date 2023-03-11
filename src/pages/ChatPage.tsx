@@ -47,17 +47,19 @@ const ChatListRow = styled.div`
     height: 100%;
     border-right: 2px solid rgba(51, 51, 51, 0.1);
     padding-right: 10px;
+    margin-bottom: 15;
 `
 
 const CategoryColumn = styled.div`
     display: flex;
+    margin-bottom: 20px;
+    display: relative;
 `
 
 const CategoryButton = styled.button<CategoryProps>`
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-
     background-color: #fff;
     border: none;
     width: 150px;
@@ -68,8 +70,19 @@ const CategoryButton = styled.button<CategoryProps>`
     cursor: pointer;
     color: ${(props) => (props.selected ? '#333' : 'var(--gray-500)')};
     border-bottom: ${(props) =>
-        props.selected && '3px solid var(--primary-color)'};
+        props.selected
+            ? '3px solid var(--primary-color)'
+            : '3px solid transparent'};
 `
+const CategoryName = styled.h2`
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21px;
+    text-transform: capitalize;
+`
+
 const UnSetButton = styled.div`
     all: unset;
 `
@@ -231,13 +244,13 @@ function ChatPage() {
                         onClick={setMessageState}
                         selected={AllMessage}
                     >
-                        전체
+                        <CategoryName>전체</CategoryName>
                     </CategoryButton>
                     <CategoryButton
                         onClick={setMessageState}
                         selected={!AllMessage}
                     >
-                        안 읽음
+                        <CategoryName>안 읽음</CategoryName>
                     </CategoryButton>
                 </CategoryColumn>
                 <MessageList>

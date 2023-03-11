@@ -1,7 +1,7 @@
-import React, { MouseEvent, RefObject } from 'react'
+import { MouseEvent, RefObject } from 'react'
 import styled from 'styled-components'
 
-const imojis = [
+const emojis = [
     '😁',
     '😂',
     '😃',
@@ -105,27 +105,27 @@ const IconBox = styled.div<{ isShowing: boolean }>`
     bottom: 40px;
 `
 
-type ImojiType = {
+type EmojiType = {
     isShowing: boolean
     handleShowing: () => void
     inputRef: RefObject<HTMLInputElement>
 }
 
-function Imoji({ inputRef, isShowing, handleShowing }: ImojiType) {
-    const insertImoji = (e: MouseEvent<HTMLButtonElement>) => {
+function Emoji({ inputRef, isShowing, handleShowing }: EmojiType) {
+    const insertEmoji = (e: MouseEvent<HTMLButtonElement>) => {
         const target = e.target as HTMLDivElement
-        const imoji = target.innerHTML
+        const emoji = target.innerHTML
 
-        inputRef.current.value += imoji
+        inputRef.current.value += emoji
         handleShowing()
     }
 
     return (
         <IconBox isShowing={isShowing}>
-            {imojis.map((imo) => (
+            {emojis.map((imo) => (
                 <UnsetButton
                     key={Math.random()}
-                    onClick={insertImoji}
+                    onClick={insertEmoji}
                     type="button"
                 >
                     {imo}
@@ -135,4 +135,4 @@ function Imoji({ inputRef, isShowing, handleShowing }: ImojiType) {
     )
 }
 
-export default Imoji
+export default Emoji
