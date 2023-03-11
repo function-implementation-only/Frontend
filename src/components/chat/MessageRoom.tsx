@@ -162,7 +162,7 @@ function MessageRoom({
     handleChatTime,
     setRoomState,
 }: PropTypes) {
-    const [subscribtion, setSubscribtion] = useState<Subscription>(null)
+    const [subscription, setSubscription] = useState<Subscription>(null)
     const { isShowing: imojiShowing, handleShowing: imojiHandle } = useModal()
     const { isShowing, handleShowing } = useModal()
     const [searchParams] = useSearchParams()
@@ -193,9 +193,11 @@ function MessageRoom({
     }
 
     // 채팅방 스크롤 최하단 이동
-    const scrollControll = () => {
-        const textContent = textContentRef.current
-        textContent.scrollTop = textContent.scrollHeight
+    const scrollControl = () => {
+        const textContent = textContentRef?.current || null
+        if (textContent?.scrollHeight) {
+            textContent.scrollTop = textContent.scrollHeight
+        }
     }
 
     // 채팅 발송
@@ -218,7 +220,7 @@ function MessageRoom({
     }
 
     // 메세지 수신시
-    function onSubscrib(messages: Message) {
+    function onSubscribe(messages: Message) {
         const body: MessageItemProps = JSON.parse(messages.body)
         setRoomState((prev) => {
             return [
@@ -232,12 +234,11 @@ function MessageRoom({
             ]
         })
         handleAfterMessageSend(body.message)
-    
-        scrollControll()
+        scrollControl()
     }
 
     useEffect(() => {
-        scrollControll()
+        scrollControl()
     }, [conversationList])
 
     // 웹소켓 구독
@@ -245,9 +246,9 @@ function MessageRoom({
         console.log(roomState, '커넥션 콜백')
         const sub: Subscription = client.subscribe(
             `/sub/chatroom/${PARAM}`,
-            onSubscrib
+            onSubscribe
         )
-        setSubscribtion(sub)
+        setSubscription(sub)
     }
 
     // 웹소켓 연결
@@ -257,7 +258,7 @@ function MessageRoom({
         client.connect({ Access_Token: token }, connectCallback)
 
         return () => {
-            subscribtion?.unsubscribe()
+            subscription?.unsubscribe()
         }
     }, [searchParams])
 

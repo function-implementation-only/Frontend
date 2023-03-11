@@ -162,9 +162,8 @@ function HeaderComponent() {
     const navigate = useNavigate()
     const [notiListShowing, setNotiListShowing] = useState(false)
     const { isShowing: applymentShowing, handleShowing: setApplymentShowing } =
-    useModal()
+        useModal()
     const domain = import.meta.env.VITE_API_END_POINT
-   
 
     // sse 객체 연결콜백 (onopen), 메세지 수신 콜백(onmessage), 에러콜백(onerror)
     if (es) {
@@ -172,10 +171,12 @@ function HeaderComponent() {
             console.log('sse 이벤트 연결')
         }
         es.onmessage = (ev) => {
-            const data = JSON.parse(ev.data)
-            console.log(data, '이벤트 수신 완료')
-            setNotification((prev) => [data, ...prev])
-            setAlram((prev) => [...prev, data])
+            if (typeof ev.data === 'object') {
+                const data = JSON.parse(ev.data)
+                console.log(data, '이벤트 수신 완료')
+                setNotification((prev) => [data, ...prev])
+                setAlram((prev) => [...prev, data])
+            }
         }
         es.onerror = () => {
             console.log('sse connection Error. Trying reconnect')
