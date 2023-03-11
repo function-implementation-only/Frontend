@@ -15,8 +15,11 @@ const MessageItemLayout = styled.li<SelectedProps>`
     margin: 4px 0;
     cursor: pointer;
     border-radius: 10px;
+    &:hover {
+        background-color: var(--primary-color-100);
+    }
     background-color: ${(props) =>
-        props.selected && 'var(--primary-color-100)'};
+        props.selected && 'var(--primary-color-200)'};
 `
 
 const AvatarRow = styled.div`
@@ -40,9 +43,13 @@ const MessageInfoBox = styled.div`
 
 const NameColumn = styled.div``
 
-const NameParagraph = styled.p`
+const NameParagraph = styled.h3`
     color: var(--gray-700);
+    font-family: 'Pretendard';
+    font-style: normal;
     font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
 `
 
 const ContentTimeColumn = styled.div`
@@ -55,8 +62,12 @@ const ContentParagraph = styled.p`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
     font-size: 14px;
-    margin-right: 4px;
+    line-height: 17px;
+    color: #333333;
 `
 
 // const TimeText = styled.span`

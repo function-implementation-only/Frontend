@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
   :root {
     --primary-color: #FF9C30;
     --primary-color-100: #FFECD6;
+    --primary-color-200: #FFC078;
     --primary-color-300: #FFA94D;
     --swiper-theme-color: white;
     --gray-900: #212529;
@@ -20,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
     --gray-500: #838485;
     --gray-400: #B0B0B0;
     --gray-250: #CED4DA;
-    --error-color: #FF3257
+    --error-color: #FF3257;
   }
   .App {
     width: 100%;

@@ -254,11 +254,14 @@ function HeaderComponent() {
             },
         }
 
+        
         async function getData() {
-            const data = await fetch(`${domain}notifications/list`, options)
-            if (data.ok) {
-                const result = await data.json()
-                setNotification(result.data)
+            if (token) {
+                const data = await fetch(`${domain}notifications/list`, options)
+                if (data.ok) {
+                    const result = await data.json()
+                    setNotification(result.data)
+                }
             }
         }
 
