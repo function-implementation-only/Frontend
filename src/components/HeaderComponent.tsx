@@ -129,7 +129,7 @@ const NoApplyment = styled.div`
     display: flex;
     justify-content: center;
     width: 500px;
-    heigth: 99px;
+    height: 99px;
     padding: 16px;
     z-index: 30;
     background-color: #ffffff;
@@ -254,7 +254,6 @@ function HeaderComponent() {
             },
         }
 
-        
         async function getData() {
             if (token) {
                 const data = await fetch(`${domain}notifications/list`, options)
