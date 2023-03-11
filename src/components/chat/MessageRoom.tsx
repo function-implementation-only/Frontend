@@ -7,7 +7,7 @@ import SockJS from 'sockjs-client'
 import { Client, Message, Subscription, over } from 'stompjs'
 import { MyAccount } from 'pages/ChatPage'
 import ChatCloseModal from './ChatCloseModal'
-import Imoji from './Imoji'
+import Emoji from './emoji'
 
 // TODO: 아래 타입 데이터는 중복데이터임 한곳에서 관리하면 좋을듯.
 
@@ -113,7 +113,7 @@ const SmileIcon = styled.svg`
     height: 20px;
     cursor: pointer;
 `
-const ImojiBox = styled.div`
+const EmojiBox = styled.div`
     position: relative;
 `
 
@@ -163,7 +163,8 @@ function MessageRoom({
     setRoomState,
 }: PropTypes) {
     const [subscription, setSubscription] = useState<Subscription>(null)
-    const { isShowing: imojiShowing, handleShowing: imojiHandle } = useModal()
+    const [bodyMessage, setBodyMessage] = useState<string>('')
+    const { isShowing: emojiShowing, handleShowing: emojiHandle } = useModal()
     const { isShowing, handleShowing } = useModal()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
@@ -215,7 +216,6 @@ function MessageRoom({
                 message: inputRef.current.value,
             })
         )
-        handleAfterMessageSend(inputRef.current.value)
         inputRef.current.value = ''
     }
 
@@ -233,9 +233,13 @@ function MessageRoom({
                 },
             ]
         })
-        handleAfterMessageSend(body.message)
+        setBodyMessage(body.message)
         scrollControl()
     }
+
+    useEffect(() => {
+        handleAfterMessageSend(bodyMessage)
+    }, [bodyMessage])
 
     useEffect(() => {
         scrollControl()
@@ -243,7 +247,6 @@ function MessageRoom({
 
     // 웹소켓 구독
     const connectCallback = () => {
-        console.log(roomState, '커넥션 콜백')
         const sub: Subscription = client.subscribe(
             `/sub/chatroom/${PARAM}`,
             onSubscribe
@@ -336,7 +339,7 @@ function MessageRoom({
                         d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
                     />
                 </AddPictureIcon>
-                <ImojiBox>
+                <EmojiBox>
                     <SmileIcon
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -344,7 +347,7 @@ function MessageRoom({
                         strokeWidth="1.5"
                         stroke="currentColor"
                         color="#ff9c30"
-                        onClick={imojiHandle}
+                        onClick={emojiHandle}
                     >
                         <path
                             strokeLinecap="round"
@@ -352,12 +355,12 @@ function MessageRoom({
                             d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"
                         />
                     </SmileIcon>
-                    <Imoji
+                    <Emoji
                         inputRef={inputRef}
-                        isShowing={imojiShowing}
-                        handleShowing={imojiHandle}
+                        isShowing={emojiShowing}
+                        handleShowing={emojiHandle}
                     />
-                </ImojiBox>
+                </EmojiBox>
                 <ChatInput ref={inputRef} />
 
                 <input
