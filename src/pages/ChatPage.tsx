@@ -93,7 +93,6 @@ export type ChatRoomType = {
     roomId: number
     roomName: string
     chatList: null | object[]
-    unReadMessageCount?: number
     unreadMessageCount?: number
     latestChatMessage: null | string
     nickname: string
@@ -118,10 +117,10 @@ function ChatPage() {
     const currentChatRoom = searchParams.get('id')
 
     const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
-
+    console.log(chatRoom, '쳇페이지 챗룸')
     const currentChatMessage =
         (AllMessage && chatRoom?.length >= 1 && chatRoom) ||
-        chatRoom?.filter((chat) => chat.unReadMessageCount >= 1)
+        chatRoom?.filter((chat) => chat.unreadMessageCount >= 1)
 
     const getRoomIndex = (data: number | string) => {
         let index: number
@@ -181,8 +180,8 @@ function ChatPage() {
             })
         }
 
-        if (target.unReadMessageCount >= 1) {
-            target.unReadMessageCount = 0
+        if (target.unreadMessageCount >= 1) {
+            target.unreadMessageCount = 0
             chatRoomCopy.splice(index, 1, target)
             setChatRoom(() => chatRoomCopy)
             setAllMessage(() => true)
