@@ -16,7 +16,7 @@ function usePostById(id: string) {
             data.data
         )
         // axios get 요청을 통해 html을 가져오는 파싱 작업이 이루어지기 때문에 await 키워드 필요
-        data.data.content = dataParsed
+        data.data.content = await dataParsed
 
         const logger = useLogger('usePostById')
         logger.log(data.data)
