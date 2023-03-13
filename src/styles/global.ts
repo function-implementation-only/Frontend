@@ -25,8 +25,8 @@ const GlobalStyle = createGlobalStyle`
   }
   .App {
     width: 100%;
-    // max-width: 1920px;
     margin: 0 auto;
+    font-family: 'Pretendard';
   }
   .noScroll {
     height: 100%;

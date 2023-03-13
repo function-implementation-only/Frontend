@@ -5,17 +5,16 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Text = styled.p<{ margin?: string }>`
-    margin:${({ margin }) => margin || ' -12px 0 16px;'};
-    // font-family: 'Pretendard';
+    margin: ${({ margin }) => margin || ' -12px 0 16px;'};
     font-size: 12px;
     color: #f03738;
     &::before {
         display: inline;
         content: '⚠ ';
     }
-     @media (max-width: 720px) {
+    @media (max-width: 720px) {
         margin-left: 2px;
-        margin-top:-20px;
+        margin-top: -20px;
     }
 `
 

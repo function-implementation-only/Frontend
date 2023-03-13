@@ -34,7 +34,6 @@ const ContentBox = styled.div`
     padding: 0 50px 50px 48px;
     row-gap: 32px;
     span {
-        font-family: 'Pretendard';
         font-weight: 700;
         font-size: 16px;
         margin-top: 26px;
@@ -48,7 +47,6 @@ const ButtonBox = styled.div`
 const Button = styled.button`
     width: 100%;
     height: 70px;
-    font-family: 'Pretendard';
     font-weight: 700;
     font-size: 16px;
     background-color: #fff;

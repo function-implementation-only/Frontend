@@ -38,7 +38,6 @@ const ContentBox = styled.div`
         margin-top: 56px;
     }
     span {
-        font-family: 'Pretendard';
         font-weight: 700;
         font-size: 16px;
         margin-top: 26px;
@@ -55,7 +54,7 @@ const Button = styled.button<{
 }>`
     width: 100%;
     height: 70px;
-    font-family: 'Pretendard';
+
     font-weight: 700;
     font-size: 16px;
     background-color: #fff;

@@ -17,6 +17,7 @@ import useLogger from 'hooks/useLogger'
 import { useAppSelector } from 'src/store/hooks'
 import useGetPosts from 'hooks/useGetPosts'
 import useGetFilteredPosts from 'hooks/useGetFilteredPosts'
+import PostCardSkeletonComponent from 'components/postcard/PostCardSkeleton'
 
 const MainPageLayout = styled.div``
 
@@ -33,8 +34,8 @@ const ContentsBox = styled.div`
     }
 `
 
-const ContentsBoxLeftSection = styled.section``
-const ContentsBoxRightSection = styled.section``
+const ContentsBoxLeftSide = styled.div``
+const ContentsBoxRightSide = styled.div``
 
 const PostCardBox = styled.div`
     display: grid;
@@ -46,10 +47,12 @@ const PostCardBox = styled.div`
 
 function MainPage() {
     const logger = useLogger('MainPage')
+    const SKELETON_DELAY = 1000
 
     const [posts, setPosts] = useState([])
     const [pageNum, setPageNum] = useState(0)
     const [isEnd, setIsEnd] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [tmpPosts, setTmpPosts] = useState([])
 
     const tags = useAppSelector((state) => state.tagReducer.tags)
@@ -70,6 +73,7 @@ function MainPage() {
 
     async function setPostsState(type: string): Promise<void> {
         logger.log(`setPostsState() ${isRecruiting}`)
+        setIsLoading(true)
 
         let result
 
@@ -85,10 +89,14 @@ function MainPage() {
             )
 
         setPosts(result)
+        setTimeout(() => {
+            setIsLoading(false)
+        }, SKELETON_DELAY)
     }
 
     async function addPostsState(type: string): Promise<void> {
         logger.log('addPostsState()')
+        setIsLoading(true)
 
         let result
 
@@ -107,6 +115,9 @@ function MainPage() {
                 (item: ContentResponse) => item.postState === '모집중'
             )
         setPosts(result)
+        setTimeout(() => {
+            setIsLoading(false)
+        }, SKELETON_DELAY)
     }
 
     function reset() {
@@ -154,6 +165,7 @@ function MainPage() {
     }, [isEnd])
 
     useEffect(() => {
+        setIsLoading(true)
         if (isRecruiting) {
             setTmpPosts(posts)
             setPosts((prev) =>
@@ -165,6 +177,9 @@ function MainPage() {
             setPosts(tmpPosts)
             setTmpPosts([])
         }
+        setTimeout(() => {
+            setIsLoading(false)
+        }, SKELETON_DELAY)
     }, [isRecruiting])
 
     return (
@@ -174,7 +189,7 @@ function MainPage() {
             </MainPageRow>
             <MainPageRow>
                 <ContentsBox>
-                    <ContentsBoxLeftSection>
+                    <ContentsBoxLeftSide>
                         <AccordianComponent
                             title="모집 구분"
                             constantsArray={CATEGORY}
@@ -205,20 +220,24 @@ function MainPage() {
                                 return item.type === 'Mobile'
                             })}
                         />
-                    </ContentsBoxLeftSection>
-                    <ContentsBoxRightSection>
+                    </ContentsBoxLeftSide>
+                    <ContentsBoxRightSide>
                         <TagBarComponent />
                         <PostCardBox>
-                            {posts?.map((post: ContentResponse) => {
-                                return (
-                                    <PostCardComponent
-                                        key={post.postId}
-                                        post={post}
-                                    />
-                                )
-                            })}
+                            {isLoading ? (
+                                <PostCardSkeletonComponent />
+                            ) : (
+                                posts?.map((post: ContentResponse) => {
+                                    return (
+                                        <PostCardComponent
+                                            key={post.postId}
+                                            post={post}
+                                        />
+                                    )
+                                })
+                            )}
                         </PostCardBox>
-                    </ContentsBoxRightSection>
+                    </ContentsBoxRightSide>
                 </ContentsBox>
             </MainPageRow>
         </MainPageLayout>

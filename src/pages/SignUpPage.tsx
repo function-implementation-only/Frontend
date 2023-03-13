@@ -37,7 +37,7 @@ const SignUpPageLayout = styled.div`
 const ThemeItem = styled.span`
     display: flex;
     justify-content: center;
-    font-family: 'Pretendard';
+
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
@@ -76,7 +76,7 @@ const InputItem = styled.div`
 
 const Label = styled.label`
     width: 142px;
-    font-family: 'Pretendard';
+
     font-size: 14px;
     color: #5a5c5f;
     span {
@@ -91,7 +91,7 @@ const Input = styled.input`
     border: 1px solid #cbcbcb;
     border-radius: 10px;
     padding: 14px;
-    font-family: 'Pretendard';
+
     font-size: 14px;
     line-height: 20px;
     &::placeholder {
@@ -121,7 +121,7 @@ const ButtonBox = styled.div`
 const Button = styled.button`
     width: 120px;
     height: 48px;
-    font-family: 'Pretendard';
+
     font-weight: 700;
     font-size: 16px;
     background-color: transparent;

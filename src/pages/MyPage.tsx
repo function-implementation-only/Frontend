@@ -34,7 +34,6 @@ const ThemeBox = styled.div`
 `
 
 const ThemeItem = styled.span`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 600;
     font-size: 32px;
@@ -89,7 +88,6 @@ const AccountDetailList = styled.div`
 `
 
 const AccountNameItem = styled.span`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -101,7 +99,6 @@ const AccountNameItem = styled.span`
 `
 
 const AccountFieldItem = styled.span`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -120,7 +117,6 @@ const AccountDividerItem = styled.span`
 `
 
 const AccountTimeItem = styled.span`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;

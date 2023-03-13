@@ -65,7 +65,7 @@ const CategoryButton = styled.button<CategoryProps>`
     width: 150px;
     height: 74px;
     font-size: 18px;
-    font-family: 'Pretendard';
+
     font-weight: ${(props) => props.selected && 'bold'};
     cursor: pointer;
     color: ${(props) => (props.selected ? '#333' : 'var(--gray-500)')};
@@ -75,7 +75,6 @@ const CategoryButton = styled.button<CategoryProps>`
             : '3px solid transparent'};
 `
 const CategoryName = styled.h2`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 700;
     font-size: 18px;

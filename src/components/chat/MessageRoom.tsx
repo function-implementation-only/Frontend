@@ -62,7 +62,6 @@ const Avatar = styled.img`
 const UserInfoText = styled.span`
     color: #333333;
     h2 {
-        font-family: 'Pretendard';
         font-style: normal;
         font-weight: 700;
         font-size: 18px;
@@ -71,7 +70,6 @@ const UserInfoText = styled.span`
         color: #333333;
     }
     p {
-        font-family: 'Pretendard';
         font-style: normal;
         font-weight: 400;
         font-size: 14px;
@@ -156,7 +154,7 @@ const ChatInitMessage = styled.span`
     align-items: center;
     padding: 9px 14px;
     border-radius: 10px;
-    font-family: 'Pretendard';
+
     margin-bottom: 16px;
     align-self: center;
 `
