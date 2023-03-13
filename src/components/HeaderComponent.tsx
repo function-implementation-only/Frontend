@@ -129,7 +129,7 @@ const NoApplyment = styled.div`
     display: flex;
     justify-content: center;
     width: 500px;
-    heigth: 99px;
+    height: 99px;
     padding: 16px;
     z-index: 30;
     background-color: #ffffff;
@@ -166,17 +166,21 @@ function HeaderComponent() {
     const domain = import.meta.env.VITE_API_END_POINT
 
     // sse 객체 연결콜백 (onopen), 메세지 수신 콜백(onmessage), 에러콜백(onerror)
-    es.onopen = () => {
-        console.log('sse 이벤트 연결')
-    }
-    es.onmessage = (ev) => {
-        const data = JSON.parse(ev.data)
-        console.log(data, '이벤트 수신 완료')
-        setNotification((prev) => [data, ...prev])
-        setAlram((prev) => [...prev, data])
-    }
-    es.onerror = () => {
-        console.log('sse connection Error. Trying reconnect')
+    if (es) {
+        es.onopen = () => {
+            console.log('sse 이벤트 연결')
+        }
+        es.onmessage = (ev) => {
+            if (typeof ev.data === 'object') {
+                const data = JSON.parse(ev.data)
+                console.log(data, '이벤트 수신 완료')
+                setNotification((prev) => [data, ...prev])
+                setAlram((prev) => [...prev, data])
+            }
+        }
+        es.onerror = () => {
+            console.log('sse connection Error. Trying reconnect')
+        }
     }
 
     // 사용자 기본정보 API
@@ -251,10 +255,12 @@ function HeaderComponent() {
         }
 
         async function getData() {
-            const data = await fetch(`${domain}notifications/list`, options)
-            if (data.ok) {
-                const result = await data.json()
-                setNotification(result.data)
+            if (token) {
+                const data = await fetch(`${domain}notifications/list`, options)
+                if (data.ok) {
+                    const result = await data.json()
+                    setNotification(result.data)
+                }
             }
         }
 

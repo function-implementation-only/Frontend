@@ -5,7 +5,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Text = styled.p<{ margin?: string }>`
-    margin:${({ margin }) => margin || ' -12px 0 16px;'}
+    margin:${({ margin }) => margin || ' -12px 0 16px;'};
     // font-family: 'Pretendard';
     font-size: 12px;
     color: #f03738;
@@ -14,7 +14,7 @@ const Text = styled.p<{ margin?: string }>`
         content: '⚠ ';
     }
      @media (max-width: 720px) {
-        margin-left:2px;
+        margin-left: 2px;
         margin-top:-20px;
     }
 `
