@@ -1,3 +1,4 @@
+import usePopup from './usePopup'
 import useServiceManager from './useServiceManager'
 
 async function useBookmark(paramId: string) {
@@ -8,11 +9,9 @@ async function useBookmark(paramId: string) {
             paramId
         )
         if (data.data) {
-            alert('해당 공고가 북마크되었습니다.')
-            window.location.reload()
+            usePopup('해당 공고가 북마크되었습니다.')
         } else {
-            alert('북마크를 취소했습니다.')
-            window.location.reload()
+            usePopup('북마크를 취소했습니다.')
         }
     } catch (e) {
         alert(e)

@@ -96,3 +96,21 @@ export const ErrorNickname: React.FC<Errors> = ({ errors, margin }) => {
             return null
     }
 }
+
+export const ErrorPosition: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>포지션을 선택해 주세요.</Text>
+        default:
+            return null
+    }
+}
+
+export const ErrorApply: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>지원 사유를 입력해주세요.</Text>
+        default:
+            return null
+    }
+}

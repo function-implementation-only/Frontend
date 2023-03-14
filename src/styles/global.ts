@@ -1,6 +1,8 @@
 import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
 import './swiper.css'
+import './fonts.css'
+import './animation.css'
 
 const GlobalStyle = createGlobalStyle`
   ${reset}

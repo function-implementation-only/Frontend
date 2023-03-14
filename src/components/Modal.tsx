@@ -31,6 +31,7 @@ const Box = styled.div`
 const Dim = styled.div<{
     popupIsShowing: boolean
 }>`
+    animation: fadeIn 0.5s forwards;
     position: absolute;
     top: 0;
     right: 0;
@@ -46,6 +47,7 @@ const Dim = styled.div<{
     }
 `
 const Container = styled.div`
+    animation: zoomIn 0.5s forwards;
     max-width: 500px;
     position: relative;
     width: 100%;

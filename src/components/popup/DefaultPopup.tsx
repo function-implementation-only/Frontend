@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 import { setpopupIsShowing } from 'src/store/features/popup/PopupSlice'
 
 const Overlay = styled.div`
+    animation: fadeIn 0.5s forwards;
     background-color: rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 100%;
@@ -16,6 +17,7 @@ const Overlay = styled.div`
 `
 
 const PopupLayout = styled.div`
+    animation: zoomIn 0.5s forwards;
     width: 500px;
     height: 270px;
     display: grid;

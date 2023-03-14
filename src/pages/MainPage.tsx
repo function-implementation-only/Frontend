@@ -17,7 +17,7 @@ import useLogger from 'hooks/useLogger'
 import { useAppSelector } from 'src/store/hooks'
 import useGetPosts from 'hooks/useGetPosts'
 import useGetFilteredPosts from 'hooks/useGetFilteredPosts'
-import PostCardSkeletonComponent from 'components/postcard/PostCardSkeleton'
+import PostCardSkeletonComponent from 'components/skeleton/PostCardSkeletonComponent'
 
 const MainPageLayout = styled.div``
 

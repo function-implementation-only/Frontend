@@ -12,7 +12,7 @@ import useBookmark from 'hooks/useBookmark'
 import ApplyModal from 'components/ApplyModal'
 import useModal from 'hooks/useModal'
 import useServiceManager from 'hooks/useServiceManager'
-import { useState } from 'react'
+import Loading from 'components/Loading'
 
 const PostDetailLayout = styled.div`
     width: 1440px;
@@ -146,8 +146,6 @@ function PostDetailPage() {
 
     const token = localStorage.getItem('token')
     const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [isAuthor, setIsAuthor] = useState(true)
     const { isLoading, error, data: apiResponse } = usePostById(paramId)
 
     function handleUpdatePost() {
@@ -194,11 +192,21 @@ function PostDetailPage() {
         if (isLogin) {
             await useBookmark(paramId)
         } else {
-            alert('로그인이 필요합니다.')
+            serviceManager.domainService.popupAPI.show({
+                content: '로그인 후에 이용가능합니다.',
+                buttons: [
+                    {
+                        label: '확인',
+                        clickHandler: () => {
+                            serviceManager.domainService.popupAPI.closeTopPopup()
+                        },
+                    },
+                ],
+            })
         }
     }
 
-    if (isLoading) return <PostDetailLayout>loading</PostDetailLayout>
+    if (isLoading) return <Loading />
 
     if (error instanceof Error)
         return <PostDetailLayout>{error.message}</PostDetailLayout>
