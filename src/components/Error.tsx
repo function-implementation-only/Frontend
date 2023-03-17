@@ -114,3 +114,50 @@ export const ErrorApply: React.FC<Errors> = ({ errors, margin }) => {
             return null
     }
 }
+
+export const ErrorDuration: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>예상 기간을 선택해주세요.</Text>
+        default:
+            return null
+    }
+}
+
+export const ErrorCollaborationTool: React.FC<Errors> = ({
+    errors,
+    margin,
+}) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>협업 프로그램을 선택해주세요.</Text>
+        default:
+            return null
+    }
+}
+
+export const ErrorTitle: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>제목을 작성해주세요.</Text>
+        default:
+            return null
+    }
+}
+
+export const ErrorPeopleNum: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>모집 인원을 설정해주세요.</Text>
+        default:
+            return null
+    }
+}
+export const ErrorTechList: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>기술 스택을 설정해주세요.</Text>
+        default:
+            return null
+    }
+}

@@ -42,11 +42,22 @@ const MinusButton = styled(OperatorButton)`
 
 interface TechListSelectComponentProps {
     id: string
+    // eslint-disable-next-line react/require-default-props
+    isUpdate?: boolean
 }
 
-function TechListSelectComponent({ id }: TechListSelectComponentProps) {
+function TechListSelectComponent({
+    id,
+    isUpdate,
+}: TechListSelectComponentProps) {
     const dispatch = useAppDispatch()
     const techList = useAppSelector((state) => state.postCreateReducer.techList)
+
+    let techObjSelf
+
+    if (isUpdate) {
+        techObjSelf = techList.find((item) => id === item.id)
+    }
 
     const isLastIdx = useCheckIsLastIdx(id)
     const isMax = useCheckIsMax()
@@ -78,7 +89,7 @@ function TechListSelectComponent({ id }: TechListSelectComponentProps) {
     function handleTechListPlusClick() {
         if (techList.length === 4) return
         // 프론트엔드, 백엔드, 모바일, 기타
-        dispatch(pushTechObj({ id: uuidv4(), part: '', techs: [''] }))
+        dispatch(pushTechObj({ id: uuidv4(), part: '', techs: [] }))
     }
 
     function handleTechListMinusClick() {
@@ -96,7 +107,9 @@ function TechListSelectComponent({ id }: TechListSelectComponentProps) {
                     sx={muiSelectStyleObj}
                     MenuProps={muiSelectMenuPropsObj}
                     displayEmpty
-                    defaultValue=""
+                    defaultValue={
+                        isUpdate && techObjSelf?.part ? techObjSelf.part : ''
+                    }
                     aria-labelledby="techListRecruitPart-label"
                     onChange={handleTechPartChange}
                 >
@@ -135,7 +148,9 @@ function TechListSelectComponent({ id }: TechListSelectComponentProps) {
                     displayEmpty
                     aria-labelledby="techList-label"
                     multiple
-                    defaultValue={[]}
+                    defaultValue={
+                        isUpdate && techObjSelf?.techs ? techObjSelf.techs : []
+                    }
                     renderValue={(selected: string[]) => {
                         if (selected.length === 0) {
                             return (

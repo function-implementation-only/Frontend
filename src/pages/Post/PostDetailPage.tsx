@@ -153,6 +153,7 @@ function PostDetailPage() {
     }
 
     function handleDeletePost() {
+        serviceManager.domainService.popupAPI.setLoadingPopup()
         deletePost.mutate(paramId)
     }
 
