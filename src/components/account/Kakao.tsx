@@ -13,8 +13,15 @@ function Kakao() {
             // options
             refetchOnWindowFocus: false,
             onSuccess: (res) => {
+                const token = res?.data.data.accessToken
+                const obj = {
+                    value: token,
+                    expire: Date.now() + 21600000,
+                }
+                const objString = JSON.stringify(obj)
+
                 if (res.status === 200) {
-                    localStorage.setItem('token', res.data.data.accessToken)
+                    localStorage.setItem('token', objString)
                     localStorage.setItem(
                         'refreshToken',
                         res.data.data.refreshToken

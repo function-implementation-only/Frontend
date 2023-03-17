@@ -106,7 +106,15 @@ type ChatRoomResponse = {
     last: boolean
     totalPages: number
 }
-const token = localStorage.getItem('token')
+const objString = localStorage.getItem('token')
+const obj = JSON.parse(objString)
+const token = obj?.value
+
+if (Date.now() > obj?.expire) {
+    localStorage.clear()
+    window.location.reload()
+}
+
 function ChatPage() {
     const [AllMessage, setAllMessage] = useState(true)
     const [chatRoom, setChatRoom] = useState<ChatRoomType[]>()

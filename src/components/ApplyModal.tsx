@@ -132,11 +132,20 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
     // 모집중인 파트만 선택하도록 필터링
 
     const handleChatCreate = async () => {
+        const objString = localStorage.getItem('token')
+        const obj = JSON.parse(objString)
+        const token = obj?.value
+
+        if (Date.now() > obj?.expire) {
+            localStorage.clear()
+            window.location.reload()
+        }
+
         await fetch(`${DOMAIN}/chat-service/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Access_Token: localStorage.getItem('token'),
+                Access_Token: token,
             },
             body: JSON.stringify({ targetEmail: post?.email }),
         })

@@ -14,8 +14,13 @@ function usePostLogIn() {
             onSuccess: (res: AxiosResponse) => {
                 const token = res?.data.data.accessToken
                 const accountId = res?.data.data.accountId
+                const obj = {
+                    value: token,
+                    expire: Date.now() + 21600000,
+                }
+                const objString = JSON.stringify(obj)
                 if (token && accountId) {
-                    localStorage.setItem('token', token)
+                    localStorage.setItem('token', objString)
                     localStorage.setItem('accountId', accountId)
                     window.location.reload()
                 }

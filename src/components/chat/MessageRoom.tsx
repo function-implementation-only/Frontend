@@ -171,7 +171,15 @@ type PropTypes = {
     handleChatTime: (roomName: string | number, time: number) => void
 }
 
-const token = localStorage.getItem('token')
+const objString = localStorage.getItem('token')
+const obj = JSON.parse(objString)
+const token = obj?.value
+
+if (Date.now() > obj?.expire) {
+    localStorage.clear()
+    window.location.reload()
+}
+
 let client: Client
 function MessageRoom({
     myAccount,
@@ -200,7 +208,7 @@ function MessageRoom({
         await fetch(`${DOMAIN}/chat-service/chat/${PARAM}`, {
             method: 'POST',
             headers: {
-                Access_Token: localStorage.getItem('token'),
+                Access_Token: token,
             },
         })
 
