@@ -1,9 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
-import { useNavigate } from 'react-router-dom'
 import useServiceManager from './useServiceManager'
 
 function useUpdatePost() {
-    const navigate = useNavigate()
     const serviceManager = useServiceManager()
 
     return useMutation(
@@ -17,13 +15,35 @@ function useUpdatePost() {
         },
         {
             onError: (e) => {
-                console.log(e)
+                serviceManager.domainService.popupAPI.removeLoadingPopup()
+                serviceManager.domainService.popupAPI.show({
+                    content: e.toString(),
+                    buttons: [
+                        {
+                            label: '확인',
+                            clickHandler: () => {
+                                serviceManager.domainService.popupAPI.closeTopPopup()
+                            },
+                        },
+                    ],
+                })
             },
             onSuccess: (data) => {
                 if (data.success) {
-                    alert('공고가 정상적으로 수정되었습니다.')
-                    // FIXME : i18n 라이브러리로 다국어 지원 해보기?
-                    navigate('/')
+                    serviceManager.domainService.popupAPI.removeLoadingPopup()
+                    serviceManager.domainService.popupAPI.show({
+                        type: 'check',
+                        content: '공고가 정상적으로 수정되었습니다.',
+                        buttons: [
+                            {
+                                label: '확인',
+                                clickHandler: () => {
+                                    serviceManager.domainService.popupAPI.closeTopPopup()
+                                    window.location.replace('/')
+                                },
+                            },
+                        ],
+                    })
                 }
             },
         }

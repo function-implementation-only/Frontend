@@ -1,4 +1,3 @@
-import usePopup from './usePopup'
 import useServiceManager from './useServiceManager'
 
 async function useBookmark(paramId: string) {
@@ -10,12 +9,47 @@ async function useBookmark(paramId: string) {
         )
         serviceManager.domainService.popupAPI.removeLoadingPopup()
         if (data.data) {
-            usePopup('해당 공고가 북마크되었습니다.')
+            serviceManager.domainService.popupAPI.show({
+                type: 'check',
+                content: '해당 공고가 북마크되었습니다.',
+                buttons: [
+                    {
+                        label: '확인',
+                        clickHandler: () => {
+                            serviceManager.domainService.popupAPI.closeTopPopup()
+                            window.location.reload()
+                        },
+                    },
+                ],
+            })
         } else {
-            usePopup('북마크를 취소했습니다.')
+            serviceManager.domainService.popupAPI.show({
+                type: 'check',
+                content: '북마크가 취소되었습니다.',
+                buttons: [
+                    {
+                        label: '확인',
+                        clickHandler: () => {
+                            serviceManager.domainService.popupAPI.closeTopPopup()
+                            window.location.reload()
+                        },
+                    },
+                ],
+            })
         }
     } catch (e) {
-        alert(e)
+        serviceManager.domainService.popupAPI.removeLoadingPopup()
+        serviceManager.domainService.popupAPI.show({
+            content: e.toString(),
+            buttons: [
+                {
+                    label: '확인',
+                    clickHandler: () => {
+                        serviceManager.domainService.popupAPI.closeTopPopup()
+                    },
+                },
+            ],
+        })
     }
 }
 

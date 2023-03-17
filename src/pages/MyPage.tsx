@@ -294,7 +294,10 @@ function MyPage() {
                             <TabComponent
                                 title={item.title}
                                 selectedTabTitle={selectedTab}
-                                tabHandler={setSelectedTab}
+                                tabHandler={(title) => {
+                                    if (isLoading) return
+                                    setSelectedTab(title)
+                                }}
                                 key={item.title}
                             />
                         )

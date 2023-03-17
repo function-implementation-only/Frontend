@@ -96,6 +96,7 @@ const CommentBox = styled.div`
         border: 1px solid var(--gray-250);
         border-radius: 10px;
         padding: 8px;
+        font-family: 'Pretendard';
 
         &:focus {
             outline: none;

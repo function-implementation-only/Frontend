@@ -123,9 +123,6 @@ export class PopupAPI implements PopupAPIInterface {
         ReactDOM.unmountComponentAtNode(popupEl)
         popupEl.remove()
 
-        if (this.popupStack.length === 0) {
-            // 팝업이 모두 닫혔을 때 스크롤 허용
-            this.allowScrolling()
-        }
+        this.allowScrolling()
     }
 }

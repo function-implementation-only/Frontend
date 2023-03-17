@@ -27,7 +27,7 @@ const PopupLayout = styled.div`
     border-radius: 20px;
 `
 
-const ContentBox = styled.div`
+const ContentBox = styled.div<{ isCheck: boolean }>`
     width: 100%;
     height: 200px;
     display: flex;
@@ -36,7 +36,8 @@ const ContentBox = styled.div`
     border-bottom: 1px solid #ced4da;
     svg {
         font-size: 50px;
-        color: #ff3257;
+        color: ${(props) =>
+            props.isCheck ? 'var(--primary-color)' : '#ff3257'};
         margin-top: 56px;
     }
     p {
@@ -111,7 +112,7 @@ const DefaultPopup: React.FC<PopupProps> = ({
     return (
         <Overlay>
             <PopupLayout>
-                <ContentBox>
+                <ContentBox isCheck={type && type === 'check'}>
                     <div>{returnIcon()}</div>
                     <p>{content}</p>
                 </ContentBox>

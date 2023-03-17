@@ -17,12 +17,16 @@ type TechObj = {
 interface PostState {
     peopleNumArr: PeopleNumObj[]
     techList: TechObj[]
+    peopleNumArrError: string
+    techListError: string
 }
 
 // Define the initial state using that type
 const initialState: PostState = {
     peopleNumArr: [{ id: uuidv4(), part: '', num: null }],
-    techList: [{ id: uuidv4(), part: '', techs: [''] }],
+    techList: [{ id: uuidv4(), part: '', techs: [] }],
+    peopleNumArrError: '',
+    techListError: '',
 }
 
 export const postCreateSlice = createSlice({

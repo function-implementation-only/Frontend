@@ -3,7 +3,7 @@ import useCheckIsLastIdx from 'hooks/state/post/techList/useCheckIsLastIdx'
 import useCheckIsMax from 'hooks/state/post/techList/useCheckIsMax'
 import useCheckPart from 'hooks/state/post/techList/useCheckPart'
 import { TECHLIST, TECH_PART, TEXT } from 'lib/constants'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
     pushTechObj,
     setTechList,
@@ -42,9 +42,14 @@ const MinusButton = styled(OperatorButton)`
 
 interface TechListSelectComponentProps {
     id: string
+    // eslint-disable-next-line react/require-default-props
+    isUpdate?: boolean
 }
 
-function TechListSelectComponent({ id }: TechListSelectComponentProps) {
+function TechListSelectComponent({
+    id,
+    isUpdate,
+}: TechListSelectComponentProps) {
     const dispatch = useAppDispatch()
     const techList = useAppSelector((state) => state.postCreateReducer.techList)
 
@@ -53,10 +58,31 @@ function TechListSelectComponent({ id }: TechListSelectComponentProps) {
     const { isFrontEndSet, isBackEndSet, isMobileSet, isEtcSet } =
         useCheckPart()
 
+    let techObjSelf: {
+        id: string
+        part?: string
+        techs?: string[]
+    }
+
+    if (isUpdate) {
+        techObjSelf = techList.find((item) => id === item.id)
+    }
+
     const [techPart, setTechPart] = useState('')
+    const [techListSelect, setTechListSelect] = useState(
+        isUpdate && techObjSelf?.techs ? techObjSelf.techs : []
+    )
+
+    useEffect(() => {
+        if (isUpdate) {
+            setTechPart(techObjSelf.part)
+        }
+        // too many re-render 오류로 마운트시 값 설정
+    }, [])
 
     function handleTechPartChange(e: SelectChangeEvent<string>) {
         setTechPart(e.target.value)
+        setTechListSelect([])
         dispatch(
             setTechListRecruitPart({
                 id,
@@ -66,7 +92,7 @@ function TechListSelectComponent({ id }: TechListSelectComponentProps) {
     }
 
     function handleTechListChange(e: SelectChangeEvent<any>) {
-        // FIXME : 나중에 value 값 타입 재설정
+        setTechListSelect(e.target.value)
         dispatch(
             setTechList({
                 id,
@@ -78,7 +104,7 @@ function TechListSelectComponent({ id }: TechListSelectComponentProps) {
     function handleTechListPlusClick() {
         if (techList.length === 4) return
         // 프론트엔드, 백엔드, 모바일, 기타
-        dispatch(pushTechObj({ id: uuidv4(), part: '', techs: [''] }))
+        dispatch(pushTechObj({ id: uuidv4(), part: '', techs: [] }))
     }
 
     function handleTechListMinusClick() {
@@ -96,7 +122,9 @@ function TechListSelectComponent({ id }: TechListSelectComponentProps) {
                     sx={muiSelectStyleObj}
                     MenuProps={muiSelectMenuPropsObj}
                     displayEmpty
-                    defaultValue=""
+                    defaultValue={
+                        isUpdate && techObjSelf?.part ? techObjSelf.part : ''
+                    }
                     aria-labelledby="techListRecruitPart-label"
                     onChange={handleTechPartChange}
                 >
@@ -135,7 +163,7 @@ function TechListSelectComponent({ id }: TechListSelectComponentProps) {
                     displayEmpty
                     aria-labelledby="techList-label"
                     multiple
-                    defaultValue={[]}
+                    value={techListSelect}
                     renderValue={(selected: string[]) => {
                         if (selected.length === 0) {
                             return (
