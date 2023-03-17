@@ -39,7 +39,7 @@ const ContentBox = styled.div`
         color: #ff3257;
         margin-top: 56px;
     }
-    span {
+    p {
         font-weight: 700;
         font-size: 16px;
         margin-top: 26px;
@@ -84,6 +84,15 @@ const DefaultPopup: React.FC<PopupProps> = ({
 }: PopupProps) => {
     const dispatch = useAppDispatch()
 
+    function returnIcon() {
+        switch (type) {
+            case 'check':
+                return <CheckCircleOutlineIcon />
+            default:
+                return <ErrorOutlineOutlinedIcon />
+        }
+    }
+
     useEffect(() => {
         dispatch(
             setpopupIsShowing({
@@ -103,12 +112,8 @@ const DefaultPopup: React.FC<PopupProps> = ({
         <Overlay>
             <PopupLayout>
                 <ContentBox>
-                    {type === 'check' ? (
-                        <CheckCircleOutlineIcon />
-                    ) : (
-                        <ErrorOutlineOutlinedIcon />
-                    )}
-                    <span>{content}</span>
+                    <div>{returnIcon()}</div>
+                    <p>{content}</p>
                 </ContentBox>
                 <ButtonBox>
                     {buttons.map((item, index) => (

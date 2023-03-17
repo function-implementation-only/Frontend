@@ -12,6 +12,7 @@ import {
     muiSelectStyleObj,
 } from 'src/styles/mui/custom'
 import usePostApplyment from 'hooks/usePostApplyment'
+import useServiceManager from 'hooks/useServiceManager'
 import Modal from './Modal'
 import PlaceHolderComponent from './common/PlaceHolderComponent'
 import { ErrorApply, ErrorPosition } from './Error'
@@ -120,6 +121,7 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
         formState: { errors },
     } = useForm<ApplyObj>()
     const postApplyment = usePostApplyment()
+    const serviceManager = useServiceManager()
     const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
 
     const POSSIBLE_RECRUITMENT_PART = RECRUITMENT_PART.filter((item) => {
@@ -152,6 +154,7 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
     }
 
     const onSubmit: SubmitHandler<ApplyObj> = async (inputData) => {
+        serviceManager.domainService.popupAPI.setLoadingPopup()
         await handleChatCreate()
         const payload = {
             comment: inputData.comment,

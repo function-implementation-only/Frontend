@@ -10,10 +10,12 @@ import TabComponent from 'components/TabComponent'
 import PostCardComponent from 'components/postcard/PostCardComponent'
 import { ContentResponse } from 'types/response'
 import useServiceManager from 'hooks/useServiceManager'
+import PostCardSkeletonComponent from 'components/skeleton/PostCardSkeletonComponent'
 
 const MyPageLayout = styled.div`
     width: 1440px;
     margin: 0 auto;
+    padding-bottom: 129px;
     @media (max-width: 720px) {
         width: 100vw;
     }
@@ -168,7 +170,7 @@ const TabBox = styled.div`
 const PostCardsBox = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    padding: 52px 34px 0 34px;
+    padding: 52px 34px 34px;
     position: relative;
     grid-gap: 24px;
 
@@ -187,7 +189,9 @@ function MyPage() {
     const serviceManger = useServiceManager()
 
     const [selectedTab, setSelectedTab] = useState('북마크')
-    const [posts, setPosts] = useState([])
+    const [myPosts, setMyPosts] = useState([])
+
+    const [isLoading, setIsloading] = useState(false)
 
     const handleProfilePage = () => {
         navigate('/profilepage')
@@ -205,19 +209,24 @@ function MyPage() {
     async function getMyApplyments() {
         const { data } =
             await serviceManger.dataService.accountAPI.getMyApplyments()
+
         return data.data
     }
 
     async function setPostsState() {
+        setIsloading(true)
         switch (selectedTab) {
             case '북마크':
-                setPosts(await getMyBookmarks())
+                setMyPosts(await getMyBookmarks())
+                setIsloading(false)
                 break
             case '작성 공고':
-                setPosts(await getMyPosts())
+                setMyPosts(await getMyPosts())
+                setIsloading(false)
                 break
             case '지원 공고':
-                setPosts(await getMyApplyments())
+                setMyPosts(await getMyApplyments())
+                setIsloading(false)
                 break
             default:
                 break
@@ -292,8 +301,10 @@ function MyPage() {
                     })}
                 </TabBox>
                 <PostCardsBox>
-                    {posts.length > 0 ? (
-                        posts.map((item: ContentResponse) => {
+                    {isLoading ? (
+                        <PostCardSkeletonComponent number={6} />
+                    ) : myPosts.length > 0 ? (
+                        myPosts.map((item: ContentResponse) => {
                             return (
                                 <PostCardComponent
                                     post={item}

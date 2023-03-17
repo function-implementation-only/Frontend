@@ -14,6 +14,7 @@ function usePostApplyment() {
         },
         {
             onError: (e: Error) => {
+                serviceManager.domainService.popupAPI.removeLoadingPopup()
                 serviceManager.domainService.popupAPI.show({
                     content: e.toString(),
                     buttons: [
@@ -27,6 +28,7 @@ function usePostApplyment() {
                 })
             },
             onSuccess: (data) => {
+                serviceManager.domainService.popupAPI.removeLoadingPopup()
                 if (data.success) {
                     serviceManager.domainService.popupAPI.show({
                         type: 'check',

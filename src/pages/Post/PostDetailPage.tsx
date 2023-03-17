@@ -190,6 +190,7 @@ function PostDetailPage() {
 
     async function handleBookMark() {
         if (isLogin) {
+            serviceManager.domainService.popupAPI.setLoadingPopup()
             await useBookmark(paramId)
         } else {
             serviceManager.domainService.popupAPI.show({

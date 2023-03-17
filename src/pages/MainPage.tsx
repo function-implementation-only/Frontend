@@ -225,7 +225,7 @@ function MainPage() {
                         <TagBarComponent />
                         <PostCardBox>
                             {isLoading ? (
-                                <PostCardSkeletonComponent />
+                                <PostCardSkeletonComponent number={9} />
                             ) : (
                                 posts?.map((post: ContentResponse) => {
                                     return (

@@ -6,18 +6,16 @@ const PostCardSkeleton = styled.div`
     border-radius: 20px;
     animation: skeleton-gradient 1s infinite ease-in-out;
 `
-function PostCardSkeletonComponent() {
+type PostCardSkeletonComponentProps = {
+    number: number
+}
+
+function PostCardSkeletonComponent({ number }: PostCardSkeletonComponentProps) {
     return (
         <>
-            <PostCardSkeleton />
-            <PostCardSkeleton />
-            <PostCardSkeleton />
-            <PostCardSkeleton />
-            <PostCardSkeleton />
-            <PostCardSkeleton />
-            <PostCardSkeleton />
-            <PostCardSkeleton />
-            <PostCardSkeleton />
+            {Array.from({ length: number }, (v, i) => i).map((item) => (
+                <PostCardSkeleton key={item} />
+            ))}
         </>
     )
 }

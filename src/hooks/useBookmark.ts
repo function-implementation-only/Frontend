@@ -8,6 +8,7 @@ async function useBookmark(paramId: string) {
         const { data } = await serviceManager.dataService.likesAPI.postLikes(
             paramId
         )
+        serviceManager.domainService.popupAPI.removeLoadingPopup()
         if (data.data) {
             usePopup('해당 공고가 북마크되었습니다.')
         } else {

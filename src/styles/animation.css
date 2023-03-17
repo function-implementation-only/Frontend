@@ -38,3 +38,12 @@
         opacity: 0;
     }
 }
+
+@keyframes lds-spinner {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
