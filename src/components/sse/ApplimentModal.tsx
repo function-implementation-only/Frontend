@@ -31,7 +31,6 @@ const ModalLayout = styled.div`
     gap: 24px;
 `
 const DetailHeaderRow = styled.h1`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -55,7 +54,6 @@ const ProfileImage = styled.img`
     background: #d9d9d9;
 `
 const PofileNickname = styled.h3`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -64,7 +62,6 @@ const PofileNickname = styled.h3`
     color: #000000;
 `
 const ProfileDetaile = styled.p`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
@@ -144,7 +141,7 @@ const ButtonLeft = styled.div`
     background: #ffffff;
     border-right: 1px solid #ced4da;
     border-radius: 0px 0px 0px 20px;
-    &: hover {
+    &:hover {
         background: #f4f4f4;
     }
 `
@@ -152,7 +149,7 @@ const ButtonRight = styled(ButtonLeft)`
     border-radius: 0px 0px 20px 0px;
 `
 const ButtonText = styled.p`
-    ont-family: 'Pretendard';
+    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 700;
     font-size: 16px;

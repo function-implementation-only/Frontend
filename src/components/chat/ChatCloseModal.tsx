@@ -44,7 +44,7 @@ const CloseButtonBox = styled.div`
 const DeleteButton = styled.button`
     width: 100%;
     background: transparent;
-    font-family: 'Pretendard';
+
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -58,14 +58,12 @@ const WarningIcon = styled.svg`
     margin-bottom: 6px;
 `
 const CloseParagraph = styled.h3`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
     line-height: 19px;
 `
 const P = styled.p`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;

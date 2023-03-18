@@ -1,6 +1,9 @@
 import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
 import './swiper.css'
+import './fonts.css'
+import './animation.css'
+import './toastuiOverride.css'
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -13,6 +16,10 @@ const GlobalStyle = createGlobalStyle`
     --primary-color-100: #FFECD6;
     --primary-color-200: #FFC078;
     --primary-color-300: #FFA94D;
+    --primary-color-400: #FF9F3F;
+    --primary-color-600: #fd7e14;
+    --primary-color-700: #F26E16;
+
     --swiper-theme-color: white;
     --gray-900: #212529;
     --gray-600: #868E96;
@@ -25,8 +32,8 @@ const GlobalStyle = createGlobalStyle`
   }
   .App {
     width: 100%;
-    // max-width: 1920px;
     margin: 0 auto;
+    font-family: 'Pretendard';
   }
   .noScroll {
     height: 100%;

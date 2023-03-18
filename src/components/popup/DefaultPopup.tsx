@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 import { setpopupIsShowing } from 'src/store/features/popup/PopupSlice'
 
 const Overlay = styled.div`
+    animation: fadeIn 0.5s forwards;
     background-color: rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 100%;
@@ -16,6 +17,7 @@ const Overlay = styled.div`
 `
 
 const PopupLayout = styled.div`
+    animation: zoomIn 0.5s forwards;
     width: 500px;
     height: 270px;
     display: grid;
@@ -25,7 +27,7 @@ const PopupLayout = styled.div`
     border-radius: 20px;
 `
 
-const ContentBox = styled.div`
+const ContentBox = styled.div<{ isCheck: boolean }>`
     width: 100%;
     height: 200px;
     display: flex;
@@ -34,11 +36,11 @@ const ContentBox = styled.div`
     border-bottom: 1px solid #ced4da;
     svg {
         font-size: 50px;
-        color: #ff3257;
+        color: ${(props) =>
+            props.isCheck ? 'var(--primary-color)' : '#ff3257'};
         margin-top: 56px;
     }
-    span {
-        font-family: 'Pretendard';
+    p {
         font-weight: 700;
         font-size: 16px;
         margin-top: 26px;
@@ -55,7 +57,7 @@ const Button = styled.button<{
 }>`
     width: 100%;
     height: 70px;
-    font-family: 'Pretendard';
+
     font-weight: 700;
     font-size: 16px;
     background-color: #fff;
@@ -83,6 +85,15 @@ const DefaultPopup: React.FC<PopupProps> = ({
 }: PopupProps) => {
     const dispatch = useAppDispatch()
 
+    function returnIcon() {
+        switch (type) {
+            case 'check':
+                return <CheckCircleOutlineIcon />
+            default:
+                return <ErrorOutlineOutlinedIcon />
+        }
+    }
+
     useEffect(() => {
         dispatch(
             setpopupIsShowing({
@@ -101,13 +112,9 @@ const DefaultPopup: React.FC<PopupProps> = ({
     return (
         <Overlay>
             <PopupLayout>
-                <ContentBox>
-                    {type === 'check' ? (
-                        <CheckCircleOutlineIcon />
-                    ) : (
-                        <ErrorOutlineOutlinedIcon />
-                    )}
-                    <span>{content}</span>
+                <ContentBox isCheck={type && type === 'check'}>
+                    <div>{returnIcon()}</div>
+                    <p>{content}</p>
                 </ContentBox>
                 <ButtonBox>
                     {buttons.map((item, index) => (

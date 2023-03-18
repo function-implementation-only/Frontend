@@ -7,15 +7,49 @@ async function useBookmark(paramId: string) {
         const { data } = await serviceManager.dataService.likesAPI.postLikes(
             paramId
         )
+        serviceManager.domainService.popupAPI.removeLoadingPopup()
         if (data.data) {
-            alert('해당 공고가 북마크되었습니다.')
-            window.location.reload()
+            serviceManager.domainService.popupAPI.show({
+                type: 'check',
+                content: '해당 공고가 북마크되었습니다.',
+                buttons: [
+                    {
+                        label: '확인',
+                        clickHandler: () => {
+                            serviceManager.domainService.popupAPI.closeTopPopup()
+                            window.location.reload()
+                        },
+                    },
+                ],
+            })
         } else {
-            alert('북마크를 취소했습니다.')
-            window.location.reload()
+            serviceManager.domainService.popupAPI.show({
+                type: 'check',
+                content: '북마크가 취소되었습니다.',
+                buttons: [
+                    {
+                        label: '확인',
+                        clickHandler: () => {
+                            serviceManager.domainService.popupAPI.closeTopPopup()
+                            window.location.reload()
+                        },
+                    },
+                ],
+            })
         }
     } catch (e) {
-        alert(e)
+        serviceManager.domainService.popupAPI.removeLoadingPopup()
+        serviceManager.domainService.popupAPI.show({
+            content: e.toString(),
+            buttons: [
+                {
+                    label: '확인',
+                    clickHandler: () => {
+                        serviceManager.domainService.popupAPI.closeTopPopup()
+                    },
+                },
+            ],
+        })
     }
 }
 

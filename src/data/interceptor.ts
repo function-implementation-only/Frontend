@@ -35,7 +35,15 @@ const client: ClientInstance & AxiosInstance = axios.create({
 })
 
 client.interceptors.request.use((request) => {
-    const token = localStorage.getItem('token')
+    const objString = localStorage.getItem('token')
+    const obj = JSON.parse(objString)
+    const token = obj?.value
+
+    if (Date.now() > obj?.expire) {
+        localStorage.clear()
+        window.location.reload()
+    }
+
     if (token) {
         request.headers.Access_Token = token
     }

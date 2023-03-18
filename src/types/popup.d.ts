@@ -6,7 +6,7 @@ export type PopupProps = {
 
 export interface PopupObj {
     id: string
-    props: PopupProps
+    props?: PopupProps
 }
 
 export type PopupButton = {

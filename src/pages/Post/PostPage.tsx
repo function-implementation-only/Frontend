@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import styled, { css } from 'styled-components'
@@ -11,6 +11,8 @@ import {
     POST_STATE,
     COLLABORATION_TOOL,
     TEXT,
+    TECHLIST,
+    ConstantObj,
 } from 'lib/constants'
 import { ContentResponse } from 'types/response'
 import { Inputs, PostObj } from 'types/post'
@@ -27,17 +29,32 @@ import {
     Select,
 } from '@mui/material'
 import PeopleNumSelectComponent from 'components/PeopleNumSelectComponent'
-import { useAppSelector } from 'src/store/hooks'
+import { useAppDispatch, useAppSelector } from 'src/store/hooks'
 import TechListSelectComponent from 'components/TechListSelectComponent'
 import useGetPostForUpdate from 'hooks/useGetPostForUpdate'
 import useLogger from 'hooks/useLogger'
+import useCheckPart from 'hooks/state/post/peopleNumArr/useCheckPart'
 import {
     muiLabelStyleObj,
     muiMenuItemStyleObj,
+    muiRadioStyleObj,
     muiSelectMenuPropsObj,
     muiSelectStyleObj,
 } from 'src/styles/mui/custom'
 import PlaceHolderComponent from 'components/common/PlaceHolderComponent'
+import useServiceManager from 'hooks/useServiceManager'
+import {
+    ErrorCollaborationTool,
+    ErrorDuration,
+    ErrorPeopleNum,
+    ErrorTechList,
+    ErrorTitle,
+} from 'components/Error'
+import { v4 as uuidv4 } from 'uuid'
+import {
+    pushPeopleNumObj,
+    pushTechObj,
+} from 'src/store/features/post/postCreateSlice'
 
 const PostPageLayout = styled.div`
     width: 1440px;
@@ -141,6 +158,8 @@ function PostPage() {
 
     const logger = useLogger('PostPage')
 
+    const serviceManager = useServiceManager()
+
     const isUpdate = /update/.test(location.pathname)
     // 페이지 url로 수정 페이지인지 판단
     const { id: paramId } = useParams()
@@ -148,20 +167,69 @@ function PostPage() {
     const [isInitializedForUpdate, setIsInitializedForUpdate] = useState(false)
     // 수정시 초기값 세팅 여부
 
-    const { register, handleSubmit, setValue, control } = useForm<Inputs>()
+    const [isFirst, setIsFirst] = useState(true)
 
-    const peopleNumArr = useAppSelector(
+    const { isFrontEndSet, isBackEndSet, isDesignerSet, isPmSet, isMobileSet } =
+        useCheckPart()
+
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        control,
+        formState: { errors },
+    } = useForm<Inputs>()
+
+    const peopleNumArrFromStore = useAppSelector(
         (state) => state.postCreateReducer.peopleNumArr
     )
     const techListFromStore = useAppSelector(
         (state) => state.postCreateReducer.techList
     )
+    const peopleNumArrError = useMemo(() => {
+        let isPartSet = false
+        let isNumset = false
+        peopleNumArrFromStore.forEach((item) => {
+            if (item.num && item.num !== null) {
+                isNumset = true
+            }
+            if (item.part && item.part !== '') {
+                isPartSet = true
+            }
+        })
+
+        if ((isPartSet && isNumset) || isFirst) {
+            return ''
+        }
+        return 'required'
+    }, [peopleNumArrFromStore, isFirst])
+
+    const techListError = useMemo(() => {
+        let isPartSet = false
+        let istechsSet = false
+        techListFromStore.forEach((item) => {
+            if (item.techs && item.techs.length > 0) {
+                istechsSet = true
+            }
+            if (item.part && item.part !== '') {
+                isPartSet = true
+            }
+        })
+
+        if ((isPartSet && istechsSet) || isFirst) {
+            return ''
+        }
+        return 'required'
+    }, [techListFromStore, isFirst])
+
+    const dispatch = useAppDispatch()
 
     function handleCancel() {
         navigate('/')
     }
 
     function setValueForUpdate() {
+        logger.log('setValueForUpdate()')
         setValue('category', serverData.category)
         setValue('duration', serverData.duration)
         setValue('place', serverData.place)
@@ -169,7 +237,95 @@ function PostPage() {
         setValue('postState', serverData.postState)
         setValue('collaborationTool', serverData.collaborationTool)
         editorRef.current.getInstance().setHTML(serverData.contentsParsed)
+
+        if (serverData.frontReqNum) {
+            if (!isFrontEndSet) {
+                dispatch(
+                    pushPeopleNumObj({
+                        id: uuidv4(),
+                        part: 'FrontEnd',
+                        num: serverData.frontReqNum,
+                    })
+                )
+            }
+        }
+        if (serverData.backReqNum) {
+            if (!isBackEndSet) {
+                dispatch(
+                    pushPeopleNumObj({
+                        id: uuidv4(),
+                        part: 'BackEnd',
+                        num: serverData.backReqNum,
+                    })
+                )
+            }
+        }
+        if (serverData.designReqNum) {
+            if (!isDesignerSet) {
+                dispatch(
+                    pushPeopleNumObj({
+                        id: uuidv4(),
+                        part: 'Designer',
+                        num: serverData.designReqNum,
+                    })
+                )
+            }
+        }
+        if (serverData.mobileReqNum) {
+            if (!isMobileSet) {
+                dispatch(
+                    pushPeopleNumObj({
+                        id: uuidv4(),
+                        part: 'Mobile',
+                        num: serverData.mobileReqNum,
+                    })
+                )
+            }
+        }
+        if (serverData.pmReqNum) {
+            if (!isPmSet) {
+                dispatch(
+                    pushPeopleNumObj({
+                        id: uuidv4(),
+                        part: 'PM',
+                        num: serverData.pmReqNum,
+                    })
+                )
+            }
+        }
+
+        if (serverData.techs) {
+            const techListObj: { [key: string]: string[] } = {
+                FrontEnd: [],
+                BackEnd: [],
+                Mobile: [],
+            }
+
+            serverData.techs.forEach((tech: string) => {
+                TECHLIST.forEach((constantObj: ConstantObj<string>) => {
+                    if (tech === constantObj.value) {
+                        techListObj[constantObj.type].push(constantObj.value)
+                    }
+                })
+            })
+
+            const keys = Object.keys(techListObj)
+
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < keys.length; i++) {
+                const part = keys[i]
+                const techs = techListObj[part]
+                if (techs.length > 0) {
+                    dispatch(pushTechObj({ id: uuidv4(), part, techs }))
+                }
+            }
+        }
+
         setIsInitializedForUpdate(true)
+
+        setTimeout(() => {
+            serviceManager.domainService.popupAPI.removeLoadingPopup()
+        }, 500)
     }
 
     async function initializeServerData(): Promise<void> {
@@ -179,6 +335,7 @@ function PostPage() {
 
     useEffect(() => {
         if (isUpdate && isInitializedForUpdate === false) {
+            serviceManager.domainService.popupAPI.setLoadingPopup()
             initializeServerData()
         }
     }, [])
@@ -187,13 +344,21 @@ function PostPage() {
         if (isUpdate && serverData && isInitializedForUpdate === false) {
             setValueForUpdate()
         }
-    }, [isInitializedForUpdate])
+    }, [serverData])
+
+    function clickSubmitBtnHandler() {
+        setIsFirst(false)
+    }
 
     const onSubmit: SubmitHandler<Inputs> = async (inputData) => {
+        if (peopleNumArrError || techListError) {
+            return
+        }
+
         const formData = new FormData()
         const inputDataCopied: PostObj = JSON.parse(JSON.stringify(inputData))
 
-        peopleNumArr.forEach((item) => {
+        peopleNumArrFromStore.forEach((item) => {
             switch (item.part) {
                 case 'FrontEnd':
                     inputDataCopied.frontReqNum = item.num
@@ -246,6 +411,7 @@ function PostPage() {
             // Spring 서버를 위한 처리
         )
 
+        serviceManager.domainService.popupAPI.setLoadingPopup()
         if (isUpdate) {
             updatePost.mutate({ formData, id: paramId })
         } else {
@@ -288,13 +454,9 @@ function PostPage() {
                                                     value={item.value}
                                                     control={
                                                         <Radio
-                                                            sx={{
-                                                                color: 'var(--primary-color)',
-                                                                '&.Mui-checked':
-                                                                    {
-                                                                        color: 'var(--primary-color)',
-                                                                    },
-                                                            }}
+                                                            sx={
+                                                                muiRadioStyleObj
+                                                            }
                                                         />
                                                     }
                                                     label={item.title}
@@ -330,13 +492,9 @@ function PostPage() {
                                                     value={item.value}
                                                     control={
                                                         <Radio
-                                                            sx={{
-                                                                color: 'var(--primary-color)',
-                                                                '&.Mui-checked':
-                                                                    {
-                                                                        color: 'var(--primary-color)',
-                                                                    },
-                                                            }}
+                                                            sx={
+                                                                muiRadioStyleObj
+                                                            }
                                                         />
                                                     }
                                                     label={item.title}
@@ -357,6 +515,7 @@ function PostPage() {
                             <Controller
                                 control={control}
                                 name="duration"
+                                rules={{ required: true }}
                                 defaultValue=""
                                 render={({ field }) => (
                                     <Select
@@ -386,6 +545,10 @@ function PostPage() {
                                     </Select>
                                 )}
                             />
+                            <ErrorDuration
+                                errors={errors?.duration?.type}
+                                margin="10px 0 0 0"
+                            />
                         </FormControl>
                         <FormControl
                             sx={{ m: 0, minWidth: 150, maxWidth: 200 }}
@@ -400,6 +563,7 @@ function PostPage() {
                             <Controller
                                 control={control}
                                 name="collaborationTool"
+                                rules={{ required: true }}
                                 defaultValue={[]}
                                 render={({ field }) => (
                                     <Select
@@ -443,6 +607,10 @@ function PostPage() {
                                     </Select>
                                 )}
                             />
+                            <ErrorCollaborationTool
+                                errors={errors?.collaborationTool?.type}
+                                margin="10px 0 0 0"
+                            />
                         </FormControl>
                     </FormRow>
 
@@ -450,11 +618,16 @@ function PostPage() {
                         <FormLabel id="PeopleNum-label" sx={muiLabelStyleObj}>
                             모집 인원
                         </FormLabel>
+                        <ErrorPeopleNum
+                            errors={peopleNumArrError}
+                            margin="10px 0 0 0"
+                        />
                         <PeopleNumSelectBox>
-                            {peopleNumArr?.map((item) => (
+                            {peopleNumArrFromStore?.map((item) => (
                                 <PeopleNumSelectComponent
                                     key={item.id}
                                     id={item.id}
+                                    isUpdate={isUpdate}
                                 />
                             ))}
                         </PeopleNumSelectBox>
@@ -464,17 +637,26 @@ function PostPage() {
                         <FormLabel id="techList-label" sx={muiLabelStyleObj}>
                             기술 스택
                         </FormLabel>
+                        <ErrorTechList
+                            errors={techListError}
+                            margin="10px 0 0 0"
+                        />
                         <TechListSelectBox>
                             {techListFromStore?.map((item) => (
                                 <TechListSelectComponent
                                     key={item.id}
                                     id={item.id}
+                                    isUpdate={isUpdate}
                                 />
                             ))}
                         </TechListSelectBox>
                     </FormRow>
 
                     <FormCol>
+                        <ErrorTitle
+                            errors={errors?.title?.type}
+                            margin="0 0 10px 9%"
+                        />
                         <TitleBox>
                             <FormControl
                                 sx={{
@@ -487,7 +669,7 @@ function PostPage() {
                                 <Controller
                                     control={control}
                                     name="postState"
-                                    defaultValue=""
+                                    defaultValue="ON"
                                     render={({ field }) => (
                                         <Select
                                             displayEmpty
@@ -527,7 +709,7 @@ function PostPage() {
                             <Title
                                 type="text"
                                 placeholder="제목을 입력해주세요."
-                                {...register('title')}
+                                {...register('title', { required: true })}
                             />
                         </TitleBox>
                         <Editor
@@ -541,7 +723,11 @@ function PostPage() {
                             <CancelButton type="button" onClick={handleCancel}>
                                 취소
                             </CancelButton>
-                            <WriteButton>
+                            <WriteButton
+                                onClick={() => {
+                                    clickSubmitBtnHandler()
+                                }}
+                            >
                                 {isUpdate ? '수정' : '등록'}
                             </WriteButton>
                         </ButtonBox>

@@ -52,7 +52,6 @@ const Title = styled.p<{ marginTop?: string }>`
     display: none;
     @media (max-width: 720px) {
         display: inline-block;
-        font-family: 'Pretendard';
         font-size: 18px;
         font-weight: 700;
         color: #333;

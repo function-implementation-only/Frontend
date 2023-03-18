@@ -12,13 +12,35 @@ function useDeletePost() {
         },
         {
             onError: (e) => {
-                console.log(e)
+                serviceManager.domainService.popupAPI.removeLoadingPopup()
+                serviceManager.domainService.popupAPI.show({
+                    content: e.toString(),
+                    buttons: [
+                        {
+                            label: '확인',
+                            clickHandler: () => {
+                                serviceManager.domainService.popupAPI.closeTopPopup()
+                            },
+                        },
+                    ],
+                })
             },
             onSuccess: (data) => {
                 if (data.success) {
-                    alert('공고가 삭제되었습니다.')
-                    // FIXME : i18n 라이브러리로 다국어 지원 해보기?
-                    window.location.replace('/')
+                    serviceManager.domainService.popupAPI.removeLoadingPopup()
+                    serviceManager.domainService.popupAPI.show({
+                        type: 'check',
+                        content: '공고가 삭제되었습니다.',
+                        buttons: [
+                            {
+                                label: '확인',
+                                clickHandler: () => {
+                                    serviceManager.domainService.popupAPI.closeTopPopup()
+                                    window.location.replace('/')
+                                },
+                            },
+                        ],
+                    })
                 }
             },
         }

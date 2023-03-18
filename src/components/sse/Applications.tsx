@@ -23,14 +23,12 @@ const ApplicationBodyRow = styled.div`
     position: relative;
 `
 const ApplicationH3 = styled.h3`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
     line-height: 19px;
 `
 const ApplicationText = styled.p`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
@@ -38,7 +36,6 @@ const ApplicationText = styled.p`
     color: #b0b0b0;
 `
 const ApplicationData = styled.p`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 400;
     font-size: 12px;

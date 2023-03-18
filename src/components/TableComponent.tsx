@@ -59,21 +59,31 @@ function TableComponent({
             <tbody>
                 <tr>
                     <TableHeader>프론트엔드</TableHeader>
-                    <TableCell>{`${frontendNum}/${frontReqNum}`}</TableCell>
+                    <TableCell>
+                        {frontReqNum ? `${frontendNum}/${frontReqNum}` : '-'}
+                    </TableCell>
 
                     <TableHeader>디자이너</TableHeader>
-                    <TableCell>{`${designNum}/${designReqNum}`}</TableCell>
+                    <TableCell>
+                        {designReqNum ? `${designNum}/${designReqNum}` : '-'}
+                    </TableCell>
                 </tr>
                 <tr>
                     <TableHeader>백엔드</TableHeader>
-                    <TableCell>{`${backendNum}/${backReqNum}`}</TableCell>
+                    <TableCell>
+                        {backReqNum ? `${backendNum}/${backReqNum}` : '-'}
+                    </TableCell>
 
                     <TableHeader>PM</TableHeader>
-                    <TableCell>{`${pmNum}/${pmReqNum}`}</TableCell>
+                    <TableCell>
+                        {pmReqNum ? `${pmNum}/${pmReqNum}` : '-'}
+                    </TableCell>
                 </tr>
                 <tr>
                     <TableHeader>모바일</TableHeader>
-                    <TableCell>{`${mobileNum}/${mobileReqNum}`}</TableCell>
+                    <TableCell>
+                        {mobileReqNum ? `${mobileNum}/${mobileReqNum}` : '-'}
+                    </TableCell>
                 </tr>
             </tbody>
         </TableComponentLayout>

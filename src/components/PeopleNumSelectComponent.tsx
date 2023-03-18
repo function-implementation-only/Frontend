@@ -41,13 +41,25 @@ const MinusButton = styled(OperatorButton)`
 
 interface PeopleNumSelectComponentProps {
     id: string
+    // eslint-disable-next-line react/require-default-props
+    isUpdate?: boolean
 }
 
-function PeopleNumSelectComponent({ id }: PeopleNumSelectComponentProps) {
+function PeopleNumSelectComponent({
+    id,
+    isUpdate,
+}: PeopleNumSelectComponentProps) {
     const dispatch = useAppDispatch()
     const peopleNumArr = useAppSelector(
         (state) => state.postCreateReducer.peopleNumArr
     )
+
+    let peopleNumObjSelf
+
+    if (isUpdate) {
+        peopleNumObjSelf = peopleNumArr.find((item) => id === item.id)
+    }
+
     const isLastIdx = useCheckIsLastIdx(id)
     const isMax = useCheckIsMax()
     const { isFrontEndSet, isBackEndSet, isDesignerSet, isPmSet, isMobileSet } =
@@ -92,7 +104,11 @@ function PeopleNumSelectComponent({ id }: PeopleNumSelectComponentProps) {
                     MenuProps={muiSelectMenuPropsObj}
                     id="peopleNumRecruitPartSelect"
                     displayEmpty
-                    defaultValue=""
+                    defaultValue={
+                        isUpdate && peopleNumObjSelf?.part
+                            ? peopleNumObjSelf.part
+                            : ''
+                    }
                     aria-labelledby="peopleNumRecruitPart-label"
                     onChange={handleRecruitPartChange}
                 >
@@ -131,7 +147,11 @@ function PeopleNumSelectComponent({ id }: PeopleNumSelectComponentProps) {
                     sx={muiSelectStyleObj}
                     MenuProps={muiSelectMenuPropsObj}
                     displayEmpty
-                    defaultValue=""
+                    defaultValue={
+                        isUpdate && peopleNumObjSelf?.num
+                            ? peopleNumObjSelf.num.toString()
+                            : ''
+                    }
                     aria-labelledby="PeopleNum-label"
                     onChange={handlePeopleNumChange}
                 >

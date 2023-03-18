@@ -56,14 +56,12 @@ const TextColumn = styled.div`
     gap: 10px;
 `
 const AlramTitle = styled.h3`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
     line-height: 19px;
 `
 const ApplicationText = styled.p`
-    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
