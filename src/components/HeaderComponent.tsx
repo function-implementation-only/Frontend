@@ -242,7 +242,15 @@ function HeaderComponent() {
     }
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
+        const objString = localStorage.getItem('token')
+        const obj = JSON.parse(objString)
+        const token = obj?.value
+
+        if (Date.now() > obj?.expire) {
+            localStorage.clear()
+            window.location.reload()
+        }
+
         if (token) {
             setIsLogin(true)
         }
@@ -250,7 +258,7 @@ function HeaderComponent() {
         const options = {
             method: 'GET',
             headers: {
-                Access_Token: localStorage.getItem('token'),
+                Access_Token: token,
             },
         }
 

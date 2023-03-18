@@ -141,10 +141,18 @@ function PostDetailPage() {
     const serviceManager = useServiceManager()
     const { isShowing, handleShowing } = useModal()
 
-    const accountId = JSON.parse(localStorage.getItem('accountId')) || null
-    const isLogin = !!localStorage.getItem('token')
+    const objString = localStorage.getItem('token')
+    const obj = JSON.parse(objString)
+    const token = obj?.value
 
-    const token = localStorage.getItem('token')
+    if (Date.now() > obj?.expire) {
+        localStorage.clear()
+        window.location.reload()
+    }
+
+    const accountId = JSON.parse(localStorage.getItem('accountId')) || null
+    const isLogin = !!token
+
     const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
     const { isLoading, error, data: apiResponse } = usePostById(paramId)
 
