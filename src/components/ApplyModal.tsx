@@ -1,10 +1,7 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { Children, Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { ApplyObj } from 'types/apply'
-import useServiceManager from 'hooks/useServiceManager'
 import { ContentResponse } from 'types/response'
 import { FormControl, FormLabel, MenuItem, Select } from '@mui/material'
 import { RECRUITMENT_PART, TEXT } from 'lib/constants'
@@ -15,9 +12,10 @@ import {
     muiSelectStyleObj,
 } from 'src/styles/mui/custom'
 import usePostApplyment from 'hooks/usePostApplyment'
-import { useNavigate } from 'react-router-dom'
+import useServiceManager from 'hooks/useServiceManager'
 import Modal from './Modal'
 import PlaceHolderComponent from './common/PlaceHolderComponent'
+import { ErrorApply, ErrorPosition } from './Error'
 
 const ApplyModalLayout = styled.form`
     width: 500px;
@@ -32,13 +30,20 @@ const ContentBox = styled.div`
     flex-direction: column;
     border-bottom: 1px solid #ced4da;
     padding: 0 50px 50px 48px;
-    row-gap: 32px;
     span {
-        font-family: 'Pretendard';
         font-weight: 700;
         font-size: 16px;
         margin-top: 26px;
     }
+    @keyframes zoomIn {
+        from {
+            transform: scale(0);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+    animation: zoomIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 `
 
 const ButtonBox = styled.div`
@@ -48,11 +53,11 @@ const ButtonBox = styled.div`
 const Button = styled.button`
     width: 100%;
     height: 70px;
-    font-family: 'Pretendard';
     font-weight: 700;
     font-size: 16px;
     background-color: #fff;
     border: none;
+    cursor: pointer;
 `
 
 const CancelButton = styled(Button)`
@@ -76,6 +81,7 @@ const Title = styled.p`
 `
 
 const CommentBox = styled.div`
+    margin-top: 32px;
     label {
         p {
             font-size: 16px;
@@ -90,6 +96,7 @@ const CommentBox = styled.div`
         border: 1px solid var(--gray-250);
         border-radius: 10px;
         padding: 8px;
+        font-family: 'Pretendard';
 
         &:focus {
             outline: none;
@@ -108,9 +115,14 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
     const handleClick = () => {
         handleShowing()
     }
-    const { register, handleSubmit, control } = useForm()
+    const {
+        register,
+        handleSubmit,
+        control,
+        formState: { errors },
+    } = useForm<ApplyObj>()
     const postApplyment = usePostApplyment()
-    const navigate = useNavigate()
+    const serviceManager = useServiceManager()
     const DOMAIN = import.meta.env.VITE_API_CHAT_END_POINT
 
     const POSSIBLE_RECRUITMENT_PART = RECRUITMENT_PART.filter((item) => {
@@ -132,20 +144,28 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
     // 모집중인 파트만 선택하도록 필터링
 
     const handleChatCreate = async () => {
+        const objString = localStorage.getItem('token')
+        const obj = JSON.parse(objString)
+        const token = obj?.value
+
+        if (Date.now() > obj?.expire) {
+            localStorage.clear()
+            window.location.reload()
+        }
+
         await fetch(`${DOMAIN}/chat-service/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Access_Token: localStorage.getItem('token'),
+                Access_Token: token,
             },
             body: JSON.stringify({ targetEmail: post?.email }),
         })
     }
 
-    const onSubmit: SubmitHandler<any> = async (inputData) => {
+    const onSubmit: SubmitHandler<ApplyObj> = async (inputData) => {
+        serviceManager.domainService.popupAPI.setLoadingPopup()
         await handleChatCreate()
-        // FIXME : ApplyObj로 변경 필요
-        const serviceManager = useServiceManager()
         const payload = {
             comment: inputData.comment,
             position: inputData.position.toUpperCase(),
@@ -165,6 +185,7 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
                         <Controller
                             control={control}
                             name="position"
+                            rules={{ required: true }}
                             defaultValue=""
                             render={({ field }) => (
                                 <Select
@@ -196,15 +217,24 @@ const ApplyModal: React.FC<Props> = ({ isShowing, handleShowing, post }) => {
                             )}
                         />
                     </FormControl>
+                    <ErrorPosition
+                        errors={errors?.position?.type}
+                        margin="10px 0 0 0"
+                    />
                     <CommentBox>
                         <label htmlFor="applyReason">
                             <p>지원 사유를 작성하여 나를 어필해 보세요!</p>
                             <textarea
                                 id="applyReason"
-                                {...register('comment')}
+                                {...register('comment', { required: true })}
+                                placeholder="지원하고자 하는 사유를 작성해주세요!"
                             />
                         </label>
                     </CommentBox>
+                    <ErrorApply
+                        errors={errors?.comment?.type}
+                        margin="10px 0 0 0"
+                    />
                 </ContentBox>
                 <ButtonBox>
                     <CancelButton type="button" onClick={handleClick}>

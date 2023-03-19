@@ -47,7 +47,6 @@ const InputItem = styled.div`
 `
 
 const Label = styled.label`
-    font-family: 'Pretendard';
     font-size: 14px;
     color: #5a5c5f;
 `
@@ -59,7 +58,7 @@ const Input = styled.input`
     border: 1px solid #cbcbcb;
     border-radius: 10px;
     padding: 14px;
-    font-family: 'Pretendard';
+
     font-size: 14px;
     line-height: 20px;
     &::placeholder {
@@ -97,7 +96,6 @@ const DividerItem = styled.hr`
 `
 
 const DividerText = styled.span`
-    font-family: 'Pretendard';
     font-size: 14px;
     color: #838485;
 `
@@ -105,7 +103,7 @@ const DividerText = styled.span`
 const SignUpBox = styled.div`
     margin: 17px 0 102px;
     text-align: center;
-    font-family: 'Pretendard';
+
     font-size: 14px;
     span {
         margin-right: 8px;

@@ -14,7 +14,6 @@ const ButtonLayout = styled.button<{
     background-color: ${(props) => props.background ?? '#ff9c30'};
     border: none;
     border-radius: 10px;
-    font-family: 'Pretendard';
     font-weight: ${(props) => props.fontWeight};
     font-size: 16px;
     display: flex;

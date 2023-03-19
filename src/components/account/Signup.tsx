@@ -46,7 +46,6 @@ const DividerItem = styled.hr`
 `
 
 const DividerText = styled.span`
-    font-family: 'Pretendard';
     font-size: 14px;
     color: #838485;
 `
@@ -54,7 +53,7 @@ const DividerText = styled.span`
 const LoginBox = styled.div`
     margin: 17px 0 185px;
     text-align: center;
-    font-family: 'Pretendard';
+
     font-size: 14px;
     span {
         margin-right: 8px;

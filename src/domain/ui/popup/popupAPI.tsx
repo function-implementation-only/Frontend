@@ -1,4 +1,5 @@
 import DefaultPopup from 'components/popup/DefaultPopup'
+import LoadingPopup from 'components/popup/LoadingPopup'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { store } from 'src/store/store'
@@ -11,10 +12,14 @@ export interface PopupAPIInterface {
     closeAllPopup: () => void
     allowScrolling: () => void
     disallowScrolling: () => void
+    setLoadingPopup: () => void
+    removeLoadingPopup: () => void
 }
 
 export class PopupAPI implements PopupAPIInterface {
-    popupStack: PopupObj[]
+    private popupStack: PopupObj[]
+
+    private loadingPopupId: string
 
     constructor() {
         this.popupStack = []
@@ -36,7 +41,7 @@ export class PopupAPI implements PopupAPIInterface {
         popupEl.id = id
         popupEl.classList.add('popup')
 
-        this.allowScrolling()
+        this.disallowScrolling()
 
         rootEl.append(popupEl)
         ReactDOM.render(
@@ -61,7 +66,7 @@ export class PopupAPI implements PopupAPIInterface {
 
         if (this.popupStack.length === 0) {
             // 팝업이 모두 닫혔을 때 스크롤 허용
-            this.disallowScrolling()
+            this.allowScrolling()
         }
     }
 
@@ -72,13 +77,52 @@ export class PopupAPI implements PopupAPIInterface {
         }
     }
 
-    allowScrolling() {
+    disallowScrolling() {
         const bodyEl = window.document.body
         bodyEl.classList.add('noScroll')
     }
 
-    disallowScrolling() {
+    allowScrolling() {
         const bodyEl = window.document.body
         bodyEl.classList.remove('noScroll')
+    }
+
+    setLoadingPopup() {
+        const id = uuidv4()
+        this.loadingPopupId = id
+
+        const popupObj = {
+            id,
+        }
+
+        this.popupStack.push(popupObj)
+
+        const rootEl = document.getElementById('root')
+        const popupEl = document.createElement('div')
+
+        popupEl.id = id
+        popupEl.classList.add('popup')
+
+        this.disallowScrolling()
+
+        rootEl.append(popupEl)
+        ReactDOM.render(
+            <Provider store={store}>
+                <LoadingPopup />
+            </Provider>,
+            popupEl
+        )
+    }
+
+    removeLoadingPopup() {
+        const { id } = this.popupStack.find(
+            (popupObj) => popupObj.id === this.loadingPopupId
+        )
+        const popupEl = document.getElementById(id)
+
+        ReactDOM.unmountComponentAtNode(popupEl)
+        popupEl.remove()
+
+        this.allowScrolling()
     }
 }

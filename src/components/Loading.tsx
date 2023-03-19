@@ -3,8 +3,6 @@ import styled from 'styled-components'
 const Wrapper = styled.div`
     width: 100%;
     height: 200px;
-    // background-color: #202221;
-    // background-color: rgba(0, 0, 0, 0.6);
     padding-top: 10px;
     display: flex;
     justify-content: center;

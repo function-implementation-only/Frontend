@@ -5,17 +5,16 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Text = styled.p<{ margin?: string }>`
-    margin:${({ margin }) => margin || ' -12px 0 16px;'};
-    // font-family: 'Pretendard';
+    margin: ${({ margin }) => margin || ' -12px 0 16px;'};
     font-size: 12px;
     color: #f03738;
     &::before {
         display: inline;
         content: '⚠ ';
     }
-     @media (max-width: 720px) {
+    @media (max-width: 720px) {
         margin-left: 2px;
-        margin-top:-20px;
+        margin-top: -20px;
     }
 `
 
@@ -93,6 +92,71 @@ export const ErrorNickname: React.FC<Errors> = ({ errors, margin }) => {
                     영문, 숫자 조합 3~10자 이내로 입력해 주세요.
                 </Text>
             )
+        default:
+            return null
+    }
+}
+
+export const ErrorPosition: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>포지션을 선택해 주세요.</Text>
+        default:
+            return null
+    }
+}
+
+export const ErrorApply: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>지원 사유를 입력해주세요.</Text>
+        default:
+            return null
+    }
+}
+
+export const ErrorDuration: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>예상 기간을 선택해주세요.</Text>
+        default:
+            return null
+    }
+}
+
+export const ErrorCollaborationTool: React.FC<Errors> = ({
+    errors,
+    margin,
+}) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>협업 프로그램을 선택해주세요.</Text>
+        default:
+            return null
+    }
+}
+
+export const ErrorTitle: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>제목을 작성해주세요.</Text>
+        default:
+            return null
+    }
+}
+
+export const ErrorPeopleNum: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>모집 인원을 설정해주세요.</Text>
+        default:
+            return null
+    }
+}
+export const ErrorTechList: React.FC<Errors> = ({ errors, margin }) => {
+    switch (errors) {
+        case 'required':
+            return <Text margin={margin}>기술 스택을 설정해주세요.</Text>
         default:
             return null
     }

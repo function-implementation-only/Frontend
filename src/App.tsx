@@ -9,41 +9,57 @@ import ProfilePage from 'pages/ProfilePage'
 import GooglePrivacy from 'components/account/GooglePrivacy'
 import GooglePolicy from 'components/account/GooglePolicy'
 import ChatPage from 'pages/ChatPage'
+import { ThemeProvider } from '@mui/material'
 import Kakao from './components/account/Kakao'
 import Google from './components/account/Google'
 import SignUpPage from './pages/SignUpPage'
+import theme from './styles/mui/theme'
 
 const queryClient = new QueryClient()
 
 function App() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <div className="App">
-                <BrowserRouter>
-                    <HeaderComponent />
-                    <Routes>
-                        <Route path="/" element={<MainPage />} />
-                        <Route path="/signup" element={<SignUpPage />} />
-                        <Route path="/mypage" element={<MyPage />} />
-                        <Route path="/profilepage" element={<ProfilePage />} />
-                        <Route path="/post/create" element={<PostPage />} />
-                        <Route path="/post/update/:id" element={<PostPage />} />
-                        <Route
-                            path="/post/detail/:id"
-                            element={<PostDetailPage />}
-                        />
-                        <Route
-                            path="/api/socials/signup/kakao"
-                            element={<Kakao />}
-                        />
-                        <Route path="/api/google/test" element={<Google />} />
-                        <Route path="/privacy" element={<GooglePrivacy />} />
-                        <Route path="/policy" element={<GooglePolicy />} />
-                        <Route path="/chat" element={<ChatPage />} />
-                    </Routes>
-                </BrowserRouter>
-            </div>
-        </QueryClientProvider>
+        <ThemeProvider theme={theme}>
+            <QueryClientProvider client={queryClient}>
+                <div className="App">
+                    <BrowserRouter>
+                        <HeaderComponent />
+                        <Routes>
+                            <Route path="/" element={<MainPage />} />
+                            <Route path="/signup" element={<SignUpPage />} />
+                            <Route path="/mypage" element={<MyPage />} />
+                            <Route
+                                path="/profilepage"
+                                element={<ProfilePage />}
+                            />
+                            <Route path="/post/create" element={<PostPage />} />
+                            <Route
+                                path="/post/update/:id"
+                                element={<PostPage />}
+                            />
+                            <Route
+                                path="/post/detail/:id"
+                                element={<PostDetailPage />}
+                            />
+                            <Route
+                                path="/api/socials/signup/kakao"
+                                element={<Kakao />}
+                            />
+                            <Route
+                                path="/api/google/test"
+                                element={<Google />}
+                            />
+                            <Route
+                                path="/privacy"
+                                element={<GooglePrivacy />}
+                            />
+                            <Route path="/policy" element={<GooglePolicy />} />
+                            <Route path="/chat" element={<ChatPage />} />
+                        </Routes>
+                    </BrowserRouter>
+                </div>
+            </QueryClientProvider>
+        </ThemeProvider>
     )
 }
 

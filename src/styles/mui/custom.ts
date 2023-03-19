@@ -39,3 +39,10 @@ export const muiMenuItemStyleObj = {
         },
     },
 }
+
+export const muiRadioStyleObj = {
+    color: 'var(--primary-color)',
+    '&.Mui-checked': {
+        color: 'var(--primary-color)',
+    },
+}

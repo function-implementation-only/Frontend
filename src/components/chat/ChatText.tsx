@@ -25,7 +25,7 @@ const TextBox = styled.div<{ avatar: boolean | string }>`
     max-width: 450px;
     display: flex;
     flex-direction: column;
-    font-family: 'Pretendard';
+    
     position: relative;
     margin-left: ${(props) => (props.avatar ? '8px;' : '36px;')}
     margin-right: 8px;
@@ -39,7 +39,7 @@ const TextAndTimeBox = styled.div<{ isMine: boolean }>`
 const Name = styled.span<{ see: boolean | string }>`
     margin-top: 8px;
     font-weight: 400;
-    font-family: 'Pretendard';
+
     display: ${(props) => (props.see ? 'box' : 'none')};
 `
 const Time = styled.span<{ isMine: boolean }>`
@@ -63,7 +63,7 @@ const TextBallroon = styled.span<TextBoxType>`
     padding: 9px 14px;
     border-radius: 10px;
     margin-bottom: 2px;
-    font-family: 'Pretendard';
+    
     margin-top: ${(props) => (props.gap ? '8px' : '4px')};
    
 

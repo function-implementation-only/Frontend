@@ -45,7 +45,7 @@ const NameColumn = styled.div``
 
 const NameParagraph = styled.h3`
     color: var(--gray-700);
-    font-family: 'Pretendard';
+
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -62,7 +62,7 @@ const ContentParagraph = styled.p`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: 'Pretendard';
+
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
