@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import useModal from 'hooks/useModal'
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined'
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined'
@@ -151,6 +151,7 @@ const NotofictaionPoint = styled.div`
 const es = sseEvent()
 function HeaderComponent() {
     const { isShowing, handleShowing } = useModal()
+    const notificationRef = useRef<HTMLDivElement>(null)
     const [isLogin, setIsLogin] = useState(false)
     const [login, setLogin] = useState(false)
     const [signup, setSignup] = useState(false)
@@ -224,11 +225,15 @@ function HeaderComponent() {
     }
 
     const handleChatIconClick = () => {
+        setNotiListShowing(false)
         navigate('/chat')
     }
 
     const handleNotiListShowing = () => {
         setNotiListShowing((prev) => !prev)
+        if (notificationRef.current) {
+            notificationRef.current.focus()
+        }
     }
 
     const handleApplymentShowing = async (id: number) => {
@@ -303,6 +308,8 @@ function HeaderComponent() {
                             ) : null}
 
                             <NotificationLayOut
+                                ref={notificationRef}
+                                tabIndex={-1}
                                 notiListShowing={notiListShowing}
                             >
                                 {notification?.length ? (

@@ -141,7 +141,11 @@ const ButtonLeft = styled.div`
     background: #ffffff;
     border-right: 1px solid #ced4da;
     border-radius: 0px 0px 0px 20px;
+<<<<<<< HEAD
     &:hover {
+=======
+    :hover {
+>>>>>>> feature-122/chat-page-desktop-ui
         background: #f4f4f4;
     }
 `
@@ -198,11 +202,8 @@ const ApplimentModal: React.FC<Props> = ({
                     <ButtonLeft onClick={handleShowing}>
                         <ButtonText>취소</ButtonText>
                     </ButtonLeft>
-                    <ButtonRight>
-                        <ButtonText
-                            style={{ color: '#FF9C30' }}
-                            onClick={handleCoffeChat}
-                        >
+                    <ButtonRight onClick={handleCoffeChat}>
+                        <ButtonText style={{ color: '#FF9C30' }}>
                             커피챗 보기
                         </ButtonText>
                     </ButtonRight>
