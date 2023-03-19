@@ -505,7 +505,7 @@ function ProfilePage() {
                             placeholder={accountData?.data.introduction}
                             {...register('introduction', {
                                 // required: true,
-                                maxLength: 10,
+                                maxLength: 18,
                                 minLength: 3,
                             })}
                         />
