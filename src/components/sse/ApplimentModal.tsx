@@ -141,11 +141,7 @@ const ButtonLeft = styled.div`
     background: #ffffff;
     border-right: 1px solid #ced4da;
     border-radius: 0px 0px 0px 20px;
-<<<<<<< HEAD
-    &:hover {
-=======
     :hover {
->>>>>>> feature-122/chat-page-desktop-ui
         background: #f4f4f4;
     }
 `
