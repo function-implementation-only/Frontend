@@ -144,7 +144,7 @@ const ButtonLeft = styled.div`
     background: #ffffff;
     border-right: 1px solid #ced4da;
     border-radius: 0px 0px 0px 20px;
-    &: hover {
+    :hover {
         background: #f4f4f4;
     }
 `
@@ -152,7 +152,7 @@ const ButtonRight = styled(ButtonLeft)`
     border-radius: 0px 0px 20px 0px;
 `
 const ButtonText = styled.p`
-    ont-family: 'Pretendard';
+    font-family: 'Pretendard';
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -201,11 +201,8 @@ const ApplimentModal: React.FC<Props> = ({
                     <ButtonLeft onClick={handleShowing}>
                         <ButtonText>취소</ButtonText>
                     </ButtonLeft>
-                    <ButtonRight>
-                        <ButtonText
-                            style={{ color: '#FF9C30' }}
-                            onClick={handleCoffeChat}
-                        >
+                    <ButtonRight onClick={handleCoffeChat}>
+                        <ButtonText style={{ color: '#FF9C30' }}>
                             커피챗 보기
                         </ButtonText>
                     </ButtonRight>
