@@ -20,7 +20,7 @@ function Kakao() {
                 }
                 const objString = JSON.stringify(obj)
 
-                if (res.status === 200) {
+                if (res.data.success === true) {
                     localStorage.setItem('token', objString)
                     localStorage.setItem(
                         'refreshToken',
