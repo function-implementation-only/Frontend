@@ -99,9 +99,7 @@
   * commit된 코드가 어떤 내용을 작성 했는 지 파악하려면 commit을 확인해야 한다.
   * 프로젝트 진행 중에는 수 많은 코드가 commit되기 때문에 일일이 내용을 확인하기 힘들기 때문에 
     메시지 컨벤션을 통해서 제목이나 description을 통해서 commit의 정보를 전달한다.
-  
-  👇🏻더 자세한 내용이 알고싶다면?👇🏻<br/>
-  &nbsp; 🚥 &nbsp; [Git](https://fate-manta-e23.notion.site/FE-0e26b8f279214ea5bcc8830b571be457)
+  * 널리 쓰이는 Udacity Commit Message Convention을 따른다.
   
   </div>
   </details>
